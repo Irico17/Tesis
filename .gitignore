@@ -11,7 +11,6 @@ venv/
 
 # Cursor / IDE
 .cursor/
-doc/Untitled
 
 # Datos crudos y artefactos grandes (reproducibles con el pipeline)
 data/Datasets_Originales/**
@@ -19,7 +18,23 @@ data/Datasets_Procesados/Dataset_Unificado.*
 data/Datasets_Procesados/por_fuente/
 data/Datasets_Procesados/splits/*.csv
 data/Datasets_Procesados/splits/*.parquet
+data/Datasets_Procesados/splits_group_aware/*.csv
+data/Datasets_Procesados/splits_group_aware/*.parquet
 data/features/
+
+# Tablas laterales intermedias de Fase A (regenerables con
+# phishing_pipeline.dedup.*; su contenido ya está fusionado en
+# Dataset_Unificado.parquet, que sí se trackea) — mismo criterio que por_fuente/
+data/Datasets_Procesados/template_clusters.parquet
+data/Datasets_Procesados/network_lexical_enrichment.parquet
+data/Datasets_Procesados/phishmmf_spf_enrichment.parquet
+
+# Modelo profundo: checkpoints/ONNX son binarios grandes y regenerables
+# (src/phishing_model/train.py, train_loso.py, quantization.py) — nunca al repo.
+data/model/
+
+# Predicciones fila por fila: regenerables corriendo evaluate.py/run_baselines.py
+data/predictions/
 
 # Reportes regenerables — conservar solo JSON/CSV de evidencia vía git add selectivo
 data/reports/**/*.md
@@ -30,16 +45,6 @@ data/reports/language_full*
 data/reports/csv/language*
 data/reports/csv/outliers_p99.csv
 data/reports/csv/dedup_impact*
-
-# Documentación interna / tesis / baselines (fuera de R1.1–R1.2)
-doc/
-docs/
-scripts/
-20210577*.md
-
-# R2 baselines (no R1.1/R1.2)
-src/phishing_baseline/
-notebooks/02_baselines_r2_1.ipynb
 
 # Figuras: por defecto ignorar; las clave se añaden explícitamente
 data/reports/figures/**

@@ -38,6 +38,16 @@ SPAM_GENUINE_FILE = "email_dataset_100k.csv"
 
 # PhishMMF
 PHISH_MMF_GITHUB_URL = "https://github.com/12345677876/PhishMMF.git"
+# Commit fijado para reproducibilidad (mejora de Fase I, ver
+# doc/INFORME_R1.3_R1.4_R2.2_R3.md §11): PhishMMF es un repositorio de
+# terceros sin versionado formal; un `git clone --depth 1` sin referencia fija
+# trae lo que sea que esté en HEAD el día de la ejecución, que puede diferir
+# de lo usado para construir el corpus actual. Este es el commit real bajo el
+# que se generó `Dataset_Unificado.parquet` (verificado contra el clon local
+# ya presente en data/Datasets_Originales/PhishMMF/repo/, 2026-08-18) --
+# fijarlo garantiza que una re-ejecución del pipeline en otra máquina/fecha
+# reproduzca exactamente los mismos datos crudos.
+PHISH_MMF_PINNED_COMMIT = "4887966166f1f19a72f41ac7ca26f98064ce3248"
 PHISH_MMF_ZIP_FILES = [
     "all.zip",
     "phishing_pot.zip",
@@ -85,3 +95,29 @@ LABEL_TEXT_PHISHING = "Phishing Email"
 # Nombres de fuente
 SOURCE_KAGGLE = "Kaggle_Phishing_Email"
 SOURCE_SPAM_GENUINE = "Spam_Genuine_Mail"
+SOURCE_PHISH_MMF = "PhishMMF"
+
+# Splits group-aware (Fase A1 — StratifiedGroupKFold por template_cluster_id)
+SPLITS_DIR_GROUP_AWARE = PROCESSED_DIR / "splits_group_aware"
+
+
+def get_source_family(source_dataset: str) -> str:
+    """
+    Familia de fuente canónica para agrupamiento (GroupKFold LOSO, dedup por fuente).
+
+    Unifica las sub-fuentes de PhishMMF (p.ej. "PhishMMF_CEAS_08_0.jsonl") bajo
+    "PhishMMF", y mapea Kaggle/Spam_Genuine a sus nombres completos de columna
+    `source_dataset` (no abreviados) — estos son los mismos valores usados como
+    `held_out_source` en data/reports/baselines_results.json. Antes existían dos
+    definiciones divergentes de esta lógica (splits.py y phishing_baseline/group_cv.py);
+    esta es la única fuente de verdad.
+    """
+    if not isinstance(source_dataset, str):
+        return "Unknown"
+    if source_dataset.startswith("PhishMMF"):
+        return SOURCE_PHISH_MMF
+    if source_dataset.startswith("Kaggle"):
+        return SOURCE_KAGGLE
+    if source_dataset.startswith("Spam"):
+        return SOURCE_SPAM_GENUINE
+    return source_dataset

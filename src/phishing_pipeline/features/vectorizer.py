@@ -15,17 +15,64 @@ from phishing_pipeline.logging_utils import get_logger
 
 logger = get_logger(__name__)
 
-NUMERIC_FEATURE_COLS = [
+STRUCTURAL_FEATURE_COLS = [
     "has_html",
     "num_links",
     "num_images",
     "has_form",
     "has_iframe",
     "has_javascript",
-    "has_ip_link",
     "word_count",
-    "num_urls_metadata",
 ]
+
+# Nota: spf_result/dkim_result/dmarc_result son categóricas (pass/fail/none/...,
+# con "missing" explícito), NO numéricas, así que NO van en esta lista pese a
+# vivir conceptualmente en la rama de red — MultimodalVectorizer/MinMaxScaler
+# solo maneja columnas numéricas. Su codificación categórica (embedding por
+# categoría incl. "missing") se implementa en
+# src/phishing_model/encoders/network_tokenizer.py (Fase B del plan,
+# construido por otro proceso/agente) — no se inventa ni se adelanta aquí.
+NETWORK_FEATURE_COLS = [
+    "has_ip_link",
+    "num_urls_metadata",
+    "url_max_length",
+    "url_max_digit_ratio",
+    "url_max_subdomain_count",
+    "url_has_at_symbol",
+    "url_has_shortener",
+    "url_has_suspicious_tld",
+    "url_domain_max_entropy",
+]
+
+# Alias de compatibilidad hacia atrás: código existente que importa
+# NUMERIC_FEATURE_COLS (p.ej. baselines estructurales) sigue funcionando igual.
+NUMERIC_FEATURE_COLS = STRUCTURAL_FEATURE_COLS + NETWORK_FEATURE_COLS
+
+
+def compute_modality_availability(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calcula disponibilidad de modalidad por fila (mismo criterio que
+    unifier.run_smoke_test para consistencia con el smoke test R1.1/R1.2).
+
+    Returns:
+        DataFrame con 3 columnas booleanas: has_text_modality (siempre True),
+        has_structure_modality (has_html == 1), has_network_modality
+        (URL/IP presente en network_indicators O spf_result no nulo).
+    """
+    has_text_modality = pd.Series(True, index=df.index)
+    has_structure_modality = df["has_html"] == 1
+
+    has_urls_or_ip = df["network_indicators"].fillna("None") != "None"
+    has_spf = df["spf_result"].notna() if "spf_result" in df.columns else pd.Series(False, index=df.index)
+    has_network_modality = has_urls_or_ip | has_spf
+
+    return pd.DataFrame(
+        {
+            "has_text_modality": has_text_modality,
+            "has_structure_modality": has_structure_modality,
+            "has_network_modality": has_network_modality,
+        }
+    )
 
 
 class MultimodalVectorizer:

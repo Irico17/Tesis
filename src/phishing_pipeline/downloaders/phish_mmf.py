@@ -15,6 +15,7 @@ from phishing_pipeline.config import (
     PHISH_MMF_DIR,
     PHISH_MMF_EXTRACTED,
     PHISH_MMF_GITHUB_URL,
+    PHISH_MMF_PINNED_COMMIT,
     PHISH_MMF_ZIP_FILES,
 )
 from phishing_pipeline.downloaders.validation import (
@@ -63,6 +64,7 @@ def _write_metadata(extract_dir: Path) -> None:
             )
     meta = {
         "source": PHISH_MMF_GITHUB_URL,
+        "pinned_commit": PHISH_MMF_PINNED_COMMIT,
         "downloaded_at": datetime.now(timezone.utc).isoformat(),
         "extracted_dir": str(extract_dir),
         "files": files_info,
@@ -73,28 +75,66 @@ def _write_metadata(extract_dir: Path) -> None:
     )
 
 
+def _current_commit(repo_dir: Path) -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(repo_dir), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return result.stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+
+
 def _clone_or_download(raw_dir: Path) -> Path:
     repo_dir = raw_dir / "PhishMMF" / "repo"
     if repo_dir.exists() and any(repo_dir.iterdir()):
-        logger.info("Repositorio PhishMMF ya presente en %s", repo_dir)
-        return repo_dir
+        current = _current_commit(repo_dir)
+        if current == PHISH_MMF_PINNED_COMMIT:
+            logger.info("Repositorio PhishMMF ya presente en %s, commit correcto (%s)", repo_dir, current[:12])
+            return repo_dir
+        logger.warning(
+            "Repositorio PhishMMF presente pero en commit %s (esperado %s) -- re-clonando "
+            "para garantizar reproducibilidad.",
+            current,
+            PHISH_MMF_PINNED_COMMIT,
+        )
+        remove_path(repo_dir)
 
     if repo_dir.exists():
         remove_path(repo_dir)
     repo_dir.mkdir(parents=True, exist_ok=True)
 
     try:
-        logger.info("Clonando PhishMMF desde GitHub...")
+        # Clon completo (no --depth 1): un shallow clone solo trae el HEAD
+        # actual del repo remoto, que puede no incluir PHISH_MMF_PINNED_COMMIT
+        # si el repositorio avanzó desde entonces. El repo es modesto (~47MB
+        # de historial), el costo de un clon completo es aceptable frente a la
+        # garantía de reproducibilidad exacta.
+        logger.info("Clonando PhishMMF desde GitHub (historial completo, para poder fijar commit)...")
         subprocess.run(
-            ["git", "clone", "--depth", "1", PHISH_MMF_GITHUB_URL, str(repo_dir)],
+            ["git", "clone", PHISH_MMF_GITHUB_URL, str(repo_dir)],
             check=True,
             capture_output=True,
             text=True,
         )
+        subprocess.run(
+            ["git", "-C", str(repo_dir), "checkout", PHISH_MMF_PINNED_COMMIT],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        logger.info("PhishMMF fijado a commit %s", PHISH_MMF_PINNED_COMMIT[:12])
         return repo_dir
     except (subprocess.CalledProcessError, FileNotFoundError) as exc:
-        logger.warning("git clone falló (%s). Intentando descarga ZIP del repo...", exc)
-        zip_url = PHISH_MMF_GITHUB_URL.replace(".git", "/archive/refs/heads/main.zip")
+        logger.warning(
+            "git clone/checkout al commit fijado falló (%s). Intentando descarga ZIP de ese "
+            "commit exacto (fallback sin git)...",
+            exc,
+        )
+        zip_url = PHISH_MMF_GITHUB_URL.replace(".git", f"/archive/{PHISH_MMF_PINNED_COMMIT}.zip")
         zip_dest = raw_dir / "PhishMMF" / "main.zip"
         urlretrieve(zip_url, zip_dest)
         with zipfile.ZipFile(zip_dest, "r") as zf:
@@ -102,7 +142,7 @@ def _clone_or_download(raw_dir: Path) -> Path:
         for p in (raw_dir / "PhishMMF").iterdir():
             if p.is_dir() and p.name.startswith("PhishMMF"):
                 return p
-        raise FileNotFoundError("No se pudo obtener PhishMMF") from exc
+        raise FileNotFoundError("No se pudo obtener PhishMMF en el commit fijado") from exc
 
 
 def download_phish_mmf(raw_dir: Path | None = None) -> Path:

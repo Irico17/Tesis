@@ -41,6 +41,16 @@ CANONICAL_COLUMNS: list[str] = [
     "language",
     "processing_status",
     "processing_error",
+    # R1.3 — dedup/splits (Fase A1)
+    "template_cluster_id",
+    # R1.3 — features léxicas de URL, agregadas a nivel de mensaje (Fase A2)
+    "url_max_length",
+    "url_max_digit_ratio",
+    "url_max_subdomain_count",
+    "url_has_at_symbol",
+    "url_has_shortener",
+    "url_has_suspicious_tld",
+    "url_domain_max_entropy",
 ]
 
 
@@ -74,6 +84,14 @@ def empty_canonical_row() -> dict[str, Any]:
         "language": None,
         "processing_status": "ok",
         "processing_error": None,
+        "template_cluster_id": None,
+        "url_max_length": 0,
+        "url_max_digit_ratio": 0.0,
+        "url_max_subdomain_count": 0,
+        "url_has_at_symbol": 0,
+        "url_has_shortener": 0,
+        "url_has_suspicious_tld": 0,
+        "url_domain_max_entropy": 0.0,
     }
 
 
