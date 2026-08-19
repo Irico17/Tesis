@@ -17,6 +17,9 @@ from dataclasses import dataclass, field
 
 from jinja2 import Template
 
+from phishing_model.config import NETWORK_CATEGORICAL_COLS
+from phishing_pipeline.features.vectorizer import NETWORK_FEATURE_COLS, STRUCTURAL_FEATURE_COLS
+
 # Nombres legibles para las features técnicas de estructura/red (candidato de
 # atención, nivel de modalidad). Los candidatos SHAP/LIME operan a nivel de
 # PALABRA -- para esos, el nombre "técnico" ya es la palabra literal del texto,
@@ -48,6 +51,41 @@ XAI_METHOD_DISPLAY: dict[str, str] = {
     "shap": "atribuciones GradientSHAP",
     "lime": "aproximaciones locales LIME",
 }
+
+# Modalidades del reporte estructurado (IOV de R3.3: "Reporte estructurado POR
+# MODALIDAD que traduzca el peso matemático en una justificación técnica
+# comprensible"). Las listas de features se importan de la fuente canónica
+# (phishing_pipeline.features.vectorizer / phishing_model.config) en vez de
+# duplicarse aquí, para que no diverjan si el esquema cambia.
+MODALITY_TEXT = "texto"
+MODALITY_STRUCTURE = "estructura"
+MODALITY_NETWORK = "red"
+
+MODALITY_DISPLAY_NAMES: dict[str, str] = {
+    MODALITY_TEXT: "Contenido textual (semántica del mensaje)",
+    MODALITY_STRUCTURE: "Estructura HTML/DOM",
+    MODALITY_NETWORK: "Metadatos de red y autenticación",
+}
+
+_STRUCTURAL_FEATURES = set(STRUCTURAL_FEATURE_COLS)
+_NETWORK_FEATURES = set(NETWORK_FEATURE_COLS) | set(NETWORK_CATEGORICAL_COLS)
+
+
+def classify_factor_modality(name: str) -> str:
+    """
+    Asigna un factor de atribución a su modalidad.
+
+    Los candidatos SHAP/LIME atribuyen a PALABRAS del texto (no a features
+    tabulares), así que cualquier nombre que no esté en las listas canónicas
+    de estructura/red se considera modalidad de texto -- es el comportamiento
+    correcto, no un fallback perezoso: una palabra literal del correo es, por
+    definición, evidencia de la modalidad textual.
+    """
+    if name in _STRUCTURAL_FEATURES:
+        return MODALITY_STRUCTURE
+    if name in _NETWORK_FEATURES:
+        return MODALITY_NETWORK
+    return MODALITY_TEXT
 
 NARRATIVE_TEMPLATE = Template(
     "Este correo fue clasificado como {{ label_text }} con una confianza del "
@@ -93,6 +131,95 @@ def generate_narrative(explanation: ExplanationInput) -> str:
         top_factors=top_display,
         xai_method_display=xai_method_display,
     )
+
+
+# --- Reporte estructurado POR MODALIDAD (IOV de R3.3) ---
+
+MODALITY_REPORT_TEMPLATE = Template(
+    "VEREDICTO: {{ label_text|upper }} (confianza {{ confidence_pct }}%)\n"
+    "Técnica de explicabilidad: {{ xai_method_display }}\n"
+    "\n"
+    "{% for block in modality_blocks -%}"
+    "[{{ block.display_name }}] — contribución agregada: {{ block.total_pct }}%\n"
+    "{% if block.factors %}"
+    "{% for f in block.factors %}  · {{ f.human_name }}: {{ f.pct }}%\n{% endfor %}"
+    "{% else %}  · Sin evidencia atribuida a esta modalidad en esta predicción.\n"
+    "{% endif %}"
+    "\n"
+    "{% endfor -%}"
+    "SÍNTESIS: {{ synthesis }}\n"
+)
+
+
+def build_modality_report(explanation: ExplanationInput, max_factors_per_modality: int = 5) -> dict:
+    """
+    Agrupa las atribuciones por modalidad y devuelve la estructura de datos
+    del reporte (sin renderizar). Satisface el IOV de R3.3, que exige un
+    "reporte estructurado POR MODALIDAD" y no una lista plana de factores.
+
+    Devuelve un dict con `modality_blocks` (uno por modalidad, en orden fijo
+    texto → estructura → red, incluyendo las modalidades sin evidencia para
+    que el analista vea explícitamente que se evaluaron y no aportaron) y los
+    metadatos de la predicción.
+    """
+    total_abs = sum(abs(w) for _, w in explanation.top_factors) or 1.0
+
+    grouped: dict[str, list[tuple[str, float]]] = {
+        MODALITY_TEXT: [],
+        MODALITY_STRUCTURE: [],
+        MODALITY_NETWORK: [],
+    }
+    for name, weight in explanation.top_factors:
+        grouped[classify_factor_modality(name)].append((name, weight))
+
+    modality_blocks = []
+    for modality in (MODALITY_TEXT, MODALITY_STRUCTURE, MODALITY_NETWORK):
+        factors = sorted(grouped[modality], key=lambda item: -abs(item[1]))
+        total_pct = round(sum(abs(w) for _, w in factors) / total_abs * 100, 1)
+        modality_blocks.append(
+            {
+                "modality": modality,
+                "display_name": MODALITY_DISPLAY_NAMES[modality],
+                "total_pct": total_pct,
+                "factors": [
+                    {
+                        "name": name,
+                        "human_name": humanize_factor_name(name),
+                        "pct": round(abs(w) / total_abs * 100, 1),
+                        "raw_weight": w,
+                    }
+                    for name, w in factors[:max_factors_per_modality]
+                ],
+                "n_factors_total": len(factors),
+            }
+        )
+
+    dominant = max(modality_blocks, key=lambda b: b["total_pct"])
+    label_text = "phishing" if explanation.label == 1 else "legítimo"
+    if dominant["total_pct"] == 0:
+        synthesis = "No se identificó evidencia atribuible a ninguna modalidad."
+    else:
+        synthesis = (
+            f"La clasificación como {label_text} se apoya principalmente en la modalidad "
+            f"'{dominant['display_name']}' ({dominant['total_pct']}% del peso total de la decisión)."
+        )
+
+    return {
+        "label": explanation.label,
+        "label_text": label_text,
+        "confidence_pct": round(explanation.confidence * 100, 1),
+        "xai_method": explanation.xai_method,
+        "xai_method_display": XAI_METHOD_DISPLAY.get(explanation.xai_method, explanation.xai_method),
+        "modality_blocks": modality_blocks,
+        "dominant_modality": dominant["modality"],
+        "synthesis": synthesis,
+    }
+
+
+def generate_modality_report(explanation: ExplanationInput, max_factors_per_modality: int = 5) -> str:
+    """Renderiza el reporte estructurado por modalidad como texto legible para el analista SOC."""
+    data = build_modality_report(explanation, max_factors_per_modality=max_factors_per_modality)
+    return MODALITY_REPORT_TEMPLATE.render(**data)
 
 
 # --- Adaptadores: convierten la salida cruda de cada candidato de R3.1 a ExplanationInput ---

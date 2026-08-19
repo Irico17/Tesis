@@ -9,12 +9,16 @@ __pycache__/
 .venv/
 venv/
 
-# Cursor / IDE
+# Cursor / IDE / agentes
 .cursor/
+.claude/
 
 # Datos crudos y artefactos grandes (reproducibles con el pipeline)
 data/Datasets_Originales/**
 data/Datasets_Procesados/Dataset_Unificado.*
+# Exportaciones a formato estándar (.csv/.jsonl) del IOV de R1.1 -- regenerables
+# bajo demanda con `python -m phishing_pipeline.export_dataset --format ...`
+data/Datasets_Procesados/Dataset_Unificado_multimodal.*
 data/Datasets_Procesados/por_fuente/
 data/Datasets_Procesados/splits/*.csv
 data/Datasets_Procesados/splits/*.parquet

@@ -211,21 +211,82 @@ def quantize_onnx_model(fp32_path: Path, int8_path: Path | None = None) -> Path:
     return int8_path
 
 
+def load_real_test_batches(
+    config: ModelConfig, n_examples: int, split: str = "test", seed: int = 42
+) -> list[dict[str, torch.Tensor]]:
+    """
+    Carga batches de UNA fila desde el split REAL de evaluación (por defecto
+    `test`), usando los scalers ajustados en entrenamiento.
+
+    El IOV de R2.3 exige que el modelo optimizado sea "funcional para realizar
+    inferencias sobre nuevos datos NO VISTOS, reportando su tasa de falsos
+    negativos observada en el CONJUNTO DE PRUEBA" -- medir latencia y acuerdo
+    FP32/INT8 sobre datos sintéticos no satisface ese criterio, por eso esta
+    función existe y es la ruta por defecto del pipeline.
+    """
+    import pandas as pd
+    from transformers import AutoTokenizer
+
+    from phishing_model.dataset import MultimodalPhishingDataset, load_scalers
+    from phishing_pipeline.config import PROCESSED_DIR
+
+    split_path = PROCESSED_DIR / "splits_group_aware" / f"{split}.parquet"
+    if not split_path.exists():
+        raise FileNotFoundError(
+            f"No existe {split_path}. R2.3 requiere evaluar sobre el conjunto de prueba real; "
+            "genera los splits group-aware antes (ver phishing_pipeline.splits.create_group_aware_splits)."
+        )
+
+    df = pd.read_parquet(split_path)
+    sample = df.sample(n=min(n_examples, len(df)), random_state=seed).reset_index(drop=True)
+
+    tokenizer = AutoTokenizer.from_pretrained(config.text_model_name)
+    structural_scaler, network_scaler = load_scalers()
+    dataset = MultimodalPhishingDataset(
+        sample,
+        tokenizer,
+        structural_scaler=structural_scaler,
+        network_scaler=network_scaler,
+        max_token_length=config.max_token_length,
+        fit_scalers=False,
+    )
+    return [{k: v.unsqueeze(0) for k, v in dataset[i].items() if k != "email_id"} for i in range(len(dataset))]
+
+
 def benchmark_latency(
-    onnx_path: Path, config: ModelConfig, n_samples: int = 50, batch_size: int = 1, n_warmup: int = 5
+    onnx_path: Path,
+    config: ModelConfig,
+    n_samples: int = 50,
+    batch_size: int = 1,
+    n_warmup: int = 5,
+    real_batches: list[dict[str, torch.Tensor]] | None = None,
 ) -> dict[str, float]:
-    """Mide latencia de inferencia por muestra (percentiles) de una sesión ONNX Runtime en CPU."""
+    """
+    Mide latencia de inferencia por muestra (percentiles) de una sesión ONNX Runtime.
+
+    Si se pasan `real_batches` (recomendado, ver `load_real_test_batches`), la
+    medición rota entre correos REALES del conjunto de prueba -- más
+    representativo que repetir un único batch sintético, porque la longitud
+    efectiva del texto y la disponibilidad de modalidades varían entre correos
+    reales y eso afecta el trabajo real del grafo.
+    """
     import onnxruntime as ort
 
     session = ort.InferenceSession(str(onnx_path), providers=["CPUExecutionProvider"])
-    batch = make_synthetic_batch(batch_size=batch_size, config=config)
-    feed = _batch_to_feed(batch)
 
-    for _ in range(n_warmup):
-        session.run(None, feed)
+    if real_batches:
+        feeds = [_batch_to_feed(b) for b in real_batches]
+        data_source = "test_real"
+    else:
+        feeds = [_batch_to_feed(make_synthetic_batch(batch_size=batch_size, config=config))]
+        data_source = "sintetico"
+
+    for i in range(n_warmup):
+        session.run(None, feeds[i % len(feeds)])
 
     latencies_ms = []
-    for _ in range(n_samples):
+    for i in range(n_samples):
+        feed = feeds[i % len(feeds)]
         t0 = time.perf_counter()
         session.run(None, feed)
         latencies_ms.append((time.perf_counter() - t0) * 1000)
@@ -234,6 +295,7 @@ def benchmark_latency(
     return {
         "n_samples": n_samples,
         "batch_size": batch_size,
+        "data_source": data_source,
         "mean_ms": round(float(arr.mean()), 3),
         "p50_ms": round(float(np.percentile(arr, 50)), 3),
         "p95_ms": round(float(np.percentile(arr, 95)), 3),
@@ -260,6 +322,10 @@ def compare_fp32_vs_int8_predictions(
     agreements = 0
     total = 0
     max_logit_diff = 0.0
+    preds_fp32_all: list[int] = []
+    preds_int8_all: list[int] = []
+    labels_all: list[int] = []
+
     for batch in sample_batches:
         feed = _batch_to_feed(batch)
         out_fp32 = sess_fp32.run(None, feed)[0]
@@ -271,7 +337,12 @@ def compare_fp32_vs_int8_predictions(
         total += pred_fp32.shape[0]
         max_logit_diff = max(max_logit_diff, float(np.abs(out_fp32 - out_int8).max()))
 
-    return {
+        preds_fp32_all.extend(pred_fp32.tolist())
+        preds_int8_all.extend(pred_int8.tolist())
+        if "label" in batch:
+            labels_all.extend(batch["label"].detach().cpu().numpy().tolist())
+
+    result: dict[str, Any] = {
         "n_examples": total,
         "prediction_agreement_rate": round(agreements / total, 4) if total else None,
         "max_logit_abs_diff": round(max_logit_diff, 4),
@@ -280,6 +351,51 @@ def compare_fp32_vs_int8_predictions(
             "FP32 en todos los ejemplos evaluados -- la cuantización no cambió ninguna decisión "
             "de clasificación en esta muestra."
         ),
+    }
+
+    # IOV de R2.3: "reportando su tasa de falsos negativos observada en el
+    # conjunto de prueba". Un falso negativo aquí es un correo de phishing
+    # (label=1) clasificado como legítimo (pred=0) -- el error operacionalmente
+    # más costoso en detección de phishing, por eso el IOV lo pide explícito y
+    # no se conforma con accuracy agregada.
+    if labels_all:
+        result["false_negative_analysis"] = {
+            variant: _false_negative_stats(labels_all, preds)
+            for variant, preds in (("fp32", preds_fp32_all), ("int8", preds_int8_all))
+        }
+        result["false_negative_analysis"]["note"] = (
+            "Tasa de falsos negativos = FN / (FN + TP), es decir la proporción de correos de "
+            "phishing REALES que el modelo dejó pasar como legítimos (equivale a 1 - recall de "
+            "la clase phishing). Calculada sobre datos reales del conjunto de prueba, no vistos "
+            "en entrenamiento."
+        )
+    else:
+        result["false_negative_analysis"] = {
+            "skipped": True,
+            "reason": (
+                "Los batches evaluados no traen 'label' (probablemente sintéticos) -- el IOV de "
+                "R2.3 exige la tasa de FN sobre el conjunto de prueba real; usa "
+                "load_real_test_batches() para satisfacerlo."
+            ),
+        }
+
+    return result
+
+
+def _false_negative_stats(labels: list[int], preds: list[int]) -> dict[str, Any]:
+    """FN, TP y tasa de falsos negativos (= 1 - recall de la clase phishing)."""
+    labels_arr = np.array(labels)
+    preds_arr = np.array(preds)
+    positives = labels_arr == 1
+    n_positives = int(positives.sum())
+    false_negatives = int(((labels_arr == 1) & (preds_arr == 0)).sum())
+    true_positives = int(((labels_arr == 1) & (preds_arr == 1)).sum())
+    return {
+        "n_phishing_reales": n_positives,
+        "falsos_negativos": false_negatives,
+        "verdaderos_positivos": true_positives,
+        "tasa_falsos_negativos": round(false_negatives / n_positives, 4) if n_positives else None,
+        "recall_phishing": round(true_positives / n_positives, 4) if n_positives else None,
     }
 
 
@@ -301,10 +417,32 @@ def run_quantization_pipeline(
     fp32_path = export_to_onnx(model, config)
     int8_path = quantize_onnx_model(fp32_path)
 
-    latency_fp32 = benchmark_latency(fp32_path, config, n_samples=n_latency_samples)
-    latency_int8 = benchmark_latency(int8_path, config, n_samples=n_latency_samples)
+    # Datos REALES del conjunto de prueba por defecto (IOV de R2.3). Si no están
+    # disponibles (p.ej. splits aún no generados), se degrada a sintéticos pero
+    # el reporte lo deja explícito en `data_source`/`false_negative_analysis`,
+    # en vez de presentar números sintéticos como si fueran de test real.
+    try:
+        comparison_batches = load_real_test_batches(config, n_comparison_examples)
+        used_real_data = True
+    except Exception as exc:
+        logger.warning(
+            "No se pudieron cargar datos reales de test (%s) -- se degrada a batches sintéticos. "
+            "El IOV de R2.3 NO queda satisfecho así; corrige esto antes de reportar resultados.",
+            exc,
+        )
+        comparison_batches = [
+            make_synthetic_batch(batch_size=1, config=config) for _ in range(n_comparison_examples)
+        ]
+        used_real_data = False
 
-    comparison_batches = [make_synthetic_batch(batch_size=1, config=config) for _ in range(n_comparison_examples)]
+    latency_batches = comparison_batches if used_real_data else None
+    latency_fp32 = benchmark_latency(
+        fp32_path, config, n_samples=n_latency_samples, real_batches=latency_batches
+    )
+    latency_int8 = benchmark_latency(
+        int8_path, config, n_samples=n_latency_samples, real_batches=latency_batches
+    )
+
     prediction_comparison = compare_fp32_vs_int8_predictions(fp32_path, int8_path, comparison_batches)
 
     fp32_size_mb = fp32_path.stat().st_size / (1024 * 1024)
@@ -315,6 +453,7 @@ def run_quantization_pipeline(
         "checkpoint_path": str(checkpoint_path),
         "fusion_type": fusion_type.value,
         "IS_VALIDATION_CHECKPOINT_NOT_PRODUCTION": is_validation_checkpoint,
+        "evaluated_on_real_test_data": used_real_data,
         "note": (
             "La arquitectura exportada/cuantizada es la misma sin importar qué tan entrenado "
             "esté el checkpoint -- los tamaños de modelo y la latencia relativa FP32 vs. INT8 "
