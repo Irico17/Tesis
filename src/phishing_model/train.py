@@ -664,6 +664,7 @@ def train(
         "val_metrics": val_metrics,
         "overfitting_check": overfitting_check,
         "checkpoint_path": str(checkpoint_path),
+        "best_model": best_model_info,
         "history_path": str(history_path),
         "learning_curve_path": learning_curve_path,
     }
