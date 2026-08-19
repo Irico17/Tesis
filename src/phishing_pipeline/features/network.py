@@ -75,13 +75,41 @@ def count_urls(text: str) -> int:
     return len(URL_PATTERN.findall(str(text)))
 
 
+# Delimitadores que no pueden aparecer sin codificar dentro de una URL, de modo
+# que su aparición marca inequívocamente el final de esta. Son necesarios porque
+# `URL_PATTERN` usa \\S+ sin límite superior: en los correos con marcado HTML
+# —el 39.85% del corpus— las URLs viven dentro de atributos `href="..."`, así que
+# sin este corte la URL capturada arrastra el marcado que la sigue
+# (`http://bit.ly/x">aqui</a>`), corrompiendo la longitud medida, la entropía del
+# dominio y la detección del dominio de nivel superior.
+_URL_TERMINATORS = "\"'<>"
+
+
 def _clean_url(url: str) -> str:
     """
-    Recorta puntuación final pegada a la URL (bug de URL_PATTERN: usa \\S+
-    sin límite, así que captura puntos/paréntesis/comillas de cierre que en
-    realidad pertenecen a la puntuación del texto, no a la URL).
+    Delimita el final real de la URL y recorta la puntuación adherida.
+
+    Realiza dos operaciones. Primero corta en el primer delimitador de marcado
+    (comillas o signos de menor/mayor), que no puede formar parte de una URL sin
+    codificar. Después recorta la puntuación final que pertenece al texto
+    circundante y no a la URL, dado que `URL_PATTERN` captura \\S+ sin límite.
     """
+    for terminator in _URL_TERMINATORS:
+        position = url.find(terminator)
+        if position != -1:
+            url = url[:position]
     return url.rstrip(".,;:)]}'\"")
+
+
+def _normalize_host(host: str) -> str:
+    """
+    Normaliza un host para compararlo contra las listas de dominios conocidos.
+
+    Retira el prefijo `www.`, que de otro modo impide la coincidencia: un enlace
+    escrito como `www.bit.ly/abc` produce el host `www.bit.ly`, que no figura en
+    la lista de acortadores y quedaba por tanto sin detectar pese a serlo.
+    """
+    return host[4:] if host.startswith("www.") else host
 
 
 def _is_ip_literal(host: str) -> bool:
@@ -171,7 +199,7 @@ def extract_lexical_url_features(text: str) -> dict:
         if subdomain_count > max_subdomain_count:
             max_subdomain_count = subdomain_count
 
-        if host in _KNOWN_SHORTENERS:
+        if _normalize_host(host) in _KNOWN_SHORTENERS:
             has_shortener = 1
 
         if not _is_ip_literal(host) and "." in host:

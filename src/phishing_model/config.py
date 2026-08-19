@@ -143,6 +143,11 @@ class TrainConfig:
     # `warmup_ratio` se expresa como fracción del total de pasos previstos.
     use_lr_scheduler: bool = True
     warmup_ratio: float = 0.1
+    # Parada temprana por épocas sin mejora de la pérdida de validación.
+    # 0 la desactiva. Con el presupuesto de GPU acotado y compartido del
+    # laboratorio, interrumpir una ejecución que ya dejó de mejorar libera
+    # tiempo para las variantes de ablación restantes.
+    early_stopping_patience: int = 2
     num_workers: int = 0  # 0 por defecto: seguro en Windows/CPU; subir en GPU lab si hace falta
 
 

@@ -452,6 +452,7 @@ def train(
         )
 
     checkpoint_path = checkpoint_path or get_checkpoint_path(fusion_type.value)
+    best_checkpoint_path = checkpoint_path.with_name(f"{checkpoint_path.stem}_best.pt")
     start_epoch, global_step = 0, 0
     if resume and checkpoint_path.exists():
         ckpt = load_checkpoint(checkpoint_path, model, optimizer)
@@ -461,6 +462,13 @@ def train(
     step_losses: list[dict[str, Any]] = []
     epoch_metrics: list[dict[str, Any]] = []
     stopped_early = False
+    # Seguimiento del MEJOR modelo, guardado aparte del punto de control de
+    # reanudación: este último debe reflejar el estado más RECIENTE para poder
+    # continuar la ejecución, mientras que la evaluación debe emplear el estado
+    # ÓPTIMO. Son dos requisitos distintos y por eso son dos archivos distintos.
+    best_val_loss = float("inf")
+    best_epoch: int | None = None
+    epochs_without_improvement = 0
     # Época desde la que debe continuar una reanudación posterior. Se actualiza
     # solo cuando una época se completa ENTERA: si el entrenamiento se corta a
     # mitad de época, la reanudación repite esa época desde su inicio (opción
@@ -531,6 +539,39 @@ def train(
                 epoch_metrics[-1]["val_loss"],
                 epoch_metrics[-1]["val_accuracy"],
             )
+
+            # Selección del MEJOR modelo, no del último. Sin esto, una ejecución
+            # que alcanza su óptimo en la época 2 de 3 conserva de todos modos los
+            # pesos de la época 3, ya degradados: `detect_overfitting` advertía del
+            # problema en el informe pero no impedía que ocurriera. El criterio es
+            # la pérdida de validación, que es continua y detecta el deterioro
+            # antes que la exactitud.
+            current_val_loss = epoch_metrics[-1]["val_loss"]
+            if current_val_loss < best_val_loss:
+                best_val_loss = current_val_loss
+                best_epoch = epoch
+                epochs_without_improvement = 0
+                save_checkpoint(
+                    best_checkpoint_path, model, optimizer, epoch + 1, global_step, model_config
+                )
+                logger.info(
+                    "Nuevo mejor modelo (val_loss=%.6f) guardado en %s",
+                    best_val_loss,
+                    best_checkpoint_path.name,
+                )
+            else:
+                epochs_without_improvement += 1
+                if (
+                    train_config.early_stopping_patience > 0
+                    and epochs_without_improvement >= train_config.early_stopping_patience
+                ):
+                    logger.info(
+                        "Parada temprana: %d épocas sin mejora de val_loss (mejor: época %d, %.6f)",
+                        epochs_without_improvement,
+                        best_epoch,
+                        best_val_loss,
+                    )
+                    stopped_early = True
         else:
             logger.info("Epoch %d completado sin pasos de optimización (global_step=%d)", epoch, global_step)
 
@@ -551,8 +592,18 @@ def train(
 
     run_name = run_name or fusion_type.value
     overfitting_check = detect_overfitting(epoch_metrics)
+    # La evaluación debe usar el mejor modelo, no el último. Se informa su
+    # ruta explícitamente para que `evaluate.py` y el plan de servidor apunten
+    # al archivo correcto sin depender de una convención implícita.
+    best_model_info = {
+        "best_epoch": best_epoch,
+        "best_val_loss": best_val_loss if best_epoch is not None else None,
+        "best_checkpoint": str(best_checkpoint_path) if best_epoch is not None else None,
+        "early_stopping_patience": train_config.early_stopping_patience,
+    }
     history = {
         "run_name": run_name,
+        "best_model": best_model_info,
         "fusion_type": fusion_type.value,
         "device": str(device),
         "generated_at": datetime.now(timezone.utc).isoformat(),
