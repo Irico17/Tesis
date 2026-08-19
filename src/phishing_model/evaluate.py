@@ -20,7 +20,7 @@ from torch.utils.data import DataLoader
 from transformers import AutoTokenizer
 
 from phishing_model.config import CHECKPOINT_DIR, FusionType, ModelConfig
-from phishing_model.dataset import MultimodalPhishingDataset, load_scalers
+from phishing_model.dataset import MultimodalPhishingDataset, load_scalers, make_collate_fn
 from phishing_model.model import MultimodalPhishingClassifier
 from phishing_baseline.evaluation import compute_metrics, save_predictions
 from phishing_pipeline.config import PROCESSED_DIR
@@ -83,7 +83,7 @@ def evaluate_checkpoint(
         max_token_length=config.max_token_length,
         fit_scalers=False,
     )
-    loader = DataLoader(dataset, batch_size=32, shuffle=False)
+    loader = DataLoader(dataset, batch_size=32, shuffle=False, collate_fn=make_collate_fn(tokenizer))
 
     model = MultimodalPhishingClassifier(config).to(device)
     checkpoint = torch.load(checkpoint_path, map_location=device)

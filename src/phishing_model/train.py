@@ -20,19 +20,26 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import re
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer
 
 from phishing_model.config import FusionType, ModelConfig, TrainConfig, get_checkpoint_path
-from phishing_model.dataset import MultimodalPhishingDataset, save_scalers
+from phishing_model.dataset import (
+    LengthGroupedSampler,
+    MultimodalPhishingDataset,
+    make_collate_fn,
+    save_scalers,
+)
 from phishing_model.losses import build_loss_fn, compute_class_weights
 from phishing_model.model import MultimodalPhishingClassifier
 from phishing_pipeline.config import PROCESSED_DIR, REPORTS_DIR
@@ -327,7 +334,14 @@ def train(
     train_config = train_config or TrainConfig()
     device = device or _select_device("auto")
 
+    # Reproducibilidad: la tesis declara la ejecución reproducible como criterio
+    # metodológico, lo que exige fijar TODOS los generadores implicados -- no solo
+    # el de la biblioteca tensorial (el muestreo del DataLoader y cualquier
+    # operación de numpy también consumen aleatoriedad).
+    random.seed(train_config.seed)
+    np.random.seed(train_config.seed)
     torch.manual_seed(train_config.seed)
+    torch.cuda.manual_seed_all(train_config.seed)
 
     tokenizer = AutoTokenizer.from_pretrained(model_config.text_model_name)
 
@@ -344,17 +358,29 @@ def train(
     )
     save_scalers(train_dataset.structural_scaler, train_dataset.network_scaler, path=scaler_path)
 
-    train_loader = DataLoader(
-        train_dataset,
+    collate_fn = make_collate_fn(tokenizer)  # relleno dinámico por lote
+    # Agrupamiento por longitud SOLO en entrenamiento: reduce el costo de atención
+    # en un factor ~7.6x medido sobre este corpus (ver doc/REVISION_CODIGO_MODELO.md,
+    # hallazgo 3). En validación no se usa: el orden allí es irrelevante para el
+    # resultado y conviene mantener el recorrido secuencial simple.
+    train_sampler = LengthGroupedSampler(
+        train_dataset.approx_lengths,
         batch_size=train_config.batch_size,
         shuffle=True,
+        seed=train_config.seed,
+    )
+    train_loader = DataLoader(
+        train_dataset,
+        batch_sampler=train_sampler,
         num_workers=train_config.num_workers,
+        collate_fn=collate_fn,
     )
     val_loader = DataLoader(
         val_dataset,
         batch_size=train_config.eval_batch_size,
         shuffle=False,
         num_workers=train_config.num_workers,
+        collate_fn=collate_fn,
     )
 
     model = MultimodalPhishingClassifier(model_config).to(device)
@@ -387,8 +413,14 @@ def train(
     step_losses: list[dict[str, Any]] = []
     epoch_metrics: list[dict[str, Any]] = []
     stopped_early = False
+    # Época desde la que debe continuar una reanudación posterior. Se actualiza
+    # solo cuando una época se completa ENTERA: si el entrenamiento se corta a
+    # mitad de época, la reanudación repite esa época desde su inicio (opción
+    # conservadora, ya que el DataLoader no expone su posición interna).
+    next_epoch = start_epoch
 
     for epoch in range(start_epoch, train_config.epochs):
+        train_sampler.set_epoch(epoch)  # lotes distintos en cada época
         model.train()
         epoch_losses: list[float] = []
         for batch in train_loader:
@@ -454,8 +486,9 @@ def train(
 
         if stopped_early:
             break
+        next_epoch = epoch + 1  # época completada entera
 
-    save_checkpoint(checkpoint_path, model, optimizer, start_epoch, global_step, model_config)
+    save_checkpoint(checkpoint_path, model, optimizer, next_epoch, global_step, model_config)
     if epoch_metrics:
         # Mismo estado del modelo y mismo conjunto que la última evaluación por
         # época: se reutiliza en vez de recomputar (evaluación determinista).

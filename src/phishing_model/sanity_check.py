@@ -27,7 +27,7 @@ import pandas as pd
 import torch
 
 from phishing_model.config import SANITY_CHECK_REPORT_PATH, FusionType, ModelConfig, TrainConfig
-from phishing_model.dataset import MultimodalPhishingDataset, make_synthetic_batch
+from phishing_model.dataset import MultimodalPhishingDataset, make_collate_fn, make_synthetic_batch
 from phishing_model.losses import build_loss_fn
 from phishing_model.model import MultimodalPhishingClassifier
 from phishing_pipeline.config import PROCESSED_DIR
@@ -178,7 +178,9 @@ def check_real_data_training_steps() -> dict[str, Any]:
         loss_fn = build_loss_fn()
         optimizer = torch.optim.AdamW(model.get_optimizer_param_groups(2e-5, 1e-4))
 
-        loader = torch.utils.data.DataLoader(dataset, batch_size=4, shuffle=True)
+        loader = torch.utils.data.DataLoader(
+            dataset, batch_size=4, shuffle=True, collate_fn=make_collate_fn(tokenizer)
+        )
         model.train()
 
         loss_history: list[float] = []

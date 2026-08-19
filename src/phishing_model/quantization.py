@@ -249,6 +249,11 @@ def load_real_test_batches(
         network_scaler=network_scaler,
         max_token_length=config.max_token_length,
         fit_scalers=False,
+        # Longitud FIJA: el grafo ONNX exportado traza la dimensión de secuencia
+        # como constante (solo el lote es dinámico), así que la inferencia sobre
+        # el modelo exportado exige secuencias de `max_token_length`. El relleno
+        # dinámico por lote que usa el entrenamiento no aplica aquí.
+        pad_to_max_length=True,
     )
     return [{k: v.unsqueeze(0) for k, v in dataset[i].items() if k != "email_id"} for i in range(len(dataset))]
 

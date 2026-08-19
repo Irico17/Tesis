@@ -27,7 +27,7 @@ import numpy as np
 import pandas as pd
 import torch
 from sklearn.preprocessing import MinMaxScaler
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, Sampler
 
 from phishing_model.config import (
     MAX_TOKEN_LENGTH,
@@ -51,6 +51,27 @@ REQUIRED_COLS = (
 )
 
 SCALER_PATH = MODEL_DIR / "feature_scalers.pkl"
+
+
+# Columnas de CONTEO con distribución de cola larga: se les aplica log1p antes de
+# escalar. Sin esta transformación, un único valor atípico arruina la columna --
+# verificado empíricamente sobre el corpus: `word_count` tiene máximo 3,525,778 y
+# percentil 99 de 1,423, de modo que MinMaxScaler comprimía el 99% de las
+# observaciones por debajo de 0.0004, dejando la característica indistinguible de
+# cero. log1p es monótona (preserva el orden), está definida en 0 y acota el
+# efecto de los extremos. Ver doc/REVISION_CODIGO_MODELO.md, hallazgo 2.
+LONG_TAIL_COUNT_COLS = frozenset(
+    {"word_count", "num_links", "num_images", "num_urls_metadata", "url_max_length"}
+)
+
+
+def _log_transform_counts(df: pd.DataFrame, cols: list[str]) -> np.ndarray:
+    """Aplica log1p a las columnas de conteo de cola larga y devuelve la matriz."""
+    out = df.copy()
+    for col in cols:
+        if col in LONG_TAIL_COUNT_COLS:
+            out[col] = np.log1p(out[col].clip(lower=0))
+    return out.values
 
 
 def _encode_categorical_column(df: pd.DataFrame, col: str) -> np.ndarray:
@@ -78,6 +99,7 @@ class MultimodalPhishingDataset(Dataset):
         network_scaler: MinMaxScaler | None = None,
         max_token_length: int = MAX_TOKEN_LENGTH,
         fit_scalers: bool = False,
+        pad_to_max_length: bool = False,
     ) -> None:
         missing_cols = [c for c in REQUIRED_COLS if c not in df.columns]
         if missing_cols:
@@ -86,9 +108,27 @@ class MultimodalPhishingDataset(Dataset):
         self.df = df.reset_index(drop=True)
         self.tokenizer = tokenizer
         self.max_token_length = max_token_length
+        # pad_to_max_length=False (por defecto): cada elemento se tokeniza SIN
+        # relleno y el relleno se aplica por lote en `collate_multimodal`, hasta
+        # la longitud del elemento más largo del lote. Verificado sobre el
+        # corpus: la mediana de longitud es de 19 palabras y el percentil 75 de
+        # 28, frente a un máximo de 512 -- rellenar siempre a 512 desperdiciaba
+        # más de un orden de magnitud de cómputo en atención, que escala de
+        # forma cuadrática con la longitud. Ver doc/REVISION_CODIGO_MODELO.md,
+        # hallazgo 3.
+        #
+        # pad_to_max_length=True se usa donde la longitud debe ser fija: la
+        # exportación a ONNX traza el grafo con la dimensión de secuencia fija
+        # (solo el lote es dinámico), de modo que la inferencia sobre el modelo
+        # exportado requiere secuencias de longitud `max_token_length`.
+        self.pad_to_max_length = pad_to_max_length
 
-        structural_raw = self.df[STRUCTURAL_FEATURE_COLS].fillna(0).astype(float).values
-        network_raw = self.df[NETWORK_FEATURE_COLS].fillna(0).astype(float).values
+        structural_raw = _log_transform_counts(
+            self.df[STRUCTURAL_FEATURE_COLS].fillna(0).astype(float), STRUCTURAL_FEATURE_COLS
+        )
+        network_raw = _log_transform_counts(
+            self.df[NETWORK_FEATURE_COLS].fillna(0).astype(float), NETWORK_FEATURE_COLS
+        )
 
         if fit_scalers:
             self.structural_scaler = MinMaxScaler().fit(structural_raw)
@@ -115,6 +155,13 @@ class MultimodalPhishingDataset(Dataset):
         self.has_network = availability["has_network_modality"].astype(bool).to_numpy()
 
         self.texts = self.df["clean_text"].fillna("").astype(str).tolist()
+        # Proxy de longitud para LengthGroupedSampler: contar palabras es
+        # ~1000x más barato que tokenizar el corpus completo por adelantado y
+        # correlaciona muy fuerte con el número de sub-palabras. Se acota a
+        # max_token_length porque más allá el texto se trunca igual.
+        self.approx_lengths = [
+            min(len(t.split()), self.max_token_length) for t in self.texts
+        ]
         self.labels = self.df["label"].astype(int).to_numpy()
         self.email_ids = self.df["email_id"].astype(str).tolist()
 
@@ -125,7 +172,7 @@ class MultimodalPhishingDataset(Dataset):
         enc = self.tokenizer(
             self.texts[idx],
             truncation=True,
-            padding="max_length",
+            padding="max_length" if self.pad_to_max_length else False,
             max_length=self.max_token_length,
             return_tensors="pt",
         )
@@ -140,6 +187,130 @@ class MultimodalPhishingDataset(Dataset):
             "label": torch.tensor(int(self.labels[idx]), dtype=torch.long),
             "email_id": self.email_ids[idx],
         }
+
+
+def collate_multimodal(batch: list[dict[str, Any]], pad_token_id: int = 0) -> dict[str, Any]:
+    """
+    Agrupa elementos en un lote aplicando relleno dinámico a la longitud del
+    elemento más largo del propio lote (en lugar de a `max_token_length`).
+
+    OBLIGATORIA como `collate_fn` del DataLoader cuando el Dataset se construye
+    con `pad_to_max_length=False` (el valor por defecto): la función de
+    agrupación estándar de PyTorch no puede apilar secuencias de longitud
+    distinta y fallaría. Las columnas no textuales tienen longitud fija y se
+    apilan directamente.
+
+    El relleno de `input_ids` usa el identificador del token de relleno y el de
+    `attention_mask` usa ceros, de modo que el modelo excluye esas posiciones
+    del cálculo de atención exactamente igual que con el relleno fijo.
+    """
+    max_len = max(item["input_ids"].shape[0] for item in batch)
+
+    input_ids, attention_mask = [], []
+    for item in batch:
+        ids = item["input_ids"]
+        mask = item["attention_mask"]
+        pad_len = max_len - ids.shape[0]
+        if pad_len > 0:
+            ids = torch.cat([ids, torch.full((pad_len,), pad_token_id, dtype=ids.dtype)])
+            mask = torch.cat([mask, torch.zeros(pad_len, dtype=mask.dtype)])
+        input_ids.append(ids)
+        attention_mask.append(mask)
+
+    collated: dict[str, Any] = {
+        "input_ids": torch.stack(input_ids),
+        "attention_mask": torch.stack(attention_mask),
+    }
+    for key in (
+        "structural_continuous",
+        "network_continuous",
+        "network_categorical",
+        "has_structure",
+        "has_network",
+        "label",
+    ):
+        collated[key] = torch.stack([item[key] for item in batch])
+    collated["email_id"] = [item["email_id"] for item in batch]
+    return collated
+
+
+class LengthGroupedSampler(Sampler[list[int]]):
+    """
+    Muestreador por lotes que agrupa ejemplos de longitud similar, conservando
+    aleatoriedad entre épocas.
+
+    Motivación (medida sobre el corpus, no estimada): la longitud de los correos
+    es de cola muy larga -- percentil 50 de 48 unidades de sub-palabra, percentil
+    90 de 399 y un 8.3% truncado a 512. Con lotes formados al azar, basta un
+    correo largo para que TODO el lote se rellene hasta esa longitud, de modo que
+    el relleno dinámico por sí solo apenas reduce el costo (factor 1.18x medido).
+    Agrupando por longitud, el costo de atención -- cuadrático en la longitud de
+    secuencia -- se reduce en un factor de **7.63x** sobre el mismo corpus.
+
+    Para no introducir sesgo por correlación entre la composición del lote y la
+    longitud, se aplica el esquema estándar de "megalotes": se permutan los
+    índices al azar, se agrupan en bloques de `batch_size * megabatch_mult`, se
+    ordena por longitud DENTRO de cada bloque, y finalmente se permuta el orden
+    de los lotes resultantes. Así cada época produce lotes distintos y el orden
+    de presentación sigue siendo aleatorio, pero cada lote es internamente
+    homogéneo en longitud.
+    """
+
+    def __init__(
+        self,
+        lengths: list[int],
+        batch_size: int,
+        shuffle: bool = True,
+        megabatch_mult: int = 50,
+        seed: int = 0,
+    ) -> None:
+        self.lengths = lengths
+        self.batch_size = batch_size
+        self.shuffle = shuffle
+        self.megabatch_size = batch_size * megabatch_mult
+        self.seed = seed
+        self.epoch = 0
+
+    def set_epoch(self, epoch: int) -> None:
+        """Cambia la semilla efectiva para que cada época produzca lotes distintos."""
+        self.epoch = epoch
+
+    def __len__(self) -> int:
+        return (len(self.lengths) + self.batch_size - 1) // self.batch_size
+
+    def __iter__(self):
+        n = len(self.lengths)
+        if self.shuffle:
+            g = torch.Generator()
+            g.manual_seed(self.seed + self.epoch)
+            indices = torch.randperm(n, generator=g).tolist()
+        else:
+            indices = list(range(n))
+
+        batches: list[list[int]] = []
+        for start in range(0, n, self.megabatch_size):
+            megabatch = indices[start : start + self.megabatch_size]
+            megabatch.sort(key=lambda i: self.lengths[i], reverse=True)
+            for b_start in range(0, len(megabatch), self.batch_size):
+                batches.append(megabatch[b_start : b_start + self.batch_size])
+
+        if self.shuffle:
+            g = torch.Generator()
+            g.manual_seed(self.seed + self.epoch + 1)
+            order = torch.randperm(len(batches), generator=g).tolist()
+            batches = [batches[i] for i in order]
+
+        yield from batches
+
+
+def make_collate_fn(tokenizer: Any):
+    """Devuelve una `collate_fn` ligada al token de relleno del tokenizador dado."""
+    pad_token_id = getattr(tokenizer, "pad_token_id", 0) or 0
+
+    def _collate(batch: list[dict[str, Any]]) -> dict[str, Any]:
+        return collate_multimodal(batch, pad_token_id=pad_token_id)
+
+    return _collate
 
 
 def save_scalers(structural_scaler: MinMaxScaler, network_scaler: MinMaxScaler, path: Path | None = None) -> Path:
