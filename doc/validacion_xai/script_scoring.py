@@ -88,7 +88,12 @@ PSSUQ_INTQUAL_ITEMS = list(range(13, 16))  # q13-q15
 PSSUQ_OVERALL_ITEMS = list(range(1, 17))   # q1-q16
 
 COMPRENSION_N_ITEMS = 5
-COMPRENSION_UMBRAL_R3_3 = 80.0  # % exigido por R3.3
+COMPRENSION_UMBRAL_R3_3 = 80.0  # % mínimo comprometido en la Tabla 2 (IOV de R3.3)
+# Meta objetivo sugerida por el Jurado 1 en la revisión del E3 ("se puede iniciar
+# con 90 e ir bajando", pág. 12 del PDF -- ver doc/OBSERVACIONES_JURADO_E3.md, C5).
+# Se reporta contra AMBAS referencias: partir de una meta exigente sin renegociar
+# el compromiso formal del IOV, y clasificar el resultado real en tres bandas.
+COMPRENSION_META_OBJETIVO = 90.0
 
 DEFAULT_OUTPUT_PATH = Path("data/reports/xai_validation_results.json")
 
@@ -179,6 +184,45 @@ def compute_comprehension_pct(row: pd.Series) -> float:
 # Scoring del panel completo
 # ---------------------------------------------------------------------------
 
+def _clasificar_banda(comprension_promedio: float) -> dict:
+    """
+    Clasifica el resultado del panel en tres bandas, contra la meta objetivo
+    (90%, sugerida por el Jurado 1) y el mínimo comprometido (80%, IOV de R3.3).
+
+    Reportar ambas referencias permite ser honesto con el resultado real sin
+    renegociar el compromiso formal: un panel al 85% cumple el IOV aunque no
+    alcance la meta más exigente, y eso debe poder decirse con precisión en
+    vez de presentarlo como éxito o fracaso absoluto.
+    """
+    if comprension_promedio >= COMPRENSION_META_OBJETIVO:
+        return {
+            "banda": "meta_alcanzada",
+            "interpretacion": (
+                f"El panel alcanzó {comprension_promedio:.1f}% de comprensión, superando la meta "
+                f"objetivo de {COMPRENSION_META_OBJETIVO:.0f}% y, por tanto, también el mínimo "
+                f"de {COMPRENSION_UMBRAL_R3_3:.0f}% comprometido en el IOV de R3.3."
+            ),
+        }
+    if comprension_promedio >= COMPRENSION_UMBRAL_R3_3:
+        return {
+            "banda": "minimo_cumplido",
+            "interpretacion": (
+                f"El panel alcanzó {comprension_promedio:.1f}% de comprensión: cumple el mínimo de "
+                f"{COMPRENSION_UMBRAL_R3_3:.0f}% comprometido en el IOV de R3.3, sin llegar a la "
+                f"meta objetivo de {COMPRENSION_META_OBJETIVO:.0f}%. El resultado es válido para "
+                "acreditar R3.3 y debe reportarse con esta precisión."
+            ),
+        }
+    return {
+        "banda": "no_cumple",
+        "interpretacion": (
+            f"El panel alcanzó {comprension_promedio:.1f}% de comprensión, por debajo del mínimo de "
+            f"{COMPRENSION_UMBRAL_R3_3:.0f}% exigido por el IOV de R3.3. Debe reportarse como no "
+            "cumplido y analizarse qué elementos de la explicación no resultaron comprensibles."
+        ),
+    }
+
+
 def score_panel(df: pd.DataFrame) -> dict:
     validate_dataframe(df)
 
@@ -215,6 +259,11 @@ def score_panel(df: pd.DataFrame) -> dict:
         "umbral_r3_3_alcanzado": bool(
             per_df["comprension_pct"].mean() >= COMPRENSION_UMBRAL_R3_3
         ),
+        "meta_objetivo": COMPRENSION_META_OBJETIVO,
+        "meta_objetivo_alcanzada": bool(
+            per_df["comprension_pct"].mean() >= COMPRENSION_META_OBJETIVO
+        ),
+        "banda_resultado": _clasificar_banda(per_df["comprension_pct"].mean()),
     }
 
     return {
@@ -269,15 +318,15 @@ def print_summary(results: dict) -> None:
     print("CRITERIO PRIMARIO R3.3 — COMPRENSIÓN NARRATIVA")
     print("-" * 72)
     print(f"Comprensión promedio del panel : {panel['comprension_pct_promedio']:.2f}%")
-    print(f"Umbral exigido por R3.3        : {panel['umbral_r3_3']:.1f}%")
-    if panel["umbral_r3_3_alcanzado"]:
-        print(">>> UMBRAL ALCANZADO: el panel satisface el criterio primario de "
-              "comprensibilidad de R3.3. <<<")
-    else:
-        print(">>> UMBRAL NO ALCANZADO: el panel NO satisface el criterio primario "
-              "de comprensibilidad de R3.3. Reportar como hallazgo y evaluar "
-              "iteración sobre el módulo de narrativa (R3.2) antes de una nueva "
-              "ronda de validación. <<<")
+    print(f"Meta objetivo (Jurado 1)       : {panel['meta_objetivo']:.1f}%"
+          f"  [{'ALCANZADA' if panel['meta_objetivo_alcanzada'] else 'no alcanzada'}]")
+    print(f"Mínimo comprometido (IOV R3.3) : {panel['umbral_r3_3']:.1f}%"
+          f"  [{'CUMPLE' if panel['umbral_r3_3_alcanzado'] else 'NO CUMPLE'}]")
+    print()
+    print(f">>> {panel['banda_resultado']['interpretacion']} <<<")
+    if not panel["umbral_r3_3_alcanzado"]:
+        print("\nAcción sugerida: iterar sobre el módulo de narrativa (R3.2) antes de "
+              "una nueva ronda de validación.")
     print("=" * 72)
 
 

@@ -120,7 +120,7 @@ No existe un "umbral aprobatorio" estándar único para el PSSUQ en la literatur
 
 ---
 
-## 4. Sección C — Comprensión narrativa (criterio primario de R3.3, umbral 80%)
+## 4. Sección C — Comprensión narrativa (criterio primario de R3.3; meta 90%, mínimo 80%)
 
 Esta sección es la que responde directamente al resultado **R3.3** de la tesis: *"Diseño y aplicación de cuestionarios estructurados (SUS/PSSUQ) a analistas de seguridad como criterio primario de comprensibilidad... requiriendo un umbral mínimo del 80% en los índices de claridad y confianza cognitiva operativa."* El SUS y el PSSUQ (Secciones A y B) miden *percepción* de usabilidad; esta sección mide **comprensión objetiva verificable** — si el evaluador de hecho entendió qué factores llevaron a la clasificación, no solo si el reporte "se sintió" claro.
 
@@ -228,7 +228,17 @@ A nivel de panel (los 10 evaluadores):
 % comprensión (panel) = promedio del % de comprensión de todos los evaluadores
 ```
 
-**Criterio de aceptación de R3.3:** el `% comprensión (panel)` debe ser **≥ 80%**. Si el panel completo alcanza o supera 80% de respuestas correctas en promedio, el criterio primario de comprensibilidad de R3.3 se considera satisfecho para la técnica XAI evaluada. Si no se alcanza, se reporta como hallazgo honesto de la tesis (no se "ajusta" el instrumento post-hoc para forzar el umbral) y se documenta como limitación o motivo para iterar sobre el diseño del módulo de narrativa (R3.2) antes de una segunda ronda de validación.
+**Criterio de aceptación de R3.3 — dos referencias, tres bandas.** A raíz de la observación del Jurado 1 en la revisión del E3 (*"se puede iniciar con 90 e ir bajando"*, pág. 12 del PDF; ver `doc/OBSERVACIONES_JURADO_E3.md`, C5), el resultado del panel se reporta contra **dos** referencias en lugar de una sola:
+
+| Banda | Rango | Interpretación |
+|---|---|---|
+| **Meta alcanzada** | ≥ 90% | Supera la meta objetivo sugerida por el jurado y, por tanto, también el mínimo formal. |
+| **Mínimo cumplido** | 80% – 90% | Cumple el IOV comprometido en la Tabla 2 sin llegar a la meta más exigente. **Resultado válido para acreditar R3.3**, reportado con esta precisión. |
+| **No cumple** | < 80% | No satisface el IOV. Se reporta como hallazgo honesto. |
+
+El **mínimo de 80%** es el compromiso formal del IOV de R3.3 en la Tabla 2 y no se renegocia; el **90%** es una meta objetivo más exigente que permite partir de un estándar alto sin alterar el compromiso ya evaluado.
+
+En ningún caso se "ajusta" el instrumento post-hoc para forzar el umbral: si el panel queda por debajo del 80%, se documenta como limitación y como motivo para iterar sobre el diseño del módulo de narrativa (R3.2) antes de una segunda ronda de validación. El script `script_scoring.py` clasifica automáticamente en estas tres bandas y emite la interpretación correspondiente.
 
 Complementariamente (no sustituye este chequeo), la tesis define un chequeo automatizado de "fidelidad narrativa vía LLM Arena" (R3.3) que verifica si el texto generado corresponde numéricamente a los valores de la técnica XAI — ese chequeo es independiente de este instrumento y se aplica sobre el propio texto generado, no sobre el panel humano. Este instrumento cubre exclusivamente la comprensión humana.
 
