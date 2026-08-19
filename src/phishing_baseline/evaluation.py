@@ -205,7 +205,13 @@ def mcnemar_test(y_true: Any, y_pred_a: Any, y_pred_b: Any) -> dict[str, Any]:
 
     test_result = binomtest(min(n01, n10), n_discordant, 0.5)
     p_value = float(test_result.pvalue)
-    result["p_value"] = round(p_value, 6)
+    # NO se redondea: con miles de pares discordantes el p-value real es del orden
+    # de 1e-300, y redondear a seis decimales lo convertía en `0.0`. Un valor p
+    # nunca es exactamente cero, y publicarlo así en una tabla de resultados es
+    # incorrecto. Se conserva el valor completo y se añade una forma ya
+    # formateada para su presentación directa en el documento.
+    result["p_value"] = p_value
+    result["p_value_display"] = "< 0.001" if p_value < 0.001 else f"{p_value:.4f}"
     result["significant_at_0.05"] = bool(p_value < 0.05)
 
     if n_discordant < 10:

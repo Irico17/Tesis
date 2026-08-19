@@ -44,7 +44,10 @@ data/predictions/
 data/reports/**/*.md
 data/reports/**/*.log
 data/reports/label_audit_sample.csv
-data/reports/baselines_results.json
+# NOTA: `baselines_results.json` NO se ignora. Pesa 36 KB y es la fuente de
+# evidencia que el Capítulo 4 cita para las tablas comparativas; excluirlo
+# dejaba al documento remitiendo a un archivo ausente del repositorio, de
+# modo que ni el asesor ni el jurado podían verificar las cifras.
 data/reports/language_full*
 data/reports/csv/language*
 data/reports/csv/outliers_p99.csv

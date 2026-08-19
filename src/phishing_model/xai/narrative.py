@@ -19,6 +19,9 @@ from jinja2 import Template
 
 from phishing_model.config import NETWORK_CATEGORICAL_COLS
 from phishing_pipeline.features.vectorizer import NETWORK_FEATURE_COLS, STRUCTURAL_FEATURE_COLS
+from phishing_pipeline.logging_utils import get_logger
+
+logger = get_logger(__name__)
 
 # Nombres legibles para las features técnicas de estructura/red (candidato de
 # atención, nivel de modalidad). Los candidatos SHAP/LIME operan a nivel de
@@ -28,10 +31,9 @@ FEATURE_DISPLAY_NAMES: dict[str, str] = {
     "has_html": "la presencia de código HTML",
     "num_links": "la cantidad de enlaces",
     "num_images": "la cantidad de imágenes",
-    "has_form": "la presencia de un formulario",
-    "has_iframe": "la presencia de un iframe oculto",
-    "has_javascript": "la presencia de código JavaScript",
     "word_count": "la longitud del mensaje",
+    "total_nodos_dom": "la complejidad estructural del mensaje (cantidad de elementos HTML)",
+    "profundidad_dom": "el grado de anidamiento de la estructura HTML",
     "has_ip_link": "un enlace con dirección IP en vez de dominio",
     "num_urls_metadata": "la cantidad de URLs reportadas",
     "url_max_length": "la longitud de las URLs",
@@ -69,6 +71,24 @@ MODALITY_DISPLAY_NAMES: dict[str, str] = {
 
 _STRUCTURAL_FEATURES = set(STRUCTURAL_FEATURE_COLS)
 _NETWORK_FEATURES = set(NETWORK_FEATURE_COLS) | set(NETWORK_CATEGORICAL_COLS)
+
+
+def missing_display_names() -> list[str]:
+    """
+    Devuelve las características canónicas que carecen de una etiqueta legible.
+
+    Existe como guarda contra un fallo silencioso ya observado: al modificarse la
+    composición de la rama estructural, las características entrantes quedaron sin
+    entrada en `FEATURE_DISPLAY_NAMES`, de modo que la narrativa habría mostrado
+    el identificador técnico crudo (`total_nodos_dom`) en lugar de una frase
+    comprensible -- precisamente lo contrario de lo que exige R3.2. La
+    comprobación se ejecuta dentro de `build_modality_report` y en las pruebas
+    del módulo, para que un cambio futuro del esquema falle de forma visible.
+    """
+    canonical = list(STRUCTURAL_FEATURE_COLS) + list(NETWORK_FEATURE_COLS) + list(
+        NETWORK_CATEGORICAL_COLS
+    )
+    return [c for c in canonical if c not in FEATURE_DISPLAY_NAMES]
 
 
 def classify_factor_modality(name: str) -> str:
@@ -162,6 +182,15 @@ def build_modality_report(explanation: ExplanationInput, max_factors_per_modalit
     que el analista vea explícitamente que se evaluaron y no aportaron) y los
     metadatos de la predicción.
     """
+    faltantes = missing_display_names()
+    if faltantes:
+        logger.warning(
+            "Características canónicas sin etiqueta legible en FEATURE_DISPLAY_NAMES: %s. "
+            "La narrativa mostrará su identificador técnico crudo, lo que incumple el "
+            "criterio de comprensibilidad de R3.2.",
+            faltantes,
+        )
+
     total_abs = sum(abs(w) for _, w in explanation.top_factors) or 1.0
 
     grouped: dict[str, list[tuple[str, float]]] = {

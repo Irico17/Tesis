@@ -12,22 +12,23 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from phishing_pipeline.config import RANDOM_STATE
+from phishing_pipeline.features.vectorizer import STRUCTURAL_FEATURE_COLS
 from phishing_baseline.evaluation import compute_metrics, save_predictions
 from phishing_baseline.group_cv import run_group_loso_cv, run_holdout_eval, run_stratified_cv
 
 BASELINE_NAME = "B3_RF_Structural"
 
-STRUCTURAL_COLS = [
-    "has_html",
-    "num_links",
-    "num_images",
-    "has_form",
-    "has_iframe",
-    "has_javascript",
-    "has_ip_link",
-    "word_count",
-    "num_urls_metadata",
-]
+# Se importa la lista CANÓNICA de la rama estructural en lugar de mantener una
+# copia local. La copia anterior se desincronizó silenciosamente: conservaba
+# `has_form`, `has_iframe` y `has_javascript` -- constantes en las 110,152 filas
+# del corpus, y por tanto tres de sus nueve entradas eran ruido puro -- y no
+# incorporaba los estadísticos de complejidad del DOM añadidos posteriormente.
+# Además incluía `has_ip_link` y `num_urls_metadata`, que pertenecen a la rama de
+# RED: su presencia hacía que B3 dejara de ser un modelo de referencia puramente
+# estructural, debilitando la comparación por modalidad del Capítulo 4.
+# Importando la lista canónica, B3 evalúa exactamente la misma modalidad que la
+# rama estructural del modelo propuesto y no puede volver a divergir.
+STRUCTURAL_COLS = list(STRUCTURAL_FEATURE_COLS)
 
 
 def _extract_features(df: pd.DataFrame) -> np.ndarray:
