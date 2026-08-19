@@ -31,7 +31,7 @@ import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 
 from phishing_model.config import FusionType, ModelConfig, TrainConfig, get_checkpoint_path
 from phishing_model.dataset import (
@@ -127,6 +127,32 @@ def detect_overfitting(epoch_metrics: list[dict[str, Any]]) -> dict[str, Any]:
             f"(val_loss final = {usable[-1]['val_loss']:.4f} vs. inicial = {usable[0]['val_loss']:.4f})."
         ),
     }
+
+
+def _loss_decreased(
+    epoch_metrics: list[dict[str, Any]], loss_history: list[float]
+) -> bool | None:
+    """
+    Indica si la pérdida de entrenamiento descendió a lo largo de la ejecución.
+
+    Se compara la MEDIA POR ÉPOCA, no el primer paso contra el último: la
+    pérdida de un paso individual depende del lote que le tocó y su varianza
+    puede ocultar por completo una convergencia real (se observó una ejecución
+    con medias por época de 0.400 -> 0.136 en la que, sin embargo, el último
+    paso resultó mayor que el primero). Como este indicador forma parte de la
+    evidencia de convergencia de R1.4, debe reflejar la tendencia y no el ruido.
+
+    Con una sola época se recurre a comparar la media del primer y el último
+    decil de pasos, que sigue siendo más estable que dos pasos sueltos.
+    """
+    if len(epoch_metrics) >= 2:
+        return epoch_metrics[-1]["train_loss_mean"] < epoch_metrics[0]["train_loss_mean"]
+    if len(loss_history) >= 10:
+        k = max(len(loss_history) // 10, 1)
+        return (sum(loss_history[-k:]) / k) < (sum(loss_history[:k]) / k)
+    if len(loss_history) >= 2:
+        return loss_history[-1] < loss_history[0]
+    return None
 
 
 def plot_learning_curve_from_history(
@@ -403,6 +429,28 @@ def train(
 
     scaler = torch.amp.GradScaler("cuda", enabled=(train_config.mixed_precision and device.type == "cuda"))
 
+    # Planificador de tasa de aprendizaje (calentamiento + decaimiento lineal).
+    # El total de pasos se calcula a partir del número real de lotes por época,
+    # acotado por `max_steps` cuando se usa: un planificador dimensionado sobre
+    # un horizonte distinto del real dejaría la tasa a mitad de decaimiento.
+    scheduler = None
+    if train_config.use_lr_scheduler:
+        steps_per_epoch = len(train_loader)
+        total_steps = steps_per_epoch * train_config.epochs
+        if max_steps is not None:
+            total_steps = min(total_steps, max_steps)
+        total_steps = max(total_steps, 1)
+        warmup_steps = int(total_steps * train_config.warmup_ratio)
+        scheduler = get_linear_schedule_with_warmup(
+            optimizer, num_warmup_steps=warmup_steps, num_training_steps=total_steps
+        )
+        logger.info(
+            "Planificador de LR activo: %d pasos totales, %d de calentamiento (%.0f%%)",
+            total_steps,
+            warmup_steps,
+            train_config.warmup_ratio * 100,
+        )
+
     checkpoint_path = checkpoint_path or get_checkpoint_path(fusion_type.value)
     start_epoch, global_step = 0, 0
     if resume and checkpoint_path.exists():
@@ -444,6 +492,8 @@ def train(
             torch.nn.utils.clip_grad_norm_(model.parameters(), train_config.max_grad_norm)
             scaler.step(optimizer)
             scaler.update()
+            if scheduler is not None:
+                scheduler.step()
 
             global_step += 1
             step_loss = loss.item()
@@ -520,7 +570,7 @@ def train(
         "final": {
             "global_step": global_step,
             "final_train_loss": round(loss_history[-1], 6) if loss_history else None,
-            "loss_decreased": (loss_history[0] > loss_history[-1]) if len(loss_history) >= 2 else None,
+            "loss_decreased": _loss_decreased(epoch_metrics, loss_history),
             "stopped_early": stopped_early,
             "val_metrics": val_metrics,
             "checkpoint_path": str(checkpoint_path),
@@ -559,7 +609,7 @@ def train(
         "step_losses": step_losses,
         "epoch_metrics": epoch_metrics,
         "final_train_loss": loss_history[-1] if loss_history else None,
-        "loss_decreased": (loss_history[0] > loss_history[-1]) if len(loss_history) >= 2 else None,
+        "loss_decreased": _loss_decreased(epoch_metrics, loss_history),
         "val_metrics": val_metrics,
         "overfitting_check": overfitting_check,
         "checkpoint_path": str(checkpoint_path),

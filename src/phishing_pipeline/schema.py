@@ -51,6 +51,11 @@ CANONICAL_COLUMNS: list[str] = [
     "url_has_shortener",
     "url_has_suspicious_tld",
     "url_domain_max_entropy",
+    # Complejidad estructural del DOM (ver features/dom_stats.py). Sustituyen
+    # funcionalmente a has_form/has_iframe/has_javascript en la rama
+    # estructural del modelo, que resultaron constantes en todo el corpus.
+    "total_nodos_dom",
+    "profundidad_dom",
 ]
 
 
@@ -92,6 +97,8 @@ def empty_canonical_row() -> dict[str, Any]:
         "url_has_shortener": 0,
         "url_has_suspicious_tld": 0,
         "url_domain_max_entropy": 0.0,
+        "total_nodos_dom": 0,
+        "profundidad_dom": 0,
     }
 
 

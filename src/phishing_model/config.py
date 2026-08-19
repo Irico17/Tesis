@@ -102,7 +102,7 @@ class ModelConfig:
     # artificialmente una rama disponible, por fila y por rama, SOLO en train().
     modality_dropout_prob: float = 0.15
 
-    n_structural_features: int = 7  # STRUCTURAL_FEATURE_COLS
+    n_structural_features: int = 6  # STRUCTURAL_FEATURE_COLS (ver nota allí sobre las 3 excluidas)
     n_network_continuous: int = 9  # NETWORK_FEATURE_COLS
     n_network_categorical: int = 3  # spf/dkim/dmarc
 
@@ -134,6 +134,15 @@ class TrainConfig:
     use_focal_loss: bool = False
     focal_loss_gamma: float = 2.0
     seed: int = RANDOM_STATE
+    # Planificador de tasa de aprendizaje: calentamiento lineal seguido de
+    # decaimiento lineal, práctica estándar en el ajuste fino de modelos de
+    # lenguaje preentrenados desde BERT. Sin él, las capas de fusión
+    # inicializadas al azar propagan gradientes grandes hacia el codificador
+    # preentrenado en los primeros pasos (riesgo de degradar los pesos
+    # aprendidos), y no hay refinamiento fino al final del entrenamiento.
+    # `warmup_ratio` se expresa como fracción del total de pasos previstos.
+    use_lr_scheduler: bool = True
+    warmup_ratio: float = 0.1
     num_workers: int = 0  # 0 por defecto: seguro en Windows/CPU; subir en GPU lab si hace falta
 
 

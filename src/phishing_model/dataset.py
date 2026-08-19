@@ -61,7 +61,14 @@ SCALER_PATH = MODEL_DIR / "feature_scalers.pkl"
 # cero. log1p es monótona (preserva el orden), está definida en 0 y acota el
 # efecto de los extremos. Ver doc/REVISION_CODIGO_MODELO.md, hallazgo 2.
 LONG_TAIL_COUNT_COLS = frozenset(
-    {"word_count", "num_links", "num_images", "num_urls_metadata", "url_max_length"}
+    {
+        "word_count",
+        "num_links",
+        "num_images",
+        "num_urls_metadata",
+        "url_max_length",
+        "total_nodos_dom",
+    }
 )
 
 

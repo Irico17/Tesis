@@ -15,14 +15,23 @@ from phishing_pipeline.logging_utils import get_logger
 
 logger = get_logger(__name__)
 
+# Rama estructural del modelo. `has_form`, `has_iframe` y `has_javascript` se
+# EXCLUYEN deliberadamente pese a formar parte del esquema canónico: valen cero
+# en las 110,152 filas del corpus, porque las fuentes publicaron el HTML ya
+# sanitizado. Como características constantes no pueden aportar capacidad
+# predictiva, y sí provocan que la explicabilidad les asigne peso espurio (se
+# observó `has_iframe` como segundo factor de una predicción). En su lugar se
+# incorporan los estadísticos de complejidad del DOM, que sí discriminan sobre
+# este corpus: media de 13.78 nodos en phishing frente a 1.87 en legítimos.
+# Se conservan en el esquema para que el pipeline siga extrayéndolas -- serían
+# informativas sobre un corpus no sanitizado. Ver doc/REVISION_CODIGO_MODELO.md.
 STRUCTURAL_FEATURE_COLS = [
     "has_html",
     "num_links",
     "num_images",
-    "has_form",
-    "has_iframe",
-    "has_javascript",
     "word_count",
+    "total_nodos_dom",
+    "profundidad_dom",
 ]
 
 # Nota: spf_result/dkim_result/dmarc_result son categóricas (pass/fail/none/...,
