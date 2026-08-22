@@ -297,7 +297,15 @@ def save_cluster_report(
     return report
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """
+    Ejecuta la detección de casi-duplicados y guarda la tabla de agrupación.
+
+    Existe como función y no solo como bloque de ejecución directa para que el
+    orquestador de reconstrucción (`phishing_pipeline.rebuild_corpus`) pueda
+    invocarla como un paso más de la secuencia, en lugar de depender de que
+    alguien recuerde ejecutar este módulo por separado.
+    """
     from phishing_pipeline.splits import load_unified_for_splits
 
     t0 = time.time()
@@ -350,3 +358,8 @@ if __name__ == "__main__":
         )
     print(f"Reporte JSON: {REPORTS_DIR / 'near_duplicate_clusters.json'}")
     print(f"Tabla lateral: {out_path}")
+
+
+
+if __name__ == "__main__":
+    main()
