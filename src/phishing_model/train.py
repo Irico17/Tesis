@@ -695,6 +695,17 @@ def main() -> None:
     parser.add_argument("--use-focal-loss", action="store_true")
     parser.add_argument("--resume", action="store_true")
     parser.add_argument(
+        "--scaler-path",
+        type=str,
+        default=None,
+        help=(
+            "Ruta donde guardar los escaladores ajustados. Por defecto, una ruta única compartida. "
+            "IMPRESCINDIBLE indicar una distinta por corrida cuando varias se ejecutan EN PARALELO: "
+            "de lo contrario todas escriben el mismo archivo a la vez y el guardado, que no es "
+            "atómico, puede dejarlo corrupto e inutilizable para la evaluación posterior"
+        ),
+    )
+    parser.add_argument(
         "--run-name",
         type=str,
         default=None,
@@ -730,6 +741,7 @@ def main() -> None:
         max_steps=args.max_steps,
         resume=args.resume,
         run_name=args.run_name,
+        scaler_path=Path(args.scaler_path) if args.scaler_path else None,
     )
     elapsed = time.time() - t0
 

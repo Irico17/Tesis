@@ -206,7 +206,18 @@ def main() -> None:
 
     def entrenar(ft: FusionType):
         def _():
+            from phishing_model.config import get_checkpoint_path
+
             nombre = f"{PREFIJO}{ft.value}"
+            # Se decide ANTES de entrenar si estos archivos ya existían. Hacerlo
+            # después es inútil: el propio entrenamiento acaba de crearlos, de
+            # modo que `proteger` los tomaría por preexistentes, los respaldaría
+            # y los restauraría al final, dejando en disco los artefactos que la
+            # prueba debía eliminar.
+            ruta_prevista = get_checkpoint_path(nombre)
+            proteger(ruta_prevista)
+            proteger(ruta_prevista.with_name(f"{ruta_prevista.stem}_best.pt"))
+
             tcfg = TrainConfig(epochs=2, batch_size=4, mixed_precision=(device.type == "cuda"))
             res = train(
                 fusion_type=ft,
@@ -220,13 +231,11 @@ def main() -> None:
             )
             ruta = Path(res["checkpoint_path"])
             mejor = ruta.with_name(f"{ruta.stem}_best.pt")
-            # `proteger` en lugar de `registrar`: si el punto de control ya
-            # existía —porque una corrida real usó ese nombre— se respalda y se
-            # restaura en lugar de eliminarse. Con el nombre de corrida aplicado
-            # correctamente esto no debería ocurrir, pero una prueba no puede
-            # depender de esa suposición para no destruir horas de entrenamiento.
-            proteger(ruta)
-            proteger(mejor)
+            if ruta != ruta_prevista:
+                # La ruta real no coincide con la prevista: se anota igualmente
+                # para no dejar residuo si la convención de nombres cambiara.
+                proteger(ruta)
+                proteger(mejor)
             for clave in ("history_path", "learning_curve_path"):
                 if res.get(clave):
                     registrar(Path(res[clave]))

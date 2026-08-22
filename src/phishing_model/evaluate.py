@@ -115,13 +115,28 @@ def main() -> None:
     parser.add_argument("--splits-dir", type=str, default=str(DEFAULT_SPLITS_DIR))
     parser.add_argument("--split", type=str, default="test", choices=["val", "test"])
     parser.add_argument("--device", type=str, default="auto")
+    parser.add_argument(
+        "--scaler-path",
+        type=str,
+        default=None,
+        help=(
+            "Escaladores con los que se entrenó el punto de control. Debe coincidir con el "
+            "`--scaler-path` de la corrida correspondiente: evaluar con escaladores ajustados "
+            "sobre otros datos distorsiona las características de entrada sin producir error alguno"
+        ),
+    )
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if args.device == "auto" else torch.device(args.device)
     df = pd.read_parquet(Path(args.splits_dir) / f"{args.split}.parquet")
 
     metrics = evaluate_checkpoint(
-        Path(args.checkpoint), FusionType(args.fusion_type), df, args.split, device=device
+        Path(args.checkpoint),
+        FusionType(args.fusion_type),
+        df,
+        args.split,
+        device=device,
+        scaler_path=Path(args.scaler_path) if args.scaler_path else None,
     )
     print("=" * 70)
     print(f"Evaluación {args.fusion_type} sobre {args.split}")
