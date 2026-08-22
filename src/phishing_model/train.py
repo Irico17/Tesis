@@ -344,11 +344,14 @@ def train(
     sobrescribiría los scalers del fold anterior en la misma ruta antes de
     que ese fold se evalúe, filtrando el escalado de un fold hacia otro.
 
-    `run_name`, si se pasa, nombra los artefactos de evidencia de R1.4
-    (`data/reports/training_logs/{run_name}_history.json` y
-    `data/reports/figures/learning_curve_{run_name}.png`); por defecto se deriva
-    del `fusion_type`. Es obligatorio pasarlo en entrenamiento multi-fold para
-    que un fold no sobrescriba el historial del anterior.
+    `run_name`, si se pasa, nombra TODOS los artefactos de la corrida: el punto
+    de control (`data/model/checkpoints/{run_name}.pt` y su variante `_best`),
+    el historial (`data/reports/training_logs/{run_name}_history.json`) y la
+    curva de aprendizaje (`data/reports/figures/learning_curve_{run_name}.png`);
+    por defecto se deriva del `fusion_type`. Es obligatorio pasarlo cuando varias
+    corridas comparten arquitectura —los distintos valores de una ablación, o los
+    pliegues de un entrenamiento por fuente— porque de lo contrario todas
+    escribirían en el mismo archivo y la última sobrescribiría a las anteriores.
 
     La validación se evalúa al FINAL DE CADA ÉPOCA (no solo al final del
     entrenamiento): la curva train-loss vs. val-loss a lo largo de las épocas es
@@ -451,7 +454,16 @@ def train(
             train_config.warmup_ratio * 100,
         )
 
-    checkpoint_path = checkpoint_path or get_checkpoint_path(fusion_type.value)
+    # El punto de control se nombra con `run_name`, no con el tipo de fusión.
+    # Derivarlo del tipo de fusión hacía que dos corridas distintas de la MISMA
+    # arquitectura —las tres tasas de descarte de modalidad de la ablación, por
+    # ejemplo— escribieran en el mismo archivo: la segunda sobrescribía en
+    # silencio el punto de control de la primera, y con `--resume` activo podía
+    # además reanudar desde los pesos de la corrida equivocada. El historial y la
+    # curva de aprendizaje ya se nombraban con `run_name`, de modo que los
+    # artefactos de evidencia y los pesos apuntaban a corridas distintas.
+    run_name = run_name or fusion_type.value
+    checkpoint_path = checkpoint_path or get_checkpoint_path(run_name)
     best_checkpoint_path = checkpoint_path.with_name(f"{checkpoint_path.stem}_best.pt")
     start_epoch, global_step = 0, 0
     if resume and checkpoint_path.exists():
@@ -590,7 +602,7 @@ def train(
     else:
         val_metrics = evaluate_loss_accuracy(model, val_loader, loss_fn, device)
 
-    run_name = run_name or fusion_type.value
+    # `run_name` ya quedó resuelto antes de construir la ruta del punto de control.
     overfitting_check = detect_overfitting(epoch_metrics)
     # La evaluación debe usar el mejor modelo, no el último. Se informa su
     # ruta explícitamente para que `evaluate.py` y el plan de servidor apunten

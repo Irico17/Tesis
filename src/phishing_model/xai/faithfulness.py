@@ -78,8 +78,17 @@ def _rebuild_batch_with_text(
         return_tensors="pt",
     )
     perturbed = dict(row_batch)
-    perturbed["input_ids"] = encoded["input_ids"]
-    perturbed["attention_mask"] = encoded["attention_mask"]
+    # El tokenizador devuelve siempre tensores en CPU. Si el resto de la fila
+    # vive en GPU —el caso normal al explicar un modelo ya cargado para
+    # inferencia— mezclar ambos dispositivos aborta el paso hacia adelante con
+    # "Expected all tensors to be on the same device". Se toma el dispositivo de
+    # un tensor existente de la propia fila en vez de asumir uno.
+    referencia = next(
+        (v for v in row_batch.values() if isinstance(v, torch.Tensor)), None
+    )
+    device = referencia.device if referencia is not None else torch.device("cpu")
+    perturbed["input_ids"] = encoded["input_ids"].to(device)
+    perturbed["attention_mask"] = encoded["attention_mask"].to(device)
     return perturbed
 
 
