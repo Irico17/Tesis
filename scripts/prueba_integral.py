@@ -363,9 +363,22 @@ def main() -> None:
     # ---------- 8. Estructura de los pliegues por fuente ----------
     def pliegues():
         from phishing_model.train_loso import build_loso_folds
+        from phishing_pipeline.config import PROCESSED_DIR
 
-        completo = pd.read_parquet(splits_dir / "train.parquet")
+        # El corpus UNIFICADO, no la partición de entrenamiento: la validación
+        # por fuente reparte las 110,152 filas completas en cada pliegue —dos
+        # fuentes para entrenar y la tercera íntegra como prueba—, de modo que
+        # comprobarlo sobre una partición no reflejaría el uso real y podría
+        # ocultar un fallo que solo aparece con el corpus entero.
+        completo = pd.read_parquet(PROCESSED_DIR / "Dataset_Unificado.parquet")
         folds = build_loso_folds(completo)
+        for f in folds:
+            total = len(f["train_df"]) + len(f["val_df"]) + len(f["test_df"])
+            if total != len(completo):
+                raise AssertionError(
+                    f"El pliegue que excluye {f['held_out_source']} suma {total} filas, "
+                    f"pero el corpus tiene {len(completo)}: se están perdiendo o duplicando filas."
+                )
         if len(folds) < 2:
             raise AssertionError(f"Se esperaban al menos 2 pliegues, se obtuvieron {len(folds)}")
         for f in folds:
