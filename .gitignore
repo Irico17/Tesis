@@ -1,6 +1,15 @@
 ﻿# Credenciales
 kaggle.json
 .kaggle/
+# Claves y credenciales de acceso a servidores: NUNCA deben versionarse.
+*.pem
+*.key
+id_rsa*
+.ssh/
+.env
+.env.*
+credenciales*
+secrets*
 
 # Python
 __pycache__/
