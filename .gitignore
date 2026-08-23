@@ -1,4 +1,4 @@
-﻿# Credenciales
+# Credenciales
 kaggle.json
 .kaggle/
 
@@ -55,3 +55,32 @@ data/reports/csv/dedup_impact*
 
 # Figuras: por defecto ignorar; las clave se añaden explícitamente
 data/reports/figures/**
+
+# --- Añadido al ordenar el repositorio (2026-08-23) ---
+
+# Espacio de trabajo temporal: guiones de verificación de un solo uso, versiones
+# intermedias de los documentos y documentación de trabajo retirada del repositorio.
+# Su contenido es desechable por definición.
+scratch/
+
+# Entregables en formato Word y sus paquetes comprimidos. No son código y pesan
+# decenas de megabytes; la evidencia que sustenta lo que afirman vive versionada en
+# medios_de_verificacion/.
+Entregables/
+entregables/
+
+# Predicciones fila por fila. Se versiona en medios_de_verificacion/ únicamente el
+# subconjunto necesario para reproducir la prueba de significancia; el resto es
+# regenerable con phishing_model.evaluate a partir de los puntos de control.
+data/predictions/
+
+# La carpeta de medios de verificación SÍ se versiona: es la evidencia que el
+# capítulo de resultados cita y que el jurado necesita para comprobar cada cifra.
+!medios_de_verificacion/
+
+# Salidas de trabajo del modelo: se escriben aquí durante la ejecución y su copia
+# curada, que es la que el capítulo de resultados cita, vive versionada en
+# medios_de_verificacion/. Versionar ambas duplicaría unos 31 MB sin aportar nada.
+data/reports/loso/
+data/reports/training_logs/
+data/reports/iov_mv/

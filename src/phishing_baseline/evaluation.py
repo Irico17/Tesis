@@ -11,6 +11,9 @@ import numpy as np
 import pandas as pd
 from scipy.stats import binomtest, ttest_rel
 from sklearn.metrics import (
+    average_precision_score,
+    balanced_accuracy_score,
+    matthews_corrcoef,
     accuracy_score,
     classification_report,
     confusion_matrix,
@@ -38,11 +41,32 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray 
         "confusion_matrix": confusion_matrix(y_true, y_pred).tolist(),
         "support": {"negative": int((y_true == 0).sum()), "positive": int((y_true == 1).sum())},
     }
+    # Métricas robustas a la prevalencia. El F1 depende del umbral y de la
+    # proporción de positivos, y bajo evaluación por fuente esa proporción varía
+    # entre 0.3731 y 0.6099 según el pliegue. Un clasificador que ignora la
+    # entrada y predice siempre la clase mayoritaria del entrenamiento alcanza un
+    # F1 medio de 0.3844 sobre los tres pliegues, de modo que el F1 tiene un suelo
+    # trivial alto; ese mismo clasificador obtiene 0.0000 de coeficiente de
+    # Matthews y 0.5000 de exactitud equilibrada. Se informan como métricas
+    # SECUNDARIAS: la primaria sigue siendo la del registro previo de hipótesis,
+    # que no puede cambiarse a posteriori sin incurrir en formulación de hipótesis
+    # a posteriori.
+    metrics["mcc"] = round(float(matthews_corrcoef(y_true, y_pred)), 4)
+    metrics["balanced_accuracy"] = round(float(balanced_accuracy_score(y_true, y_pred)), 4)
+
     if y_proba is not None and len(np.unique(y_true)) > 1:
         try:
             metrics["roc_auc"] = round(float(roc_auc_score(y_true, y_proba)), 4)
         except ValueError:
             metrics["roc_auc"] = None
+        try:
+            # Área bajo la curva de precisión-exhaustividad: a diferencia del área
+            # bajo la curva ROC, su línea base es la prevalencia de la clase
+            # positiva, lo que la hace informativa cuando esa prevalencia cambia
+            # entre pliegues.
+            metrics["pr_auc"] = round(float(average_precision_score(y_true, y_proba)), 4)
+        except ValueError:
+            metrics["pr_auc"] = None
     report = classification_report(y_true, y_pred, output_dict=True, zero_division=0)
     metrics["classification_report"] = report
     return metrics

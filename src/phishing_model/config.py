@@ -8,7 +8,7 @@ los vocabularios de aquí para no divergir.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from enum import Enum
 from pathlib import Path
 
@@ -101,6 +101,40 @@ class ModelConfig:
     # de modalidades ausentes, ver plan Fase B) — probabilidad de enmascarar
     # artificialmente una rama disponible, por fila y por rama, SOLO en train().
     modality_dropout_prob: float = 0.15
+    # "independent": cada rama disponible se suprime con probabilidad fija.
+    # "randomize": se sortea el patrón de disponibilidad de la distribución marginal
+    # del corpus, con independencia de la etiqueta.
+    #
+    # Medido sobre el corpus real, la información mutua entre el patrón de
+    # disponibilidad y la etiqueta —el atajo verificado en los datos— pasa de
+    # 0.0790 nats a 0.0235 con aleatorización, frente a 0.0602 con descarte
+    # independiente al 15%. La aleatorización REDUCE el atajo en un 70%, pero no
+    # lo elimina: el patrón sorteado se intersecta con la disponibilidad natural,
+    # porque no puede añadirse una modalidad que la fila no posee, y esa
+    # intersección conserva la dependencia que proviene de la disponibilidad real.
+    # Elevar la probabilidad de descarte no sustituye a la aleatorización: se
+    # comprobó con tasas de 0.15 a 0.60 y no mejora el pliegue afectado.
+    modality_dropout_mode: str = "independent"
+    # Distribución marginal medida sobre el corpus consolidado, en el orden
+    # (ninguna, solo red, solo estructura, ambas).
+    modality_pattern_probs: tuple[float, float, float, float] = (0.1318, 0.4697, 0.0035, 0.3951)
+
+    # Valor inicial de la compuerta de contribución modal, expresado ya como
+    # tanh(g) y por tanto en [0, 1). Ver la justificación de por qué no se
+    # inicializa en cero en `model.MultimodalPhishingClassifier.__init__`.
+    modality_gate_init: float = 0.5
+
+    # Formulación interna de las capas de fusión. Ver la justificación en
+    # `fusion/cross_attention.py`: pre-normalización por estabilidad frente al
+    # codificador preentrenado, y GELU por coherencia con DistilBERT.
+    norm_first: bool = True
+    fusion_activation: str = "gelu"
+
+    # Escalado de las características tabulares. Ver `dataset.py`.
+    # "quantile"     : QuantileTransformer, acotado por construcción (recomendado).
+    # "minmax_clip"  : MinMaxScaler con recorte a [0, 1].
+    # "minmax"       : MinMaxScaler sin recorte — formulación original, NO acotada.
+    scaler_kind: str = "quantile"
 
     n_structural_features: int = 6  # STRUCTURAL_FEATURE_COLS (ver nota allí sobre las 3 excluidas)
     n_network_continuous: int = 9  # NETWORK_FEATURE_COLS
@@ -113,8 +147,38 @@ class ModelConfig:
 
     @property
     def n_modality_tokens(self) -> int:
-        """Tokens no-textuales totales que entran a Stage 1 (fusion/modality_encoder.py)."""
+        """Tokens no-textuales totales que entran a Stage 1 (fusion/modality_encoder.py).
+
+        Son 6 estructurales + 12 de red = 18. A la memoria de atención se le
+        antepone además el token centinela de "sin modalidad" (ver `model.py`),
+        de modo que la memoria efectiva tiene 19 posiciones; el centinela no es
+        una característica del correo y por eso no se cuenta aquí.
+        """
         return self.n_structural_features + self.n_network_tokens
+
+    def to_dict(self) -> dict:
+        """Representación serializable, para persistir junto al punto de control."""
+        datos = asdict(self)
+        datos["fusion_type"] = self.fusion_type.value
+        datos["modality_pattern_probs"] = list(self.modality_pattern_probs)
+        return datos
+
+    @classmethod
+    def from_dict(cls, datos: dict) -> "ModelConfig":
+        """
+        Reconstruye la configuración desde un punto de control.
+
+        Se ignoran las claves que no correspondan a ningún campo actual, de modo
+        que un punto de control generado por una versión anterior siga cargándose
+        en lugar de fallar; los campos que falten toman su valor por defecto.
+        """
+        campos = {f for f in cls.__dataclass_fields__}
+        limpio = {k: v for k, v in datos.items() if k in campos}
+        if "fusion_type" in limpio:
+            limpio["fusion_type"] = FusionType(limpio["fusion_type"])
+        if "modality_pattern_probs" in limpio:
+            limpio["modality_pattern_probs"] = tuple(limpio["modality_pattern_probs"])
+        return cls(**limpio)
 
 
 @dataclass
@@ -149,6 +213,13 @@ class TrainConfig:
     # tiempo para las variantes de ablación restantes.
     early_stopping_patience: int = 2
     num_workers: int = 0  # 0 por defecto: seguro en Windows/CPU; subir en GPU lab si hace falta
+    # Determinismo completo. Fijar las semillas de random/numpy/torch no basta:
+    # las rutinas de cuDNN eligen algoritmos por heurística de rendimiento y
+    # algunas acumulan en orden no determinista, de modo que dos ejecuciones con
+    # la misma semilla pueden diferir. La tesis declara la ejecución reproducible
+    # como criterio metodológico, y eso exige fijarlo de forma explícita.
+    # Tiene un costo de rendimiento, por lo que se deja gobernable.
+    deterministic: bool = True
 
 
 def get_checkpoint_path(run_name: str) -> Path:

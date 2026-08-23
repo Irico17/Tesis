@@ -23,11 +23,17 @@ import time
 from datetime import datetime, timezone
 from typing import Any
 
+import numpy as np
 import pandas as pd
 import torch
 
 from phishing_model.config import SANITY_CHECK_REPORT_PATH, FusionType, ModelConfig, TrainConfig
-from phishing_model.dataset import MultimodalPhishingDataset, make_collate_fn, make_synthetic_batch
+from phishing_model.dataset import (
+    MultimodalPhishingDataset,
+    construir_escalador,
+    make_collate_fn,
+    make_synthetic_batch,
+)
 from phishing_model.losses import build_loss_fn
 from phishing_model.model import MultimodalPhishingClassifier
 from phishing_pipeline.config import PROCESSED_DIR
@@ -222,6 +228,123 @@ def check_real_data_training_steps() -> dict[str, Any]:
         return {"passed": False, "skipped": True, "reason": f"{type(exc).__name__}: {exc}"}
 
 
+
+def check_aislamiento_de_modalidad_ausente() -> dict[str, Any]:
+    """
+    Una rama marcada como AUSENTE no debe influir en la salida en absoluto.
+
+    Se altera únicamente las características de una rama y se comprueba que los
+    logits no cambian ni en un bit. La comprobación existe porque el defecto que
+    previene fue real: la salvaguarda contra NaN dejaba visible la posición 0 de
+    la memoria de atención para las filas sin ninguna modalidad, y esa posición
+    es, en la variante a nivel de token, un token de contenido —no un relleno—,
+    de modo que las características de una rama ausente alteraban la salida en
+    0.0442. No transportaba información en el corpus de entonces por una
+    coincidencia entre el orden de las columnas y la definición de
+    disponibilidad; esta prueba impide que vuelva a depender de ello.
+    """
+    resultados: dict[str, Any] = {}
+    todo_ok = True
+    for fusion_type in (
+        FusionType.CROSS_ATTENTION_TOKEN_LEVEL,
+        FusionType.CROSS_ATTENTION_MODALITY_LEVEL,
+        FusionType.CONCAT_LATE_FUSION,
+    ):
+        torch.manual_seed(0)
+        config = ModelConfig(fusion_type=fusion_type, d_model=64, n_heads=4, grad_checkpointing=False)
+        model = MultimodalPhishingClassifier(config).eval()
+        por_caso = {}
+        for hs, hn, nombre in ((0, 0, "sin_ninguna"), (0, 1, "sin_estructura"), (1, 0, "sin_red")):
+            base = make_synthetic_batch(4, config)
+            base["has_structure"] = torch.full((4,), float(hs))
+            base["has_network"] = torch.full((4,), float(hn))
+            for rama, clave, presente in (
+                ("estructura", "structural_continuous", hs),
+                ("red", "network_continuous", hn),
+            ):
+                if presente:
+                    continue
+                alterado = dict(base)
+                alterado[clave] = torch.rand_like(base[clave]) * 5.0
+                with torch.no_grad():
+                    delta = (model(base) - model(alterado)).abs().max().item()
+                aislado = delta == 0.0
+                todo_ok = todo_ok and aislado
+                por_caso[f"{nombre}__altera_{rama}"] = {"delta_logits": delta, "aislado": aislado}
+        resultados[fusion_type.value] = por_caso
+    resultados["passed"] = todo_ok
+    return resultados
+
+
+def check_escalado_acotado() -> dict[str, Any]:
+    """
+    El escalado de características debe estar acotado en [0, 1] incluso ante
+    valores muy superiores a los vistos al ajustarlo.
+
+    `MinMaxScaler` sin recorte no lo cumple, y bajo evaluación por fuente el
+    desborde llegó a 36 veces el rango de entrenamiento. Como la tokenización
+    multiplica el escalar por un vector de pesos aprendido, un valor desbordado
+    produce un token cuya norma acapara la distribución de atención.
+    """
+    ajuste = np.linspace(0.0, 1.0, 200).reshape(-1, 2)
+    fuera_de_rango = np.array([[-50.0, 50.0], [1000.0, -1000.0]])
+    resultados: dict[str, Any] = {}
+    todo_ok = True
+    for kind in ("quantile", "minmax_clip"):
+        transformado = construir_escalador(kind, len(ajuste)).fit(ajuste).transform(fuera_de_rango)
+        acotado = bool(transformado.min() >= 0.0 and transformado.max() <= 1.0)
+        todo_ok = todo_ok and acotado
+        resultados[kind] = {
+            "min": float(transformado.min()),
+            "max": float(transformado.max()),
+            "acotado": acotado,
+        }
+    # La formulación original se conserva y debe seguir siendo NO acotada: si
+    # dejara de serlo, esta prueba estaría midiendo otra cosa.
+    sin_acotar = construir_escalador("minmax", len(ajuste)).fit(ajuste).transform(fuera_de_rango)
+    resultados["minmax"] = {
+        "min": float(sin_acotar.min()),
+        "max": float(sin_acotar.max()),
+        "acotado": False,
+        "nota": "formulación original, se desborda por diseño; sirve de control de la prueba",
+    }
+    todo_ok = todo_ok and (sin_acotar.max() > 1.0)
+    resultados["passed"] = todo_ok
+    return resultados
+
+
+def check_configuracion_del_punto_de_control() -> dict[str, Any]:
+    """
+    El punto de control debe permitir reconstruir la configuración EXACTA con la
+    que se entrenó.
+
+    Antes solo se guardaba el tipo de fusión y la evaluación reconstruía el resto
+    con los valores por defecto: una geometría o un modo de enmascaramiento
+    distintos se evaluaban bajo una configuración ajena, en silencio cuando el
+    campo no alteraba la forma de los tensores.
+    """
+    config = ModelConfig(
+        fusion_type=FusionType.CROSS_ATTENTION_MODALITY_LEVEL,
+        d_model=64,
+        n_heads=4,
+        n_fusion_layers=2,
+        modality_dropout_mode="randomize",
+        scaler_kind="minmax_clip",
+        grad_checkpointing=False,
+    )
+    recuperada = ModelConfig.from_dict(config.to_dict())
+    identica = recuperada == config
+    # Tolerancia hacia atrás: un punto de control anterior no lleva la clave.
+    antiguo = ModelConfig.from_dict({"fusion_type": "text_only"})
+    return {
+        "ida_y_vuelta_identica": identica,
+        "campos_persistidos": len(config.to_dict()),
+        "campos_totales": len(ModelConfig.__dataclass_fields__),
+        "tolera_formato_anterior": antiguo.fusion_type == FusionType.TEXT_ONLY,
+        "passed": bool(identica and antiguo.fusion_type == FusionType.TEXT_ONLY),
+    }
+
+
 def run_sanity_check() -> dict[str, Any]:
     t0 = time.time()
     checks = {
@@ -229,13 +352,23 @@ def run_sanity_check() -> dict[str, Any]:
         "synthetic_forward_backward": check_synthetic_forward_backward(),
         "masked_modality_forward": check_masked_modality_forward(),
         "real_data_training_steps": check_real_data_training_steps(),
+        "aislamiento_de_modalidad_ausente": check_aislamiento_de_modalidad_ausente(),
+        "escalado_acotado": check_escalado_acotado(),
+        "configuracion_del_punto_de_control": check_configuracion_del_punto_de_control(),
     }
     elapsed = time.time() - t0
 
     # El chequeo de datos reales puede quedar `skipped` (sin parquet/tokenizer disponible)
     # sin invalidar el sanity check completo -- los 3 primeros ya cubren el criterio
     # estático de R1.3 sin depender de datos ni de conexión a internet.
-    required_checks = ["synthetic_shapes", "synthetic_forward_backward", "masked_modality_forward"]
+    required_checks = [
+        "synthetic_shapes",
+        "synthetic_forward_backward",
+        "masked_modality_forward",
+        "aislamiento_de_modalidad_ausente",
+        "escalado_acotado",
+        "configuracion_del_punto_de_control",
+    ]
     passed = all(checks[c]["passed"] for c in required_checks)
     if not checks["real_data_training_steps"].get("skipped", False):
         passed = passed and checks["real_data_training_steps"]["passed"]

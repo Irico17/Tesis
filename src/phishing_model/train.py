@@ -23,9 +23,10 @@ import json
 import random
 import re
 import time
+from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
 import pandas as pd
@@ -261,7 +262,9 @@ def plot_learning_curve_from_history(
 
     fig.suptitle(f"Curvas de aprendizaje — {run_name}", fontsize=13, fontweight="bold")
     fig.tight_layout()
-    fig.savefig(output_path, dpi=150, bbox_inches="tight")
+    # 200 ppp: a 14 cm de ancho en el documento, 150 ppp resultaba visiblemente
+    # borroso al imprimir. Es la resolución mínima razonable para figura de tesis.
+    fig.savefig(output_path, dpi=200, bbox_inches="tight")
     plt.close(fig)
     logger.info("Curva de aprendizaje guardada: %s", output_path)
     return output_path
@@ -283,6 +286,14 @@ def save_checkpoint(
             "epoch": epoch,
             "global_step": global_step,
             "fusion_type": config.fusion_type.value,
+            # Configuración COMPLETA de la arquitectura. Antes solo se guardaba el
+            # tipo de fusión, y `evaluate.evaluate_checkpoint` reconstruía el resto
+            # con los valores por defecto: un punto de control entrenado con una
+            # geometría o un modo de enmascaramiento distintos se evaluaba bajo una
+            # configuración que no era la suya. Los campos que alteran la forma de
+            # los tensores fallaban de forma ruidosa al cargar los pesos; el resto
+            # divergía en silencio.
+            "model_config": config.to_dict(),
         },
         path,
     )
@@ -330,6 +341,7 @@ def train(
     scaler_path: Path | None = None,
     resume: bool = False,
     run_name: str | None = None,
+    diagnostico_por_epoca: Callable[[int, torch.nn.Module], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """
     Entrena el modelo y devuelve un resumen (curva de pérdida, métricas finales).
@@ -353,13 +365,32 @@ def train(
     pliegues de un entrenamiento por fuente— porque de lo contrario todas
     escribirían en el mismo archivo y la última sobrescribiría a las anteriores.
 
+    `diagnostico_por_epoca`, si se pasa, se invoca al término de cada época con el
+    modelo en su estado de ese momento y su resultado se anexa a las métricas de la
+    época. Está pensado para registrar el desempeño sobre el dominio NO OBSERVADO a
+    lo largo del entrenamiento.
+
+    Es DIAGNÓSTICO y jamás interviene en la selección del punto de control, que sigue
+    rigiéndose por la pérdida de validación conforme al registro previo de hipótesis.
+    Existe porque se comprobó que ese criterio no discrimina: en el pliegue de Kaggle
+    la exactitud de validación es de 1.0000 en las tres épocas y la pérdida desciende
+    de 6e-06 a 1e-06, de modo que la elección no distingue por acierto sino por
+    confianza, y selecciona en consecuencia el punto de control más seguro de sí
+    mismo. Dado que el fallo documentado en ese pliegue consiste precisamente en un
+    exceso de confianza —área bajo la curva de 0.81 con una tasa de positivos
+    predicha del 5% frente al 37% real—, el criterio podría estar favoreciendo el
+    propio modo de fallo. Registrar la trayectoria permite comprobarlo con datos en
+    lugar de conjeturarlo.
+
     La validación se evalúa al FINAL DE CADA ÉPOCA (no solo al final del
     entrenamiento): la curva train-loss vs. val-loss a lo largo de las épocas es
     lo que permite sustentar "ausencia de sobreajuste crítico" en R1.4, cosa
     imposible con un único punto final.
     """
-    model_config = model_config or ModelConfig(fusion_type=fusion_type)
-    model_config.fusion_type = fusion_type
+    # Se copia antes de fijar el tipo de fusión: mutar el objeto recibido tiene
+    # efecto sobre el llamador, y en un entrenamiento multi-pliegue la misma
+    # configuración se reutiliza entre pliegues.
+    model_config = replace(model_config, fusion_type=fusion_type) if model_config else ModelConfig(fusion_type=fusion_type)
     train_config = train_config or TrainConfig()
     device = device or _select_device("auto")
 
@@ -371,11 +402,24 @@ def train(
     np.random.seed(train_config.seed)
     torch.manual_seed(train_config.seed)
     torch.cuda.manual_seed_all(train_config.seed)
+    if train_config.deterministic:
+        # Fijar las semillas no basta: cuDNN elige sus algoritmos por heurística de
+        # rendimiento y algunos acumulan en orden no determinista, de modo que dos
+        # ejecuciones con la misma semilla pueden diferir. `warn_only` evita que una
+        # operación sin implementación determinista aborte el entrenamiento; deja
+        # constancia en el registro en lugar de fallar.
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
+        torch.use_deterministic_algorithms(True, warn_only=True)
 
     tokenizer = AutoTokenizer.from_pretrained(model_config.text_model_name)
 
     train_dataset = MultimodalPhishingDataset(
-        train_df, tokenizer, max_token_length=model_config.max_token_length, fit_scalers=True
+        train_df,
+        tokenizer,
+        max_token_length=model_config.max_token_length,
+        fit_scalers=True,
+        scaler_kind=model_config.scaler_kind,
     )
     val_dataset = MultimodalPhishingDataset(
         val_df,
@@ -543,6 +587,15 @@ def train(
                     "val_accuracy": round(epoch_val["accuracy"], 6),
                 }
             )
+            if diagnostico_por_epoca is not None:
+                try:
+                    epoch_metrics[-1]["diagnostico_dominio_no_observado"] = diagnostico_por_epoca(
+                        epoch, model
+                    )
+                    model.train()  # la evaluación deja el modelo en eval()
+                except Exception as exc:  # pragma: no cover -- un diagnóstico no debe tumbar la corrida
+                    logger.warning("El diagnóstico por época falló en la época %d: %s", epoch, exc)
+
             logger.info(
                 "Epoch %d completado (global_step=%d): train_loss_mean=%.4f val_loss=%.4f val_acc=%.4f",
                 epoch,
@@ -619,7 +672,15 @@ def train(
         "fusion_type": fusion_type.value,
         "device": str(device),
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        # Fracción de la representación fusionada que procede de las modalidades no
+        # textuales, aprendida durante el entrenamiento. Es una medida directa de
+        # cuánto emplea el modelo la multimodalidad, comparable entre pliegues.
+        "modality_gate": round(model.contribucion_modal(), 6),
         "config": {
+            "scaler_kind": model_config.scaler_kind,
+            "modality_dropout_mode": model_config.modality_dropout_mode,
+            "modality_dropout_prob": model_config.modality_dropout_prob,
+            "seed": train_config.seed,
             "epochs": train_config.epochs,
             "batch_size": train_config.batch_size,
             "backbone_lr": train_config.backbone_lr,

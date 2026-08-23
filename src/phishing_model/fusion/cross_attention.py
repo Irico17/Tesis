@@ -27,7 +27,26 @@ class CrossAttentionFusion(nn.Module):
         dim_feedforward: int,
         dropout: float = 0.1,
         n_layers: int = 1,
+        norm_first: bool = True,
+        activation: str = "gelu",
     ) -> None:
+        """
+        `norm_first=True` aplica la normalización por capa ANTES de cada
+        subcomponente (pre-normalización) en lugar de después. La formulación
+        original de 2017 normaliza después, y por eso exige un calentamiento
+        cuidadoso de la tasa de aprendizaje para no divergir: con
+        post-normalización, la magnitud del gradiente que llega a las capas
+        inferiores crece con la profundidad. La pre-normalización deja una
+        trayectoria residual sin normalizar de extremo a extremo y es la
+        formulación estándar desde entonces. Aquí importa además por una razón
+        propia de esta arquitectura: las capas de fusión se inicializan al azar y
+        se conectan a un codificador preentrenado, de modo que la estabilidad de
+        los primeros pasos condiciona cuánto se degradan los pesos aprendidos.
+
+        `activation="gelu"` coincide con la activación de DistilBERT, el
+        codificador que alimenta esta capa; el valor por defecto de PyTorch es
+        ReLU, que introducía una discontinuidad de criterio dentro del modelo.
+        """
         super().__init__()
         layer = nn.TransformerDecoderLayer(
             d_model=d_model,
@@ -35,6 +54,8 @@ class CrossAttentionFusion(nn.Module):
             dim_feedforward=dim_feedforward,
             dropout=dropout,
             batch_first=True,
+            norm_first=norm_first,
+            activation=activation,
         )
         self.decoder = nn.TransformerDecoder(layer, num_layers=n_layers)
 
@@ -50,18 +71,19 @@ class CrossAttentionFusion(nn.Module):
             text_tokens: [batch, seq_len, d_model] -- secuencia de DistilBERT proyectada.
             text_key_padding_mask: [batch, seq_len] booleano, True = token de padding (a excluir).
             memory_tokens: [batch, n_memory_tokens, d_model] -- tokens de modalidad (Stage 1
-                o pooled a 1 token/rama según la variante).
+                o pooled a 1 token/rama según la variante), con el token centinela de
+                "sin modalidad" en la posición 0 (ver `model.py`).
             memory_key_padding_mask: [batch, n_memory_tokens] booleano, True = modalidad AUSENTE
-                (natural o por dropout de entrenamiento) -- se excluye de la atención cruzada.
+                (natural o por enmascaramiento de entrenamiento) -- se excluye de la atención.
 
         Returns:
             [batch, seq_len, d_model] -- secuencia de texto ya fusionada con la modalidad.
         """
-        # Salvaguarda: sin esto, softmax sobre un conjunto de Key/Value vacío
-        # produce NaN. Ocurre para las filas sin NINGUNA modalidad no-textual
-        # disponible (~13% del corpus) -- se relaja la máscara dejando un token
-        # visible; su contenido (vector de padding/cero) no aporta información
-        # real, pero evita que el forward completo colapse a NaN para esas filas.
+        # Salvaguarda numérica: sin ella, un softmax sobre un conjunto vacío de
+        # Key/Value produce NaN. `model.py` antepone un token centinela que nunca
+        # se enmascara, de modo que la condición ya no puede darse por esa vía;
+        # esta comprobación se conserva para quien invoque la capa directamente,
+        # y ahora es inocua porque la posición 0 es precisamente el centinela.
         #
         # Implementación branchless (sin `if tensor.any():`) -- ver justificación
         # completa en `modality_encoder.ModalityEncoder.forward`: un `if` sobre el
@@ -90,7 +112,7 @@ def masked_mean_pool(tokens: torch.Tensor, key_padding_mask: torch.Tensor) -> to
     Returns:
         [batch, d_model]
     """
-    valid_mask = (~key_padding_mask).unsqueeze(-1).float()  # [batch, n_tokens, 1]
+    valid_mask = (~key_padding_mask).unsqueeze(-1).to(tokens.dtype)  # [batch, n_tokens, 1]
     summed = (tokens * valid_mask).sum(dim=1)
     counts = valid_mask.sum(dim=1).clamp(min=1.0)  # evita división por cero si (tras la
     # salvaguarda de forward) alguna fila quedara sin tokens válidos

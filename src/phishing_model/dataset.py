@@ -26,7 +26,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import torch
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, QuantileTransformer
 from torch.utils.data import Dataset, Sampler
 
 from phishing_model.config import (
@@ -51,6 +51,70 @@ REQUIRED_COLS = (
 )
 
 SCALER_PATH = MODEL_DIR / "feature_scalers.pkl"
+
+# Escalador por defecto. Ver `construir_escalador` para la justificación completa.
+DEFAULT_SCALER_KIND = "quantile"
+
+
+def construir_escalador(kind: str, n_muestras: int):
+    """
+    Construye el escalador de características tabulares.
+
+    Por qué importa que el escalado esté ACOTADO. `MinMaxScaler` no recorta por
+    defecto: un valor del conjunto de prueba mayor que el máximo visto en
+    entrenamiento se transforma en un número mayor que 1, sin límite superior. En
+    validación convencional el efecto es despreciable, pero bajo cambio de dominio
+    —que es el protocolo de evaluación primario de este trabajo— resulta severo.
+    Medido sobre los tres pliegues por fuente con la formulación sin recorte:
+
+        pliegue retenido   rama         celdas fuera de [0,1]   filas afectadas   máximo
+        PhishMMF           estructura              18.88%            38.01%        36.29
+        Spam_Genuine_Mail  red                      4.06%            36.56%         1.10
+        Kaggle             estructura               0.00%             0.02%         1.18
+
+    La característica `profundidad_dom` alcanza 36.29 en el pliegue de PhishMMF,
+    esto es 36 veces el rango completo observado durante el entrenamiento.
+
+    La consecuencia es mayor aquí que en un modelo tabular corriente. La
+    tokenización estilo FT-Transformer calcula `token_i = x_i · W_i + b_i`: el
+    escalar multiplica directamente un vector de pesos aprendido, de modo que un
+    valor de 36 produce un token cuya norma es 36 veces mayor que cualquiera visto
+    en entrenamiento. Ese token entra después a una capa de atención con softmax,
+    donde una norma desproporcionada acapara la distribución de atención. En el
+    pliegue de PhishMMF, el 38% de las filas alimentaba así la rama estructural con
+    activaciones fuera de distribución.
+
+    Opciones disponibles:
+
+    - "quantile" (por defecto): `QuantileTransformer` con salida uniforme. Mapea
+      cada valor a su rango dentro de la distribución de entrenamiento, de modo que
+      la salida está acotada en [0, 1] por construcción y los valores extremos del
+      dominio de destino se saturan en los extremos en lugar de desbordarse. Es
+      además robusto a las colas largas, que es la razón por la que existía la
+      transformación logarítmica previa de las columnas de conteo.
+    - "minmax_clip": `MinMaxScaler(clip=True)`. Corrección mínima sobre la
+      formulación original, útil para aislar el efecto del recorte del efecto del
+      cambio de escalador.
+    - "minmax": formulación original, SIN acotar. Se conserva únicamente para poder
+      reproducir los resultados anteriores.
+
+    `n_quantiles` no puede exceder el número de muestras; se acota para que el
+    ajuste no falle con subconjuntos pequeños (pruebas de humo, `--max-rows`).
+    """
+    if kind == "quantile":
+        return QuantileTransformer(
+            n_quantiles=max(min(1000, n_muestras), 2),
+            output_distribution="uniform",
+            subsample=200_000,
+            random_state=0,
+        )
+    if kind == "minmax_clip":
+        return MinMaxScaler(clip=True)
+    if kind == "minmax":
+        return MinMaxScaler()
+    raise ValueError(
+        f"scaler_kind desconocido: {kind!r}. Valores admitidos: 'quantile', 'minmax_clip', 'minmax'."
+    )
 
 
 # Columnas de CONTEO con distribución de cola larga: se les aplica log1p antes de
@@ -107,6 +171,7 @@ class MultimodalPhishingDataset(Dataset):
         max_token_length: int = MAX_TOKEN_LENGTH,
         fit_scalers: bool = False,
         pad_to_max_length: bool = False,
+        scaler_kind: str = DEFAULT_SCALER_KIND,
     ) -> None:
         missing_cols = [c for c in REQUIRED_COLS if c not in df.columns]
         if missing_cols:
@@ -138,8 +203,8 @@ class MultimodalPhishingDataset(Dataset):
         )
 
         if fit_scalers:
-            self.structural_scaler = MinMaxScaler().fit(structural_raw)
-            self.network_scaler = MinMaxScaler().fit(network_raw)
+            self.structural_scaler = construir_escalador(scaler_kind, len(structural_raw)).fit(structural_raw)
+            self.network_scaler = construir_escalador(scaler_kind, len(network_raw)).fit(network_raw)
         else:
             if structural_scaler is None or network_scaler is None:
                 raise ValueError(

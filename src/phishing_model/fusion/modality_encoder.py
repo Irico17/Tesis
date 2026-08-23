@@ -22,7 +22,13 @@ class ModalityEncoder(nn.Module):
         dim_feedforward: int,
         dropout: float = 0.1,
         n_layers: int = 1,
+        norm_first: bool = True,
+        activation: str = "gelu",
     ) -> None:
+        """`norm_first` y `activation`: ver la justificación en
+        `cross_attention.CrossAttentionFusion.__init__`. Ambas capas de fusión
+        comparten criterio para que la comparación entre variantes no confunda el
+        efecto de la arquitectura con el de su formulación interna."""
         super().__init__()
         layer = nn.TransformerEncoderLayer(
             d_model=d_model,
@@ -30,6 +36,8 @@ class ModalityEncoder(nn.Module):
             dim_feedforward=dim_feedforward,
             dropout=dropout,
             batch_first=True,
+            norm_first=norm_first,
+            activation=activation,
         )
         self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers)
 
@@ -48,10 +56,11 @@ class ModalityEncoder(nn.Module):
 
         Nota sobre filas totalmente enmascaradas: si TODOS los tokens de una fila están
         marcados como ausentes (key_padding_mask todo True para esa fila), `nn.MultiheadAttention`
-        internamente produciría NaN (softmax sobre un conjunto vacío). Esto no debería ocurrir en
-        la práctica porque `has_text` siempre está disponible y el texto no pasa por este módulo,
-        pero como salvaguarda se relaja la máscara para esas filas (se deja al menos un token
-        visible) en vez de dejar que el forward produzca NaN silenciosamente.
+        internamente produciría NaN (softmax sobre un conjunto vacío). `model.py` antepone a la
+        secuencia un token centinela de "sin modalidad" que nunca se enmascara, de modo que la
+        condición no puede darse por esa vía; la salvaguarda de abajo se conserva para quien
+        invoque la capa directamente y resulta inocua, porque la posición 0 que relaja es
+        precisamente la del centinela.
 
         Implementación SIN bifurcación condicional sobre valores de tensor (`if
         tensor.any():`): el exportador ONNX de PyTorch (`torch.export`, usado por
