@@ -1,6 +1,15 @@
 # Credenciales
 kaggle.json
 .kaggle/
+# Claves y credenciales de acceso a servidores: NUNCA deben versionarse.
+*.pem
+*.key
+id_rsa*
+.ssh/
+.env
+.env.*
+credenciales*
+secrets*
 
 # Python
 __pycache__/
@@ -31,6 +40,7 @@ data/features/
 # Dataset_Unificado.parquet, que sí se trackea) — mismo criterio que por_fuente/
 data/Datasets_Procesados/template_clusters.parquet
 data/Datasets_Procesados/network_lexical_enrichment.parquet
+data/Datasets_Procesados/dom_stats_enrichment.parquet
 data/Datasets_Procesados/phishmmf_spf_enrichment.parquet
 
 # Modelo profundo: checkpoints/ONNX son binarios grandes y regenerables
