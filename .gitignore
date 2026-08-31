@@ -94,3 +94,15 @@ data/predictions/
 data/reports/loso/
 data/reports/training_logs/
 data/reports/iov_mv/
+
+# Corpus de correo real y sus particiones. No se versionan por tamaño --el
+# parquet completo son 441 MB y las particiones 1.2 GB, muy por encima del
+# límite de 100 MB por archivo de GitHub-- y porque son reproducibles de forma
+# íntegra con el pipeline:
+#   python -m phishing_pipeline.downloaders.correo_real
+#   python -m phishing_pipeline.corpus_real
+data/Datasets_Procesados/Dataset_Real*
+data/Datasets_Procesados/splits_real_group_aware/
+
+# Respaldos comprimidos del directorio de trabajo
+*backup*.zip
