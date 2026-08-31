@@ -8,7 +8,18 @@ from urllib.parse import urlparse
 
 URL_PATTERN = re.compile(r"https?://\S+|www\.\S+", re.IGNORECASE)
 IP_PATTERN = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
-HTML_TAG_PATTERN = re.compile(r"<[^>]+>")
+# Detección de marcado HTML. Se importa el patrón canónico en lugar de duplicarlo:
+# la formulación ingenua `<[^>]+>` casaba cualquier par de ángulos —direcciones
+# citadas, identificadores de mensaje, desigualdades aritméticas— e inflaba la
+# característica casi exclusivamente en la clase legítima, que es la que cita
+# mensajes anteriores. Ver la justificación completa en `dom_parser.ETIQUETA_HTML`.
+#
+# Tener DOS definiciones de la misma noción fue precisamente el problema: se
+# corrigió una y la otra siguió devolviendo el valor defectuoso a los limpiadores
+# de Kaggle y PhishMMF, que consumen esta función y no la otra.
+from phishing_pipeline.features.dom_parser import ETIQUETA_HTML
+
+HTML_TAG_PATTERN = ETIQUETA_HTML
 
 # Acortadores de URL conocidos (lista pequeña, versionada en código).
 _KNOWN_SHORTENERS = {

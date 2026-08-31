@@ -63,17 +63,32 @@ def compute_modality_availability(df: pd.DataFrame) -> pd.DataFrame:
     Calcula disponibilidad de modalidad por fila (mismo criterio que
     unifier.run_smoke_test para consistencia con el smoke test R1.1/R1.2).
 
+    La disponibilidad de red se define ÚNICAMENTE por la presencia de una URL o
+    una dirección IP en el mensaje. La formulación anterior admitía además que
+    `spf_result` no fuese nulo, y se comprobó que eso convertía la bandera en un
+    revelador de la etiqueta: las cabeceras de autenticación solo se extraían de
+    los tres ficheros de phishing de PhishMMF, de modo que dentro de esa fuente
+    `p(phishing | spf presente)` valía 1.0000 sobre 4,478 correos. La bandera
+    `has_network` entra al modelo como entrada explícita y gobierna el
+    enmascaramiento de toda la rama, así que la fuga llegaba intacta a la
+    arquitectura. Es el origen del «atajo de disponibilidad» de 0.0790 nats.
+
+    La presencia de una URL es una propiedad del correo y sobrevive a cualquier
+    cambio en el pipeline de ingesta; la de una cabecera extraída depende de qué
+    fichero la traía. Solo la primera puede sostener la definición.
+
+    Ver `cleaners/phish_mmf.EXTRAER_CABECERAS_PHISHMMF` y
+    `phishing_pipeline.auditoria_fugas`, que comprueba el invariante en cada
+    ejecución para que la corrección no se pierda con el tiempo.
+
     Returns:
         DataFrame con 3 columnas booleanas: has_text_modality (siempre True),
         has_structure_modality (has_html == 1), has_network_modality
-        (URL/IP presente en network_indicators O spf_result no nulo).
+        (URL o IP presente en network_indicators).
     """
     has_text_modality = pd.Series(True, index=df.index)
     has_structure_modality = df["has_html"] == 1
-
-    has_urls_or_ip = df["network_indicators"].fillna("None") != "None"
-    has_spf = df["spf_result"].notna() if "spf_result" in df.columns else pd.Series(False, index=df.index)
-    has_network_modality = has_urls_or_ip | has_spf
+    has_network_modality = df["network_indicators"].fillna("None") != "None"
 
     return pd.DataFrame(
         {

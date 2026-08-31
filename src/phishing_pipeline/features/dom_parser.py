@@ -14,6 +14,37 @@ warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)
 IP_PATTERN = re.compile(r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b")
 
 
+# Detección de marcado HTML.
+#
+# La formulación anterior era `<[^>]+>`, que casa cualquier par de ángulos y no
+# solo una etiqueta. El correo legítimo está lleno de pares que NO son marcado:
+# direcciones citadas como `<kre@munnari.OZ.AU>`, identificadores de mensaje como
+# `<cwg-dated-1030377287.06fa6d@DeepEddy.Com>` y enlaces entre ángulos en texto
+# plano. Medido sobre corpus de correo real, la tasa de falsos positivos era del
+# **28.6%** en SpamAssassin frente al **0.1%** en phishing_pot: el defecto inflaba
+# la característica casi exclusivamente en la clase legítima, porque es la que cita
+# mensajes anteriores.
+#
+# El sesgo no es inocuo. `has_html` define la disponibilidad de la modalidad
+# estructural, que a su vez gobierna el enmascaramiento de esa rama en el modelo y
+# el recuento de muestras multimodales que declara el indicador de R1.1. Un falso
+# positivo concentrado en una clase es, por tanto, un atajo hacia la etiqueta.
+#
+# Se exige ahora un nombre de etiqueta reconocido. La lista cubre el marcado que
+# aparece en correo; una etiqueta desconocida no se cuenta como HTML, que es el
+# error conservador: prefiere no declarar estructura a declararla donde no la hay.
+ETIQUETA_HTML = re.compile(
+    r"</?(?:html|body|head|div|table|tbody|thead|tr|td|th|p|br|hr|a|img|span|"
+    r"font|ul|ol|li|dl|dt|dd|h[1-6]|b|i|u|strong|em|small|big|center|form|input|"
+    r"button|select|option|textarea|iframe|frame|frameset|script|noscript|style|"
+    r"meta|title|link|base|blockquote|pre|code|caption|col|colgroup|map|area|object|"
+    r"embed|param|sub|sup|strike|s|tt|abbr|address|article|section|header|footer|nav|"
+    r"aside|figure|figcaption|main|label|fieldset|legend|video|audio|source|picture)"
+    r"\b[^>]*>",
+    re.IGNORECASE,
+)
+
+
 def parse_email_multimodal(body_raw: str) -> dict[str, Any]:
     """
     Extrae features DOM y clean_text desde body_raw.
@@ -58,7 +89,7 @@ def parse_email_multimodal(body_raw: str) -> dict[str, Any]:
         clean_text = soup.get_text(separator=" ", strip=True)
         clean_text = re.sub(r"\s+", " ", clean_text)
         result["clean_text"] = clean_text
-        result["has_html"] = 1 if re.search(r"<[^>]+>", body_raw) else 0
+        result["has_html"] = 1 if ETIQUETA_HTML.search(body_raw) else 0
 
         # Si no hay HTML, usar texto plano
         if not result["clean_text"] and body_raw:

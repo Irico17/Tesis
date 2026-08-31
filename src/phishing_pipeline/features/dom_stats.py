@@ -25,6 +25,8 @@ from __future__ import annotations
 import pandas as pd
 from lxml import html as lxml_html
 
+from phishing_pipeline.features.dom_parser import ETIQUETA_HTML
+
 DOM_STATS_COLUMNS = ["total_nodos_dom", "profundidad_dom"]
 
 
@@ -32,18 +34,34 @@ def compute_dom_stats(body_raw: str | None) -> dict[str, int]:
     """
     Calcula número de nodos y profundidad máxima de anidamiento del DOM.
 
-    Devuelve ceros para cuerpos vacíos, no textuales o que lxml no logre
-    interpretar: un correo de texto plano tiene, por definición, complejidad
-    estructural nula, y esa es la codificación correcta -- no un valor ausente.
+    Devuelve ceros para cuerpos vacíos o sin marcado: un correo de texto plano
+    tiene, por definición, complejidad estructural nula, y esa es la codificación
+    correcta -- no un valor ausente.
+
+    **La comprobación de marcado es imprescindible y no la suplía lxml.** El
+    docstring anterior confiaba en que `lxml_html.fromstring` fallara ante texto
+    plano, y no falla: envuelve el texto en `<span><p>…</p></span>`, de modo que
+    todo correo de texto plano recibía `total_nodos_dom = 1` y
+    `profundidad_dom = 3`. Se verificó sobre el corpus: las dos fuentes legítimas
+    de PhishMMF tienen exactamente esos valores en el 100% de sus filas, y esa
+    constante se estaba interpretando como una medida de complejidad. El contrato
+    documentado era, por tanto, falso, y la característica no distinguía entre
+    «sin estructura» y «una estructura mínima».
+
+    Se exige ahora que exista al menos una etiqueta HTML reconocida, con el mismo
+    patrón que gobierna `has_html`, de modo que ambas características sean
+    coherentes entre sí por construcción.
     """
     if not isinstance(body_raw, str) or not body_raw.strip():
+        return {"total_nodos_dom": 0, "profundidad_dom": 0}
+
+    if not ETIQUETA_HTML.search(body_raw):
         return {"total_nodos_dom": 0, "profundidad_dom": 0}
 
     try:
         root = lxml_html.fromstring(body_raw)
     except Exception:
-        # lxml falla ante cuerpos sin ningún elemento interpretable como marcado;
-        # es el caso esperado para texto plano, no una condición de error.
+        # Cuerpo con algo que parece marcado pero que lxml no logra interpretar.
         return {"total_nodos_dom": 0, "profundidad_dom": 0}
 
     total_nodes = 0

@@ -16,8 +16,40 @@ from phishing_pipeline.schema import empty_canonical_row
 # Sub-fuentes de PhishMMF cuyo JSON crudo trae un dict `Metadata` con cabeceras
 # de autenticación (Authentication-Results / Received-SPF / X-Sender-IP).
 # CEAS_08_0.jsonl y SpamAssasin_0.jsonl usan un esquema distinto (sender/receiver/
-# date/subject/body) sin este dict, así que quedan fuera intencionalmente.
+# date/subject/body) sin este dict.
 _AUTH_HEADER_SOURCES = {"phishing_pot.jsonl", "datacon2023_1.jsonl", "datacon2023_2.jsonl"}
+
+# Extraer o no las cabeceras de autenticación de PhishMMF.
+#
+# POR QUÉ ESTÁ DESACTIVADO POR DEFECTO. Los tres ficheros que traen esas cabeceras
+# son exactamente los tres ficheros de phishing de PhishMMF: `phishing_pot` y los
+# dos de `datacon2023`. Los dos que no las traen —CEAS_08 y SpamAssassin— son
+# exactamente los dos de la clase legítima. La disponibilidad del campo coincide
+# así, punto por punto, con la etiqueta.
+#
+# La consecuencia se midió sobre el corpus y es una fuga dura: dentro de PhishMMF,
+# `p(phishing | spf_result presente) = 1.0000` sobre 4,478 correos, y la
+# información mutua entre la mera PRESENCIA del campo y la etiqueta alcanza 0.6016
+# nats —el 87% de la entropía de una etiqueta binaria equilibrada—. El modelo no
+# necesita leer el valor del campo: le basta con notar que existe.
+#
+# El daño no se detiene en la rama de red. `compute_modality_availability` define
+# la disponibilidad de esa modalidad como «hay URL O hay SPF», de modo que la
+# bandera `has_network` que el modelo recibe como entrada explícita heredaba la
+# fuga. Es el origen real del «atajo de disponibilidad» de 0.0790 nats que el
+# trabajo había atribuido a una propiedad del dominio: no lo era, era un defecto
+# de este limpiador.
+#
+# La única corrección válida es simétrica. O se extrae el campo de las cinco
+# sub-fuentes, o no se extrae de ninguna. Como CEAS_08 y SpamAssassin no publican
+# esas cabeceras, la primera opción no está disponible y se toma la segunda:
+# perder una característica es preferible a conservar una que revela la etiqueta.
+# El valor de la característica era además ilusorio, porque procedía íntegramente
+# de la asimetría.
+#
+# Se deja gobernable para poder reproducir las corridas anteriores y para que la
+# decisión quede explícita en el código en lugar de implícita en una omisión.
+EXTRAER_CABECERAS_PHISHMMF = False
 
 _SPF_RE = re.compile(r"spf\s*=\s*(\w+)", re.IGNORECASE)
 _DKIM_RE = re.compile(r"dkim\s*=\s*(\w+)", re.IGNORECASE)
@@ -94,12 +126,18 @@ def _extract_meta(item: dict) -> tuple[str, str]:
     return str(sender), str(subject)
 
 
-def parse_phish_mmf_jsonl(extract_path: Path) -> pd.DataFrame:
+def parse_phish_mmf_jsonl(
+    extract_path: Path, extraer_cabeceras: bool = EXTRAER_CABECERAS_PHISHMMF
+) -> pd.DataFrame:
     """
     Parsea archivos JSONL línea a línea (NO leer archivo entero).
 
     Args:
         extract_path: carpeta con JSONL extraídos de PhishMMF
+        extraer_cabeceras: si se pueblan spf/dkim/dmarc/IP de origen. Por defecto
+            NO se pueblan, porque solo están disponibles en los ficheros de una de
+            las dos clases y su presencia revela la etiqueta. Ver la justificación
+            completa en `EXTRAER_CABECERAS_PHISHMMF`.
     """
     rows = []
     invalid_lines = 0
@@ -114,7 +152,9 @@ def parse_phish_mmf_jsonl(extract_path: Path) -> pd.DataFrame:
 
         label_int, label_text = label_info
         source_name = f"PhishMMF_{file_path.name}"
-        has_auth_headers = file_path.name in _AUTH_HEADER_SOURCES
+        has_auth_headers = (
+            extraer_cabeceras and file_path.name in _AUTH_HEADER_SOURCES
+        )
 
         try:
             with file_path.open(encoding="utf-8", errors="ignore") as f:
@@ -190,6 +230,8 @@ def parse_phish_mmf_jsonl(extract_path: Path) -> pd.DataFrame:
     return df
 
 
-def clean_phish_mmf(extract_path: Path) -> pd.DataFrame:
+def clean_phish_mmf(
+    extract_path: Path, extraer_cabeceras: bool = EXTRAER_CABECERAS_PHISHMMF
+) -> pd.DataFrame:
     """Wrapper de limpieza PhishMMF."""
-    return parse_phish_mmf_jsonl(extract_path)
+    return parse_phish_mmf_jsonl(extract_path, extraer_cabeceras=extraer_cabeceras)
