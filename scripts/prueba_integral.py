@@ -72,6 +72,35 @@ def proteger(p: Path) -> Path:
     return p
 
 
+class Omitido(Exception):
+    """El paso no puede ejecutarse porque falta un artefacto reproducible.
+
+    No es un fallo: el corpus y sus particiones no se versionan por tamaño, de
+    modo que en un clon reciente estos pasos no tienen sobre qué operar hasta
+    que se ejecute el pipeline. Contarlos como fallo enmascararía los fallos de
+    verdad.
+    """
+
+
+def corpus_del_trabajo():
+    """Ruta del corpus sobre el que se reporta el trabajo, o `Omitido`.
+
+    Se prefiere la variante reducida por ser mucho más liviana de leer y
+    contener las mismas columnas que estas comprobaciones necesitan.
+    """
+    from phishing_pipeline.config import PROCESSED_DIR
+
+    for nombre in ("Dataset_Real_slim.parquet", "Dataset_Real.parquet"):
+        ruta = PROCESSED_DIR / nombre
+        if ruta.exists():
+            return ruta
+    raise Omitido(
+        "no está el corpus en data/Datasets_Procesados/. No se versiona por tamaño; "
+        "se reconstruye con `python -m phishing_pipeline.downloaders.correo_real` "
+        "y `python -m phishing_pipeline.corpus_real`."
+    )
+
+
 class Resultado:
     def __init__(self) -> None:
         self.pasos: list[dict[str, Any]] = []
@@ -83,6 +112,13 @@ class Resultado:
             self.pasos.append({"paso": nombre, "estado": "OK", "segundos": round(time.time() - t0, 1)})
             logger.info("[OK] %s (%.1fs)", nombre, time.time() - t0)
             return valor
+        except Omitido as exc:
+            self.pasos.append(
+                {"paso": nombre, "estado": "OMITIDO", "segundos": round(time.time() - t0, 1),
+                 "error": str(exc)}
+            )
+            logger.warning("[OMITIDO] %s: %s", nombre, exc)
+            return None
         except Exception as exc:
             self.pasos.append(
                 {
@@ -103,13 +139,16 @@ class Resultado:
         print("\n" + "=" * 78)
         print("PRUEBA DE INTEGRACIÓN — RESUMEN")
         print("=" * 78)
+        omitidos = [p for p in self.pasos if p["estado"] == "OMITIDO"]
         for p in self.pasos:
-            marca = "OK   " if p["estado"] == "OK" else "FALLÓ"
+            marca = {"OK": "OK   ", "OMITIDO": "OMIT."}.get(p["estado"], "FALLÓ")
             print(f"  [{marca}] {p['paso']:52s} {p['segundos']:6.1f}s")
-            if p["estado"] == "FALLÓ":
+            if p["estado"] in ("FALLÓ", "OMITIDO"):
                 print(f"           {p['error']}")
         print()
-        print(f"  {len(self.pasos) - len(fallos)}/{len(self.pasos)} pasos superados")
+        ejecutados = len(self.pasos) - len(omitidos)
+        print(f"  {ejecutados - len(fallos)}/{ejecutados} pasos superados"
+              + (f", {len(omitidos)} omitido(s)" if omitidos else ""))
         if criticos:
             print(f"  {len(criticos)} fallo(s) CRÍTICO(S): la cadena no está lista para el servidor")
         elif fallos:
@@ -303,11 +342,11 @@ def main() -> None:
             ds = MultimodalPhishingDataset(train_df, tok, fit_scalers=True)
             lote = {k: v.unsqueeze(0) for k, v in ds[0].items() if k != "email_id"}
 
-            from phishing_model.model import MultimodalPhishingClassifier
+            from phishing_model.model import MultimodalPhishingClassifier, cargar_pesos
 
             modelo = MultimodalPhishingClassifier(cfg).to(device)
             ckpt = torch.load(puntos_control[ft.value], map_location=device)
-            modelo.load_state_dict(ckpt["model_state_dict"])
+            cargar_pesos(modelo, ckpt["model_state_dict"])
             lote = {k: v.to(device) for k, v in lote.items()}
             # Atribuciones simuladas sobre las palabras del propio texto: lo que
             # se verifica es el mecanismo de medición de fidelidad, no la calidad
@@ -374,12 +413,12 @@ def main() -> None:
         from phishing_model.train_loso import build_loso_folds
         from phishing_pipeline.config import PROCESSED_DIR
 
-        # El corpus UNIFICADO, no la partición de entrenamiento: la validación
-        # por fuente reparte las 110,152 filas completas en cada pliegue —dos
-        # fuentes para entrenar y la tercera íntegra como prueba—, de modo que
+        # El corpus COMPLETO, no la partición de entrenamiento: la validación
+        # por pliegue reparte todas las filas en cada uno —unas colecciones para
+        # entrenar y las retenidas íntegras como prueba—, de modo que
         # comprobarlo sobre una partición no reflejaría el uso real y podría
         # ocultar un fallo que solo aparece con el corpus entero.
-        completo = pd.read_parquet(PROCESSED_DIR / "Dataset_Unificado.parquet")
+        completo = pd.read_parquet(corpus_del_trabajo())
         folds = build_loso_folds(completo)
         for f in folds:
             total = len(f["train_df"]) + len(f["val_df"]) + len(f["test_df"])
@@ -409,6 +448,40 @@ def main() -> None:
         return {"pliegues": len(folds)}
 
     r.ejecutar("8. Pliegues por fuente sin fuga entre particiones", pliegues)
+
+    # ---------- 9. Ausencia de fugas por disponibilidad de campo ----------
+    def sin_fugas_por_disponibilidad():
+        """
+        Comprueba que la PRESENCIA de un campo no revele la etiqueta dentro de su
+        propia fuente.
+
+        Es un invariante, no una comprobación puntual. El limpiador de PhishMMF
+        extraía las cabeceras de autenticación solo de sus tres ficheros de
+        phishing, de modo que `p(phishing | spf presente)` valía 1.0000 sobre 4,478
+        correos, y el defecto sobrevivió meses porque nada lo vigilaba. Corregirlo
+        resuelve el caso; comprobarlo aquí impide que vuelva por otra vía.
+        """
+        from phishing_pipeline.auditoria_fugas import auditar
+
+        completo = pd.read_parquet(corpus_del_trabajo())
+        informe = auditar(completo)
+        if informe["veredicto"] != "SIN_FUGAS":
+            detalle = "; ".join(
+                f"{f['fuente']}·{f['campo']}={f['mi_presencia_etiqueta_nats']:.4f} nats"
+                for f in informe["fugas_detectadas"]
+            )
+            raise AssertionError(
+                f"{len(informe['fugas_detectadas'])} fuga(s) por disponibilidad de campo: {detalle}. "
+                "La presencia del campo identifica la clase dentro de su fuente. "
+                "Corregir en el limpiador: extraerlo de todas las sub-fuentes o de ninguna."
+            )
+        return {"campos_auditados": len(informe["campos_auditados"])}
+
+    # No crítico mientras el corpus vigente no se haya regenerado con el limpiador
+    # corregido: las cuatro fugas conocidas seguirán apareciendo hasta entonces, y
+    # convertirlas en fallo bloqueante impediría usar la prueba para lo demás.
+    # Pasar a crítico en cuanto el corpus se reconstruya.
+    r.ejecutar("9. Sin fugas por disponibilidad de campo", sin_fugas_por_disponibilidad, critico=False)
 
     ok = r.resumen()
 
