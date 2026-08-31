@@ -32,7 +32,7 @@ import torch.nn as nn
 
 from phishing_model.config import BASE_DIR, FusionType, ModelConfig
 from phishing_model.dataset import make_synthetic_batch
-from phishing_model.model import MultimodalPhishingClassifier
+from phishing_model.model import MultimodalPhishingClassifier, cargar_pesos
 from phishing_pipeline.logging_utils import get_logger
 
 logger = get_logger(__name__)
@@ -241,7 +241,7 @@ def load_real_test_batches(
     sample = df.sample(n=min(n_examples, len(df)), random_state=seed).reset_index(drop=True)
 
     tokenizer = AutoTokenizer.from_pretrained(config.text_model_name)
-    structural_scaler, network_scaler = load_scalers()
+    structural_scaler, network_scaler, clip_bounds = load_scalers()
     dataset = MultimodalPhishingDataset(
         sample,
         tokenizer,
@@ -249,6 +249,7 @@ def load_real_test_batches(
         network_scaler=network_scaler,
         max_token_length=config.max_token_length,
         fit_scalers=False,
+        clip_bounds=clip_bounds,
         # Longitud FIJA: el grafo ONNX exportado traza la dimensión de secuencia
         # como constante (solo el lote es dinámico), así que la inferencia sobre
         # el modelo exportado exige secuencias de `max_token_length`. El relleno
@@ -416,7 +417,7 @@ def run_quantization_pipeline(
     config = ModelConfig(fusion_type=fusion_type)
     model = MultimodalPhishingClassifier(config)
     checkpoint = torch.load(checkpoint_path, map_location="cpu")
-    model.load_state_dict(checkpoint["model_state_dict"])
+    cargar_pesos(model, checkpoint["model_state_dict"])
     model.eval()
 
     fp32_path = export_to_onnx(model, config)

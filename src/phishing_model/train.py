@@ -32,6 +32,7 @@ import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader
+from sklearn.metrics import roc_auc_score
 from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 
 from phishing_model.config import FusionType, ModelConfig, TrainConfig, get_checkpoint_path
@@ -41,8 +42,8 @@ from phishing_model.dataset import (
     make_collate_fn,
     save_scalers,
 )
-from phishing_model.losses import build_loss_fn, compute_class_weights
-from phishing_model.model import MultimodalPhishingClassifier
+from phishing_model.losses import GroupDROLoss, build_loss_fn, compute_class_weights
+from phishing_model.model import MultimodalPhishingClassifier, cargar_pesos
 from phishing_pipeline.config import PROCESSED_DIR, REPORTS_DIR
 from phishing_pipeline.logging_utils import get_logger
 
@@ -304,7 +305,12 @@ def load_checkpoint(
     path: Path, model: MultimodalPhishingClassifier, optimizer: torch.optim.Optimizer | None = None
 ) -> dict[str, Any]:
     checkpoint = torch.load(path, map_location="cpu")
-    model.load_state_dict(checkpoint["model_state_dict"])
+    reconstruidos = cargar_pesos(model, checkpoint["model_state_dict"], origen=f"punto de control {path}")
+    if reconstruidos:
+        logger.info(
+            "Búferes reconstruidos con su valor inicial (ausentes en el punto de control): %s",
+            reconstruidos,
+        )
     if optimizer is not None and "optimizer_state_dict" in checkpoint:
         optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
     logger.info(
@@ -313,20 +319,77 @@ def load_checkpoint(
     return checkpoint
 
 
+# Criterios admitidos para elegir el punto de control que se evalúa.
+#
+# "val_loss" (histórico). Pérdida de entropía cruzada sobre un 10% extraído de las
+# fuentes de ENTRENAMIENTO. Bajo cambio de dominio este criterio está sesgado en
+# contra del objetivo del protocolo: la entropía cruzada dentro de la distribución
+# recompensa la confianza, y el modelo más confiado dentro de la distribución es
+# típicamente el que más se ha apoyado en los atajos hacia la fuente. Se conserva
+# para poder reproducir las corridas anteriores.
+#
+# "val_auc" (recomendado). Área bajo la curva ROC sobre el mismo conjunto. Mide
+# ordenamiento y es invariante a la calibración, que es justamente la propiedad
+# que sí transfiere entre fuentes según el diagnóstico del trabajo: en el pliegue
+# de Kaggle el AUC es de 0.8051 mientras el F1 se desploma, porque el modelo ordena
+# bien y decide mal. Seleccionar por AUC deja de premiar la confianza.
+#
+# Ninguno de los dos observa la fuente retenida, de modo que el cambio de criterio
+# no compromete el protocolo.
+CRITERIOS_DE_SELECCION = ("val_loss", "val_auc")
+
+
+def _aplicar_perdida(
+    loss_fn: torch.nn.Module, logits: torch.Tensor, batch: dict[str, torch.Tensor]
+) -> torch.Tensor:
+    """
+    Evalúa la pérdida pasándole los grupos solo si los admite.
+
+    `GroupDROLoss` necesita saber a qué fuente pertenece cada ejemplo; las demás
+    pérdidas tienen la firma de dos argumentos de PyTorch. Comprobarlo aquí evita
+    replicar la condición en cada punto de llamada.
+    """
+    if isinstance(loss_fn, GroupDROLoss):
+        return loss_fn(logits, batch["label"], batch.get("source_index"))
+    return loss_fn(logits, batch["label"])
+
+
 @torch.no_grad()
 def evaluate_loss_accuracy(
     model: MultimodalPhishingClassifier, loader: DataLoader, loss_fn: torch.nn.Module, device: torch.device
 ) -> dict[str, float]:
+    """
+    Pérdida, exactitud y área bajo la curva ROC sobre un conjunto de validación.
+
+    El AUC se calcula aquí, y no aparte, porque es el criterio de selección
+    alternativo del punto de control (ver `CRITERIOS_DE_SELECCION`) y recorrer el
+    conjunto dos veces por época sería un desperdicio. Si el conjunto contiene una
+    sola clase el AUC no está definido y se devuelve None.
+    """
     model.eval()
     total_loss, total_correct, total_n = 0.0, 0, 0
+    probas: list[np.ndarray] = []
+    etiquetas: list[np.ndarray] = []
     for batch in loader:
         batch_t = {k: v.to(device) for k, v in batch.items() if k != "email_id"}
         logits = model(batch_t)
-        loss = loss_fn(logits, batch_t["label"])
+        loss = _aplicar_perdida(loss_fn, logits, batch_t)
         total_loss += loss.item() * len(batch_t["label"])
         total_correct += (logits.argmax(dim=-1) == batch_t["label"]).sum().item()
         total_n += len(batch_t["label"])
-    return {"loss": total_loss / max(total_n, 1), "accuracy": total_correct / max(total_n, 1)}
+        probas.append(torch.softmax(logits.float(), dim=-1)[:, 1].cpu().numpy())
+        etiquetas.append(batch_t["label"].cpu().numpy())
+
+    auc = None
+    if probas:
+        y = np.concatenate(etiquetas)
+        if len(np.unique(y)) > 1:
+            auc = float(roc_auc_score(y, np.concatenate(probas)))
+    return {
+        "loss": total_loss / max(total_n, 1),
+        "accuracy": total_correct / max(total_n, 1),
+        "roc_auc": auc,
+    }
 
 
 def train(
@@ -428,8 +491,15 @@ def train(
         network_scaler=train_dataset.network_scaler,
         max_token_length=model_config.max_token_length,
         fit_scalers=False,
+        clip_bounds=train_dataset.clip_bounds,
+        grupos=train_dataset.grupos,
     )
-    save_scalers(train_dataset.structural_scaler, train_dataset.network_scaler, path=scaler_path)
+    save_scalers(
+        train_dataset.structural_scaler,
+        train_dataset.network_scaler,
+        path=scaler_path,
+        clip_bounds=train_dataset.clip_bounds,
+    )
 
     collate_fn = make_collate_fn(tokenizer)  # relleno dinámico por lote
     # Agrupamiento por longitud SOLO en entrenamiento: reduce el costo de atención
@@ -441,7 +511,14 @@ def train(
         batch_size=train_config.batch_size,
         shuffle=True,
         seed=train_config.seed,
+        source_index=train_dataset.source_index if train_config.balancear_por_fuente else None,
     )
+    if train_config.balancear_por_fuente:
+        logger.info(
+            "Muestreo balanceado por fuente activo sobre %d grupos: %s",
+            len(train_dataset.grupos),
+            train_dataset.grupos,
+        )
     train_loader = DataLoader(
         train_dataset,
         batch_sampler=train_sampler,
@@ -456,6 +533,28 @@ def train(
         collate_fn=collate_fn,
     )
 
+    # La cabeza adversaria necesita saber cuántas fuentes distingue, y ese número
+    # solo se conoce al ver el conjunto de entrenamiento. Se fija en la
+    # configuración ANTES de construir el modelo para que quede guardado en el
+    # punto de control y la evaluación reconstruya la misma arquitectura.
+    if train_config.usar_adversario_de_fuente:
+        if len(train_dataset.grupos) < 2:
+            raise ValueError(
+                "El adversario de fuente exige al menos 2 fuentes en el entrenamiento, "
+                f"y se encontraron {len(train_dataset.grupos)}: {train_dataset.grupos}."
+            )
+        model_config = replace(
+            model_config,
+            n_fuentes_adversario=len(train_dataset.grupos),
+            peso_adversario=train_config.peso_adversario,
+        )
+        logger.info(
+            "Adversario de fuente activo (peso=%s) sobre %d fuentes: %s",
+            train_config.peso_adversario,
+            len(train_dataset.grupos),
+            train_dataset.grupos,
+        )
+
     model = MultimodalPhishingClassifier(model_config).to(device)
 
     optimizer = torch.optim.AdamW(
@@ -467,12 +566,27 @@ def train(
     if train_config.use_class_weights or train_config.use_focal_loss:
         labels_tensor = torch.tensor(train_dataset.labels, dtype=torch.long)
         class_weights = compute_class_weights(labels_tensor).to(device)
+    if train_config.criterio_seleccion not in CRITERIOS_DE_SELECCION:
+        raise ValueError(
+            f"criterio_seleccion={train_config.criterio_seleccion!r} no admitido. "
+            f"Valores válidos: {CRITERIOS_DE_SELECCION}."
+        )
     loss_fn = build_loss_fn(
         use_class_weights=train_config.use_class_weights,
         use_focal_loss=train_config.use_focal_loss,
         focal_gamma=train_config.focal_loss_gamma,
         class_weights=class_weights,
-    )
+        use_group_dro=train_config.use_group_dro,
+        n_grupos=len(train_dataset.grupos),
+        group_dro_eta=train_config.group_dro_eta,
+    ).to(device)
+    if train_config.use_group_dro:
+        logger.info(
+            "Riesgo del peor grupo activo (eta=%s) sobre %d fuentes: %s",
+            train_config.group_dro_eta,
+            len(train_dataset.grupos),
+            train_dataset.grupos,
+        )
 
     scaler = torch.amp.GradScaler("cuda", enabled=(train_config.mixed_precision and device.type == "cuda"))
 
@@ -480,13 +594,18 @@ def train(
     # El total de pasos se calcula a partir del número real de lotes por época,
     # acotado por `max_steps` cuando se usa: un planificador dimensionado sobre
     # un horizonte distinto del real dejaría la tasa a mitad de decaimiento.
+    #
+    # `total_steps` se calcula siempre, y no solo cuando hay planificador, porque
+    # la programación de intensidad del adversario de fuente también lo necesita
+    # para saber en qué punto del entrenamiento se encuentra.
+    steps_per_epoch = len(train_loader)
+    total_steps = steps_per_epoch * train_config.epochs
+    if max_steps is not None:
+        total_steps = min(total_steps, max_steps)
+    total_steps = max(total_steps, 1)
+
     scheduler = None
     if train_config.use_lr_scheduler:
-        steps_per_epoch = len(train_loader)
-        total_steps = steps_per_epoch * train_config.epochs
-        if max_steps is not None:
-            total_steps = min(total_steps, max_steps)
-        total_steps = max(total_steps, 1)
         warmup_steps = int(total_steps * train_config.warmup_ratio)
         scheduler = get_linear_schedule_with_warmup(
             optimizer, num_warmup_steps=warmup_steps, num_training_steps=total_steps
@@ -535,6 +654,7 @@ def train(
         train_sampler.set_epoch(epoch)  # lotes distintos en cada época
         model.train()
         epoch_losses: list[float] = []
+        perdida_adversaria_acum: list[float] = []
         for batch in train_loader:
             batch_t = {k: v.to(device) for k, v in batch.items() if k != "email_id"}
 
@@ -543,7 +663,20 @@ def train(
                 "cuda", enabled=(train_config.mixed_precision and device.type == "cuda")
             ):
                 logits = model(batch_t)
-                loss = loss_fn(logits, batch_t["label"])
+                loss = _aplicar_perdida(loss_fn, logits, batch_t)
+                if model.cabeza_adversaria is not None:
+                    # La intensidad crece de cero a uno a lo largo del
+                    # entrenamiento: aplicarla al máximo desde el primer paso
+                    # desestabiliza el ajuste cuando el cuerpo aún no ha aprendido
+                    # nada que valga la pena preservar (Ganin et al., 2016).
+                    progreso = global_step / max(total_steps, 1)
+                    l_adv = model.perdida_adversaria(
+                        batch_t["source_index"],
+                        model.cabeza_adversaria.escala_en(progreso),
+                    )
+                    if l_adv is not None:
+                        perdida_adversaria_acum.append(float(l_adv.detach()))
+                        loss = loss + model_config.peso_adversario * l_adv
 
             if not torch.isfinite(loss):
                 raise RuntimeError(
@@ -585,8 +718,22 @@ def train(
                     "train_loss_mean": round(sum(epoch_losses) / len(epoch_losses), 6),
                     "val_loss": round(epoch_val["loss"], 6),
                     "val_accuracy": round(epoch_val["accuracy"], 6),
+                    "val_roc_auc": (
+                        round(epoch_val["roc_auc"], 6) if epoch_val["roc_auc"] is not None else None
+                    ),
+                    "modality_gate": round(model.contribucion_modal(), 6),
                 }
             )
+            if perdida_adversaria_acum:
+                # Una pérdida adversaria que sube indica que la fuente es cada vez
+                # menos recuperable de la representación, que es el objetivo.
+                epoch_metrics[-1]["perdida_adversaria_media"] = round(
+                    sum(perdida_adversaria_acum) / len(perdida_adversaria_acum), 6
+                )
+            if isinstance(loss_fn, GroupDROLoss):
+                epoch_metrics[-1]["pesos_por_fuente"] = dict(
+                    zip(train_dataset.grupos, loss_fn.pesos_actuales())
+                )
             if diagnostico_por_epoca is not None:
                 try:
                     epoch_metrics[-1]["diagnostico_dominio_no_observado"] = diagnostico_por_epoca(
@@ -611,7 +758,21 @@ def train(
             # problema en el informe pero no impedía que ocurriera. El criterio es
             # la pérdida de validación, que es continua y detecta el deterioro
             # antes que la exactitud.
-            current_val_loss = epoch_metrics[-1]["val_loss"]
+            #
+            # El criterio es configurable (ver `CRITERIOS_DE_SELECCION`). Se
+            # normaliza a "menor es mejor" para que la comparación y la parada
+            # temprana sean idénticas en ambos casos: la pérdida se toma tal cual y
+            # el área bajo la curva se toma con signo negativo. Si el AUC no está
+            # definido —conjunto de validación con una sola clase— se recurre a la
+            # pérdida en esa época en lugar de descartarla.
+            if train_config.criterio_seleccion == "val_auc" and epoch_metrics[-1].get("val_roc_auc") is not None:
+                current_val_loss = -epoch_metrics[-1]["val_roc_auc"]
+                nombre_criterio = "val_auc"
+                valor_mostrado = epoch_metrics[-1]["val_roc_auc"]
+            else:
+                current_val_loss = epoch_metrics[-1]["val_loss"]
+                nombre_criterio = "val_loss"
+                valor_mostrado = current_val_loss
             if current_val_loss < best_val_loss:
                 best_val_loss = current_val_loss
                 best_epoch = epoch
@@ -620,8 +781,9 @@ def train(
                     best_checkpoint_path, model, optimizer, epoch + 1, global_step, model_config
                 )
                 logger.info(
-                    "Nuevo mejor modelo (val_loss=%.6f) guardado en %s",
-                    best_val_loss,
+                    "Nuevo mejor modelo (%s=%.6f) guardado en %s",
+                    nombre_criterio,
+                    valor_mostrado,
                     best_checkpoint_path.name,
                 )
             else:
@@ -631,10 +793,11 @@ def train(
                     and epochs_without_improvement >= train_config.early_stopping_patience
                 ):
                     logger.info(
-                        "Parada temprana: %d épocas sin mejora de val_loss (mejor: época %d, %.6f)",
+                        "Parada temprana: %d épocas sin mejora de %s (mejor: época %d, %.6f)",
                         epochs_without_improvement,
+                        train_config.criterio_seleccion,
                         best_epoch,
-                        best_val_loss,
+                        abs(best_val_loss),
                     )
                     stopped_early = True
         else:
@@ -651,6 +814,7 @@ def train(
         val_metrics = {
             "loss": epoch_metrics[-1]["val_loss"],
             "accuracy": epoch_metrics[-1]["val_accuracy"],
+            "roc_auc": epoch_metrics[-1].get("val_roc_auc"),
         }
     else:
         val_metrics = evaluate_loss_accuracy(model, val_loader, loss_fn, device)
@@ -662,7 +826,11 @@ def train(
     # al archivo correcto sin depender de una convención implícita.
     best_model_info = {
         "best_epoch": best_epoch,
+        "criterio_seleccion": train_config.criterio_seleccion,
+        # Se guarda con el signo con el que se compara internamente ("menor es
+        # mejor"); `valor_criterio` lo devuelve ya en su escala natural.
         "best_val_loss": best_val_loss if best_epoch is not None else None,
+        "valor_criterio": abs(best_val_loss) if best_epoch is not None else None,
         "best_checkpoint": str(best_checkpoint_path) if best_epoch is not None else None,
         "early_stopping_patience": train_config.early_stopping_patience,
     }
@@ -754,6 +922,48 @@ def main() -> None:
     parser.add_argument("--max-rows", type=int, default=None, help="Submuestreo de train/val (debug/CPU)")
     parser.add_argument("--use-class-weights", action="store_true")
     parser.add_argument("--use-focal-loss", action="store_true")
+    parser.add_argument(
+        "--usar-adversario-de-fuente",
+        action="store_true",
+        help=(
+            "Añade una cabeza adversaria con inversión de gradiente que borra la FUENTE de la "
+            "representación. Ataca directamente el hallazgo de que las fuentes son "
+            "identificables con un 96.4%% de exactitud desde el texto."
+        ),
+    )
+    parser.add_argument("--peso-adversario", type=float, default=1.0)
+    parser.add_argument(
+        "--use-group-dro",
+        action="store_true",
+        help=(
+            "Minimiza el riesgo del PEOR GRUPO tomando la fuente como grupo, en lugar del "
+            "riesgo promedio. Ataca el desbalance de fuente, que en este corpus es el dominante."
+        ),
+    )
+    parser.add_argument("--group-dro-eta", type=float, default=0.01)
+    parser.add_argument(
+        "--balancear-por-fuente",
+        action="store_true",
+        help="Muestrea con reposición para igualar la presencia esperada de cada fuente por época.",
+    )
+    parser.add_argument(
+        "--criterio-seleccion",
+        type=str,
+        default="val_loss",
+        choices=list(CRITERIOS_DE_SELECCION),
+        help=(
+            "Criterio con que se elige el punto de control a evaluar. 'val_auc' mide ordenamiento "
+            "y es invariante a la calibración; 'val_loss' premia la confianza dentro de la "
+            "distribución y por tanto favorece el aprendizaje de atajos bajo cambio de dominio."
+        ),
+    )
+    parser.add_argument(
+        "--modality-gate-mode",
+        type=str,
+        default=None,
+        choices=["global", "conditional"],
+        help="Compuerta modal escalar única ('global') o calculada por correo ('conditional').",
+    )
     parser.add_argument("--resume", action="store_true")
     parser.add_argument(
         "--scaler-path",
@@ -789,6 +999,12 @@ def main() -> None:
         epochs=args.epochs,
         use_class_weights=args.use_class_weights,
         use_focal_loss=args.use_focal_loss,
+        use_group_dro=args.use_group_dro,
+        group_dro_eta=args.group_dro_eta,
+        balancear_por_fuente=args.balancear_por_fuente,
+        criterio_seleccion=args.criterio_seleccion,
+        usar_adversario_de_fuente=args.usar_adversario_de_fuente,
+        peso_adversario=args.peso_adversario,
     )
 
     t0 = time.time()

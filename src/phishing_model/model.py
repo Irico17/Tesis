@@ -17,6 +17,7 @@ from phishing_model.encoders.structural_tokenizer import StructuralTokenizer
 from phishing_model.encoders.text_encoder import TextEncoder
 from phishing_model.fusion.cross_attention import CrossAttentionFusion, masked_mean_pool
 from phishing_model.fusion.modality_encoder import ModalityEncoder
+from phishing_model.losses import CabezaAdversariaDeFuente
 
 
 def sin_decaimiento(nombre: str) -> bool:
@@ -47,6 +48,37 @@ def sin_decaimiento(nombre: str) -> bool:
         or n.endswith(".norm.weight")
         or n.endswith("norm.weight")
     )
+
+
+# Búferes cuya inicialización no depende del entrenamiento previo y que, por
+# tanto, pueden reconstruirse si faltan en un punto de control anterior a su
+# introducción. Cualquier OTRA clave faltante o sobrante sigue siendo un error:
+# significaría que el punto de control no corresponde a esta arquitectura.
+BUFERES_RECONSTRUIBLES = frozenset({"_gate_media"})
+
+
+def cargar_pesos(modelo: nn.Module, state_dict: dict, origen: str = "punto de control") -> list[str]:
+    """
+    Carga pesos tolerando la ausencia de búferes añadidos después de guardarlos.
+
+    Existe porque la arquitectura gana búferes con el tiempo y una carga estricta
+    convierte esa evolución en un fallo por clave faltante, aunque el búfer en
+    cuestión se reconstruya idéntico con su valor inicial. La alternativa perezosa
+    —`strict=False` a secas— es peor: silenciaría también un punto de control que
+    de verdad no corresponde a esta arquitectura, que es justo el error que la
+    comprobación debe atrapar.
+
+    Devuelve la lista de búferes reconstruidos, para que el llamador pueda
+    registrarla.
+    """
+    informe = modelo.load_state_dict(state_dict, strict=False)
+    inesperadas = set(informe.missing_keys) - BUFERES_RECONSTRUIBLES
+    if inesperadas or informe.unexpected_keys:
+        raise RuntimeError(
+            f"El {origen} no corresponde a esta arquitectura. "
+            f"Faltantes: {sorted(inesperadas)}. Sobrantes: {sorted(informe.unexpected_keys)}."
+        )
+    return sorted(informe.missing_keys)
 
 
 class MultimodalPhishingClassifier(nn.Module):
@@ -148,6 +180,44 @@ class MultimodalPhishingClassifier(nn.Module):
                 torch.atanh(torch.tensor([float(config.modality_gate_init)]))
             )
 
+            # Compuerta CONDICIONADA a la entrada (`modality_gate_mode="conditional"`).
+            #
+            # La compuerta escalar de arriba es única para todo el corpus, de modo
+            # que obliga al modelo a emplear las modalidades no textuales en la
+            # misma proporción para todos los correos. Se verificó que la utilidad
+            # de esas modalidades NO es homogénea: la información mutua condicional
+            # entre las características tabulares y la etiqueta, medida dentro de
+            # cada fuente, va de 0.0546 nats en Kaggle —donde no hay prácticamente
+            # nada que aprovechar— a 0.6759 en Spam_Genuine_Mail. Un escalar único
+            # solo puede alcanzar un compromiso entre regímenes incompatibles, y el
+            # valor de 0.497 al que converge es exactamente eso.
+            #
+            # La variante condicionada calcula un valor por correo a partir de la
+            # representación textual agregada y de las banderas de disponibilidad:
+            #
+            #     g_i = sigmoide(W · [texto_agregado_i ; hay_estructura_i ; hay_red_i] + b)
+            #
+            # Conserva la interpretabilidad y la amplía: en lugar de un escalar se
+            # puede reportar la DISTRIBUCIÓN de la compuerta por fuente y por clase,
+            # que responde a la pregunta de investigación con mucho más detalle que
+            # un único número. El sesgo se inicializa en el logit de
+            # `modality_gate_init` y los pesos en una escala pequeña, de modo que el
+            # valor inicial medio coincide con el de la variante global y ambas
+            # arrancan del mismo punto.
+            self.modality_gate_mode = config.modality_gate_mode
+            if self.modality_gate_mode == "conditional":
+                self.modality_gate_proj = nn.Linear(d + 2, 1)
+                nn.init.normal_(self.modality_gate_proj.weight, std=0.02)
+                init = float(config.modality_gate_init)
+                init = min(max(init, 1e-4), 1 - 1e-4)
+                nn.init.constant_(
+                    self.modality_gate_proj.bias, float(torch.logit(torch.tensor(init)))
+                )
+            # Media móvil del valor de la compuerta, para poder reportarla sin
+            # necesidad de volver a pasar datos por el modelo. Se actualiza solo en
+            # entrenamiento y acompaña al punto de control.
+            self.register_buffer("_gate_media", torch.tensor(float(config.modality_gate_init)))
+
         if config.fusion_type == FusionType.TEXT_ONLY:
             head_in = d
         elif config.fusion_type == FusionType.CONCAT_LATE_FUSION:
@@ -166,6 +236,16 @@ class MultimodalPhishingClassifier(nn.Module):
             nn.Dropout(config.dropout),
             nn.Linear(head_in, 2),
         )
+
+        # Cabeza adversaria de fuente (ver `losses.CabezaAdversariaDeFuente`).
+        # Opera sobre la MISMA representación que alimenta al clasificador, que es
+        # donde importa que la fuente no sea recuperable: eliminarla antes de la
+        # cabeza no sirve de nada si la cabeza puede reconstruirla.
+        self.cabeza_adversaria = None
+        if config.n_fuentes_adversario and config.n_fuentes_adversario > 1:
+            self.cabeza_adversaria = CabezaAdversariaDeFuente(
+                head_in, config.n_fuentes_adversario
+            )
 
         self.modality_dropout_prob = config.modality_dropout_prob
         self.modality_dropout_mode = config.modality_dropout_mode
@@ -268,16 +348,43 @@ class MultimodalPhishingClassifier(nn.Module):
         visible = torch.zeros(batch, 1, dtype=torch.bool, device=memory_pad.device)
         return torch.cat([centinela, memory], dim=1), torch.cat([visible, memory_pad], dim=1)
 
+    def _valor_compuerta(
+        self,
+        text_tokens: torch.Tensor,
+        text_key_padding_mask: torch.Tensor,
+        has_structure: torch.Tensor | None,
+        has_network: torch.Tensor | None,
+    ) -> torch.Tensor:
+        """
+        Valor de la compuerta modal, con forma [batch, 1, 1] para poder difundirse
+        sobre la secuencia textual. En modo global es el mismo para todas las filas.
+        """
+        if self.modality_gate_mode != "conditional" or has_structure is None:
+            return torch.tanh(self.modality_gate).view(1, 1, 1)
+
+        pooled = masked_mean_pool(text_tokens, text_key_padding_mask)  # [batch, d]
+        entrada = torch.cat(
+            [pooled, has_structure.unsqueeze(-1).to(pooled.dtype), has_network.unsqueeze(-1).to(pooled.dtype)],
+            dim=-1,
+        )
+        return torch.sigmoid(self.modality_gate_proj(entrada)).unsqueeze(1)  # [batch, 1, 1]
+
     def _fusionar(
         self,
         text_tokens: torch.Tensor,
         text_key_padding_mask: torch.Tensor,
         memory: torch.Tensor,
         memory_pad: torch.Tensor,
+        has_structure: torch.Tensor | None = None,
+        has_network: torch.Tensor | None = None,
     ) -> torch.Tensor:
         """Atención cruzada regulada por la compuerta de contribución modal."""
         salida = self.cross_attention(text_tokens, text_key_padding_mask, memory, memory_pad)
-        return text_tokens + torch.tanh(self.modality_gate) * (salida - text_tokens)
+        g = self._valor_compuerta(text_tokens, text_key_padding_mask, has_structure, has_network)
+        self._ultima_compuerta = g.detach().reshape(-1)
+        with torch.no_grad():
+            self._gate_media.fill_(float(self._ultima_compuerta.mean()))
+        return text_tokens + g * (salida - text_tokens)
 
     @torch.no_grad()
     def contribucion_modal(self) -> float:
@@ -285,10 +392,33 @@ class MultimodalPhishingClassifier(nn.Module):
         Valor actual de la compuerta, en [0, 1). Cuantifica qué fracción de la
         representación fusionada procede de las modalidades no textuales: 0 significa
         que el modelo se comporta exactamente como la configuración de solo texto.
+
+        En modo condicionado el valor varía por correo, de modo que lo devuelto es la
+        media del último lote procesado. Para el análisis por fuente y por clase que
+        habilita ese modo, emplear `compuerta_por_ejemplo()` tras un paso hacia
+        delante, que devuelve el vector completo sin promediar.
         """
         if not self.uses_cross_attention:
             return 0.0
+        if self.modality_gate_mode == "conditional":
+            return float(self._gate_media.item())
         return float(torch.tanh(self.modality_gate).item())
+
+    def perdida_adversaria(self, fuentes: torch.Tensor, escala: float) -> torch.Tensor | None:
+        """
+        Pérdida de la cabeza adversaria sobre la representación del último paso.
+
+        Devuelve None si la cabeza no está activa, de modo que el llamador pueda
+        sumarla incondicionalmente comprobando solo el nulo.
+        """
+        if self.cabeza_adversaria is None or getattr(self, "_ultima_representacion", None) is None:
+            return None
+        return self.cabeza_adversaria(self._ultima_representacion, fuentes, escala)
+
+    @torch.no_grad()
+    def compuerta_por_ejemplo(self) -> torch.Tensor | None:
+        """Valor de la compuerta para cada fila del último lote, o None si aún no hubo ninguno."""
+        return getattr(self, "_ultima_compuerta", None)
 
     # ------------------------------------------------------------------ forward
 
@@ -302,6 +432,7 @@ class MultimodalPhishingClassifier(nn.Module):
 
         if self.config.fusion_type == FusionType.TEXT_ONLY:
             pooled_text = masked_mean_pool(text_tokens, text_key_padding_mask)
+            self._ultima_representacion = pooled_text
             return self.classifier(pooled_text)
 
         has_structure, has_network = self._apply_modality_dropout(
@@ -329,6 +460,7 @@ class MultimodalPhishingClassifier(nn.Module):
             pooled_struct = torch.where(presente_struct, pooled_struct, self.missing_structure.to(pooled_struct.dtype))
             pooled_net = torch.where(presente_net, pooled_net, self.missing_network.to(pooled_net.dtype))
             combined = torch.cat([pooled_text, pooled_struct, pooled_net], dim=-1)
+            self._ultima_representacion = combined
             return self.classifier(combined)
 
         if self.config.fusion_type == FusionType.CROSS_ATTENTION_MODALITY_LEVEL:
@@ -340,8 +472,11 @@ class MultimodalPhishingClassifier(nn.Module):
             memory = torch.cat([struct_token, net_token], dim=1)  # [batch, 2, d]
             memory_pad = torch.stack([has_structure < 0.5, has_network < 0.5], dim=1)  # [batch, 2]
             memory, memory_pad = self._con_centinela(memory, memory_pad)
-            fused_text = self._fusionar(text_tokens, text_key_padding_mask, memory, memory_pad)
+            fused_text = self._fusionar(
+                text_tokens, text_key_padding_mask, memory, memory_pad, has_structure, has_network
+            )
             pooled = masked_mean_pool(fused_text, text_key_padding_mask)
+            self._ultima_representacion = pooled
             return self.classifier(pooled)
 
         # CROSS_ATTENTION_TOKEN_LEVEL (variante principal, ver plan Fase B)
@@ -352,9 +487,11 @@ class MultimodalPhishingClassifier(nn.Module):
         modality_tokens, modality_pad = self._con_centinela(modality_tokens, modality_pad)
         modality_tokens = self.modality_encoder(modality_tokens, modality_pad)  # Stage 1
         fused_text = self._fusionar(
-            text_tokens, text_key_padding_mask, modality_tokens, modality_pad
+            text_tokens, text_key_padding_mask, modality_tokens, modality_pad,
+            has_structure, has_network,
         )  # Stage 2
         pooled = masked_mean_pool(fused_text, text_key_padding_mask)
+        self._ultima_representacion = pooled
         return self.classifier(pooled)
 
     def get_optimizer_param_groups(self, backbone_lr: float, head_lr: float) -> list[dict]:

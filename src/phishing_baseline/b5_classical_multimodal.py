@@ -157,7 +157,7 @@ def run_b5(
         cv_fit_predict = _make_cv_fit_predict(full_reset)
         results["stratified_cv"] = run_stratified_cv(indices, y_full, cv_fit_predict)
         results["group_loso_cv"] = run_group_loso_cv(
-            full_reset, indices, y_full, cv_fit_predict
+            full_reset, indices, y_full, cv_fit_predict, nombre_modelo=BASELINE_NAME
         )
 
     return results

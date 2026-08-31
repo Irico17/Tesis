@@ -133,6 +133,8 @@ def run_b4(
     if full_df is not None:
         X_full, y_full = _extract_features(full_df), full_df["label"].values
         results["stratified_cv"] = run_stratified_cv(X_full, y_full, _fit_predict)
-        results["group_loso_cv"] = run_group_loso_cv(full_df, X_full, y_full, _fit_predict)
+        results["group_loso_cv"] = run_group_loso_cv(
+            full_df, X_full, y_full, _fit_predict, nombre_modelo=BASELINE_NAME
+        )
 
     return results

@@ -21,7 +21,7 @@ from transformers import AutoTokenizer
 
 from phishing_model.config import CHECKPOINT_DIR, FusionType, ModelConfig
 from phishing_model.dataset import MultimodalPhishingDataset, load_scalers, make_collate_fn
-from phishing_model.model import MultimodalPhishingClassifier
+from phishing_model.model import MultimodalPhishingClassifier, cargar_pesos
 from phishing_baseline.evaluation import compute_metrics, save_predictions
 from phishing_pipeline.config import PROCESSED_DIR
 from phishing_pipeline.logging_utils import get_logger
@@ -203,7 +203,7 @@ def evaluate_checkpoint(
     config = config_desde_checkpoint(checkpoint, fusion_type)
 
     tokenizer = AutoTokenizer.from_pretrained(config.text_model_name)
-    structural_scaler, network_scaler = load_scalers(path=scaler_path)
+    structural_scaler, network_scaler, clip_bounds = load_scalers(path=scaler_path)
     dataset = MultimodalPhishingDataset(
         df,
         tokenizer,
@@ -211,11 +211,12 @@ def evaluate_checkpoint(
         network_scaler=network_scaler,
         max_token_length=config.max_token_length,
         fit_scalers=False,
+        clip_bounds=clip_bounds,
     )
     loader = DataLoader(dataset, batch_size=32, shuffle=False, collate_fn=make_collate_fn(tokenizer))
 
     model = MultimodalPhishingClassifier(config).to(device)
-    model.load_state_dict(checkpoint["model_state_dict"])
+    cargar_pesos(model, checkpoint["model_state_dict"])
 
     predictions = run_inference(model, loader, device, threshold=threshold, temperature=temperature)
     metrics = compute_metrics(predictions["y_true"], predictions["y_pred"], predictions["y_proba"])

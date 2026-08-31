@@ -115,6 +115,8 @@ def run_b3(
             return _fit_predict_rf(p, X_tr, y_tr, X_te)
 
         results["stratified_cv"] = run_stratified_cv(X_all, y_all, fit_predict_fn)
-        results["group_loso_cv"] = run_group_loso_cv(full_df, X_all, y_all, fit_predict_fn)
+        results["group_loso_cv"] = run_group_loso_cv(
+            full_df, X_all, y_all, fit_predict_fn, nombre_modelo=BASELINE_NAME
+        )
 
     return results

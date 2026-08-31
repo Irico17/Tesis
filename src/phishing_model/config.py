@@ -123,6 +123,13 @@ class ModelConfig:
     # tanh(g) y por tanto en [0, 1). Ver la justificación de por qué no se
     # inicializa en cero en `model.MultimodalPhishingClassifier.__init__`.
     modality_gate_init: float = 0.5
+    # Forma de la compuerta modal. Ver la justificación en `model.py`.
+    # "global"      : un escalar único para todo el corpus (formulación original).
+    # "conditional" : un valor por correo, calculado a partir de la representación
+    #                 textual y de las banderas de disponibilidad. Permite que el
+    #                 modelo apague la fusión donde no aporta, y habilita reportar
+    #                 la distribución de la compuerta por fuente y por clase.
+    modality_gate_mode: str = "global"
 
     # Formulación interna de las capas de fusión. Ver la justificación en
     # `fusion/cross_attention.py`: pre-normalización por estabilidad frente al
@@ -135,6 +142,14 @@ class ModelConfig:
     # "minmax_clip"  : MinMaxScaler con recorte a [0, 1].
     # "minmax"       : MinMaxScaler sin recorte — formulación original, NO acotada.
     scaler_kind: str = "quantile"
+
+    # Número de fuentes que debe distinguir la cabeza adversaria. 0 la desactiva.
+    # Lo fija `train()` a partir de los grupos presentes en el entrenamiento, de
+    # modo que quede guardado en el punto de control y la arquitectura se
+    # reconstruya idéntica al evaluar. Ver `losses.CabezaAdversariaDeFuente`.
+    n_fuentes_adversario: int = 0
+    # Peso de la pérdida adversaria frente a la de clasificación.
+    peso_adversario: float = 1.0
 
     n_structural_features: int = 6  # STRUCTURAL_FEATURE_COLS (ver nota allí sobre las 3 excluidas)
     n_network_continuous: int = 9  # NETWORK_FEATURE_COLS
@@ -197,6 +212,31 @@ class TrainConfig:
     use_class_weights: bool = False  # decisión empírica (Fase C), no a priori
     use_focal_loss: bool = False
     focal_loss_gamma: float = 2.0
+
+    # Minimización del riesgo del peor grupo, con la FUENTE como grupo. Responde a
+    # un desbalance distinto del que atacan la ponderación de clases y la pérdida
+    # focal: el de fuente, que en este corpus es el dominante —en el pliegue que
+    # retiene Kaggle, el 88.5% del entrenamiento procede de una sola fuente—.
+    # Ver la justificación completa en `losses.GroupDROLoss`.
+    use_group_dro: bool = False
+    group_dro_eta: float = 0.01
+    # Muestreo con reposición que iguala la presencia esperada de cada fuente en
+    # cada época. Alternativa más simple a la anterior y compatible con ella:
+    # reponderar el muestreo ataca la frecuencia, reponderar la pérdida ataca el
+    # riesgo. Se dejan separadas para poder atribuir el efecto observado.
+    balancear_por_fuente: bool = False
+
+    # Criterio con el que se elige el punto de control que después se evalúa.
+    # Ver `train.CRITERIOS_DE_SELECCION` para la justificación de por qué el
+    # criterio histórico está sesgado bajo cambio de dominio.
+    criterio_seleccion: str = "val_loss"
+
+    # Cabeza adversaria que borra la fuente de la representación (Ganin et al.,
+    # 2016). Responde al hallazgo de que las fuentes de este corpus son
+    # identificables con un 96.4% de exactitud desde el texto, de modo que el
+    # modelo dispone de un atajo casi perfecto si no se le impide usarlo.
+    usar_adversario_de_fuente: bool = False
+    peso_adversario: float = 1.0
     seed: int = RANDOM_STATE
     # Planificador de tasa de aprendizaje: calentamiento lineal seguido de
     # decaimiento lineal, práctica estándar en el ajuste fino de modelos de
