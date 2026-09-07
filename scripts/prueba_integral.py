@@ -39,16 +39,27 @@ from phishing_pipeline.logging_utils import get_logger
 logger = get_logger(__name__)
 
 PREFIJO = "SMOKE_"
-# Artefactos creados por la prueba: se eliminan al terminar.
-artefactos: list[Path] = []
+
 # Archivos que YA existían y que algún paso escribe en una ruta fija. No basta
 # con borrarlos al limpiar: eso destruiría un resultado real del proyecto. Se
 # respalda su contenido antes de ejecutar el paso y se restaura al final.
 respaldos: dict[Path, bytes] = {}
 
+# Artefactos creados por la prueba: se eliminan al terminar.
+artefactos: list[Path] = []
+
 
 def registrar(p: Path) -> Path:
-    """Marca un archivo como creado por la prueba, para eliminarlo al terminar."""
+    """Marca un archivo como creado por la prueba, para eliminarlo al terminar.
+
+    Un archivo que ya existia y fue respaldado NO se registra: la limpieza corre
+    despues de la restauracion, de modo que registrarlo lo borraria justo despues
+    de haberlo devuelto a su contenido original. Se comprobo: la prueba dejaba
+    vacia la carpeta `data/model/onnx/` y se llevaba por delante los modelos
+    exportados, que son el medio de verificacion de R2.3.
+    """
+    if p in respaldos:
+        return p
     artefactos.append(p)
     return p
 

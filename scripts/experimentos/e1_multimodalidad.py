@@ -164,7 +164,7 @@ def main() -> int:
         desv = [resultados[v].get("f1_desv", 0.0) for v in filas]
         barras_con_error(
             destino, "e1_multimodalidad",
-            "E1 - La multimodalidad frente a unimodales y al piso clasico. "
+            "E1. La multimodalidad frente a los unimodales y al piso clásico\n"
             "F1 sobre el subconjunto trimodal, media de tres semillas",
             etiquetas, medias, desv, resaltar=0)
 

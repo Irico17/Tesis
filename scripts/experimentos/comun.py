@@ -419,35 +419,47 @@ def barras_con_error(destino: Path, nombre: str, titulo: str,
 
     El eje no arranca en cero de forma deliberada: cuando todas las barras están
     entre 0.85 y 0.95, un eje de 0 a 1 las vuelve indistinguibles y oculta
-    justamente lo que la lámina debe mostrar. Se anota el mínimo del eje para que
-    la compresión quede declarada y no engañe.
+    justamente lo que la lámina debe mostrar. La compresión se declara en el
+    rótulo del eje, no como una nota flotante sobre las barras: allí se
+    superponía a los valores y quedaba ilegible.
+
+    `resaltar` señala la arquitectura propuesta, y solo eso. Se distingue con un
+    trazado distinto y con una entrada de leyenda que dice qué es, no con un
+    color de alarma: el trabajo no presupone ganadora y la lámina no debe
+    sugerirla.
     """
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
     n_lineas = 1 + titulo.count(chr(10))
-    fig, ax = plt.subplots(figsize=(max(6, 1.55 * len(etiquetas)),
-                                    4.4 + 0.35 * (n_lineas - 1)))
-    colores = ["#4C72B0"] * len(etiquetas)
-    if resaltar is not None:
-        colores[resaltar] = "#C44E52"
-    ax.bar(etiquetas, medias, yerr=desviaciones, capsize=5, color=colores,
-           edgecolor="#22303F", linewidth=0.6)
+    # El ancho se acota: con doce arquitecturas la figura llegaba a dieciocho
+    # pulgadas y no cabía en una página vertical.
+    ancho = min(13.0, max(6.0, 1.15 * len(etiquetas)))
+    fig, ax = plt.subplots(figsize=(ancho, 4.8 + 0.35 * (n_lineas - 1)))
+
+    barras = ax.bar(etiquetas, medias, yerr=desviaciones, capsize=4,
+                    color="#4C72B0", edgecolor="#22303F", linewidth=0.6)
+    if resaltar is not None and 0 <= resaltar < len(barras):
+        barras[resaltar].set_hatch("//")
+        barras[resaltar].set_edgecolor("#1A2733")
+        barras[resaltar].set_linewidth(1.4)
+        ax.legend([barras[resaltar]], ["arquitectura propuesta"],
+                  fontsize=8.5, loc="upper right", framealpha=0.9)
+
     bajo = max(0.0, min(m - d for m, d in zip(medias, desviaciones)) - 0.05)
-    alto = min(1.0, max(m + d for m, d in zip(medias, desviaciones)) + 0.03)
+    alto = min(1.0, max(m + d for m, d in zip(medias, desviaciones)) + 0.04)
     ax.set_ylim(bajo, alto)
-    ax.set_ylabel(ylabel)
+    ax.set_ylabel(f"{ylabel}  (eje recortado desde {bajo:.2f})")
     # `pad` reserva sitio: con titulo de dos lineas la segunda caia sobre las
     # barras mas altas y tapaba su valor, que es justo el dato que se mira.
     ax.set_title(titulo, fontsize=11, pad=14)
     ax.grid(axis="y", alpha=0.3)
     for i, (m, d) in enumerate(zip(medias, desviaciones)):
         ax.text(i, m + d + (alto - bajo) * 0.02, f"{m:.4f}",
-                ha="center", fontsize=9)
-    ax.text(0.99, 0.02, f"eje recortado desde {bajo:.2f}", transform=ax.transAxes,
-            ha="right", fontsize=8, style="italic", color="#6E7F8D")
-    plt.xticks(rotation=12, ha="right", fontsize=9)
+                ha="center", fontsize=8.5)
+    tam = 9 if len(etiquetas) <= 8 else 7.5
+    plt.xticks(rotation=25, ha="right", fontsize=tam)
     fig.tight_layout()
     fig.savefig(destino / f"{nombre}.png", dpi=160)
     plt.close(fig)

@@ -42,7 +42,7 @@ from clasicos import CLASICOS, ejecutar_clasico
 from comun import (SEMILLAS, agregar, barras_con_error, cargar_corpus, emitir,
                    metricas, particion_agrupada, tpr_a_fpr,
                    intervalo_bootstrap, equivalencia)
-from entrenar import mcnemar
+from entrenar import etiqueta_de, mcnemar
 from ejecutor import ejecutar_variante
 
 # La variante ya no esta fija. Antes E4 media siempre la atencion cruzada aunque
@@ -281,12 +281,12 @@ def main() -> int:
         # capitulo: la de E1 compara sobre el subconjunto trimodal, donde la clase
         # coincide con la procedencia, y no representa el rendimiento del sistema.
         orden_fig = sorted(comparativa, key=lambda k: -comparativa[k]["f1"])
-        etiquetas = [CLASICOS[n]["etiqueta"] if n in CLASICOS else n.replace("_", " ")
+        etiquetas = [CLASICOS[n]["etiqueta"] if n in CLASICOS else etiqueta_de(n)
                      for n in orden_fig]
         barras_con_error(
             destino, "e4_cuadro_comparativo",
-            "E4 - Todas las arquitecturas sobre el CORPUS COMPLETO. "
-            "F1 con particion agrupada por campana, media de tres semillas",
+            "E4. Todas las arquitecturas sobre el corpus completo\n"
+            "F1 con partición agrupada por campaña, media de tres semillas",
             etiquetas,
             [comparativa[n]["f1"] for n in orden_fig],
             [comparativa[n].get("f1_desv", 0.0) for n in orden_fig],
@@ -295,18 +295,18 @@ def main() -> int:
 
         barras_con_error(
             destino, "e4_agrupacion",
-            "E4 · Cuánto infla la métrica no agrupar por campaña",
+            "E4. Cuánto infla la métrica no agrupar por campaña",
             list(reparto), [v["f1"] for v in reparto.values()],
             [v.get("f1_desv", 0.0) for v in reparto.values()], resaltar=1)
         if por_tamano:
             barras_con_error(
                 destino, "e4_por_tamano",
-                "E4 · ¿Detecta las campañas raras tan bien como las masivas?",
+                "E4. ¿Detecta las campañas raras tan bien como las masivas?",
                 list(por_tamano), [v["f1"] for v in por_tamano.values()],
                 [0.0] * len(por_tamano))
         barras_con_error(
             destino, "e4_curva_aprendizaje",
-            "E4 · Curva de aprendizaje: ¿limitado por datos o saturado?",
+            "E4. Curva de aprendizaje: ¿limitado por datos o saturado?",
             list(curva), [v["f1"] for v in curva.values()], [0.0] * len(curva))
 
     emitir("e4", informe, figura, corpus=corpus,

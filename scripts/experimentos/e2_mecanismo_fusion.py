@@ -165,7 +165,7 @@ def main() -> int:
         desv = [resultados[v].get("f1_desv", 0.0) for v in VARIANTES]
         barras_con_error(
             destino, "e2_mecanismo_fusion",
-            "E2 · ¿Importa el mecanismo de fusión?\nF1 con las mismas ramas y la "
+            "E2. ¿Importa el mecanismo de fusión?\nF1 con las mismas ramas y la "
             "misma partición, media de tres semillas",
             etiquetas, medias, desv,
             resaltar=VARIANTES.index(BASE_DE_COMPARACION))

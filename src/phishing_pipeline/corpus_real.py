@@ -102,6 +102,52 @@ FUENTES_CRUDAS = (
 )
 
 
+def fechas_de_obtencion(raw_dir: Path | None = None) -> dict:
+    """Cuándo se descargó cada colección, leído de los ficheros crudos.
+
+    El corpus se ensambla a partir de colecciones públicas que siguen creciendo:
+    el repositorio de phishing_pot recibe muestras nuevas y los archivos de las
+    listas de discusión se amplían cada mes. Una reconstrucción posterior no
+    produce por fuerza el mismo corpus, de modo que la fecha en que se obtuvo
+    cada colección forma parte de lo que hace interpretable el resultado y debe
+    quedar registrada junto a las cifras.
+
+    Se toma la fecha de modificación más reciente de los ficheros de cada
+    colección, que es cuando la descarga terminó de escribirlos.
+    """
+    from datetime import datetime, timezone
+
+    base = raw_dir or RAW_DIR
+    fechas: dict[str, dict] = {}
+    for nombre, subruta, _ in FUENTES_CRUDAS:
+        carpeta = base / subruta
+        if not carpeta.exists():
+            continue
+        marcas = [f.stat().st_mtime for f in carpeta.rglob("*") if f.is_file()]
+        if not marcas:
+            continue
+        fechas[nombre] = {
+            "obtenida_el": datetime.fromtimestamp(
+                max(marcas), tz=timezone.utc).date().isoformat(),
+            "ficheros": len(marcas),
+        }
+    # Las colecciones tabulares no viven en `Datasets_Originales` con la misma
+    # estructura, de modo que se registran por su fichero de origen.
+    for nombre, ruta in (("Kaggle", KAGGLE_PHISHING_DIR / KAGGLE_PHISHING_FILE),
+                         ("CEAS_08", PHISH_MMF_EXTRACTED),
+                         ("datacon2023", PHISH_MMF_EXTRACTED)):
+        if ruta.exists():
+            marcas = ([f.stat().st_mtime for f in ruta.rglob("*") if f.is_file()]
+                      if ruta.is_dir() else [ruta.stat().st_mtime])
+            if marcas:
+                fechas[nombre] = {
+                    "obtenida_el": datetime.fromtimestamp(
+                        max(marcas), tz=timezone.utc).date().isoformat(),
+                    "ficheros": len(marcas),
+                }
+    return fechas
+
+
 def _huella(texto: str) -> str:
     return hashlib.blake2b(
         " ".join(str(texto).split()).lower().encode("utf-8"), digest_size=16
@@ -431,6 +477,7 @@ def construir(raw_dir: Path | None = None, descargar: bool = True,
 
     informe = {
         "generado_en": datetime.now(timezone.utc).isoformat(),
+        "fechas_de_obtencion": fechas_de_obtencion(),
         "n_filas": int(len(df)),
         "duplicados_globales_eliminados": int(duplicados),
         "prevalencia": round(float(df["label"].mean()), 6),

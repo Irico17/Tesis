@@ -52,6 +52,16 @@ ETIQUETAS = {
 }
 
 
+def etiqueta_de(clave: str) -> str:
+    """Nombre legible de una variante, para el rótulo de una figura.
+
+    Las claves llevan guion bajo y van sin tildes porque nombran ficheros y puntos
+    de control. Pasarlas a una lámina tal cual dejaba rótulos como «atencion
+    cruzada token», que en una tesis no valen.
+    """
+    return ETIQUETAS.get(clave, clave.replace("_", " ").capitalize())
+
+
 def configuracion(variante: str, semilla: int, sin_centinela: bool = False,
                   epocas: int = 3, lote: int = 32,
                   ponderar_clases: bool = False) -> tuple[ModelConfig, TrainConfig]:

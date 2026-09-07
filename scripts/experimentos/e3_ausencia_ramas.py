@@ -338,7 +338,7 @@ def main() -> int:
     def figura(destino: Path) -> None:
         barras_con_error(
             destino, "e3_mecanismos",
-            "E3 · Mecanismos de tolerancia a la ausencia de ramas\n"
+            "E3. Mecanismos de tolerancia a la ausencia de ramas\n"
             "F1 con todas las ramas disponibles, media de tres semillas",
             list(mecanismos), [m["f1"] for m in mecanismos.values()],
             [m.get("f1_desv", 0.0) for m in mecanismos.values()])
@@ -379,14 +379,15 @@ def main() -> int:
             eje.grid(alpha=0.3); eje.set_ylim(0, 1.05)
         ejes[0].set_ylabel("F1")
         ejes[-1].legend(fontsize=6.5, loc="lower left", ncol=1)
-        fig.suptitle("E3 - Degradacion adversaria del texto, solo en evaluacion")
+        fig.suptitle("E3. Degradación adversaria del texto, aplicada solo en "
+                     "evaluación")
         fig.tight_layout()
         fig.savefig(destino / "e3_degradacion_adversaria.png", dpi=160)
         plt.close(fig)
 
         barras_con_error(
             destino, "e3_degradacion",
-            f"E3 · Degradación al ocultar ramas en evaluación\nmecanismo: {mejor}",
+            f"E3. Degradación al ocultar ramas en evaluación\nmecanismo: {mejor}",
             list(degradacion), [d["f1"] for d in degradacion.values()],
             [d.get("f1_desv", 0.0) for d in degradacion.values()], resaltar=3)
 

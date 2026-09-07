@@ -44,11 +44,14 @@ from comun import Particion, metricas  # noqa: E402
 # Nombre visible -> (módulo, familia). La familia decide si la fila puede entrar
 # en un veredicto de sinergia: ver la nota de `es_unimodal`.
 CLASICOS: dict[str, dict] = {
-    "b1_tfidf_lr": {"modalidades": ("texto",), "etiqueta": "B1 · TF-IDF + RL (texto)"},
-    "b3_rf_estructura": {"modalidades": ("estructura",), "etiqueta": "B3 · RF (estructura)"},
-    "b4_red": {"modalidades": ("red",), "etiqueta": "B4 · RF (red)"},
+    "b1_tfidf_lr": {"modalidades": ("texto",),
+                    "etiqueta": "B1: TF-IDF y regresión logística\n(texto)"},
+    "b3_rf_estructura": {"modalidades": ("estructura",),
+                         "etiqueta": "B3: bosque aleatorio\n(estructura)"},
+    "b4_red": {"modalidades": ("red",),
+               "etiqueta": "B4: bosque aleatorio\n(red)"},
     "b5_multimodal_clasico": {"modalidades": ("texto", "estructura", "red"),
-                              "etiqueta": "B5 · fusión clásica (las tres)"},
+                              "etiqueta": "B5: fusión clásica\n(las tres modalidades)"},
 }
 
 

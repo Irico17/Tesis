@@ -379,7 +379,7 @@ def main() -> int:
         ax.set_yticks(y + 0.21)
         ax.set_yticklabels([f["caracteristica"] for f in top], fontsize=9)
         ax.set_xlabel("información mutua (nats)")
-        ax.set_title("E5 · Qué informa cada característica no textual")
+        ax.set_title("E5. Qué informa cada característica no textual")
         ax.legend(fontsize=9)
         ax.grid(axis="x", alpha=0.3)
         fig.tight_layout()

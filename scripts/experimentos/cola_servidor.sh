@@ -88,7 +88,12 @@ if [ "$fallos" -eq 0 ]; then
     echo "COLA COMPLETA · los siete experimentos terminaron"
     # El verificador de indicadores va DENTRO de la cola: comprobar la cobertura a
     # mano es como se colaron artefactos que describian un corpus anterior.
+    # Va PRIMERO porque tambien traslada los historiales de entrenamiento a la
+    # carpeta de R1.4, que es de donde salen las curvas de aprendizaje.
     "$PY_BIN" -u scripts/experimentos/consolidar_iov.py 2>&1 | tee "$REG/cobertura_iov.log"
+    # Las figuras que exigen los medios de verificacion y que ningun experimento
+    # emite: matrices de confusion, curvas ROC y curvas de aprendizaje.
+    "$PY_BIN" -u scripts/figuras/generar_figuras_mv.py 2>&1 | tee "$REG/figuras_mv.log"
 else
     echo "COLA TERMINADA CON $fallos FALLO(S) · no se escribe la marca"
 fi
