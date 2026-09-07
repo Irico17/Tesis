@@ -43,6 +43,11 @@ data/reports/
 # jurado necesita para comprobar cada cifra, una carpeta por resultado.
 !medios_de_verificacion/
 
+# Material de estudio y de sustentacion. Son documentos de trabajo del autor, no
+# forman parte de lo que reproduce la tesis ni acreditan ningun indicador.
+doc/GUIA_DE_ESTUDIO_CAPITULO4.md
+doc/PRESENTACION_DEFENSA_CAPITULO4.md
+
 # -------------------------------------------------------- entregables y trabajo
 # Los documentos en formato Word y los guiones que los generan no pertenecen al
 # repositorio: la tesis se redacta aparte y aqui vive lo que la reproduce.
