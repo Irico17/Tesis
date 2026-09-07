@@ -54,7 +54,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from comun import (SEMILLAS, agregar, cargar_corpus, emitir, metricas,
                    particion_agrupada, tpr_a_fpr)
 from ejecutor import ejecutar_variante
-from entrenar import mcnemar
+from entrenar import etiqueta_de, mcnemar
 
 # El codificador vigente y el multilingüe comparable. Se elige la variante
 # `cased` porque es la única multilingüe de la familia: distinguir mayúsculas es
@@ -277,7 +277,8 @@ def main() -> int:
                              ha="center", fontsize=8)
             eje.set_xticks(x + 0.19)
             eje.set_xticklabels([titulos[g] for g in grupos], fontsize=9)
-            eje.set_title(arquitectura.replace("_", " "), fontsize=10)
+            eje.set_title(etiqueta_de(arquitectura).replace("
+", " "), fontsize=10)
             eje.grid(axis="y", alpha=0.3)
         ejes[0].set_ylabel("F1")
         ejes[0].legend(fontsize=9, loc="lower left")
