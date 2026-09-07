@@ -1,0 +1,289 @@
+{
+  "experimento": "E6",
+  "resultado_asociado": "R2.3",
+  "pregunta": "Es utilizable cada arquitectura en el punto de integracion declarado, y con que tasa de falsos negativos?",
+  "generado_en": "2026-09-05T14:01:59.622983+00:00",
+  "arquitecturas_medidas": [
+    "atencion_cruzada_token",
+    "atencion_cruzada_modalidad",
+    "mezcla_de_expertos",
+    "fusor_mlp",
+    "concatenacion_tardia",
+    "solo_texto"
+  ],
+  "arquitecturas_sin_punto_de_control": [],
+  "arquitectura_de_referencia": "atencion_cruzada_token",
+  "medidas": {
+    "atencion_cruzada_token": {
+      "punto_de_control": "e4_atencion_cruzada_token_s42_agr_best.pt",
+      "tamano_mb": {
+        "fp32": 259.3,
+        "int8": 66.02,
+        "reduction_pct": 74.54
+      },
+      "latencia_ms": {
+        "fp32": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 95.738,
+          "p50_ms": 95.151,
+          "p95_ms": 99.605,
+          "p99_ms": 105.266,
+          "min_ms": 94.299,
+          "max_ms": 110.004
+        },
+        "int8": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 71.35,
+          "p50_ms": 70.729,
+          "p95_ms": 75.678,
+          "p99_ms": 79.551,
+          "min_ms": 70.295,
+          "max_ms": 81.319
+        }
+      },
+      "aceleracion_p50": 1.345,
+      "acuerdo_fp32_int8": 1.0,
+      "falsos_negativos_prueba_completa": {
+        "origen": "e4_atencion_cruzada_token_s42_agr_atencion_cruzada_token_s42_agr_preds.parquet",
+        "n_phishing_reales": 1773,
+        "falsos_negativos": 9,
+        "tasa_falsos_negativos": 0.005076,
+        "recall_phishing": 0.994924
+      }
+    },
+    "atencion_cruzada_modalidad": {
+      "punto_de_control": "e4_atencion_cruzada_modalidad_s42_agr_best.pt",
+      "tamano_mb": {
+        "fp32": 257.25,
+        "int8": 65.45,
+        "reduction_pct": 74.56
+      },
+      "latencia_ms": {
+        "fp32": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 98.068,
+          "p50_ms": 94.801,
+          "p95_ms": 110.974,
+          "p99_ms": 157.075,
+          "min_ms": 93.895,
+          "max_ms": 177.224
+        },
+        "int8": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 71.886,
+          "p50_ms": 71.787,
+          "p95_ms": 72.384,
+          "p99_ms": 73.563,
+          "min_ms": 71.153,
+          "max_ms": 74.53
+        }
+      },
+      "aceleracion_p50": 1.321,
+      "acuerdo_fp32_int8": 1.0,
+      "falsos_negativos_prueba_completa": {
+        "origen": "e4_atencion_cruzada_modalidad_s42_agr_atencion_cruzada_modalidad_s42_agr_preds.parquet",
+        "n_phishing_reales": 1773,
+        "falsos_negativos": 13,
+        "tasa_falsos_negativos": 0.007332,
+        "recall_phishing": 0.992668
+      }
+    },
+    "mezcla_de_expertos": {
+      "punto_de_control": "e4_mezcla_de_expertos_s42_agr_best.pt",
+      "tamano_mb": {
+        "fp32": 262.18,
+        "int8": 66.04,
+        "reduction_pct": 74.81
+      },
+      "latencia_ms": {
+        "fp32": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 97.337,
+          "p50_ms": 92.267,
+          "p95_ms": 126.079,
+          "p99_ms": 152.05,
+          "min_ms": 87.812,
+          "max_ms": 154.131
+        },
+        "int8": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 73.09,
+          "p50_ms": 68.937,
+          "p95_ms": 96.179,
+          "p99_ms": 119.833,
+          "min_ms": 67.718,
+          "max_ms": 127.099
+        }
+      },
+      "aceleracion_p50": 1.338,
+      "acuerdo_fp32_int8": 1.0,
+      "falsos_negativos_prueba_completa": {
+        "origen": "e4_mezcla_de_expertos_s42_agr_mezcla_de_expertos_s42_agr_preds.parquet",
+        "n_phishing_reales": 1773,
+        "falsos_negativos": 9,
+        "tasa_falsos_negativos": 0.005076,
+        "recall_phishing": 0.994924
+      }
+    },
+    "fusor_mlp": {
+      "punto_de_control": "e4_fusor_mlp_s42_agr_best.pt",
+      "tamano_mb": {
+        "fp32": 255.64,
+        "int8": 64.36,
+        "reduction_pct": 74.82
+      },
+      "latencia_ms": {
+        "fp32": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 88.937,
+          "p50_ms": 88.404,
+          "p95_ms": 94.039,
+          "p99_ms": 95.406,
+          "min_ms": 87.554,
+          "max_ms": 96.296
+        },
+        "int8": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 71.33,
+          "p50_ms": 66.321,
+          "p95_ms": 108.72,
+          "p99_ms": 149.115,
+          "min_ms": 65.713,
+          "max_ms": 152.891
+        }
+      },
+      "aceleracion_p50": 1.333,
+      "acuerdo_fp32_int8": 1.0,
+      "falsos_negativos_prueba_completa": {
+        "origen": "e4_fusor_mlp_s42_agr_fusor_mlp_s42_agr_preds.parquet",
+        "n_phishing_reales": 1773,
+        "falsos_negativos": 11,
+        "tasa_falsos_negativos": 0.006204,
+        "recall_phishing": 0.993796
+      }
+    },
+    "concatenacion_tardia": {
+      "punto_de_control": "e4_concatenacion_tardia_s42_agr_best.pt",
+      "tamano_mb": {
+        "fp32": 254.14,
+        "int8": 63.98,
+        "reduction_pct": 74.82
+      },
+      "latencia_ms": {
+        "fp32": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 92.002,
+          "p50_ms": 91.922,
+          "p95_ms": 92.538,
+          "p99_ms": 95.2,
+          "min_ms": 91.216,
+          "max_ms": 96.562
+        },
+        "int8": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 67.295,
+          "p50_ms": 67.156,
+          "p95_ms": 67.841,
+          "p99_ms": 70.872,
+          "min_ms": 66.19,
+          "max_ms": 73.602
+        }
+      },
+      "aceleracion_p50": 1.369,
+      "acuerdo_fp32_int8": 1.0,
+      "falsos_negativos_prueba_completa": {
+        "origen": "e4_concatenacion_tardia_s42_agr_concatenacion_tardia_s42_agr_preds.parquet",
+        "n_phishing_reales": 1773,
+        "falsos_negativos": 14,
+        "tasa_falsos_negativos": 0.007896,
+        "recall_phishing": 0.992104
+      }
+    },
+    "solo_texto": {
+      "punto_de_control": "e4_solo_texto_s42_agr_best.pt",
+      "tamano_mb": {
+        "fp32": 254.05,
+        "int8": 63.91,
+        "reduction_pct": 74.84
+      },
+      "latencia_ms": {
+        "fp32": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 88.727,
+          "p50_ms": 91.119,
+          "p95_ms": 92.367,
+          "p99_ms": 94.611,
+          "min_ms": 74.934,
+          "max_ms": 95.011
+        },
+        "int8": {
+          "n_samples": 50,
+          "batch_size": 1,
+          "data_source": "test_real",
+          "mean_ms": 60.09,
+          "p50_ms": 59.11,
+          "p95_ms": 63.247,
+          "p99_ms": 68.775,
+          "min_ms": 57.206,
+          "max_ms": 73.909
+        }
+      },
+      "aceleracion_p50": 1.542,
+      "acuerdo_fp32_int8": 0.9,
+      "falsos_negativos_prueba_completa": {
+        "origen": "e4_solo_texto_s42_agr_solo_texto_s42_agr_preds.parquet",
+        "n_phishing_reales": 1773,
+        "falsos_negativos": 20,
+        "tasa_falsos_negativos": 0.01128,
+        "recall_phishing": 0.98872
+      }
+    }
+  },
+  "nota_sobre_la_tasa_de_falsos_negativos": "Se informa sin presuponer mejora respecto de la linea base, conforme al enfoque de caracterizacion adoptado en R2.2, y se calcula sobre el conjunto de prueba completo y no sobre las muestras de comparacion.",
+  "nota_sobre_la_referencia": "Se miden todas las arquitecturas. La referencia es la que el trabajo propone; no se selecciona ninguna por desempeno.",
+  "procedencia": {
+    "generado_en": "2026-09-05T14:01:59.625867+00:00",
+    "git": {
+      "commit": "sin repositorio git en esta maquina",
+      "arbol_con_cambios_sin_confirmar": false
+    },
+    "semillas_de_modelo": [
+      42,
+      43,
+      44
+    ],
+    "semilla_de_particion": 7,
+    "entorno": {
+      "python": "3.12.3",
+      "sistema": "Linux 6.8.0-136-generic",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "sklearn": "1.9.0",
+      "torch": "2.13.0+cu126",
+      "transformers": "5.15.0",
+      "gpu": "NVIDIA RTX A5500"
+    }
+  }
+}

@@ -30,6 +30,9 @@ class FusionType(str, Enum):
     CONCAT_LATE_FUSION = "concat_late_fusion"
     CROSS_ATTENTION_MODALITY_LEVEL = "cross_attention_modality_level"
     CROSS_ATTENTION_TOKEN_LEVEL = "cross_attention_token_level"
+    # Cuarta manera de tratar la ausencia de ramas: enrutamiento por
+    # patrón de disponibilidad. Se decide por medición en E3.
+    MIXTURE_OF_EXPERTS = "mixture_of_experts"
 
 
 # Vocabularios categóricos de red — extraídos de los valores REALES presentes en
@@ -147,6 +150,13 @@ class ModelConfig:
     # Lo fija `train()` a partir de los grupos presentes en el entrenamiento, de
     # modo que quede guardado en el punto de control y la arquitectura se
     # reconstruya idéntica al evaluar. Ver `losses.CabezaAdversariaDeFuente`.
+    # Anchura de la capa oculta de la cabeza de clasificación. Con None la
+    # cabeza es lineal --LayerNorm, Dropout, Linear-- que es lo que usaban
+    # todas las variantes. Un valor entero la convierte en un perceptrón
+    # multicapa, que es el fusor que el asesor propuso como línea base
+    # frente a la atención cruzada.
+    cabeza_oculta: int | None = None
+    n_expertos_moe: int = 4
     n_fuentes_adversario: int = 0
     # Peso de la pérdida adversaria frente a la de clasificación.
     peso_adversario: float = 1.0

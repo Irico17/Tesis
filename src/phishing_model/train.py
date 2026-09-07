@@ -278,12 +278,21 @@ def save_checkpoint(
     epoch: int,
     global_step: int,
     config: ModelConfig,
+    con_optimizador: bool = True,
 ) -> None:
+    """
+    `con_optimizador=False` omite el estado del optimizador y reduce el fichero a
+    algo menos de la mitad --de 777 a unos 260 MiB--.
+
+    El estado del optimizador solo sirve para REANUDAR un entrenamiento
+    interrumpido. El punto de control «mejor» no se reanuda nunca: se guarda para
+    evaluar con él, y `evaluate_checkpoint` solo lee los pesos. Guardarlo allí
+    duplicaba el disco sin que nada lo usara, y con las variantes y semillas de
+    los seis experimentos eso son decenas de gigabytes.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    torch.save(
-        {
+    estado = {
             "model_state_dict": model.state_dict(),
-            "optimizer_state_dict": optimizer.state_dict(),
             "epoch": epoch,
             "global_step": global_step,
             "fusion_type": config.fusion_type.value,
@@ -295,9 +304,10 @@ def save_checkpoint(
             # los tensores fallaban de forma ruidosa al cargar los pesos; el resto
             # divergía en silencio.
             "model_config": config.to_dict(),
-        },
-        path,
-    )
+    }
+    if con_optimizador:
+        estado["optimizer_state_dict"] = optimizer.state_dict()
+    torch.save(estado, path)
     logger.info("Checkpoint guardado: %s (epoch=%d, step=%d)", path, epoch, global_step)
 
 
@@ -778,7 +788,8 @@ def train(
                 best_epoch = epoch
                 epochs_without_improvement = 0
                 save_checkpoint(
-                    best_checkpoint_path, model, optimizer, epoch + 1, global_step, model_config
+                    best_checkpoint_path, model, optimizer, epoch + 1, global_step,
+                    model_config, con_optimizador=False,
                 )
                 logger.info(
                     "Nuevo mejor modelo (%s=%.6f) guardado en %s",

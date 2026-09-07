@@ -16,6 +16,7 @@ from phishing_model.encoders.network_tokenizer import NetworkTokenizer
 from phishing_model.encoders.structural_tokenizer import StructuralTokenizer
 from phishing_model.encoders.text_encoder import TextEncoder
 from phishing_model.fusion.cross_attention import CrossAttentionFusion, masked_mean_pool
+from phishing_model.fusion.mixture_of_experts import MixtureOfModalityExperts
 from phishing_model.fusion.modality_encoder import ModalityEncoder
 from phishing_model.losses import CabezaAdversariaDeFuente
 
@@ -218,7 +219,18 @@ class MultimodalPhishingClassifier(nn.Module):
             # entrenamiento y acompaña al punto de control.
             self.register_buffer("_gate_media", torch.tensor(float(config.modality_gate_init)))
 
+        self.usa_moe = config.fusion_type == FusionType.MIXTURE_OF_EXPERTS
+        if self.usa_moe:
+            self.moe = MixtureOfModalityExperts(
+                d, n_expertos=config.n_expertos_moe,
+                dim_feedforward=config.dim_feedforward,
+                dropout=config.dropout, activation=config.fusion_activation,
+            )
+
         if config.fusion_type == FusionType.TEXT_ONLY:
+            head_in = d
+        elif config.fusion_type == FusionType.MIXTURE_OF_EXPERTS:
+            # La mezcla devuelve una representación de la anchura del modelo.
             head_in = d
         elif config.fusion_type == FusionType.CONCAT_LATE_FUSION:
             head_in = d * 3  # texto + estructura + red, cada uno pooled independientemente
@@ -231,11 +243,25 @@ class MultimodalPhishingClassifier(nn.Module):
         else:  # ambas variantes de cross-attention devuelven texto fusionado pooled
             head_in = d
 
-        self.classifier = nn.Sequential(
-            nn.LayerNorm(head_in),
-            nn.Dropout(config.dropout),
-            nn.Linear(head_in, 2),
-        )
+        # Cabeza lineal por defecto; perceptrón multicapa si se pide anchura
+        # oculta. La diferencia no es cosmética: la variante `fusor_mlp` de E2
+        # existe precisamente para contrastar la atención cruzada contra una
+        # fusión aprendida pero simple, y con cabeza lineal sería indistinguible
+        # de la concatenación tardía.
+        if config.cabeza_oculta:
+            self.classifier = nn.Sequential(
+                nn.LayerNorm(head_in),
+                nn.Linear(head_in, config.cabeza_oculta),
+                nn.GELU() if config.fusion_activation == "gelu" else nn.ReLU(),
+                nn.Dropout(config.dropout),
+                nn.Linear(config.cabeza_oculta, 2),
+            )
+        else:
+            self.classifier = nn.Sequential(
+                nn.LayerNorm(head_in),
+                nn.Dropout(config.dropout),
+                nn.Linear(head_in, 2),
+            )
 
         # Cabeza adversaria de fuente (ver `losses.CabezaAdversariaDeFuente`).
         # Opera sobre la MISMA representación que alimenta al clasificador, que es
@@ -449,6 +475,23 @@ class MultimodalPhishingClassifier(nn.Module):
         # ausente, TODOS sus tokens se excluyen en bloque, no individualmente.
         struct_pad = (has_structure < 0.5).unsqueeze(1).expand(-1, structural_tokens.shape[1])
         net_pad = (has_network < 0.5).unsqueeze(1).expand(-1, network_tokens.shape[1])
+
+        if self.usa_moe:
+            # La mezcla opera sobre las tres ramas ya agregadas, no sobre la
+            # secuencia: su enrutamiento decide CÓMO combinar, no dónde atender.
+            # Las ramas ausentes entran como vector nulo y la compuerta lo sabe
+            # por las banderas explícitas, de modo que no hace falta centinela:
+            # es justamente la alternativa que E3 mide.
+            pooled_text = masked_mean_pool(text_tokens, text_key_padding_mask)
+            pooled_struct = masked_mean_pool(structural_tokens, struct_pad)
+            pooled_net = masked_mean_pool(network_tokens, net_pad)
+            pooled_struct = pooled_struct * (has_structure >= 0.5).unsqueeze(-1)
+            pooled_net = pooled_net * (has_network >= 0.5).unsqueeze(-1)
+            fusionada = self.moe(
+                pooled_text, pooled_struct, pooled_net, has_structure, has_network
+            )
+            self._ultima_representacion = fusionada
+            return self.classifier(fusionada)
 
         if self.config.fusion_type == FusionType.CONCAT_LATE_FUSION:
             pooled_text = masked_mean_pool(text_tokens, text_key_padding_mask)

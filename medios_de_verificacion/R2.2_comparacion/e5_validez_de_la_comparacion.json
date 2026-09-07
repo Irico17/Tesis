@@ -1,0 +1,455 @@
+{
+  "experimento": "E5",
+  "pregunta": "¿Cuánto de lo medido es procedencia y no fenómeno?",
+  "naturaleza": "Auditoría de validez. No mide rendimiento y no sostiene ninguna afirmación de desempeño: califica los resultados de E1 a E4.",
+  "generado_en": "2026-09-07T03:46:40.797905+00:00",
+  "auditoria_de_caracteristicas": [
+    {
+      "caracteristica": "num_images",
+      "mi_clase_dada_la_coleccion": 0.0,
+      "mi_coleccion": 0.2702,
+      "cociente": 0.0
+    },
+    {
+      "caracteristica": "total_nodos_dom",
+      "mi_clase_dada_la_coleccion": 0.0,
+      "mi_coleccion": 0.5294,
+      "cociente": 0.0
+    },
+    {
+      "caracteristica": "url_has_shortener",
+      "mi_clase_dada_la_coleccion": 0.0,
+      "mi_coleccion": 0.0308,
+      "cociente": 0.0
+    },
+    {
+      "caracteristica": "num_links",
+      "mi_clase_dada_la_coleccion": 0.0002,
+      "mi_coleccion": 0.434,
+      "cociente": 0.0004
+    },
+    {
+      "caracteristica": "profundidad_dom",
+      "mi_clase_dada_la_coleccion": 0.0008,
+      "mi_coleccion": 0.5343,
+      "cociente": 0.0014
+    },
+    {
+      "caracteristica": "has_html",
+      "mi_clase_dada_la_coleccion": 0.002,
+      "mi_coleccion": 0.479,
+      "cociente": 0.0042
+    },
+    {
+      "caracteristica": "has_ip_link",
+      "mi_clase_dada_la_coleccion": 0.0002,
+      "mi_coleccion": 0.0232,
+      "cociente": 0.009
+    },
+    {
+      "caracteristica": "url_has_at_symbol",
+      "mi_clase_dada_la_coleccion": 0.0018,
+      "mi_coleccion": 0.0698,
+      "cociente": 0.0261
+    },
+    {
+      "caracteristica": "url_max_digit_ratio",
+      "mi_clase_dada_la_coleccion": 0.0263,
+      "mi_coleccion": 0.4502,
+      "cociente": 0.0583
+    },
+    {
+      "caracteristica": "num_urls_metadata",
+      "mi_clase_dada_la_coleccion": 0.0226,
+      "mi_coleccion": 0.3286,
+      "cociente": 0.0687
+    },
+    {
+      "caracteristica": "url_domain_max_entropy",
+      "mi_clase_dada_la_coleccion": 0.0629,
+      "mi_coleccion": 0.6943,
+      "cociente": 0.0906
+    },
+    {
+      "caracteristica": "url_max_length",
+      "mi_clase_dada_la_coleccion": 0.0536,
+      "mi_coleccion": 0.4777,
+      "cociente": 0.1122
+    },
+    {
+      "caracteristica": "word_count",
+      "mi_clase_dada_la_coleccion": 0.0174,
+      "mi_coleccion": 0.1353,
+      "cociente": 0.1285
+    },
+    {
+      "caracteristica": "url_max_subdomain_count",
+      "mi_clase_dada_la_coleccion": 0.0322,
+      "mi_coleccion": 0.1873,
+      "cociente": 0.1722
+    },
+    {
+      "caracteristica": "url_has_suspicious_tld",
+      "mi_clase_dada_la_coleccion": 0.0033,
+      "mi_coleccion": 0.0075,
+      "cociente": 0.4338
+    }
+  ],
+  "mayor_cociente": 0.4338,
+  "lectura_de_la_auditoria": "Ninguna de las 15 características no textuales alcanza un cociente de uno; la mayor llega a 0.4338. Toda característica no textual informa más sobre de dónde procede el correo que sobre si es phishing.",
+  "control_de_procedencia": {
+    "rasgos": [
+      "tiene_estructura",
+      "tiene_red",
+      "tiene_spf",
+      "tiene_dkim",
+      "tiene_dmarc",
+      "tiene_remitente",
+      "tiene_fecha"
+    ],
+    "n_prueba": 4411,
+    "f1": 0.6388,
+    "accuracy": 0.7862,
+    "roc_auc": 0.8378,
+    "mcc": 0.586,
+    "balanced_accuracy": 0.7344
+  },
+  "estructura_del_corpus": {
+    "por_coleccion": {
+      "CEAS_08": {
+        "n": 754,
+        "prevalencia": 0.0,
+        "clases": 1
+      },
+      "Fedora": {
+        "n": 13158,
+        "prevalencia": 0.0,
+        "clases": 1
+      },
+      "Kaggle": {
+        "n": 17409,
+        "prevalencia": 0.3746,
+        "clases": 2
+      },
+      "Nazario": {
+        "n": 4164,
+        "prevalencia": 1.0,
+        "clases": 1
+      },
+      "SpamAssassin": {
+        "n": 812,
+        "prevalencia": 0.0,
+        "clases": 1
+      },
+      "datacon2023": {
+        "n": 1084,
+        "prevalencia": 1.0,
+        "clases": 1
+      },
+      "kernel_lists": {
+        "n": 759,
+        "prevalencia": 0.0,
+        "clases": 1
+      },
+      "phishing_pot": {
+        "n": 5960,
+        "prevalencia": 1.0,
+        "clases": 1
+      }
+    },
+    "colecciones_de_clase_unica": 7,
+    "colecciones_totales": 8,
+    "fraccion_del_corpus_en_colecciones_de_clase_unica": 0.6052
+  },
+  "pliegues_por_coleccion": {
+    "naturaleza": "Diagnóstico de dónde la clase coincide con el origen. NO mide generalización: la colección es un artefacto del ensamblado del corpus y no una propiedad del fenómeno.",
+    "sonda": "TF-IDF con regresión logística sobre el texto",
+    "pliegues": [
+      {
+        "coleccion": "CEAS_08",
+        "n": 754,
+        "clases_presentes": 1,
+        "prevalencia": 0.0,
+        "evaluable": false,
+        "motivo": "la colección contiene una sola clase, de modo que no hay nada que discriminar dentro de ella"
+      },
+      {
+        "coleccion": "Fedora",
+        "n": 13158,
+        "clases_presentes": 1,
+        "prevalencia": 0.0,
+        "evaluable": false,
+        "motivo": "la colección contiene una sola clase, de modo que no hay nada que discriminar dentro de ella"
+      },
+      {
+        "coleccion": "Kaggle",
+        "n": 17409,
+        "clases_presentes": 2,
+        "prevalencia": 0.3746,
+        "evaluable": true,
+        "f1": 0.7448,
+        "accuracy": 0.7883,
+        "recall": 0.8249,
+        "roc_auc": 0.8811
+      },
+      {
+        "coleccion": "Nazario",
+        "n": 4164,
+        "clases_presentes": 1,
+        "prevalencia": 1.0,
+        "evaluable": false,
+        "motivo": "la colección contiene una sola clase, de modo que no hay nada que discriminar dentro de ella"
+      },
+      {
+        "coleccion": "SpamAssassin",
+        "n": 812,
+        "clases_presentes": 1,
+        "prevalencia": 0.0,
+        "evaluable": false,
+        "motivo": "la colección contiene una sola clase, de modo que no hay nada que discriminar dentro de ella"
+      },
+      {
+        "coleccion": "datacon2023",
+        "n": 1084,
+        "clases_presentes": 1,
+        "prevalencia": 1.0,
+        "evaluable": false,
+        "motivo": "la colección contiene una sola clase, de modo que no hay nada que discriminar dentro de ella"
+      },
+      {
+        "coleccion": "kernel_lists",
+        "n": 759,
+        "clases_presentes": 1,
+        "prevalencia": 0.0,
+        "evaluable": false,
+        "motivo": "la colección contiene una sola clase, de modo que no hay nada que discriminar dentro de ella"
+      },
+      {
+        "coleccion": "phishing_pot",
+        "n": 5960,
+        "clases_presentes": 1,
+        "prevalencia": 1.0,
+        "evaluable": false,
+        "motivo": "la colección contiene una sola clase, de modo que no hay nada que discriminar dentro de ella"
+      }
+    ],
+    "n_evaluables": 1,
+    "n_no_evaluables": 7,
+    "lectura": "de las 8 colecciones del corpus, 7 no son evaluables porque contienen una sola clase. Esa es, medida, la limitación principal del corpus: en la mayor parte de él la clase coincide con la procedencia, de modo que dejar una colección fuera equivale a dejar fuera una clase entera."
+  },
+  "composicion_por_idioma": {
+    "muestra_por_coleccion": 1500,
+    "minimo_de_caracteres": 60,
+    "n_muestreado": 9409,
+    "n_con_idioma_determinado": 9283,
+    "fraccion_indeterminada": 0.0134,
+    "fraccion_no_ingles": 0.1637,
+    "distribucion_global": {
+      "en": 7763,
+      "zh-cn": 332,
+      "vi": 283,
+      "pt": 278,
+      "de": 267,
+      "indeterminado": 126,
+      "fr": 63,
+      "af": 58,
+      "nl": 47,
+      "es": 45,
+      "so": 37,
+      "cy": 27
+    },
+    "por_coleccion": {
+      "CEAS_08": {
+        "n_muestreado": 754,
+        "idioma_predominante": "en",
+        "fraccion_del_predominante": 0.9987,
+        "fraccion_ingles": 0.9987,
+        "idiomas_distintos": 2,
+        "distribucion": {
+          "en": 753,
+          "indeterminado": 1
+        }
+      },
+      "Fedora": {
+        "n_muestreado": 1500,
+        "idioma_predominante": "en",
+        "fraccion_del_predominante": 0.9787,
+        "fraccion_ingles": 0.9787,
+        "idiomas_distintos": 7,
+        "distribucion": {
+          "en": 1468,
+          "pt": 14,
+          "es": 11,
+          "ca": 3,
+          "de": 2,
+          "ru": 1
+        }
+      },
+      "Kaggle": {
+        "n_muestreado": 1500,
+        "idioma_predominante": "en",
+        "fraccion_del_predominante": 0.9647,
+        "fraccion_ingles": 0.9647,
+        "idiomas_distintos": 13,
+        "distribucion": {
+          "en": 1447,
+          "indeterminado": 28,
+          "es": 5,
+          "sq": 3,
+          "de": 3,
+          "nl": 3
+        }
+      },
+      "Nazario": {
+        "n_muestreado": 1500,
+        "idioma_predominante": "en",
+        "fraccion_del_predominante": 0.9373,
+        "fraccion_ingles": 0.9373,
+        "idiomas_distintos": 20,
+        "distribucion": {
+          "en": 1406,
+          "indeterminado": 20,
+          "es": 17,
+          "de": 11,
+          "zh-cn": 10,
+          "pt": 8
+        }
+      },
+      "SpamAssassin": {
+        "n_muestreado": 812,
+        "idioma_predominante": "en",
+        "fraccion_del_predominante": 0.9938,
+        "fraccion_ingles": 0.9938,
+        "idiomas_distintos": 6,
+        "distribucion": {
+          "en": 807,
+          "fr": 1,
+          "it": 1,
+          "no": 1,
+          "de": 1,
+          "ja": 1
+        }
+      },
+      "datacon2023": {
+        "n_muestreado": 1084,
+        "idioma_predominante": "en",
+        "fraccion_del_predominante": 0.322,
+        "fraccion_ingles": 0.322,
+        "idiomas_distintos": 15,
+        "distribucion": {
+          "en": 349,
+          "zh-cn": 322,
+          "vi": 281,
+          "af": 58,
+          "so": 36,
+          "cy": 21
+        }
+      },
+      "kernel_lists": {
+        "n_muestreado": 759,
+        "idioma_predominante": "en",
+        "fraccion_del_predominante": 0.9987,
+        "fraccion_ingles": 0.9987,
+        "idiomas_distintos": 2,
+        "distribucion": {
+          "en": 758,
+          "ro": 1
+        }
+      },
+      "phishing_pot": {
+        "n_muestreado": 1500,
+        "idioma_predominante": "en",
+        "fraccion_del_predominante": 0.5167,
+        "fraccion_ingles": 0.5167,
+        "idiomas_distintos": 19,
+        "distribucion": {
+          "en": 775,
+          "pt": 255,
+          "de": 249,
+          "indeterminado": 75,
+          "fr": 56,
+          "nl": 43
+        }
+      }
+    },
+    "prevalencia_por_idioma": {
+      "af": {
+        "n": 58,
+        "prevalencia": 1.0
+      },
+      "de": {
+        "n": 267,
+        "prevalencia": 0.985
+      },
+      "en": {
+        "n": 7763,
+        "prevalencia": 0.3959
+      },
+      "es": {
+        "n": 45,
+        "prevalencia": 0.7333
+      },
+      "fr": {
+        "n": 63,
+        "prevalencia": 0.9841
+      },
+      "indeterminado": {
+        "n": 126,
+        "prevalencia": 0.8889
+      },
+      "nl": {
+        "n": 47,
+        "prevalencia": 0.9574
+      },
+      "pt": {
+        "n": 278,
+        "prevalencia": 0.9496
+      },
+      "so": {
+        "n": 37,
+        "prevalencia": 1.0
+      },
+      "vi": {
+        "n": 283,
+        "prevalencia": 1.0
+      },
+      "zh-cn": {
+        "n": 332,
+        "prevalencia": 1.0
+      }
+    },
+    "mi_clase_dada_la_coleccion": 0.0098,
+    "mi_coleccion": 0.3297,
+    "cociente": 0.0297,
+    "lectura": "El 16.37% de los mensajes con idioma determinado no está en inglés. El idioma informa 0.0297 veces más sobre la clase que sobre la colección de procedencia: por debajo de uno, de modo que describe mejor el origen del mensaje que el fenómeno y se suma a las vías por las que la clase coincide con la procedencia.",
+    "lectura_sobre_el_codificador": "Una fracción apreciable del corpus, el 16.37%, no está en inglés. El codificador empleado es monolingüe, de modo que la representación textual de esos mensajes es peor de lo necesario y conviene contrastar un codificador multilingüe. Se declara como medición y la comparación queda como trabajo futuro."
+  },
+  "procedencia": {
+    "generado_en": "2026-09-07T03:46:40.804409+00:00",
+    "git": {
+      "commit": "sin repositorio git en esta maquina",
+      "arbol_con_cambios_sin_confirmar": false
+    },
+    "semillas_de_modelo": [
+      42,
+      43,
+      44
+    ],
+    "semilla_de_particion": 7,
+    "entorno": {
+      "python": "3.12.3",
+      "sistema": "Linux 6.8.0-136-generic",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "sklearn": "1.9.0",
+      "torch": "2.13.0+cu126",
+      "transformers": "5.15.0",
+      "gpu": "NVIDIA RTX A5500"
+    },
+    "corpus": {
+      "n": 44100,
+      "prevalencia": 0.402018,
+      "huella": "f078576f098f129d"
+    }
+  }
+}

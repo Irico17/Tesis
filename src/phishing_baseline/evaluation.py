@@ -67,6 +67,47 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray 
             metrics["pr_auc"] = round(float(average_precision_score(y_true, y_proba)), 4)
         except ValueError:
             metrics["pr_auc"] = None
+    # Especificidad y suelo trivial. La primera se deduce de la matriz de
+    # confusión, pero dejarla implícita obliga a recalcularla en cada lectura; el
+    # segundo hace visible cuánto del F1 se obtiene sin mirar la entrada, que es
+    # la cifra que impide leer un 0.60 como un buen resultado.
+    vn, fp, fn, vp = (confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
+                      if len(np.unique(y_true)) > 1 else (0, 0, 0, 0))
+    metrics["specificity"] = round(float(vn / (vn + fp)), 4) if (vn + fp) else None
+    prevalencia = float((y_true == 1).mean())
+    metrics["prevalencia"] = round(prevalencia, 4)
+    # F1 de un clasificador que predice siempre la clase positiva.
+    metrics["f1_trivial"] = round(2 * prevalencia / (1 + prevalencia), 4) if prevalencia else 0.0
+
+    if y_proba is not None and len(np.unique(y_true)) > 1:
+        # Calibración. El capítulo sostiene que la pérdida de validación empeora
+        # mientras el ordenamiento mejora, esto es que lo que se degrada es la
+        # calibración y no la discriminación. Esa afirmación necesita una métrica
+        # que la mida, y ni el F1 ni el área bajo la curva la miden.
+        p = np.clip(np.asarray(y_proba, dtype=float), 0.0, 1.0)
+        metrics["brier"] = round(float(np.mean((p - y_true) ** 2)), 4)
+        # Error de calibración esperado, con diez cajas de anchura fija.
+        cajas = np.clip(np.digitize(p, np.linspace(0.1, 0.9, 9)), 0, 9)
+        ece = 0.0
+        for c in range(10):
+            m = cajas == c
+            if m.any():
+                ece += m.mean() * abs(p[m].mean() - float(y_true[m].mean()))
+        metrics["ece"] = round(float(ece), 4)
+
+        # Tasa de falsos positivos al 95% de detección. Es la cifra operativa de
+        # una pasarela: cuánto correo legítimo se bloquea para atrapar 95 de cada
+        # 100 mensajes de phishing.
+        orden = np.argsort(-p)
+        yt = np.asarray(y_true)[orden]
+        tp = np.cumsum(yt == 1)
+        fpos = np.cumsum(yt == 0)
+        total_p, total_n = int((yt == 1).sum()), int((yt == 0).sum())
+        if total_p and total_n:
+            alcanza = np.nonzero(tp >= 0.95 * total_p)[0]
+            metrics["fpr_a_tpr95"] = (round(float(fpos[alcanza[0]] / total_n), 4)
+                                      if len(alcanza) else None)
+
     report = classification_report(y_true, y_pred, output_dict=True, zero_division=0)
     metrics["classification_report"] = report
     return metrics

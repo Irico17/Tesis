@@ -1,0 +1,7 @@
+E5 · corpus completo: 44,100 correos
+  auditando características…
+  entrenando el control de procedencia…
+  artefactos en /data/calegre/Tesis/medios_de_verificacion/experimentos/e5
+
+  mayor cociente entre las 18: 0.4338
+  control de procedencia: F1=0.6388 (suelo del confusor; todo modelo debe superarlo con holgura)

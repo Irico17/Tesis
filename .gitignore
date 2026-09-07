@@ -1,7 +1,6 @@
-# Credenciales
+# ---------------------------------------------------------------- credenciales
 kaggle.json
 .kaggle/
-# Claves y credenciales de acceso a servidores: NUNCA deben versionarse.
 *.pem
 *.key
 id_rsa*
@@ -11,98 +10,45 @@ id_rsa*
 credenciales*
 secrets*
 
-# Python
+# ---------------------------------------------------------------------- Python
 __pycache__/
 *.py[cod]
 *.egg-info/
 .venv/
 venv/
+.ipynb_checkpoints/
 
-# Cursor / IDE / agentes
+# ------------------------------------------------------------- IDE y agentes
 .cursor/
 .claude/
 
-# Datos crudos y artefactos grandes (reproducibles con el pipeline)
-data/Datasets_Originales/**
-data/Datasets_Procesados/Dataset_Unificado.*
-# Exportaciones a formato estándar (.csv/.jsonl) del IOV de R1.1 -- regenerables
-# bajo demanda con `python -m phishing_pipeline.export_dataset --format ...`
-data/Datasets_Procesados/Dataset_Unificado_multimodal.*
-data/Datasets_Procesados/por_fuente/
-data/Datasets_Procesados/splits/*.csv
-data/Datasets_Procesados/splits/*.parquet
-data/Datasets_Procesados/splits_group_aware/*.csv
-data/Datasets_Procesados/splits_group_aware/*.parquet
-data/features/
-
-# Tablas laterales intermedias de Fase A (regenerables con
-# phishing_pipeline.dedup.*; su contenido ya está fusionado en
-# Dataset_Unificado.parquet, que sí se trackea) — mismo criterio que por_fuente/
-data/Datasets_Procesados/template_clusters.parquet
-data/Datasets_Procesados/network_lexical_enrichment.parquet
-data/Datasets_Procesados/dom_stats_enrichment.parquet
-data/Datasets_Procesados/phishmmf_spf_enrichment.parquet
-
-# Modelo profundo: checkpoints/ONNX son binarios grandes y regenerables
-# (src/phishing_model/train.py, train_loso.py, quantization.py) — nunca al repo.
-data/model/
-
-# Predicciones fila por fila: regenerables corriendo evaluate.py/run_baselines.py
-data/predictions/
-
-# Reportes regenerables — conservar solo JSON/CSV de evidencia vía git add selectivo
-data/reports/**/*.md
-data/reports/**/*.log
-data/reports/label_audit_sample.csv
-# NOTA: `baselines_results.json` NO se ignora. Pesa 36 KB y es la fuente de
-# evidencia que el Capítulo 4 cita para las tablas comparativas; excluirlo
-# dejaba al documento remitiendo a un archivo ausente del repositorio, de
-# modo que ni el asesor ni el jurado podían verificar las cifras.
-data/reports/language_full*
-data/reports/csv/language*
-data/reports/csv/outliers_p99.csv
-data/reports/csv/dedup_impact*
-
-# Figuras: por defecto ignorar; las clave se añaden explícitamente
-data/reports/figures/**
-
-# --- Añadido al ordenar el repositorio (2026-08-23) ---
-
-# Espacio de trabajo temporal: guiones de verificación de un solo uso, versiones
-# intermedias de los documentos y documentación de trabajo retirada del repositorio.
-# Su contenido es desechable por definición.
-scratch/
-
-# Entregables en formato Word y sus paquetes comprimidos. No son código y pesan
-# decenas de megabytes; la evidencia que sustenta lo que afirman vive versionada en
+# ------------------------------------------------------------- datos y modelos
+# Nada de esto se versiona: son gigabytes y se reconstruyen de forma integra con
+# el pipeline. La evidencia que el capitulo de resultados cita vive versionada en
 # medios_de_verificacion/.
-Entregables/
-entregables/
-
-# Predicciones fila por fila. Se versiona en medios_de_verificacion/ únicamente el
-# subconjunto necesario para reproducir la prueba de significancia; el resto es
-# regenerable con phishing_model.evaluate a partir de los puntos de control.
+#
+#   python -m phishing_pipeline.downloaders.correo_real
+#   python -m phishing_pipeline.downloaders.listas_correo
+#   python -m phishing_pipeline.downloaders.kaggle_phishing
+#   python -m phishing_pipeline.downloaders.phish_mmf
+#   python -m phishing_pipeline.corpus_real
+data/Datasets_Originales/
+data/Datasets_Procesados/
+data/features/
+data/model/
 data/predictions/
+data/reports/
 
-# La carpeta de medios de verificación SÍ se versiona: es la evidencia que el
-# capítulo de resultados cita y que el jurado necesita para comprobar cada cifra.
+# La carpeta de medios de verificacion SI se versiona entera: es lo que el
+# jurado necesita para comprobar cada cifra, una carpeta por resultado.
 !medios_de_verificacion/
 
-# Salidas de trabajo del modelo: se escriben aquí durante la ejecución y su copia
-# curada, que es la que el capítulo de resultados cita, vive versionada en
-# medios_de_verificacion/. Versionar ambas duplicaría unos 31 MB sin aportar nada.
-data/reports/loso/
-data/reports/training_logs/
-data/reports/iov_mv/
-
-# Corpus de correo real y sus particiones. No se versionan por tamaño --el
-# parquet completo son 441 MB y las particiones 1.2 GB, muy por encima del
-# límite de 100 MB por archivo de GitHub-- y porque son reproducibles de forma
-# íntegra con el pipeline:
-#   python -m phishing_pipeline.downloaders.correo_real
-#   python -m phishing_pipeline.corpus_real
-data/Datasets_Procesados/Dataset_Real*
-data/Datasets_Procesados/splits_real_group_aware/
-
-# Respaldos comprimidos del directorio de trabajo
+# -------------------------------------------------------- entregables y trabajo
+# Los documentos en formato Word y los guiones que los generan no pertenecen al
+# repositorio: la tesis se redacta aparte y aqui vive lo que la reproduce.
+entregables/
+Entregables/
+scripts/entregable/
+scratch/
 *backup*.zip
+.~lock.*

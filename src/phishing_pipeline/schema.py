@@ -20,6 +20,9 @@ CANONICAL_COLUMNS: list[str] = [
     "label_text",
     "subject",
     "sender",
+    # Marca temporal del mensaje, preferida del sello del servidor. Habilita la
+    # partición temporal, que es la pregunta de generalización operativa.
+    "sent_date",
     "body_raw",
     "body_plain",
     "body_html",

@@ -1,0 +1,175 @@
+{
+  "generated_at": "2026-09-05T04:01:11.597126+00:00",
+  "duration_seconds": 142.76,
+  "passed": true,
+  "checks": {
+    "synthetic_shapes": {
+      "passed": true,
+      "by_fusion_type": {
+        "text_only": {
+          "output_shape": [
+            4,
+            2
+          ],
+          "passed": true
+        },
+        "concat_late_fusion": {
+          "output_shape": [
+            4,
+            2
+          ],
+          "passed": true
+        },
+        "cross_attention_modality_level": {
+          "output_shape": [
+            4,
+            2
+          ],
+          "passed": true
+        },
+        "cross_attention_token_level": {
+          "output_shape": [
+            4,
+            2
+          ],
+          "passed": true
+        },
+        "mixture_of_experts": {
+          "output_shape": [
+            4,
+            2
+          ],
+          "passed": true
+        }
+      }
+    },
+    "synthetic_forward_backward": {
+      "passed": true,
+      "loss_value": 0.7716760039329529,
+      "any_grad_computed": true,
+      "all_grads_finite": true,
+      "non_finite_grad_params": []
+    },
+    "masked_modality_forward": {
+      "passed": true,
+      "ausencia_natural_total": {
+        "output_shape": [
+          4,
+          2
+        ],
+        "all_finite": true
+      },
+      "dropout_forzado_train": {
+        "output_shape": [
+          4,
+          2
+        ],
+        "all_finite": true
+      },
+      "eval_sin_dropout_es_determinista": {
+        "passed": true
+      }
+    },
+    "real_data_training_steps": {
+      "passed": true,
+      "skipped": false,
+      "rows_used": 200,
+      "steps_run": 8,
+      "loss_history": [
+        0.9689015746116638,
+        1.187635898590088,
+        1.2319862842559814,
+        0.7892110347747803,
+        0.9534971714019775,
+        0.684259831905365,
+        0.8802347779273987,
+        0.262994647026062
+      ],
+      "loss_decreased": true,
+      "note": "loss_decreased puede ser False con muy pocos pasos/filas (ruido normal) sin que eso invalide el chequeo -- lo que importa es que la pérdida es finita y el forward/backward corre sin error sobre datos reales. Ver loss_history completo."
+    },
+    "aislamiento_de_modalidad_ausente": {
+      "cross_attention_token_level": {
+        "sin_ninguna__altera_estructura": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_ninguna__altera_red": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_estructura__altera_estructura": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_red__altera_red": {
+          "delta_logits": 0.0,
+          "aislado": true
+        }
+      },
+      "cross_attention_modality_level": {
+        "sin_ninguna__altera_estructura": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_ninguna__altera_red": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_estructura__altera_estructura": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_red__altera_red": {
+          "delta_logits": 0.0,
+          "aislado": true
+        }
+      },
+      "concat_late_fusion": {
+        "sin_ninguna__altera_estructura": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_ninguna__altera_red": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_estructura__altera_estructura": {
+          "delta_logits": 0.0,
+          "aislado": true
+        },
+        "sin_red__altera_red": {
+          "delta_logits": 0.0,
+          "aislado": true
+        }
+      },
+      "passed": true
+    },
+    "escalado_acotado": {
+      "quantile": {
+        "min": 0.0,
+        "max": 1.0,
+        "acotado": true
+      },
+      "minmax_clip": {
+        "min": 0.0,
+        "max": 1.0,
+        "acotado": true
+      },
+      "minmax": {
+        "min": -1005.0555555555554,
+        "max": 1005.050505050505,
+        "acotado": false,
+        "nota": "formulación original, se desborda por diseño; sirve de control de la prueba"
+      },
+      "passed": "True"
+    },
+    "configuracion_del_punto_de_control": {
+      "ida_y_vuelta_identica": true,
+      "campos_persistidos": 25,
+      "campos_totales": 25,
+      "tolera_formato_anterior": true,
+      "passed": true
+    }
+  }
+}

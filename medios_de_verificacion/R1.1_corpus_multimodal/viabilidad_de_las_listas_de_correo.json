@@ -1,0 +1,75 @@
+{
+  "fuentes": {
+    "public-inbox (kernel.org)": 12603,
+    "HyperKitty (Fedora)": 137516
+  },
+  "tres_modalidades": {
+    "phishing": 9916,
+    "legitimos_hoy": 209,
+    "aporte": 18448,
+    "prevalencia_hoy": 0.9794,
+    "prevalencia_nueva": 0.347
+  },
+  "dos_modalidades": {
+    "phishing": 11685,
+    "legitimos_hoy": 8943,
+    "aporte": 110168,
+    "prevalencia_hoy": 0.5665,
+    "prevalencia_nueva": 0.0893
+  },
+  "faltan_trimodales": 0,
+  "cobertura": [
+    {
+      "conjunto": "public-inbox (kernel.org)",
+      "n": 12603,
+      "estructura": 0.0109,
+      "red": 0.4696,
+      "ambas": 0.0052,
+      "spf_result": 0.6921,
+      "dkim_result": 0.7484,
+      "dmarc_result": 0.6921,
+      "num_urls_metadata_media": 1.32,
+      "num_links_media": 0.0,
+      "total_nodos_dom_media": 0.22
+    },
+    {
+      "conjunto": "HyperKitty (Fedora)",
+      "n": 137516,
+      "estructura": 0.1712,
+      "red": 0.72,
+      "ambas": 0.1337,
+      "spf_result": 0.0,
+      "dkim_result": 0.0,
+      "dmarc_result": 0.0,
+      "num_urls_metadata_media": 7.14,
+      "num_links_media": 0.94,
+      "total_nodos_dom_media": 13.1
+    },
+    {
+      "conjunto": "corpus actual · legítimos",
+      "n": 17994,
+      "estructura": 0.0124,
+      "red": 0.4962,
+      "ambas": 0.0116,
+      "spf_result": 0.0,
+      "dkim_result": 0.0,
+      "dmarc_result": 0.0,
+      "num_urls_metadata_media": 2.86,
+      "num_links_media": 0.47,
+      "total_nodos_dom_media": 3.94
+    },
+    {
+      "conjunto": "corpus actual · phishing",
+      "n": 17729,
+      "estructura": 0.6028,
+      "red": 0.6156,
+      "ambas": 0.5593,
+      "spf_result": 0.4677,
+      "dkim_result": 0.4263,
+      "dmarc_result": 0.4128,
+      "num_urls_metadata_media": 4.78,
+      "num_links_media": 2.36,
+      "total_nodos_dom_media": 65.71
+    }
+  ]
+}

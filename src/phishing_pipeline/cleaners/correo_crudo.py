@@ -21,7 +21,7 @@ y SPF, DKIM y DMARC son posteriores.
 La consecuencia práctica es que esos tres campos quedan confundidos con la clase
 por la vía de la época, y `phishing_pipeline.auditoria_fugas` lo detectará. La
 decisión de retirarlos corresponde a la etapa de selección de características
-(`scripts/auditar_caracteristicas.py`), no a la de extracción: el limpiador extrae
+(experimento E5), no a la de extracción: el limpiador extrae
 lo que hay y deja constancia; quien decide qué entra al modelo es la auditoría.
 Ocultar el campo aquí impediría además medir el problema.
 """
@@ -33,6 +33,7 @@ import hashlib
 import mailbox
 import re
 import uuid
+from datetime import datetime, timezone
 from email import policy
 from email.message import Message
 from pathlib import Path
@@ -56,6 +57,8 @@ _SPF_RE = re.compile(r"spf\s*=\s*(\w+)", re.IGNORECASE)
 _DKIM_RE = re.compile(r"dkim\s*=\s*(\w+)", re.IGNORECASE)
 _DMARC_RE = re.compile(r"dmarc\s*=\s*(\w+)", re.IGNORECASE)
 _IP_RE = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
+# Índice de salto de una cabecera ARC: `i=1` es el receptor original.
+_ARC_I_RE = re.compile(r"\bi\s*=\s*(\d+)")
 
 # Longitud mínima del cuerpo, en caracteres. Por debajo de este umbral el mensaje
 # no aporta texto que clasificar y suele ser un resto de la conversión.
@@ -109,20 +112,48 @@ def extraer_autenticacion(msg: Message) -> dict[str, str | None]:
     """
     Resultados de SPF, DKIM y DMARC a partir de las cabeceras del mensaje.
 
-    Se consultan `Authentication-Results` primero y `Received-SPF` como respaldo
-    para SPF, que es el único de los tres que dispone de cabecera propia. Los
-    valores se devuelven en minúscula y tal como aparecen, sin forzarlos a un
-    conjunto cerrado: un valor inesperado debe poder observarse en el corpus en
-    lugar de quedar silenciosamente reclasificado.
+    Se consultan tres orígenes, en este orden:
+
+    1. `Authentication-Results` (RFC 8601), que escribe el servidor receptor.
+    2. `ARC-Authentication-Results` (RFC 8617), que preserva el dictamen del
+       receptor ORIGINAL cuando el mensaje pasó después por un reenviador.
+    3. `Received-SPF` como respaldo para SPF, único de los tres con cabecera propia.
+
+    El segundo origen no es un caso de borde. Se midió sobre archivos de listas de
+    discusión que el relé intermedio escribe en `Authentication-Results` únicamente
+    `arc=none smtp.client-ip=…`, sin resultado alguno, y deja los verdaderos en la
+    cadena ARC: sobre 1,500 mensajes, `Authentication-Results` contenía `spf=` en el
+    0% y `ARC-Authentication-Results` en el 77.3%. Leer solo la primera hacía que un
+    correo con autenticación completa se registrara como si careciera de ella, y esa
+    es precisamente la modalidad que el corpus solo tiene en una de las dos clases.
+
+    Cuando hay varias cabeceras ARC —una por salto— se recorren de la más antigua a
+    la más reciente, porque la primera corresponde al receptor original, que es quien
+    pudo verificar contra la IP y el dominio del emisor de verdad.
+
+    Los valores se devuelven en minúscula y tal como aparecen, sin forzarlos a un
+    conjunto cerrado: un valor inesperado debe poder observarse en el corpus en lugar
+    de quedar silenciosamente reclasificado.
     """
     resultado: dict[str, str | None] = {"spf": None, "dkim": None, "dmarc": None}
+    patrones = (("spf", _SPF_RE), ("dkim", _DKIM_RE), ("dmarc", _DMARC_RE))
 
-    auth = msg.get("Authentication-Results") or ""
-    if auth:
-        for clave, patron in (("spf", _SPF_RE), ("dkim", _DKIM_RE), ("dmarc", _DMARC_RE)):
-            m = patron.search(auth)
+    def leer(cabecera: str) -> None:
+        for clave, patron in patrones:
+            if resultado[clave] is not None:
+                continue
+            m = patron.search(cabecera)
             if m:
                 resultado[clave] = m.group(1).lower()
+
+    for cabecera in msg.get_all("Authentication-Results") or []:
+        leer(str(cabecera))
+
+    # `i=` numera los saltos ARC; el 1 es el receptor original. Si falta el índice
+    # se conserva el orden de aparición, que ya es el de llegada.
+    arc = msg.get_all("ARC-Authentication-Results") or []
+    for cabecera in sorted(arc, key=lambda c: _indice_arc(str(c))):
+        leer(str(cabecera))
 
     if resultado["spf"] is None:
         recibido = msg.get("Received-SPF")
@@ -130,6 +161,57 @@ def extraer_autenticacion(msg: Message) -> dict[str, str | None]:
             resultado["spf"] = str(recibido).strip().split()[0].lower()
 
     return resultado
+
+
+def _indice_arc(cabecera: str) -> int:
+    """Número de salto `i=` de una cabecera ARC; 99 si no lo declara."""
+    m = _ARC_I_RE.search(cabecera)
+    return int(m.group(1)) if m else 99
+
+
+def extraer_fecha(msg: Message) -> str | None:
+    """
+    Fecha del mensaje en ISO 8601, preferiendo la que estampó el servidor.
+
+    La cabecera `Date` la escribe el remitente y en correo de phishing se
+    falsifica: en phishing_pot se observaron fechas hasta 2031. Usarla sin más
+    para una partición temporal colocaría en el futuro correo que se recogió en
+    el pasado, y la partición dejaría de significar lo que dice.
+
+    Se prefiere por eso la marca de tiempo de la última cabecera `Received`, que
+    escribe el primer servidor que recibió el mensaje y el remitente no controla.
+    `Date` queda como respaldo para las colecciones que no conservan el
+    encaminamiento, y se descartan los valores fuera de un rango plausible.
+    """
+    from email.utils import parsedate_to_datetime
+
+    def plausible(dt) -> str | None:
+        if dt is None:
+            return None
+        # El correo electrónico es de 1971 en adelante; una fecha posterior al
+        # momento de la ejecución es necesariamente falsa o un error de zona.
+        ahora = datetime.now(timezone.utc)
+        if not (1971 <= dt.year <= ahora.year):
+            return None
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc).isoformat()
+
+    recibidas = msg.get_all("Received") or []
+    if recibidas:
+        # El sello va tras el último punto y coma de la cabecera.
+        cola = str(recibidas[-1]).rsplit(";", 1)
+        if len(cola) == 2:
+            try:
+                if (v := plausible(parsedate_to_datetime(cola[1].strip()))):
+                    return v
+            except (TypeError, ValueError):
+                pass
+
+    try:
+        return plausible(parsedate_to_datetime(str(msg.get("Date") or "")))
+    except (TypeError, ValueError):
+        return None
 
 
 def _ip_de_origen(msg: Message) -> str | None:
@@ -182,6 +264,7 @@ def _mensaje_a_fila(msg: Message, fuente: str, etiqueta: int) -> dict | None:
             "label_text": "phishing" if etiqueta == 1 else "safe",
             "subject": str(msg.get("Subject") or ""),
             "sender": str(msg.get("From") or ""),
+            "sent_date": extraer_fecha(msg),
             "body_raw": cuerpo,
             "body_plain": plano,
             "body_html": html,

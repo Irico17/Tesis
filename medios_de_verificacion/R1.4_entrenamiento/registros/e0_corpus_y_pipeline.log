@@ -1,0 +1,8 @@
+E0 · corpus 44,100 correos, prevalencia 0.4020
+  [OK   ] Cobertura de las tres modalidades                    45.57%  (umbral ≥ 25%)
+  [OK   ] Cobertura de texto y al menos una no textual         64.76%  (umbral ≥ 40%)
+  [OK   ] Prevalencia del corpus                               0.4020  (umbral 0.40 – 0.60)
+  [OK   ] Prevalencia del subconjunto bimodal                  0.4092  (umbral 0.40 – 0.60)
+  prueba de humo: TODAS SUPERADAS
+  auditoría de fugas: SIN_FUGAS
+  artefactos en /data/calegre/Tesis/medios_de_verificacion/experimentos/e0

@@ -1,0 +1,81 @@
+{
+  "generado_en": "2026-09-03T16:30:52.905615+00:00",
+  "n_filas": 44100,
+  "duplicados_globales_eliminados": 791,
+  "prevalencia": 0.402018,
+  "por_fuente": {
+    "CEAS_08": {
+      "n": 754,
+      "prevalencia": 0.0,
+      "clases": 1
+    },
+    "Fedora": {
+      "n": 13158,
+      "prevalencia": 0.0,
+      "clases": 1
+    },
+    "Kaggle": {
+      "n": 17409,
+      "prevalencia": 0.374576,
+      "clases": 2
+    },
+    "Nazario": {
+      "n": 4164,
+      "prevalencia": 1.0,
+      "clases": 1
+    },
+    "SpamAssassin": {
+      "n": 812,
+      "prevalencia": 0.0,
+      "clases": 1
+    },
+    "datacon2023": {
+      "n": 1084,
+      "prevalencia": 1.0,
+      "clases": 1
+    },
+    "kernel_lists": {
+      "n": 759,
+      "prevalencia": 0.0,
+      "clases": 1
+    },
+    "phishing_pot": {
+      "n": 5960,
+      "prevalencia": 1.0,
+      "clases": 1
+    }
+  },
+  "cobertura": {
+    "trimodal": {
+      "n": 20098,
+      "porcentaje": 45.5737,
+      "prevalencia": 0.493382
+    },
+    "bimodal": {
+      "n": 28558,
+      "porcentaje": 64.7574,
+      "prevalencia": 0.409167
+    }
+  },
+  "equilibrado": {
+    "prevalencia_objetivo": 0.4,
+    "prevalencia_obtenida": 0.402,
+    "n": 44100,
+    "legitimos_descartados": 206774,
+    "trimodal": {
+      "n": 20098,
+      "prevalencia": 0.4934
+    },
+    "por_fuente": {
+      "CEAS_08": 754,
+      "Fedora": 13158,
+      "Kaggle": 17409,
+      "Nazario": 4164,
+      "SpamAssassin": 812,
+      "datacon2023": 1084,
+      "kernel_lists": 759,
+      "phishing_pot": 5960
+    },
+    "avisos": []
+  }
+}

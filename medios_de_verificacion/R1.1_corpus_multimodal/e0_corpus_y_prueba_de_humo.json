@@ -1,0 +1,286 @@
+{
+  "experimento": "E0",
+  "resultados_asociados": [
+    "R1.1",
+    "R1.2"
+  ],
+  "generado_en": "2026-09-04T17:42:26.352846+00:00",
+  "corpus": {
+    "n": 44100,
+    "prevalencia": 0.402,
+    "conglomerados": 40719,
+    "por_fuente": {
+      "CEAS_08": {
+        "n": 754,
+        "phishing": 0,
+        "legitimos": 754
+      },
+      "Fedora": {
+        "n": 13158,
+        "phishing": 0,
+        "legitimos": 13158
+      },
+      "Kaggle": {
+        "n": 17409,
+        "phishing": 6521,
+        "legitimos": 10888
+      },
+      "Nazario": {
+        "n": 4164,
+        "phishing": 4164,
+        "legitimos": 0
+      },
+      "SpamAssassin": {
+        "n": 812,
+        "phishing": 0,
+        "legitimos": 812
+      },
+      "datacon2023": {
+        "n": 1084,
+        "phishing": 1084,
+        "legitimos": 0
+      },
+      "kernel_lists": {
+        "n": 759,
+        "phishing": 0,
+        "legitimos": 759
+      },
+      "phishing_pot": {
+        "n": 5960,
+        "phishing": 5960,
+        "legitimos": 0
+      }
+    }
+  },
+  "indicador_r1_1": {
+    "criterios": [
+      {
+        "criterio": "Cobertura de las tres modalidades",
+        "umbral": "≥ 25%",
+        "medido": "45.57%",
+        "cumple": true
+      },
+      {
+        "criterio": "Cobertura de texto y al menos una no textual",
+        "umbral": "≥ 40%",
+        "medido": "64.76%",
+        "cumple": true
+      },
+      {
+        "criterio": "Prevalencia del corpus",
+        "umbral": "0.40 – 0.60",
+        "medido": "0.4020",
+        "cumple": true
+      },
+      {
+        "criterio": "Prevalencia del subconjunto bimodal",
+        "umbral": "0.40 – 0.60",
+        "medido": "0.4092",
+        "cumple": true
+      }
+    ],
+    "cumple_todo": true,
+    "trimodal": {
+      "n": 20098,
+      "porcentaje": 45.5737,
+      "prevalencia": 0.4934
+    },
+    "bimodal": {
+      "n": 28558,
+      "porcentaje": 64.7574,
+      "prevalencia": 0.4092
+    },
+    "nota_trimodal": "La prevalencia del subconjunto trimodal se declara como medida. Antes de incorporar archivos de listas de discusión valía 0.979 --era casi todo phishing-- porque ninguna colección de correo legítimo publicada conserva el marcado del cuerpo."
+  },
+  "prueba_de_humo": {
+    "comprobaciones": [
+      {
+        "comprobacion": "etiquetas sin nulos",
+        "resultado": "OK",
+        "detalle": "0 nulos"
+      },
+      {
+        "comprobacion": "cobertura textual completa",
+        "resultado": "OK",
+        "detalle": "0 vacíos"
+      },
+      {
+        "comprobacion": "cobertura bimodal ≥ 40%",
+        "resultado": "OK",
+        "detalle": "64.76%"
+      },
+      {
+        "comprobacion": "cobertura trimodal ≥ 25%",
+        "resultado": "OK",
+        "detalle": "45.57%"
+      },
+      {
+        "comprobacion": "prevalencia del corpus en rango",
+        "resultado": "OK",
+        "detalle": "0.4020"
+      },
+      {
+        "comprobacion": "sin duplicados exactos de texto",
+        "resultado": "OK",
+        "detalle": "0"
+      },
+      {
+        "comprobacion": "template_cluster_id completo",
+        "resultado": "OK",
+        "detalle": "0 nulos"
+      },
+      {
+        "comprobacion": "al menos dos colecciones con ambas clases o el corpus equilibrado",
+        "resultado": "OK",
+        "detalle": "2 clases"
+      }
+    ],
+    "veredicto": "TODAS SUPERADAS"
+  },
+  "auditoria_de_fugas_r1_2": {
+    "umbral_mi_nats": 0.05,
+    "n_filas": 44100,
+    "n_fuentes": 8,
+    "campos_auditados": [
+      "spf_result",
+      "dkim_result",
+      "dmarc_result",
+      "received_origin_ip",
+      "num_urls_metadata",
+      "language",
+      "subject",
+      "sender",
+      "body_html"
+    ],
+    "hallazgos": [
+      {
+        "fuente": "CEAS_08",
+        "campo": null,
+        "nota": "fuente de clase única; la auditoría no aplica"
+      },
+      {
+        "fuente": "Fedora",
+        "campo": null,
+        "nota": "fuente de clase única; la auditoría no aplica"
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "spf_result",
+        "cobertura": 0.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "dkim_result",
+        "cobertura": 0.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "dmarc_result",
+        "cobertura": 0.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "received_origin_ip",
+        "cobertura": 0.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "num_urls_metadata",
+        "cobertura": 1.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "language",
+        "cobertura": 0.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "subject",
+        "cobertura": 1.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "sender",
+        "cobertura": 1.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Kaggle",
+        "campo": "body_html",
+        "cobertura": 1.0,
+        "mi_presencia_etiqueta_nats": 0.0,
+        "supera_umbral": false
+      },
+      {
+        "fuente": "Nazario",
+        "campo": null,
+        "nota": "fuente de clase única; la auditoría no aplica"
+      },
+      {
+        "fuente": "SpamAssassin",
+        "campo": null,
+        "nota": "fuente de clase única; la auditoría no aplica"
+      },
+      {
+        "fuente": "datacon2023",
+        "campo": null,
+        "nota": "fuente de clase única; la auditoría no aplica"
+      },
+      {
+        "fuente": "kernel_lists",
+        "campo": null,
+        "nota": "fuente de clase única; la auditoría no aplica"
+      },
+      {
+        "fuente": "phishing_pot",
+        "campo": null,
+        "nota": "fuente de clase única; la auditoría no aplica"
+      }
+    ],
+    "fugas_detectadas": [],
+    "veredicto": "SIN_FUGAS"
+  },
+  "procedencia": {
+    "generado_en": "2026-09-04T17:42:26.359278+00:00",
+    "git": {
+      "commit": "sin repositorio git en esta maquina",
+      "arbol_con_cambios_sin_confirmar": false
+    },
+    "semillas_de_modelo": [
+      42,
+      43,
+      44
+    ],
+    "semilla_de_particion": 7,
+    "entorno": {
+      "python": "3.12.3",
+      "sistema": "Linux 6.8.0-136-generic",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "sklearn": "1.9.0",
+      "torch": "2.13.0+cu126",
+      "transformers": "5.15.0",
+      "gpu": "NVIDIA RTX A5500"
+    },
+    "corpus": {
+      "n": 44100,
+      "prevalencia": 0.402018,
+      "huella": "f078576f098f129d"
+    }
+  }
+}

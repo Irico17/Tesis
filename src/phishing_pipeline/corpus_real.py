@@ -43,6 +43,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from phishing_pipeline.cleaners.correo_crudo import limpiar_correo_crudo
@@ -72,6 +73,8 @@ FUENTES_ESPERADAS = (
     "CEAS_08",
     "datacon2023",
     "Kaggle",
+    "Fedora",
+    "kernel_lists",
 )
 INFORME = REPORTS_DIR / "corpus_real_report.json"
 
@@ -87,6 +90,15 @@ FUENTES_CRUDAS = (
     ("phishing_pot", "phishing_pot/email", 1),
     ("Nazario", "Nazario", 1),
     ("SpamAssassin", "SpamAssassin", 0),
+    # Archivos de listas de discusión. Se incorporan porque son la única fuente
+    # pública de correo LEGÍTIMO que conserva lo que al corpus le faltaba, y cada
+    # una aporta una mitad distinta: Fedora el marcado del cuerpo (17.1% de
+    # estructura frente al 1.2% del resto de legítimos) y las listas del kernel
+    # las cabeceras de autenticación (69.2%, frente al 0.0% de todo lo demás).
+    # Sin ellas, el subconjunto con las tres modalidades era 97.9% phishing y el
+    # experimento de ablación por modalidad no podía plantearse.
+    ("Fedora", "listas_html", 0),
+    ("kernel_lists", "listas_correo", 0),
 )
 
 
@@ -217,7 +229,132 @@ def _cargar_heredadas() -> list[pd.DataFrame]:
     return partes
 
 
-def construir(raw_dir: Path | None = None, descargar: bool = True) -> tuple[pd.DataFrame, dict]:
+def equilibrar(df: pd.DataFrame, prevalencia: float = 0.40,
+               semilla: int = 42) -> tuple[pd.DataFrame, dict]:
+    """
+    Submuestrea la clase legítima hasta la prevalencia objetivo.
+
+    Hace falta porque los archivos de listas aportan 137,516 mensajes legítimos y
+    volcarlos enteros dejaría el corpus en prevalencia 0.095: el desequilibrio que
+    se venía corrigiendo, invertido. Se submuestrea la clase NEGATIVA porque el
+    phishing es lo escaso y descartarlo perdería material irrepetible.
+
+    La prevalencia de un corpus es un parámetro de diseño y no una estimación del
+    mundo. La tasa real de phishing en un flujo de correo, tras el filtro de spam,
+    está en el orden del 0.1 al 1%; ninguna cifra cercana al equilibrio la imita.
+    Se equilibra porque el corpus existe para COMPARAR arquitecturas sobre los
+    mismos datos, y un desbalance introduciría un segundo factor --la capacidad de
+    explotar la probabilidad a priori-- que difiere entre arquitecturas y confunde
+    la comparación. La validez externa se atiende aparte, con métricas
+    independientes del umbral y una curva de sensibilidad a la tasa base.
+
+    El reparto de la clase legítima respeta cuatro compromisos, en este orden:
+
+    1. **Kaggle íntegra, sin tocar ninguna de sus dos clases.** Es la única
+       colección que aporta las dos, y por tanto el único pliegue donde la clase
+       no coincide con la procedencia. Recortar solo su mitad legítima le cambia
+       la prevalencia interna --se midió pasar de 0.375 a 0.455-- y altera la
+       única evaluación limpia del protocolo.
+    2. **Tantos legítimos trimodales como phishing trimodales.** Es la razón de
+       ser de la incorporación: deja equilibrado el subconjunto sobre el que se
+       responde si la fusión aporta.
+    3. **Cuota mínima para cada colección legítima restante.** Sin ella, el
+       reparto proporcional dejaba SpamAssassin en 102 mensajes y kernel_lists en
+       41, y esta última es la única fuente de autenticación legítima que existe:
+       reducirla a 41 equivale a no haberla incorporado.
+    4. **El resto, proporcional y con tope**, para que ninguna colección domine
+       la clase negativa como Fedora haría por volumen.
+
+    Si el presupuesto no alcanza para (1) y (2), se informa de la prevalencia
+    máxima alcanzable en lugar de sacrificar en silencio una de las dos.
+    """
+    from phishing_pipeline.features.vectorizer import compute_modality_availability
+
+    disp = compute_modality_availability(df)
+    tri = (disp["has_structure_modality"] & disp["has_network_modality"]).to_numpy()
+    es_phish = df["label"].to_numpy() == 1
+    es_kaggle = df["source_dataset"].to_numpy() == "Kaggle"
+
+    # Kaggle se conserva entera y queda fuera del presupuesto de submuestreo.
+    intactas = df[es_kaggle]
+    resto = df[~es_kaggle]
+    tri_resto = tri[~es_kaggle]
+    phish_resto = resto[resto["label"] == 1]
+    leg_resto = resto[resto["label"] == 0]
+    tri_leg = tri_resto[(resto["label"] == 0).to_numpy()]
+
+    n_phish_total = int(len(phish_resto) + (intactas["label"] == 1).sum())
+    presupuesto = int(round(n_phish_total * (1 - prevalencia) / prevalencia))
+    presupuesto -= int((intactas["label"] == 0).sum())  # Kaggle ya gasta parte
+
+    n_tri_phish = int((tri & es_phish).sum())
+    rng = np.random.default_rng(semilla)
+    avisos: list[str] = []
+
+    if presupuesto < n_tri_phish:
+        avisos.append(
+            f"el presupuesto de legítimos ({presupuesto}) no cubre los "
+            f"{n_tri_phish} trimodales que exige el equilibrio del subconjunto; "
+            f"bajar la prevalencia objetivo por debajo de {prevalencia}"
+        )
+
+    elegidos: list[np.ndarray] = []
+    def tomar(idx, n):
+        n = int(min(max(n, 0), len(idx)))
+        if n:
+            elegidos.append(rng.choice(np.asarray(idx), size=n, replace=False))
+        return n
+
+    # (2) legítimos con las tres modalidades
+    gastado = tomar(leg_resto.index[tri_leg], min(n_tri_phish, presupuesto))
+
+    # (3) cuota mínima por colección, para que ninguna desaparezca
+    ya = np.concatenate(elegidos) if elegidos else np.array([], dtype=leg_resto.index.dtype)
+    pendientes = leg_resto.drop(index=ya, errors="ignore")
+    fuentes = sorted(pendientes["source_dataset"].unique())
+    if fuentes:
+        minimo = max(0, (presupuesto - gastado)) // (2 * len(fuentes))
+        for f in fuentes:
+            idx = pendientes.index[pendientes["source_dataset"].to_numpy() == f]
+            gastado += tomar(idx, min(minimo, presupuesto - gastado))
+
+    # (4) el resto, proporcional y con tope del 40% de la clase negativa
+    ya = np.concatenate(elegidos) if elegidos else np.array([], dtype=leg_resto.index.dtype)
+    pendientes = leg_resto.drop(index=ya, errors="ignore")
+    queda = max(0, presupuesto - gastado)
+    if queda and len(pendientes):
+        por_fuente = pendientes.groupby("source_dataset").size()
+        tope = int(0.40 * presupuesto)
+        for f, n in por_fuente.items():
+            if queda <= 0:
+                break
+            idx = pendientes.index[pendientes["source_dataset"].to_numpy() == f]
+            cupo = min(int(queda * n / por_fuente.sum()) or 1, tope, n, queda)
+            queda -= tomar(idx, cupo)
+
+    seleccion = np.concatenate(elegidos) if elegidos else np.array([], dtype=leg_resto.index.dtype)
+    salida = pd.concat([intactas, phish_resto, leg_resto.loc[seleccion]]).sort_index()
+    salida = salida.reset_index(drop=True)
+
+    d2 = compute_modality_availability(salida)
+    tri2 = d2["has_structure_modality"] & d2["has_network_modality"]
+    informe = {
+        "prevalencia_objetivo": prevalencia,
+        "prevalencia_obtenida": round(float(salida["label"].mean()), 4),
+        "n": int(len(salida)),
+        "legitimos_descartados": int(len(leg_resto) - len(seleccion)),
+        "trimodal": {
+            "n": int(tri2.sum()),
+            "prevalencia": round(float(salida.loc[tri2, "label"].mean()), 4),
+        },
+        "por_fuente": {k: int(v) for k, v in salida.groupby("source_dataset").size().items()},
+        "avisos": avisos,
+    }
+    return salida, informe
+
+
+def construir(raw_dir: Path | None = None, descargar: bool = True,
+              prevalencia: float = 0.40, semilla: int = 42) -> tuple[pd.DataFrame, dict]:
     """Descarga si procede, limpia, unifica, deduplica y devuelve corpus e informe."""
     raw_dir = raw_dir or RAW_DIR
 
@@ -246,6 +383,45 @@ def construir(raw_dir: Path | None = None, descargar: bool = True) -> tuple[pd.D
     df = df.drop_duplicates("_huella", keep="first").drop(columns=["_huella"])
     df = df.reset_index(drop=True)
     duplicados = antes - len(df)
+
+    # Equilibrado de la clase legítima. Va DESPUÉS de deduplicar, para que el
+    # presupuesto se reparta sobre filas ya únicas, y ANTES del informe, que debe
+    # describir el corpus que de verdad se escribe.
+    df, informe_equilibrio = equilibrar(df, prevalencia=prevalencia, semilla=semilla)
+    logger.info(
+        "Equilibrado a prevalencia %.4f (objetivo %.2f); %d legítimos descartados",
+        informe_equilibrio["prevalencia_obtenida"], prevalencia,
+        informe_equilibrio["legitimos_descartados"],
+    )
+
+    # Se agrupa DESPUÉS de equilibrar, no antes. Antes obligaba a recorrer las
+    # 229,385 filas leídas para conservar 44,100 --cinco veces el trabajo-- y
+    # producía identificadores que remiten a filas que el submuestreo descarta.
+    # El conglomerado debe describir el corpus que se escribe.
+    # Agrupación de casi-duplicados por MinHash. Va antes del equilibrado para
+    # que el submuestreo reparta filas que ya tienen conglomerado asignado.
+    #
+    # No estaba: `find_near_duplicate_clusters` existía y solo se aplicaba en el
+    # pipeline del corpus anterior, de modo que las fuentes que pasan por el
+    # limpiador crudo llegaban aquí con `template_cluster_id` a nulo. Se midió el
+    # alcance: 24,853 filas de 44,100 --el 56% del corpus-- sin conglomerado,
+    # incluidas phishing_pot, Nazario y Fedora enteras.
+    #
+    # La consecuencia no era cosmética. La partición agrupada sirve para impedir
+    # que una misma campaña caiga en entrenamiento y en prueba; sin identificador,
+    # esa protección solo alcanzaba al 44% de los correos y el resto podía
+    # repartirse a ambos lados, inflando la métrica por memorización de plantilla.
+    from phishing_pipeline.dedup.near_duplicates import find_near_duplicate_clusters
+
+    faltan = df["template_cluster_id"].isna().sum() if "template_cluster_id" in df else len(df)
+    if faltan:
+        logger.info("Agrupando casi-duplicados por MinHash (%d filas sin conglomerado)", faltan)
+        df["template_cluster_id"] = find_near_duplicate_clusters(df)
+        logger.info(
+            "  %d conglomerados para %d correos; sin asignar: %d",
+            df["template_cluster_id"].nunique(), len(df),
+            int(df["template_cluster_id"].isna().sum()),
+        )
 
     from phishing_pipeline.features.vectorizer import compute_modality_availability
 
@@ -279,6 +455,7 @@ def construir(raw_dir: Path | None = None, descargar: bool = True) -> tuple[pd.D
             },
         },
     }
+    informe["equilibrado"] = informe_equilibrio
     return df, informe
 
 
@@ -286,6 +463,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--raw-dir", type=Path, default=None)
     parser.add_argument("--salida", type=Path, default=SALIDA)
+    # La prevalencia es un parámetro de diseño y se expone como tal: la
+    # justificación de 0.40 está en doc/DECISIONES_CORPUS_Y_PROTOCOLO.md.
+    parser.add_argument("--prevalencia", type=float, default=0.40)
+    parser.add_argument("--semilla", type=int, default=42)
     parser.add_argument(
         "--permitir-incompleto",
         action="store_true",
@@ -298,7 +479,8 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    df, informe = construir(args.raw_dir, descargar=not args.sin_descargar)
+    df, informe = construir(args.raw_dir, descargar=not args.sin_descargar,
+                             prevalencia=args.prevalencia, semilla=args.semilla)
 
     # Guardarraíl contra la degradación silenciosa. Un corpus al que le falte una
     # fuente sigue siendo un parquet bien formado y no se distingue del completo

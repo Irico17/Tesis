@@ -1,0 +1,161 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9837.24it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/data/calegre/Tesis/src/phishing_model/fusion/modality_encoder.py:42: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers)
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/masking_utils.py:212: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if (padding_length := kv_length + kv_offset - attention_mask.shape[-1]) > 0:
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/integrations/sdpa_attention.py:120: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  is_causal = q_length > 1 and attention_mask is None and is_causal
+/data/calegre/Tesis/src/phishing_model/model.py:412: TracerWarning: Converting a tensor to a Python float might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  self._gate_media.fill_(float(self._ultima_compuerta.mean()))
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/utils.py:661: UserWarning: ONNX Preprocess - Removing mutation from node aten::fill_ on block input: 'model._gate_media'. This changes graph semantics. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/jit/passes/onnx/remove_inplace_ops_for_onnx.cpp:345.)
+  _C._jit_pass_onnx_remove_inplace_ops_for_onnx(graph, module)
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
+  return opset9.index(g, self, index)
+2026-09-05 09:00:00 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+2026-09-05 09:00:06 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+2026-09-05 09:00:19 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+  atencion_cruzada_token         FP32 95.738 ms  INT8 71.35 ms  259.3->66.02 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11474.58it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/masking_utils.py:212: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if (padding_length := kv_length + kv_offset - attention_mask.shape[-1]) > 0:
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/integrations/sdpa_attention.py:120: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  is_causal = q_length > 1 and attention_mask is None and is_causal
+/data/calegre/Tesis/src/phishing_model/model.py:412: TracerWarning: Converting a tensor to a Python float might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  self._gate_media.fill_(float(self._ultima_compuerta.mean()))
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/utils.py:661: UserWarning: ONNX Preprocess - Removing mutation from node aten::fill_ on block input: 'model._gate_media'. This changes graph semantics. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/jit/passes/onnx/remove_inplace_ops_for_onnx.cpp:345.)
+  _C._jit_pass_onnx_remove_inplace_ops_for_onnx(graph, module)
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
+  return opset9.index(g, self, index)
+2026-09-05 09:00:21 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+2026-09-05 09:00:27 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+2026-09-05 09:00:40 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+  atencion_cruzada_modalidad     FP32 98.068 ms  INT8 71.886 ms  257.25->65.45 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9440.68it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/masking_utils.py:212: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if (padding_length := kv_length + kv_offset - attention_mask.shape[-1]) > 0:
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/integrations/sdpa_attention.py:120: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  is_causal = q_length > 1 and attention_mask is None and is_causal
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
+  return opset9.index(g, self, index)
+2026-09-05 09:00:42 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+2026-09-05 09:00:48 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+2026-09-05 09:01:01 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+  mezcla_de_expertos             FP32 97.337 ms  INT8 73.09 ms  262.18->66.04 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9872.90it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/masking_utils.py:212: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if (padding_length := kv_length + kv_offset - attention_mask.shape[-1]) > 0:
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/integrations/sdpa_attention.py:120: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  is_causal = q_length > 1 and attention_mask is None and is_causal
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
+  return opset9.index(g, self, index)
+2026-09-05 09:01:03 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+2026-09-05 09:01:09 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+2026-09-05 09:01:21 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+  fusor_mlp                      FP32 88.937 ms  INT8 71.33 ms  255.64->64.36 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10907.04it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/masking_utils.py:212: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if (padding_length := kv_length + kv_offset - attention_mask.shape[-1]) > 0:
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/integrations/sdpa_attention.py:120: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  is_causal = q_length > 1 and attention_mask is None and is_causal
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
+  return opset9.index(g, self, index)
+2026-09-05 09:01:23 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+2026-09-05 09:01:28 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+2026-09-05 09:01:40 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+  concatenacion_tardia           FP32 92.002 ms  INT8 67.295 ms  254.14->63.98 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11297.48it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/masking_utils.py:212: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if (padding_length := kv_length + kv_offset - attention_mask.shape[-1]) > 0:
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/transformers/integrations/sdpa_attention.py:120: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  is_causal = q_length > 1 and attention_mask is None and is_causal
+/data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
+  return opset9.index(g, self, index)
+2026-09-05 09:01:42 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
+2026-09-05 09:01:47 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
+2026-09-05 09:01:59 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
+  solo_texto                     FP32 88.727 ms  INT8 60.09 ms  254.05->63.91 MB
+  artefactos en /data/calegre/Tesis/medios_de_verificacion/experimentos/e6

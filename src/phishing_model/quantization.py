@@ -259,6 +259,26 @@ def load_real_test_batches(
     return [{k: v.unsqueeze(0) for k, v in dataset[i].items() if k != "email_id"} for i in range(len(dataset))]
 
 
+def _ajustar_a_la_sesion(session, feeds: list[dict]) -> list[dict]:
+    """Deja en cada lote solo las entradas que el grafo declara.
+
+    Las arquitecturas unimodales de texto no exportan las ramas de estructura ni
+    de red, y ONNX Runtime rechaza con `Invalid input name` cualquier clave que su
+    grafo no conozca. Se filtra en UN solo sitio y lo usan tanto la medicion de
+    latencia como la comparacion FP32/INT8: cuando se arreglo solo en la primera,
+    la segunda volvio a fallar por lo mismo.
+
+    Si al grafo le falta una entrada que si necesita, se levanta error en vez de
+    seguir: alimentar de menos daria una latencia que no corresponde al modelo.
+    """
+    declaradas = {e.name for e in session.get_inputs()}
+    faltan = declaradas - set(feeds[0])
+    if faltan:
+        raise RuntimeError(
+            f"El grafo ONNX exige entradas que el lote no trae: {sorted(faltan)}")
+    return [{k: v for k, v in f.items() if k in declaradas} for f in feeds]
+
+
 def benchmark_latency(
     onnx_path: Path,
     config: ModelConfig,
@@ -286,6 +306,8 @@ def benchmark_latency(
     else:
         feeds = [_batch_to_feed(make_synthetic_batch(batch_size=batch_size, config=config))]
         data_source = "sintetico"
+
+    feeds = _ajustar_a_la_sesion(session, feeds)
 
     for i in range(n_warmup):
         session.run(None, feeds[i % len(feeds)])
@@ -333,7 +355,9 @@ def compare_fp32_vs_int8_predictions(
     labels_all: list[int] = []
 
     for batch in sample_batches:
-        feed = _batch_to_feed(batch)
+        # Mismo filtrado que en la medicion de latencia: las variantes unimodales
+        # de texto no declaran las entradas de estructura ni de red.
+        feed = _ajustar_a_la_sesion(sess_fp32, [_batch_to_feed(batch)])[0]
         out_fp32 = sess_fp32.run(None, feed)[0]
         out_int8 = sess_int8.run(None, feed)[0]
 
@@ -411,10 +435,19 @@ def run_quantization_pipeline(
     n_latency_samples: int = 50,
     n_comparison_examples: int = 10,
     is_validation_checkpoint: bool = True,
+    model_config: ModelConfig | None = None,
 ) -> dict[str, Any]:
     """Corre el pipeline completo: carga checkpoint -> exporta ONNX -> cuantiza -> mide
-    latencia FP32 vs INT8 -> compara predicciones -> guarda reporte."""
-    config = ModelConfig(fusion_type=fusion_type)
+    latencia FP32 vs INT8 -> compara predicciones -> guarda reporte.
+
+    `model_config` permite pasar la configuracion COMPLETA de la variante. Hacia
+    falta: reconstruir el modelo solo desde `fusion_type` da una arquitectura
+    distinta para toda variante que cambie algo mas --`fusor_mlp` lleva cabeza
+    oculta-- y la carga de pesos falla por claves que no encajan. Se comprobo con
+    `fusor_mlp`: faltaban `classifier.2.*` y sobraban `classifier.1.*` y
+    `classifier.4.*`.
+    """
+    config = model_config if model_config is not None else ModelConfig(fusion_type=fusion_type)
     model = MultimodalPhishingClassifier(config)
     checkpoint = torch.load(checkpoint_path, map_location="cpu")
     cargar_pesos(model, checkpoint["model_state_dict"])
