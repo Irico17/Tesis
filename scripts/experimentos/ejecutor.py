@@ -87,7 +87,8 @@ def ejecutar_variante(variante: str, corpus: pd.DataFrame, particion: Particion,
                       semilla: int, epocas: int = 3, sin_centinela: bool = False,
                       rapido: bool = False, enmascarar: tuple[str, ...] | None = None,
                       reusar: bool = False, experimento: str = "exp",
-                      sufijo: str = "", ponderar_clases: bool = False) -> dict:
+                      sufijo: str = "", ponderar_clases: bool = False,
+                      codificador: str | None = None) -> dict:
     """
     Entrena una variante y devuelve sus métricas y predicciones sobre la prueba.
 
@@ -101,6 +102,7 @@ def ejecutar_variante(variante: str, corpus: pd.DataFrame, particion: Particion,
     modelo_cfg, train_cfg = configuracion(
         variante, semilla, sin_centinela=sin_centinela,
         epocas=1 if rapido else epocas, ponderar_clases=ponderar_clases,
+        codificador=codificador,
     )
     if rapido:
         train_cfg.max_steps = 8
@@ -144,6 +146,11 @@ def ejecutar_variante(variante: str, corpus: pd.DataFrame, particion: Particion,
     # tiene que aparecer en la ruta o las dos condiciones compartirían fichero.
     if ponderar_clases:
         marca += "_pond"
+    # El codificador cambia los pesos entrenados: sin aparecer en la marca, las
+    # dos condiciones compartirian punto de control y la segunda sobrescribiria a
+    # la primera. Es el mismo defecto que ya se corrigio con el centinela.
+    if codificador:
+        marca += "_" + codificador.split("/")[-1].replace("-", "")[:18]
     if sufijo:
         marca += f"_{sufijo}"
     nombre = marca

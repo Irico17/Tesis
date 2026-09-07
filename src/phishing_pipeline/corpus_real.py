@@ -549,8 +549,15 @@ def main() -> int:
 
     args.salida.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(args.salida, index=False)
-    INFORME.parent.mkdir(parents=True, exist_ok=True)
-    INFORME.write_text(json.dumps(informe, indent=2, ensure_ascii=False), encoding="utf-8")
+    # El informe acompaña al corpus que describe. Escribirlo siempre en la ruta
+    # fija hacía que una reconstrucción de prueba, dirigida con `--salida` a otro
+    # sitio, sobrescribiera el informe del corpus en uso: el capítulo habría
+    # quedado citando cifras de un corpus que no es el que se evaluó.
+    informe_ruta = (INFORME if args.salida == SALIDA
+                    else args.salida.with_name(args.salida.stem + "_report.json"))
+    informe_ruta.parent.mkdir(parents=True, exist_ok=True)
+    informe_ruta.write_text(json.dumps(informe, indent=2, ensure_ascii=False),
+                            encoding="utf-8")
 
     c = informe["cobertura"]
     print(f"Corpus real: {informe['n_filas']} filas, prevalencia {informe['prevalencia']:.3f}")
@@ -559,7 +566,7 @@ def main() -> int:
           f"prevalencia {c['trimodal']['prevalencia']:.3f}")
     print(f"  bi-modal : {c['bimodal']['n']:6d} ({c['bimodal']['porcentaje']:.1f}%) "
           f"prevalencia {c['bimodal']['prevalencia']:.3f}")
-    print(f"\nEscrito en {args.salida}\nInforme en {INFORME}")
+    print(f"\nEscrito en {args.salida}\nInforme en {informe_ruta}")
     return 0
 
 

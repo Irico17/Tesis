@@ -59,8 +59,11 @@ fi
 
 fallos=0
 
+# E7 va despues de E5 porque su lectura se apoya en la composicion por idioma
+# que E5 mide, y antes de E6, que mide latencias en CPU y no debe compartirla.
 for exp in e0_corpus_y_pipeline e1_multimodalidad e2_mecanismo_fusion e3_ausencia_ramas \
-           e4_generalizacion e5_validez e6_modelo_optimizado; do
+           e4_generalizacion e5_validez e7_codificador_multilingue \
+           e6_modelo_optimizado; do
     echo "=============================================================="
     echo "[$(date '+%F %T')] $exp"
     echo "=============================================================="

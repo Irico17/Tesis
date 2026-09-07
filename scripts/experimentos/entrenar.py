@@ -64,12 +64,17 @@ def etiqueta_de(clave: str) -> str:
 
 def configuracion(variante: str, semilla: int, sin_centinela: bool = False,
                   epocas: int = 3, lote: int = 32,
-                  ponderar_clases: bool = False) -> tuple[ModelConfig, TrainConfig]:
+                  ponderar_clases: bool = False,
+                  codificador: str | None = None) -> tuple[ModelConfig, TrainConfig]:
     """Configuración de modelo y entrenamiento para una variante.
 
     `sin_centinela` desactiva además el descarte de modalidad: las dos cosas van
     juntas porque son el mismo mecanismo de tolerancia a la ausencia, y separarlas
     produciría una condición que no corresponde a ninguna pregunta de E3.
+
+    `codificador` sustituye el modelo preentrenado de la rama textual. Todo lo
+    demás queda igual, de modo que la diferencia observada entre dos corridas que
+    solo difieran en él es atribuible al codificador y a nada más.
     """
     if variante not in VARIANTES:
         raise KeyError(f"variante desconocida: {variante}. Disponibles: {sorted(VARIANTES)}")
@@ -83,6 +88,8 @@ def configuracion(variante: str, semilla: int, sin_centinela: bool = False,
         fusion_type=spec["fusion_type"],
         modality_dropout_mode="none" if sin_centinela else "randomize",
     )
+    if codificador:
+        modelo.text_model_name = codificador
     if spec.get("cabeza_mlp"):
         # El fusor que sugirió el asesor: dos capas sobre las ramas concatenadas,
         # frente a la cabeza lineal que la concatenación tardía usa por defecto.

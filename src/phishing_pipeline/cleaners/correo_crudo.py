@@ -230,6 +230,41 @@ def _ip_de_origen(msg: Message) -> str | None:
     return ips[0] if ips else None
 
 
+def _identificador(fuente: str, cuerpo: str, msg) -> str:
+    """Identificador estable de un mensaje, derivado de su contenido.
+
+    Antes era un UUID aleatorio. Eso hacia que dos construcciones del MISMO
+    corpus, a partir de los mismos ficheros crudos, produjeran identificadores
+    distintos y por tanto una huella distinta, aunque las otras treinta y siete
+    columnas coincidieran fila a fila. Se comprobo reconstruyendo el corpus: 37
+    de 38 columnas identicas y 24 853 identificadores cambiados.
+
+    La consecuencia no era cosmetica. La huella del corpus es lo que permite
+    afirmar que dos tablas del capitulo describen los mismos datos, y con un
+    identificador aleatorio esa comprobacion fallaba ante una reconstruccion
+    legitima. Derivarlo del contenido la vuelve util: si la huella cambia, es
+    porque cambiaron los datos.
+
+    Se toma el cuerpo junto con los tres campos de cabecera que identifican al
+    mensaje. Dos mensajes con el mismo cuerpo pero distinto remitente, asunto o
+    fecha reciben identificadores distintos, que es lo correcto; dos copias
+    exactas reciben el mismo, y la deduplicacion exacta ya las retira.
+    """
+    import hashlib
+
+    partes = [
+        str(fuente or ""),
+        str(msg.get("Message-ID") or ""),
+        str(msg.get("From") or ""),
+        str(msg.get("Subject") or ""),
+        str(msg.get("Date") or ""),
+        str(cuerpo or ""),
+    ]
+    digest = hashlib.sha256("\x00".join(partes).encode("utf-8", "replace")).hexdigest()
+    # Se le da forma de UUID para no romper nada que espere ese aspecto.
+    return f"{digest[:8]}-{digest[8:12]}-{digest[12:16]}-{digest[16:20]}-{digest[20:32]}"
+
+
 def _mensaje_a_fila(msg: Message, fuente: str, etiqueta: int) -> dict | None:
     """Convierte un mensaje al esquema canónico, o None si no es utilizable."""
     html, plano = extraer_cuerpos(msg)
@@ -258,7 +293,7 @@ def _mensaje_a_fila(msg: Message, fuente: str, etiqueta: int) -> dict | None:
     fila = empty_canonical_row()
     fila.update(
         {
-            "email_id": str(uuid.uuid4()),
+            "email_id": _identificador(fuente, cuerpo, msg),
             "source_dataset": fuente,
             "label": int(etiqueta),
             "label_text": "phishing" if etiqueta == 1 else "safe",
