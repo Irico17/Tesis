@@ -436,16 +436,25 @@ def run_quantization_pipeline(
     n_comparison_examples: int = 10,
     is_validation_checkpoint: bool = True,
     model_config: ModelConfig | None = None,
+    salida: Path | None = None,
 ) -> dict[str, Any]:
     """Corre el pipeline completo: carga checkpoint -> exporta ONNX -> cuantiza -> mide
     latencia FP32 vs INT8 -> compara predicciones -> guarda reporte.
 
     `model_config` permite pasar la configuracion COMPLETA de la variante. Hacia
     falta: reconstruir el modelo solo desde `fusion_type` da una arquitectura
-    distinta para toda variante que cambie algo mas --`fusor_mlp` lleva cabeza
-    oculta-- y la carga de pesos falla por claves que no encajan. Se comprobo con
-    `fusor_mlp`: faltaban `classifier.2.*` y sobraban `classifier.1.*` y
-    `classifier.4.*`.
+    distinta para toda variante que cambie algo mas, porque `fusor_mlp` lleva
+    cabeza oculta, y la carga de pesos falla por claves que no encajan. Se
+    comprobo con `fusor_mlp`: faltaban `classifier.2.*` y sobraban
+    `classifier.1.*` y `classifier.4.*`.
+
+    `salida` es la carpeta donde se escriben los modelos exportados y el informe.
+    Sin ella, todas las arquitecturas escribian sobre las MISMAS tres rutas fijas:
+    E6 recorre seis y el fichero que quedaba en disco era el de la ultima de la
+    lista, no el de la propuesta. Se comprobo: el ONNX de la ejecucion anterior
+    declaraba `fusion_type: text_only`, que es la sexta, mientras el capitulo
+    hablaba de la primera. El medio de verificacion de R2.3 pide los pesos
+    exportados del modelo del que habla el documento.
     """
     config = model_config if model_config is not None else ModelConfig(fusion_type=fusion_type)
     model = MultimodalPhishingClassifier(config)
@@ -453,8 +462,10 @@ def run_quantization_pipeline(
     cargar_pesos(model, checkpoint["model_state_dict"])
     model.eval()
 
-    fp32_path = export_to_onnx(model, config)
-    int8_path = quantize_onnx_model(fp32_path)
+    destino = Path(salida) if salida is not None else ONNX_DIR
+    destino.mkdir(parents=True, exist_ok=True)
+    fp32_path = export_to_onnx(model, config, destino / FP32_ONNX_PATH.name)
+    int8_path = quantize_onnx_model(fp32_path, destino / INT8_ONNX_PATH.name)
 
     # Datos REALES del conjunto de prueba por defecto (IOV de R2.3). Si no están
     # disponibles (p.ej. splits aún no generados), se degrada a sintéticos pero
@@ -510,13 +521,16 @@ def run_quantization_pipeline(
             round(latency_fp32["p50_ms"] / latency_int8["p50_ms"], 3) if latency_int8["p50_ms"] else None
         ),
         "prediction_comparison": prediction_comparison,
+        "modelos_exportados": {"fp32": str(fp32_path), "int8": str(int8_path)},
     }
 
-    QUANTIZATION_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    QUANTIZATION_REPORT_PATH.write_text(
+    informe = (destino / QUANTIZATION_REPORT_PATH.name if salida is not None
+               else QUANTIZATION_REPORT_PATH)
+    informe.parent.mkdir(parents=True, exist_ok=True)
+    informe.write_text(
         json.dumps(report, indent=2, ensure_ascii=False, default=str), encoding="utf-8"
     )
-    logger.info("Reporte de cuantización/latencia guardado en %s", QUANTIZATION_REPORT_PATH)
+    logger.info("Reporte de cuantización/latencia guardado en %s", informe)
     return report
 
 

@@ -108,11 +108,15 @@ def main() -> int:
             print(f"  {variante:30s} SIN punto de control, se omite")
             continue
         modelo_cfg, _ = configuracion(variante, args.semilla)
+        # Una carpeta por arquitectura. Compartiendo una sola, las seis escribian
+        # sobre los mismos ficheros y en disco quedaba el de la ultima del bucle.
+        carpeta = BASE / "data" / "model" / "onnx" / variante
         res = run_quantization_pipeline(
             checkpoint_path=punto,
             fusion_type=FusionType(VARIANTES[variante]["fusion_type"]),
             n_latency_samples=args.muestras_latencia,
             model_config=modelo_cfg,
+            salida=carpeta,
         )
         lat, tam = res.get("latency_ms", {}), res.get("model_size_mb", {})
         medidas[variante] = {
@@ -122,6 +126,10 @@ def main() -> int:
             "aceleracion_p50": res.get("latency_speedup_p50"),
             "acuerdo_fp32_int8": res.get("prediction_comparison", {}).get(
                 "prediction_agreement_rate"),
+            "modelos_exportados": {
+                clave: str(Path(ruta).relative_to(BASE))
+                for clave, ruta in (res.get("modelos_exportados") or {}).items()
+            },
             "falsos_negativos_prueba_completa": tasa_de_falsos_negativos(punto),
         }
         print(f"  {variante:30s} FP32 {lat.get('fp32', {}).get('mean_ms', '?')} ms  "

@@ -210,7 +210,20 @@ RESULTADOS: dict[str, dict] = {
             (R1_4 / "registros" / "e6_modelo_optimizado.log",
              "registro_de_la_medicion.log",
              "Registro de la exportación, la cuantización y la medición"),
+            (BASE / "data" / "model" / "onnx" / "atencion_cruzada_token"
+             / "quantization_latency_report.json",
+             "informe_de_exportacion_de_la_propuesta.json",
+             "Exportación y cuantización de la arquitectura de la que habla el "
+             "capítulo, con la ruta de los pesos resultantes"),
         ],
+        "no_versionados": {
+            "data/model/onnx/atencion_cruzada_token/model_int8.onnx":
+                "Pesos exportados y cuantizados de la arquitectura propuesta, unos "
+                "66 MB. No se versionan por tamaño; se regeneran con E6 y su huella "
+                "queda en el informe de exportación.",
+            "data/model/onnx/atencion_cruzada_token/model_fp32.onnx":
+                "Los mismos pesos en coma flotante de 32 bits, unos 260 MB.",
+        },
         "codigo": ["src/phishing_model/quantization.py",
                    "scripts/experimentos/e6_modelo_optimizado.py"],
     },
@@ -245,6 +258,10 @@ def _nota(carpeta: Path, clave: str, spec: dict, copiados: list, ausentes: list)
         lineas.append(f"| `{destino}` | {para_que} |")
     for sub, para_que in (spec.get("generadas") or {}).items():
         lineas.append(f"| `{sub}` | {para_que} |")
+    if spec.get("no_versionados"):
+        lineas += ["", "## Artefactos que no se versionan por tamaño", ""]
+        for ruta, para_que in spec["no_versionados"].items():
+            lineas.append(f"- `{ruta}`: {para_que}")
     if spec.get("codigo"):
         lineas += ["", "## Código fuente que sustenta el resultado", ""]
         lineas += [f"- `{c}`" for c in spec["codigo"]]
