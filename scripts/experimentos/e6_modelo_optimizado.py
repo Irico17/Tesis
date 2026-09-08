@@ -62,6 +62,18 @@ def localizar_punto(variante: str, semilla: int):
     return None
 
 
+def escalador_de(punto: Path) -> Path | None:
+    """Escaladores ajustados en la corrida que produjo ese punto de control.
+
+    Sin esto se cargaban los globales, que deja en disco la ultima ejecucion que
+    pase por ahi, sea cual fuera su corpus y su particion. Escalar la entrada con
+    un escalador ajeno cambia lo que el modelo ve.
+    """
+    corrida = punto.name.replace("_best.pt", "").replace(".pt", "")
+    ruta = BASE / "data" / "model" / "scalers" / f"{corrida}.joblib"
+    return ruta if ruta.exists() else None
+
+
 def tasa_de_falsos_negativos(punto: Path) -> dict:
     """Falsos negativos sobre el CONJUNTO DE PRUEBA COMPLETO.
 
@@ -91,6 +103,11 @@ def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--semilla", type=int, default=42)
     p.add_argument("--muestras-latencia", type=int, default=50)
+    # El acuerdo entre coma flotante y enteros se medía sobre diez mensajes. Nueve
+    # de diez coincidiendo da 0.9, y sobre esa cifra no puede afirmarse nada, ni
+    # cuando salía perfecta ni cuando no. Con trescientos, una discrepancia pesa
+    # tres milésimas y la cifra empieza a significar algo.
+    p.add_argument("--muestras-acuerdo", type=int, default=300)
     args = p.parse_args()
 
     sys.path.insert(0, str(BASE / "src"))
@@ -98,6 +115,14 @@ def main() -> int:
     from phishing_model.quantization import run_quantization_pipeline
 
     from entrenar import VARIANTES, configuracion
+
+    from comun import cargar_corpus, particion_agrupada
+
+    corpus = cargar_corpus()
+    particion = particion_agrupada(corpus, agrupar=True)
+    prueba = corpus.loc[particion.prueba]
+    print(f"  particion agrupada: {particion.resumen()}")
+    print(f"  se mide sobre las {len(prueba):,} filas de prueba de esta corrida")
 
     medidas: dict[str, dict] = {}
     ausentes: list[str] = []
@@ -117,6 +142,9 @@ def main() -> int:
             n_latency_samples=args.muestras_latencia,
             model_config=modelo_cfg,
             salida=carpeta,
+            n_comparison_examples=args.muestras_acuerdo,
+            filas=prueba,
+            scaler_path=escalador_de(punto),
         )
         lat, tam = res.get("latency_ms", {}), res.get("model_size_mb", {})
         medidas[variante] = {

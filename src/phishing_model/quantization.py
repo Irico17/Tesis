@@ -212,7 +212,8 @@ def quantize_onnx_model(fp32_path: Path, int8_path: Path | None = None) -> Path:
 
 
 def load_real_test_batches(
-    config: ModelConfig, n_examples: int, split: str = "test", seed: int = 42
+    config: ModelConfig, n_examples: int, split: str = "test", seed: int = 42,
+    filas: "pd.DataFrame | None" = None, scaler_path: Path | None = None,
 ) -> list[dict[str, torch.Tensor]]:
     """
     Carga batches de UNA fila desde el split REAL de evaluación (por defecto
@@ -230,18 +231,32 @@ def load_real_test_batches(
     from phishing_model.dataset import MultimodalPhishingDataset, load_scalers
     from phishing_pipeline.config import PROCESSED_DIR
 
-    split_path = PROCESSED_DIR / "splits_group_aware" / f"{split}.parquet"
-    if not split_path.exists():
-        raise FileNotFoundError(
-            f"No existe {split_path}. R2.3 requiere evaluar sobre el conjunto de prueba real; "
-            "genera los splits group-aware antes (ver phishing_pipeline.splits.create_group_aware_splits)."
-        )
+    # `filas` son las del conjunto de prueba de LA CORRIDA que se esta midiendo.
+    # Sin ellas se leia `splits_group_aware/`, que es la particion del corpus
+    # ANTERIOR y sigue existiendo en disco: la latencia y el acuerdo entre coma
+    # flotante y enteros se median sobre mensajes que ningun modelo de esta tesis
+    # habia visto ni evaluado, y nada lo advertia porque el fichero existe y el
+    # esquema encaja. Se conserva la ruta antigua solo como respaldo explicito.
+    if filas is not None:
+        df = filas
+    else:
+        split_path = PROCESSED_DIR / "splits_group_aware" / f"{split}.parquet"
+        if not split_path.exists():
+            raise FileNotFoundError(
+                f"No existe {split_path}. R2.3 requiere evaluar sobre el conjunto de prueba real; "
+                "genera los splits group-aware antes (ver phishing_pipeline.splits.create_group_aware_splits)."
+            )
+        logger.warning(
+            "Sin `filas`: se usa %s, que puede describir una construccion de corpus "
+            "anterior. Pasar las filas de la particion vigente.", split_path)
+        df = pd.read_parquet(split_path)
 
-    df = pd.read_parquet(split_path)
     sample = df.sample(n=min(n_examples, len(df)), random_state=seed).reset_index(drop=True)
 
     tokenizer = AutoTokenizer.from_pretrained(config.text_model_name)
-    structural_scaler, network_scaler, clip_bounds = load_scalers()
+    # Los escaladores de la corrida, no los globales. Los globales los deja la
+    # ultima ejecucion que pasara por aqui, sea cual fuera su corpus.
+    structural_scaler, network_scaler, clip_bounds = load_scalers(scaler_path)
     dataset = MultimodalPhishingDataset(
         sample,
         tokenizer,
@@ -437,6 +452,8 @@ def run_quantization_pipeline(
     is_validation_checkpoint: bool = True,
     model_config: ModelConfig | None = None,
     salida: Path | None = None,
+    filas: "pd.DataFrame | None" = None,
+    scaler_path: Path | None = None,
 ) -> dict[str, Any]:
     """Corre el pipeline completo: carga checkpoint -> exporta ONNX -> cuantiza -> mide
     latencia FP32 vs INT8 -> compara predicciones -> guarda reporte.
@@ -472,7 +489,8 @@ def run_quantization_pipeline(
     # el reporte lo deja explícito en `data_source`/`false_negative_analysis`,
     # en vez de presentar números sintéticos como si fueran de test real.
     try:
-        comparison_batches = load_real_test_batches(config, n_comparison_examples)
+        comparison_batches = load_real_test_batches(
+            config, n_comparison_examples, filas=filas, scaler_path=scaler_path)
         used_real_data = True
     except Exception as exc:
         logger.warning(
@@ -522,6 +540,9 @@ def run_quantization_pipeline(
         ),
         "prediction_comparison": prediction_comparison,
         "modelos_exportados": {"fp32": str(fp32_path), "int8": str(int8_path)},
+        "origen_de_las_filas": ("particion de la corrida" if filas is not None
+                                else "splits_group_aware en disco"),
+        "n_filas_de_comparacion": int(len(comparison_batches)),
     }
 
     informe = (destino / QUANTIZATION_REPORT_PATH.name if salida is not None

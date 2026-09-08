@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Cola de los siete experimentos (E0 a E6) en el servidor del laboratorio.
+# Cola de los ocho experimentos (E0 a E7) en el servidor del laboratorio.
 #
 # Estrictamente SECUENCIAL y en una sola tarjeta. No es una preferencia: si dos
 # corridas compartieran GPU, los tiempos dejarían de ser comparables y la memoria
@@ -22,7 +22,29 @@
 
 set -u  # sin -e: un experimento que falle no debe cancelar los demás
 
-cd "$(dirname "$0")/../.." || exit 1
+# La cola se ejecuta desde una COPIA de si misma, y no desde el fichero del
+# repositorio. La razon es concreta y costo una corrida de veintidos horas: bash
+# lee un guion por desplazamiento de bytes MIENTRAS lo ejecuta, de modo que
+# editarlo a media corrida desplaza lo que aun no ha leido. Se comprobo: al
+# anadir un experimento a la lista, bash retomo en una posicion desfasada, cayo
+# en mitad de `${PIPESTATUS[0]}` y el bucle murio con un error de sintaxis
+# despues de E6. Los seis experimentos anteriores habian terminado bien, pero no
+# se ejecutaron ni la consolidacion ni las figuras, y la marca de fin no se
+# escribio. Con la copia, editar el original durante la corrida es inocuo.
+if [ "${COLA_DESDE_COPIA:-0}" != "1" ]; then
+    copia="$(mktemp -t cola_servidor.XXXXXX.sh)"
+    cat "$0" > "$copia"
+    chmod +x "$copia"
+    # La copia vive en /tmp, asi que `dirname $0` ya no sirve para localizar el
+    # proyecto: se le pasa la raiz resuelta antes de saltar.
+    COLA_RAIZ="$(cd "$(dirname "$0")/../.." && pwd)" \
+        COLA_DESDE_COPIA=1 bash "$copia" "$@"
+    rc=$?
+    rm -f "$copia"
+    exit "$rc"
+fi
+
+cd "${COLA_RAIZ:-$(dirname "$0")/../..}" || exit 1
 export PYTHONPATH="src:${PYTHONPATH:-}"
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 # Sin esto, Python almacena la salida y el registro no muestra nada hasta que
@@ -88,7 +110,7 @@ done
 echo "=============================================================="
 if [ "$fallos" -eq 0 ]; then
     date '+%F %T' > "$MARCA"
-    echo "COLA COMPLETA · los siete experimentos terminaron"
+    echo "COLA COMPLETA: los ocho experimentos terminaron"
     # El verificador de indicadores va DENTRO de la cola: comprobar la cobertura a
     # mano es como se colaron artefactos que describian un corpus anterior.
     # Va PRIMERO porque tambien traslada los historiales de entrenamiento a la

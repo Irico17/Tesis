@@ -23,6 +23,7 @@ Uso:
 from __future__ import annotations
 
 import argparse
+import sys
 import time
 import traceback
 from pathlib import Path
@@ -173,6 +174,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Prueba de integración con datos mínimos")
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--rows", type=int, default=240, help="Filas de entrenamiento por variante")
+    # Se conserva por compatibilidad, pero ya no gobierna la carga: la partición
+    # se construye con el mismo código que la cola.
     parser.add_argument("--splits-dir", type=str, default=str(SPLITS_DIR_GROUP_AWARE))
     parser.add_argument("--saltar-cuantizacion", action="store_true")
     parser.add_argument("--saltar-xai", action="store_true")
@@ -191,18 +194,30 @@ def main() -> None:
 
     # ---------- 1. Datos ----------
     def cargar():
-        tr = pd.read_parquet(splits_dir / "train.parquet").sample(n=args.rows, random_state=42).reset_index(drop=True)
-        va = (
-            pd.read_parquet(splits_dir / "val.parquet")
-            .sample(n=max(args.rows // 4, 8), random_state=42)
-            .reset_index(drop=True)
-        )
-        te = (
-            pd.read_parquet(splits_dir / "test.parquet")
-            .sample(n=max(args.rows // 4, 8), random_state=42)
-            .reset_index(drop=True)
-        )
-        return tr, va, te
+        """Muestra de la partición VIGENTE, la misma que construyen los experimentos.
+
+        Antes leía `splits_group_aware/`, que es la partición de la construcción
+        de corpus anterior. La prueba que existe para detectar que la cadena se
+        desincroniza estaba, ella misma, validándola contra datos de otra época:
+        pasaba en verde mientras los experimentos corrían sobre otro corpus. Se
+        construye ahora la partición con el mismo código que usa la cola, de modo
+        que no puedan divergir.
+        """
+        raiz = Path(__file__).resolve().parents[1]
+        sys.path.insert(0, str(raiz / "scripts" / "experimentos"))
+        from comun import cargar_corpus, particion_agrupada
+
+        corpus = cargar_corpus()
+        particion = particion_agrupada(corpus, agrupar=True)
+        logger.info("Corpus vigente: %d filas | %s", len(corpus), particion.resumen())
+
+        def muestra(indices, n):
+            return corpus.loc[indices].sample(
+                n=min(n, len(indices)), random_state=42).reset_index(drop=True)
+
+        return (muestra(particion.entrenamiento, args.rows),
+                muestra(particion.validacion, max(args.rows // 4, 8)),
+                muestra(particion.prueba, max(args.rows // 4, 8)))
 
     datos = r.ejecutar("1. Cargar particiones agrupadas", cargar)
     if datos is None:
@@ -399,11 +414,15 @@ def main() -> None:
             # eliminados al terminar. Se anota antes de ejecutar, para que la
             # limpieza actúe incluso si la exportación falla a mitad de camino.
             proteger(REPORTS_DIR / "quantization_latency_report.json")
+            # `rglob` y no `glob`: desde que cada arquitectura exporta a su propia
+            # subcarpeta, `glob` devolvia directorios y respaldar un directorio
+            # revienta al leerlo como bytes.
             for sub in ("onnx", "quantized"):
                 d = MODEL_DIR / sub
                 if d.exists():
-                    for p in d.glob("*"):
-                        proteger(p)
+                    for p in d.rglob("*"):
+                        if p.is_file():
+                            proteger(p)
             res = run_quantization_pipeline(
                 checkpoint_path=puntos_control[ft.value],
                 fusion_type=ft,
@@ -413,8 +432,9 @@ def main() -> None:
             for sub in ("onnx", "quantized"):
                 d = MODEL_DIR / sub
                 if d.exists():
-                    for p in d.glob("*"):
-                        registrar(p)
+                    for p in d.rglob("*"):
+                        if p.is_file():
+                            registrar(p)
             return res
 
         r.ejecutar("7. Exportación a ONNX y cuantización", cuantizar, critico=False)

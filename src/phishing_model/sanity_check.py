@@ -164,9 +164,19 @@ def check_real_data_training_steps() -> dict[str, Any]:
     (se reporta `skipped`), ya que este chequeo requiere tanto el parquet real
     como descarga del tokenizer HF (requiere conexión a internet la primera vez).
     """
-    splits_path = PROCESSED_DIR / "splits_group_aware" / "train.parquet"
-    if not splits_path.exists():
-        return {"passed": False, "skipped": True, "reason": f"No existe {splits_path}"}
+    # El corpus VIGENTE primero. `splits_group_aware/` es la particion de la
+    # construccion anterior y sigue en disco, de modo que la comprobacion se hacia
+    # sobre mensajes que ningun modelo de esta tesis habia visto, sin que nada lo
+    # advirtiera: el fichero existe y el esquema encaja.
+    candidatos = [
+        PROCESSED_DIR / "Dataset_Real.parquet",
+        PROCESSED_DIR / "splits_real_group_aware" / "train.parquet",
+        PROCESSED_DIR / "splits_group_aware" / "train.parquet",
+    ]
+    splits_path = next((c for c in candidatos if c.exists()), None)
+    if splits_path is None:
+        return {"passed": False, "skipped": True,
+                "reason": "No se hallo el corpus en " + ", ".join(str(c) for c in candidatos)}
 
     try:
         from transformers import AutoTokenizer
