@@ -1,13 +1,15 @@
+  particion agrupada: {'entrenamiento': 35279, 'validacion': 4410, 'prueba': 4411}
+  se mide sobre las 4,411 filas de prueba de esta corrida
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9837.24it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 8135.28it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
-vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
@@ -23,21 +25,21 @@ Notes:
   _C._jit_pass_onnx_remove_inplace_ops_for_onnx(graph, module)
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
   return opset9.index(g, self, index)
-2026-09-05 09:00:00 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-2026-09-05 09:00:06 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-2026-09-05 09:00:19 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-  atencion_cruzada_token         FP32 95.738 ms  INT8 71.35 ms  259.3->66.02 MB
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11474.58it/s]
+2026-09-08 18:57:31 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/atencion_cruzada_token/model_fp32.onnx
+2026-09-08 18:57:39 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/atencion_cruzada_token/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/atencion_cruzada_token/model_int8.onnx
+2026-09-08 18:59:07 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/atencion_cruzada_token/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/atencion_cruzada_token/quantization_latency_report.json
+  atencion_cruzada_token         FP32 112.34 ms  INT8 73.614 ms  259.3->66.02 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10572.19it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
-vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
@@ -51,22 +53,22 @@ Notes:
   _C._jit_pass_onnx_remove_inplace_ops_for_onnx(graph, module)
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
   return opset9.index(g, self, index)
-2026-09-05 09:00:21 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-2026-09-05 09:00:27 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-2026-09-05 09:00:40 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-  atencion_cruzada_modalidad     FP32 98.068 ms  INT8 71.886 ms  257.25->65.45 MB
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9440.68it/s]
+2026-09-08 18:59:09 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/atencion_cruzada_modalidad/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/atencion_cruzada_modalidad/model_fp32.onnx
+2026-09-08 18:59:15 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/atencion_cruzada_modalidad/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/atencion_cruzada_modalidad/model_int8.onnx
+2026-09-08 19:00:42 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/atencion_cruzada_modalidad/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/atencion_cruzada_modalidad/quantization_latency_report.json
+  atencion_cruzada_modalidad     FP32 100.096 ms  INT8 75.534 ms  257.25->65.45 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 7339.24it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
-vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
@@ -76,22 +78,22 @@ Notes:
   is_causal = q_length > 1 and attention_mask is None and is_causal
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
   return opset9.index(g, self, index)
-2026-09-05 09:00:42 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-2026-09-05 09:00:48 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-2026-09-05 09:01:01 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-  mezcla_de_expertos             FP32 97.337 ms  INT8 73.09 ms  262.18->66.04 MB
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9872.90it/s]
+2026-09-08 19:00:44 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/mezcla_de_expertos/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/mezcla_de_expertos/model_fp32.onnx
+2026-09-08 19:00:51 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/mezcla_de_expertos/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/mezcla_de_expertos/model_int8.onnx
+2026-09-08 19:02:14 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/mezcla_de_expertos/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/mezcla_de_expertos/quantization_latency_report.json
+  mezcla_de_expertos             FP32 101.896 ms  INT8 68.705 ms  262.18->66.04 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9282.31it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
-vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
@@ -101,22 +103,22 @@ Notes:
   is_causal = q_length > 1 and attention_mask is None and is_causal
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
   return opset9.index(g, self, index)
-2026-09-05 09:01:03 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-2026-09-05 09:01:09 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-2026-09-05 09:01:21 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-  fusor_mlp                      FP32 88.937 ms  INT8 71.33 ms  255.64->64.36 MB
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10907.04it/s]
+2026-09-08 19:02:16 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/fusor_mlp/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/fusor_mlp/model_fp32.onnx
+2026-09-08 19:02:21 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/fusor_mlp/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/fusor_mlp/model_int8.onnx
+2026-09-08 19:03:43 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/fusor_mlp/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/fusor_mlp/quantization_latency_report.json
+  fusor_mlp                      FP32 89.667 ms  INT8 70.282 ms  255.64->64.36 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10228.51it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
-vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
@@ -126,22 +128,22 @@ Notes:
   is_causal = q_length > 1 and attention_mask is None and is_causal
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
   return opset9.index(g, self, index)
-2026-09-05 09:01:23 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-2026-09-05 09:01:28 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-2026-09-05 09:01:40 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-  concatenacion_tardia           FP32 92.002 ms  INT8 67.295 ms  254.14->63.98 MB
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11297.48it/s]
+2026-09-08 19:03:46 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/concatenacion_tardia/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/concatenacion_tardia/model_fp32.onnx
+2026-09-08 19:03:51 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/concatenacion_tardia/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/concatenacion_tardia/model_int8.onnx
+2026-09-08 19:05:17 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/concatenacion_tardia/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/concatenacion_tardia/quantization_latency_report.json
+  concatenacion_tardia           FP32 137.489 ms  INT8 71.332 ms  254.14->63.98 MB
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 7449.52it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
-vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
@@ -151,11 +153,11 @@ Notes:
   is_causal = q_length > 1 and attention_mask is None and is_causal
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/symbolic_opset11.py:954: UserWarning: Exporting aten::index operator of advanced indexing in opset 17 is achieved by combination of multiple ONNX operators, including Reshape, Transpose, Concat, and Gather. If indices include negative values, the exported graph will produce incorrect results.
   return opset9.index(g, self, index)
-2026-09-05 09:01:42 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/model_fp32.onnx
-2026-09-05 09:01:47 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/model_int8.onnx
-2026-09-05 09:01:59 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/reports/quantization_latency_report.json
-  solo_texto                     FP32 88.727 ms  INT8 60.09 ms  254.05->63.91 MB
+2026-09-08 19:05:19 | INFO | phishing_model.quantization | Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/solo_texto/model_fp32.onnx
+INFO:phishing_model.quantization:Modelo exportado a ONNX (FP32): /data/calegre/Tesis/data/model/onnx/solo_texto/model_fp32.onnx
+2026-09-08 19:05:26 | INFO | phishing_model.quantization | Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/solo_texto/model_int8.onnx
+INFO:phishing_model.quantization:Modelo cuantizado (INT8) guardado en: /data/calegre/Tesis/data/model/onnx/solo_texto/model_int8.onnx
+2026-09-08 19:06:50 | INFO | phishing_model.quantization | Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/solo_texto/quantization_latency_report.json
+INFO:phishing_model.quantization:Reporte de cuantización/latencia guardado en /data/calegre/Tesis/data/model/onnx/solo_texto/quantization_latency_report.json
+  solo_texto                     FP32 97.667 ms  INT8 69.361 ms  254.05->63.91 MB
   artefactos en /data/calegre/Tesis/medios_de_verificacion/experimentos/e6

@@ -1,0 +1,23 @@
+[2026-09-09 00:10:10] esperando a que E7 termine
+[2026-09-09 05:28:28] E7 terminado; se cierra la cola
+  85 ficheros de data/reports/training_logs -> medios_de_verificacion/R1.4_entrenamiento/historiales
+  9 ficheros de data/reports/experimentos -> medios_de_verificacion/R1.4_entrenamiento/registros
+MEDIOS DE VERIFICACIÓN POR RESULTADO
+  [FALTA] R1.1_corpus_multimodal             3 artefactos
+  [FALTA] R1.2_pipeline_de_procesamiento     2 artefactos
+  [OK  ] R1.3_arquitectura                  5 artefactos
+  [OK  ] R1.4_entrenamiento                 3 artefactos
+  [OK  ] R2.1_lineas_base                   2 artefactos
+  [OK  ] R2.2_comparacion                   8 artefactos
+  [OK  ] R2.3_modelo_final                  3 artefactos
+     falta: R1.1_corpus_multimodal: data/reports/listas_correo_viabilidad.json
+     falta: R1.2_pipeline_de_procesamiento: notebooks/pipeline_r1_1_r1_2.ipynb
+
+5/7 resultados con su medio completo
+Índice en medios_de_verificacion/README.md
+Figuras de los medios de verificación:
+  matrices de confusión: 12 en medios_de_verificacion/R2.2_comparacion/matrices_de_confusion
+  curvas ROC: 12 modelos en medios_de_verificacion/R2.2_comparacion
+  curvas de aprendizaje: 85 en medios_de_verificacion/R1.4_entrenamiento/curvas_de_aprendizaje
+  diagrama de arquitectura en medios_de_verificacion/R1.3_arquitectura
+[2026-09-09 05:28:50] CIERRE CON FALLOS (iov=1 figuras=0)

@@ -1,5 +1,5 @@
 {
-  "generado_en": "2026-09-07T03:49:05.362648+00:00",
+  "generado_en": "2026-09-09T13:01:15.019441+00:00",
   "resultados": {
     "R1.1_corpus_multimodal": {
       "carpeta": "R1.1_corpus_multimodal",
@@ -93,7 +93,8 @@
       "indicador": "El modelo optimizado es funcional para realizar inferencias sobre datos nuevos no vistos, y reporta su tasa de falsos negativos observada en el conjunto de prueba, sin presuponer una reducción respecto de la línea base, conforme al enfoque de caracterización adoptado en R2.2.",
       "presentes": [
         "e6_latencia_y_falsos_negativos.json",
-        "registro_de_la_medicion.log"
+        "registro_de_la_medicion.log",
+        "informe_de_exportacion_de_la_propuesta.json"
       ],
       "ausentes": [],
       "cubierto": true

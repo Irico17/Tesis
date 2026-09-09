@@ -4,7 +4,7 @@
     "R1.1",
     "R1.2"
   ],
-  "generado_en": "2026-09-04T17:42:26.352846+00:00",
+  "generado_en": "2026-09-08T05:29:34.302746+00:00",
   "corpus": {
     "n": 44100,
     "prevalencia": 0.402,
@@ -90,7 +90,7 @@
       "porcentaje": 64.7574,
       "prevalencia": 0.4092
     },
-    "nota_trimodal": "La prevalencia del subconjunto trimodal se declara como medida. Antes de incorporar archivos de listas de discusión valía 0.979 --era casi todo phishing-- porque ninguna colección de correo legítimo publicada conserva el marcado del cuerpo."
+    "nota_trimodal": "La prevalencia del subconjunto trimodal se declara como medida. Antes de incorporar archivos de listas de discusión valía 0.979, es decir, el subconjunto era casi en su totalidad phishing, porque ninguna colección de correo legítimo publicada conserva el marcado del cuerpo."
   },
   "prueba_de_humo": {
     "comprobaciones": [
@@ -256,7 +256,7 @@
     "veredicto": "SIN_FUGAS"
   },
   "procedencia": {
-    "generado_en": "2026-09-04T17:42:26.359278+00:00",
+    "generado_en": "2026-09-08T05:29:34.307330+00:00",
     "git": {
       "commit": "sin repositorio git en esta maquina",
       "arbol_con_cambios_sin_confirmar": false

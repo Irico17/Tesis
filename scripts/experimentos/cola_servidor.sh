@@ -83,9 +83,30 @@ fallos=0
 
 # E7 va despues de E5 porque su lectura se apoya en la composicion por idioma
 # que E5 mide, y antes de E6, que mide latencias en CPU y no debe compartirla.
-for exp in e0_corpus_y_pipeline e1_multimodalidad e2_mecanismo_fusion e3_ausencia_ramas \
-           e4_generalizacion e5_validez e7_codificador_multilingue \
-           e6_modelo_optimizado; do
+EXPERIMENTOS="e0_corpus_y_pipeline e1_multimodalidad e2_mecanismo_fusion
+              e3_ausencia_ramas e4_generalizacion e5_validez
+              e7_codificador_multilingue e6_modelo_optimizado"
+
+# Todos los guiones tienen que compilar ANTES de gastar la primera hora de GPU.
+# Un error de sintaxis en el septimo experimento no se manifiesta hasta que le
+# toca el turno: se comprobo, y costo dieciocho horas de cola para descubrir que
+# E7 no arrancaba. Compilar los ocho tarda un segundo.
+echo "Comprobando que los ocho guiones compilan..."
+for exp in $EXPERIMENTOS; do
+    if ! "$PY_BIN" -m py_compile "scripts/experimentos/${exp}.py"; then
+        echo "ABORTA: scripts/experimentos/${exp}.py no compila." >&2
+        exit 1
+    fi
+done
+for aux in scripts/experimentos/consolidar_iov.py scripts/figuras/generar_figuras_mv.py; do
+    if ! "$PY_BIN" -m py_compile "$aux"; then
+        echo "ABORTA: $aux no compila." >&2
+        exit 1
+    fi
+done
+echo "  los ocho experimentos y los dos guiones de cierre compilan."
+
+for exp in $EXPERIMENTOS; do
     echo "=============================================================="
     echo "[$(date '+%F %T')] $exp"
     echo "=============================================================="

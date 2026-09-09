@@ -1,511 +1,509 @@
 E1 · subconjunto trimodal: 20,098 correos, prevalencia 0.4934
      partición {'entrenamiento': 16077, 'validacion': 2010, 'prueba': 2011}
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 5970.71it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10589.80it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
 /data/calegre/Tesis/src/phishing_model/fusion/modality_encoder.py:42: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers)
-2026-09-04 12:42:41 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 00:29:44 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/autograd/graph.py:979: UserWarning: Memory Efficient attention defaults to a non-deterministic algorithm. To explicitly enable determinism call torch.use_deterministic_algorithms(True, warn_only=False). (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/native/transformers/cuda/attention_backward.cu:833.)
   return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
 /data/calegre/Tesis/src/phishing_model/train.py:703: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
   scheduler.step()
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/torch/autograd/graph.py:979: UserWarning: Flash Attention defaults to a non-deterministic algorithm. To explicitly enable determinism call torch.use_deterministic_algorithms(True, warn_only=False). (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/native/transformers/cuda/attention_backward.cu:125.)
   return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-2026-09-04 12:48:22 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc.pt (epoch=0, step=500)
-2026-09-04 12:48:56 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0826 val_loss=0.0045 val_acc=0.9985
-2026-09-04 12:48:56 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc_best.pt (epoch=1, step=503)
-2026-09-04 12:48:56 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999983) guardado en e1_atencion_cruzada_token_s42_sc_best.pt
-2026-09-04 12:54:30 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc.pt (epoch=1, step=1000)
-2026-09-04 12:55:06 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0096 val_loss=0.0060 val_acc=0.9990
-2026-09-04 13:00:39 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc.pt (epoch=2, step=1500)
-2026-09-04 13:01:17 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0021 val_loss=0.0064 val_acc=0.9990
-2026-09-04 13:01:17 | INFO | phishing_model.train | Parada temprana: 2 épocas sin mejora de val_auc (mejor: época 0, 0.999983)
-2026-09-04 13:01:19 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc.pt (epoch=2, step=1509)
-2026-09-04 13:01:19 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_atencion_cruzada_token_s42_sc_history.json
-2026-09-04 13:01:20 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_atencion_cruzada_token_s42_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9810.32it/s]
+2026-09-08 00:33:44 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc.pt (epoch=0, step=500)
+2026-09-08 00:34:08 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0843 val_loss=0.0063 val_acc=0.9980
+2026-09-08 00:34:08 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc_best.pt (epoch=1, step=503)
+2026-09-08 00:34:08 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999980) guardado en e1_atencion_cruzada_token_s42_sc_best.pt
+2026-09-08 00:38:07 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc.pt (epoch=1, step=1000)
+2026-09-08 00:38:33 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0096 val_loss=0.0044 val_acc=0.9995
+2026-09-08 00:42:28 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc.pt (epoch=2, step=1500)
+2026-09-08 00:42:55 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0021 val_loss=0.0052 val_acc=0.9995
+2026-09-08 00:42:55 | INFO | phishing_model.train | Parada temprana: 2 épocas sin mejora de val_auc (mejor: época 0, 0.999980)
+2026-09-08 00:42:57 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s42_sc.pt (epoch=2, step=1509)
+2026-09-08 00:42:57 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_atencion_cruzada_token_s42_sc_history.json
+2026-09-08 00:42:57 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_atencion_cruzada_token_s42_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9526.66it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
 /data/calegre/Tesis/src/phishing_model/fusion/modality_encoder.py:42: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers)
-2026-09-04 13:01:56 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_atencion_cruzada_token_s42_sc_atencion_cruzada_token_s42_sc_preds.parquet
-  atencion_cruzada_token       semilla 42  F1=0.9980
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 8853.97it/s]
+2026-09-08 00:43:23 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_atencion_cruzada_token_s42_sc_atencion_cruzada_token_s42_sc_preds.parquet
+  atencion_cruzada_token       semilla 42  F1=0.9975
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11380.56it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
 /data/calegre/Tesis/src/phishing_model/fusion/modality_encoder.py:42: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers)
-2026-09-04 13:01:58 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 00:43:25 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
 /data/calegre/Tesis/src/phishing_model/train.py:703: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
   scheduler.step()
-2026-09-04 13:07:39 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc.pt (epoch=0, step=500)
-2026-09-04 13:08:12 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0770 val_loss=0.0123 val_acc=0.9980
-2026-09-04 13:08:13 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc_best.pt (epoch=1, step=503)
-2026-09-04 13:08:13 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999963) guardado en e1_atencion_cruzada_token_s43_sc_best.pt
-2026-09-04 13:13:50 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc.pt (epoch=1, step=1000)
-2026-09-04 13:14:25 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0105 val_loss=0.0075 val_acc=0.9980
-2026-09-04 13:14:26 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc_best.pt (epoch=2, step=1006)
-2026-09-04 13:14:26 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999969) guardado en e1_atencion_cruzada_token_s43_sc_best.pt
-2026-09-04 13:20:05 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc.pt (epoch=2, step=1500)
-2026-09-04 13:20:43 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0023 val_loss=0.0057 val_acc=0.9995
-2026-09-04 13:20:44 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc.pt (epoch=3, step=1509)
-2026-09-04 13:20:44 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_atencion_cruzada_token_s43_sc_history.json
-2026-09-04 13:20:45 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_atencion_cruzada_token_s43_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 4242.50it/s]
+2026-09-08 00:47:26 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc.pt (epoch=0, step=500)
+2026-09-08 00:47:50 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0784 val_loss=0.0085 val_acc=0.9990
+2026-09-08 00:47:50 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc_best.pt (epoch=1, step=503)
+2026-09-08 00:47:50 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999968) guardado en e1_atencion_cruzada_token_s43_sc_best.pt
+2026-09-08 00:51:49 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc.pt (epoch=1, step=1000)
+2026-09-08 00:52:14 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0089 val_loss=0.0050 val_acc=0.9995
+2026-09-08 00:52:15 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc_best.pt (epoch=2, step=1006)
+2026-09-08 00:52:15 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999974) guardado en e1_atencion_cruzada_token_s43_sc_best.pt
+2026-09-08 00:56:15 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc.pt (epoch=2, step=1500)
+2026-09-08 00:56:41 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0022 val_loss=0.0084 val_acc=0.9985
+2026-09-08 00:56:43 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s43_sc.pt (epoch=3, step=1509)
+2026-09-08 00:56:43 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_atencion_cruzada_token_s43_sc_history.json
+2026-09-08 00:56:43 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_atencion_cruzada_token_s43_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10897.69it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
 /data/calegre/Tesis/src/phishing_model/fusion/modality_encoder.py:42: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers)
-2026-09-04 13:21:22 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_atencion_cruzada_token_s43_sc_atencion_cruzada_token_s43_sc_preds.parquet
+2026-09-08 00:57:08 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_atencion_cruzada_token_s43_sc_atencion_cruzada_token_s43_sc_preds.parquet
   atencion_cruzada_token       semilla 43  F1=0.9980
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 7418.43it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11382.41it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
 /data/calegre/Tesis/src/phishing_model/fusion/modality_encoder.py:42: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers)
-2026-09-04 13:21:24 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 13:27:07 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc.pt (epoch=0, step=500)
-2026-09-04 13:27:40 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0822 val_loss=0.0059 val_acc=0.9990
-2026-09-04 13:27:41 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc_best.pt (epoch=1, step=503)
-2026-09-04 13:27:41 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999972) guardado en e1_atencion_cruzada_token_s44_sc_best.pt
-2026-09-04 13:33:21 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc.pt (epoch=1, step=1000)
-2026-09-04 13:33:56 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0083 val_loss=0.0118 val_acc=0.9965
-2026-09-04 13:39:36 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc.pt (epoch=2, step=1500)
-2026-09-04 13:40:13 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0022 val_loss=0.0078 val_acc=0.9985
-2026-09-04 13:40:13 | INFO | phishing_model.train | Parada temprana: 2 épocas sin mejora de val_auc (mejor: época 0, 0.999972)
-2026-09-04 13:40:15 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc.pt (epoch=2, step=1509)
-2026-09-04 13:40:15 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_atencion_cruzada_token_s44_sc_history.json
-2026-09-04 13:40:15 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_atencion_cruzada_token_s44_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 4861.61it/s]
+2026-09-08 00:57:10 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:01:12 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc.pt (epoch=0, step=500)
+2026-09-08 01:01:36 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0821 val_loss=0.0059 val_acc=0.9990
+2026-09-08 01:01:37 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:01:37 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999972) guardado en e1_atencion_cruzada_token_s44_sc_best.pt
+2026-09-08 01:05:39 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc.pt (epoch=1, step=1000)
+2026-09-08 01:06:04 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0082 val_loss=0.0110 val_acc=0.9975
+2026-09-08 01:10:01 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc.pt (epoch=2, step=1500)
+2026-09-08 01:10:29 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0021 val_loss=0.0087 val_acc=0.9980
+2026-09-08 01:10:29 | INFO | phishing_model.train | Parada temprana: 2 épocas sin mejora de val_auc (mejor: época 0, 0.999972)
+2026-09-08 01:10:30 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_atencion_cruzada_token_s44_sc.pt (epoch=2, step=1509)
+2026-09-08 01:10:30 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_atencion_cruzada_token_s44_sc_history.json
+2026-09-08 01:10:30 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_atencion_cruzada_token_s44_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9907.88it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
 /data/calegre/Tesis/src/phishing_model/fusion/modality_encoder.py:42: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.encoder = nn.TransformerEncoder(layer, num_layers=n_layers)
-2026-09-04 13:40:51 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_atencion_cruzada_token_s44_sc_atencion_cruzada_token_s44_sc_preds.parquet
+2026-09-08 01:10:56 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_atencion_cruzada_token_s44_sc_atencion_cruzada_token_s44_sc_preds.parquet
   atencion_cruzada_token       semilla 44  F1=0.9975
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 4328.93it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11122.82it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 13:40:54 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 13:46:22 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc.pt (epoch=0, step=500)
-2026-09-04 13:46:54 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0997 val_loss=0.0369 val_acc=0.9896
-2026-09-04 13:46:55 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc_best.pt (epoch=1, step=503)
-2026-09-04 13:46:55 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999941) guardado en e1_solo_texto_s42_sc_best.pt
-2026-09-04 13:51:54 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc.pt (epoch=1, step=1000)
-2026-09-04 13:52:27 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0101 val_loss=0.0090 val_acc=0.9990
-2026-09-04 13:52:27 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc_best.pt (epoch=2, step=1006)
-2026-09-04 13:52:27 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999947) guardado en e1_solo_texto_s42_sc_best.pt
-2026-09-04 13:57:17 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc.pt (epoch=2, step=1500)
-2026-09-04 13:57:51 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0028 val_loss=0.0078 val_acc=0.9985
-2026-09-04 13:57:51 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc_best.pt (epoch=3, step=1509)
-2026-09-04 13:57:51 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999954) guardado en e1_solo_texto_s42_sc_best.pt
-2026-09-04 13:57:53 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc.pt (epoch=3, step=1509)
-2026-09-04 13:57:53 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_texto_s42_sc_history.json
-2026-09-04 13:57:53 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_texto_s42_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9449.82it/s]
+2026-09-08 01:10:58 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:14:49 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc.pt (epoch=0, step=500)
+2026-09-08 01:15:12 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0997 val_loss=0.0368 val_acc=0.9896
+2026-09-08 01:15:12 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:15:12 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999941) guardado en e1_solo_texto_s42_sc_best.pt
+2026-09-08 01:19:00 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc.pt (epoch=1, step=1000)
+2026-09-08 01:19:25 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0102 val_loss=0.0093 val_acc=0.9990
+2026-09-08 01:23:11 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc.pt (epoch=2, step=1500)
+2026-09-08 01:23:38 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0025 val_loss=0.0085 val_acc=0.9990
+2026-09-08 01:23:39 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc_best.pt (epoch=3, step=1509)
+2026-09-08 01:23:39 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999950) guardado en e1_solo_texto_s42_sc_best.pt
+2026-09-08 01:23:40 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s42_sc.pt (epoch=3, step=1509)
+2026-09-08 01:23:40 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_texto_s42_sc_history.json
+2026-09-08 01:23:40 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_texto_s42_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 12034.27it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 13:58:24 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_texto_s42_sc_solo_texto_s42_sc_preds.parquet
+2026-09-08 01:24:04 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_texto_s42_sc_solo_texto_s42_sc_preds.parquet
   solo_texto                   semilla 42  F1=0.9965
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 7240.42it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 8774.14it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 13:58:26 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 14:03:22 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc.pt (epoch=0, step=500)
-2026-09-04 14:03:52 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0875 val_loss=0.0076 val_acc=0.9980
-2026-09-04 14:03:52 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc_best.pt (epoch=1, step=503)
-2026-09-04 14:03:52 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999965) guardado en e1_solo_texto_s43_sc_best.pt
-2026-09-04 14:07:36 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc.pt (epoch=1, step=1000)
-2026-09-04 14:07:58 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0119 val_loss=0.0100 val_acc=0.9980
-2026-09-04 14:11:30 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc.pt (epoch=2, step=1500)
-2026-09-04 14:11:53 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0031 val_loss=0.0088 val_acc=0.9985
-2026-09-04 14:11:53 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc_best.pt (epoch=3, step=1509)
-2026-09-04 14:11:53 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999968) guardado en e1_solo_texto_s43_sc_best.pt
-2026-09-04 14:11:55 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc.pt (epoch=3, step=1509)
-2026-09-04 14:11:55 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_texto_s43_sc_history.json
-2026-09-04 14:11:55 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_texto_s43_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9656.29it/s]
+2026-09-08 01:24:06 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:27:58 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc.pt (epoch=0, step=500)
+2026-09-08 01:28:21 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0875 val_loss=0.0075 val_acc=0.9985
+2026-09-08 01:28:21 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:28:21 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999966) guardado en e1_solo_texto_s43_sc_best.pt
+2026-09-08 01:32:12 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc.pt (epoch=1, step=1000)
+2026-09-08 01:32:37 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0119 val_loss=0.0102 val_acc=0.9980
+2026-09-08 01:36:26 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc.pt (epoch=2, step=1500)
+2026-09-08 01:36:52 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0030 val_loss=0.0089 val_acc=0.9985
+2026-09-08 01:36:52 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc_best.pt (epoch=3, step=1509)
+2026-09-08 01:36:52 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999968) guardado en e1_solo_texto_s43_sc_best.pt
+2026-09-08 01:36:53 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s43_sc.pt (epoch=3, step=1509)
+2026-09-08 01:36:53 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_texto_s43_sc_history.json
+2026-09-08 01:36:54 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_texto_s43_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11494.39it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:12:18 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_texto_s43_sc_solo_texto_s43_sc_preds.parquet
+2026-09-08 01:37:18 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_texto_s43_sc_solo_texto_s43_sc_preds.parquet
   solo_texto                   semilla 43  F1=0.9965
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10792.26it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11574.01it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:12:20 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 14:16:12 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc.pt (epoch=0, step=500)
-2026-09-04 14:16:35 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0959 val_loss=0.0123 val_acc=0.9965
-2026-09-04 14:16:36 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc_best.pt (epoch=1, step=503)
-2026-09-04 14:16:36 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999963) guardado en e1_solo_texto_s44_sc_best.pt
-2026-09-04 14:20:47 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc.pt (epoch=1, step=1000)
-2026-09-04 14:21:13 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0120 val_loss=0.0123 val_acc=0.9975
-2026-09-04 14:21:13 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc_best.pt (epoch=2, step=1006)
-2026-09-04 14:21:13 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999964) guardado en e1_solo_texto_s44_sc_best.pt
-2026-09-04 14:25:28 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc.pt (epoch=2, step=1500)
-2026-09-04 14:25:55 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0028 val_loss=0.0080 val_acc=0.9990
-2026-09-04 14:25:56 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc_best.pt (epoch=3, step=1509)
-2026-09-04 14:25:56 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999968) guardado en e1_solo_texto_s44_sc_best.pt
-2026-09-04 14:25:57 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc.pt (epoch=3, step=1509)
-2026-09-04 14:25:57 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_texto_s44_sc_history.json
-2026-09-04 14:25:57 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_texto_s44_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 4083.12it/s]
+2026-09-08 01:37:20 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:41:11 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc.pt (epoch=0, step=500)
+2026-09-08 01:41:33 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.0959 val_loss=0.0122 val_acc=0.9965
+2026-09-08 01:41:33 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:41:33 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999962) guardado en e1_solo_texto_s44_sc_best.pt
+2026-09-08 01:45:23 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc.pt (epoch=1, step=1000)
+2026-09-08 01:45:48 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.0121 val_loss=0.0123 val_acc=0.9980
+2026-09-08 01:45:48 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc_best.pt (epoch=2, step=1006)
+2026-09-08 01:45:48 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999963) guardado en e1_solo_texto_s44_sc_best.pt
+2026-09-08 01:49:37 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc.pt (epoch=2, step=1500)
+2026-09-08 01:50:02 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.0028 val_loss=0.0081 val_acc=0.9990
+2026-09-08 01:50:03 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc_best.pt (epoch=3, step=1509)
+2026-09-08 01:50:03 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.999966) guardado en e1_solo_texto_s44_sc_best.pt
+2026-09-08 01:50:04 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_texto_s44_sc.pt (epoch=3, step=1509)
+2026-09-08 01:50:04 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_texto_s44_sc_history.json
+2026-09-08 01:50:04 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_texto_s44_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9537.28it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:26:22 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_texto_s44_sc_solo_texto_s44_sc_preds.parquet
+2026-09-08 01:50:28 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_texto_s44_sc_solo_texto_s44_sc_preds.parquet
   solo_texto                   semilla 44  F1=0.9965
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 6263.15it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 8768.27it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:26:23 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 14:26:53 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc.pt (epoch=0, step=500)
-2026-09-04 14:26:54 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.7028 val_loss=0.6908 val_acc=0.5065
-2026-09-04 14:26:54 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc_best.pt (epoch=1, step=503)
-2026-09-04 14:26:54 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.917567) guardado en e1_solo_estructura_s42_sc_best.pt
-2026-09-04 14:27:32 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc.pt (epoch=1, step=1000)
-2026-09-04 14:27:34 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.6857 val_loss=0.6576 val_acc=0.5100
-2026-09-04 14:27:34 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc_best.pt (epoch=2, step=1006)
-2026-09-04 14:27:34 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.922559) guardado en e1_solo_estructura_s42_sc_best.pt
-2026-09-04 14:28:11 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc.pt (epoch=2, step=1500)
-2026-09-04 14:28:13 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.6668 val_loss=0.6354 val_acc=0.7905
-2026-09-04 14:28:13 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc_best.pt (epoch=3, step=1509)
-2026-09-04 14:28:13 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.923757) guardado en e1_solo_estructura_s42_sc_best.pt
-2026-09-04 14:28:14 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc.pt (epoch=3, step=1509)
-2026-09-04 14:28:14 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_estructura_s42_sc_history.json
-2026-09-04 14:28:15 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_estructura_s42_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 5510.92it/s]
+2026-09-08 01:50:30 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:51:07 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc.pt (epoch=0, step=500)
+2026-09-08 01:51:09 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.7028 val_loss=0.6908 val_acc=0.5065
+2026-09-08 01:51:09 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:51:09 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.917567) guardado en e1_solo_estructura_s42_sc_best.pt
+2026-09-08 01:51:46 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc.pt (epoch=1, step=1000)
+2026-09-08 01:51:48 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.6857 val_loss=0.6576 val_acc=0.5100
+2026-09-08 01:51:48 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc_best.pt (epoch=2, step=1006)
+2026-09-08 01:51:48 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.922559) guardado en e1_solo_estructura_s42_sc_best.pt
+2026-09-08 01:52:25 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc.pt (epoch=2, step=1500)
+2026-09-08 01:52:28 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.6668 val_loss=0.6354 val_acc=0.7905
+2026-09-08 01:52:28 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc_best.pt (epoch=3, step=1509)
+2026-09-08 01:52:28 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.923757) guardado en e1_solo_estructura_s42_sc_best.pt
+2026-09-08 01:52:29 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s42_sc.pt (epoch=3, step=1509)
+2026-09-08 01:52:29 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_estructura_s42_sc_history.json
+2026-09-08 01:52:29 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_estructura_s42_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9128.57it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:28:19 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_estructura_s42_sc_solo_estructura_s42_sc_preds.parquet
+2026-09-08 01:52:33 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_estructura_s42_sc_solo_estructura_s42_sc_preds.parquet
   solo_estructura              semilla 42  F1=0.7703
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 4805.57it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11296.57it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:28:21 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 14:28:57 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc.pt (epoch=0, step=500)
-2026-09-04 14:28:59 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.7077 val_loss=0.7012 val_acc=0.5065
-2026-09-04 14:28:59 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc_best.pt (epoch=1, step=503)
-2026-09-04 14:28:59 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.927090) guardado en e1_solo_estructura_s43_sc_best.pt
-2026-09-04 14:29:37 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc.pt (epoch=1, step=1000)
-2026-09-04 14:29:38 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.6790 val_loss=0.6436 val_acc=0.7468
-2026-09-04 14:30:15 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc.pt (epoch=2, step=1500)
-2026-09-04 14:30:17 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.6592 val_loss=0.6262 val_acc=0.8254
-2026-09-04 14:30:17 | INFO | phishing_model.train | Parada temprana: 2 épocas sin mejora de val_auc (mejor: época 0, 0.927090)
-2026-09-04 14:30:18 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc.pt (epoch=2, step=1509)
-2026-09-04 14:30:18 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_estructura_s43_sc_history.json
-2026-09-04 14:30:19 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_estructura_s43_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 5055.33it/s]
+2026-09-08 01:52:34 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:53:09 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc.pt (epoch=0, step=500)
+2026-09-08 01:53:11 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.7077 val_loss=0.7012 val_acc=0.5065
+2026-09-08 01:53:11 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:53:11 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.927090) guardado en e1_solo_estructura_s43_sc_best.pt
+2026-09-08 01:53:48 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc.pt (epoch=1, step=1000)
+2026-09-08 01:53:50 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.6790 val_loss=0.6436 val_acc=0.7468
+2026-09-08 01:54:27 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc.pt (epoch=2, step=1500)
+2026-09-08 01:54:28 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.6592 val_loss=0.6262 val_acc=0.8254
+2026-09-08 01:54:28 | INFO | phishing_model.train | Parada temprana: 2 épocas sin mejora de val_auc (mejor: época 0, 0.927090)
+2026-09-08 01:54:30 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s43_sc.pt (epoch=2, step=1509)
+2026-09-08 01:54:30 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_estructura_s43_sc_history.json
+2026-09-08 01:54:30 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_estructura_s43_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10815.08it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:30:22 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_estructura_s43_sc_solo_estructura_s43_sc_preds.parquet
+2026-09-08 01:54:33 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_estructura_s43_sc_solo_estructura_s43_sc_preds.parquet
   solo_estructura              semilla 43  F1=0.8177
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 3566.71it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11453.59it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:30:23 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 14:31:00 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc.pt (epoch=0, step=500)
-2026-09-04 14:31:01 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.7058 val_loss=0.6782 val_acc=0.5945
-2026-09-04 14:31:01 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc_best.pt (epoch=1, step=503)
-2026-09-04 14:31:01 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.924622) guardado en e1_solo_estructura_s44_sc_best.pt
-2026-09-04 14:31:38 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc.pt (epoch=1, step=1000)
-2026-09-04 14:31:40 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.6825 val_loss=0.6601 val_acc=0.5189
-2026-09-04 14:32:18 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc.pt (epoch=2, step=1500)
-2026-09-04 14:32:20 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.6648 val_loss=0.6352 val_acc=0.8393
-2026-09-04 14:32:20 | INFO | phishing_model.train | Parada temprana: 2 épocas sin mejora de val_auc (mejor: época 0, 0.924622)
-2026-09-04 14:32:22 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc.pt (epoch=2, step=1509)
-2026-09-04 14:32:22 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_estructura_s44_sc_history.json
-2026-09-04 14:32:22 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_estructura_s44_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 5527.04it/s]
+2026-09-08 01:54:34 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:55:12 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc.pt (epoch=0, step=500)
+2026-09-08 01:55:13 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.7058 val_loss=0.6782 val_acc=0.5945
+2026-09-08 01:55:14 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:55:14 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.924622) guardado en e1_solo_estructura_s44_sc_best.pt
+2026-09-08 01:55:51 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc.pt (epoch=1, step=1000)
+2026-09-08 01:55:52 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.6825 val_loss=0.6601 val_acc=0.5189
+2026-09-08 01:56:30 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc.pt (epoch=2, step=1500)
+2026-09-08 01:56:32 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.6648 val_loss=0.6352 val_acc=0.8393
+2026-09-08 01:56:32 | INFO | phishing_model.train | Parada temprana: 2 épocas sin mejora de val_auc (mejor: época 0, 0.924622)
+2026-09-08 01:56:33 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_estructura_s44_sc.pt (epoch=2, step=1509)
+2026-09-08 01:56:33 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_estructura_s44_sc_history.json
+2026-09-08 01:56:33 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_estructura_s44_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 11552.33it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:32:25 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_estructura_s44_sc_solo_estructura_s44_sc_preds.parquet
+2026-09-08 01:56:36 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_estructura_s44_sc_solo_estructura_s44_sc_preds.parquet
   solo_estructura              semilla 44  F1=0.8371
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 4438.23it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10974.68it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:32:26 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 14:33:03 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc.pt (epoch=0, step=500)
-2026-09-04 14:33:04 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.5063 val_loss=0.3302 val_acc=0.8756
-2026-09-04 14:33:05 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc_best.pt (epoch=1, step=503)
-2026-09-04 14:33:05 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.942313) guardado en e1_solo_red_s42_sc_best.pt
-2026-09-04 14:33:42 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc.pt (epoch=1, step=1000)
-2026-09-04 14:33:43 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.3824 val_loss=0.3221 val_acc=0.8781
-2026-09-04 14:33:44 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc_best.pt (epoch=2, step=1006)
-2026-09-04 14:33:44 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.945040) guardado en e1_solo_red_s42_sc_best.pt
-2026-09-04 14:34:21 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc.pt (epoch=2, step=1500)
-2026-09-04 14:34:23 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.3710 val_loss=0.3073 val_acc=0.8791
-2026-09-04 14:34:24 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc_best.pt (epoch=3, step=1509)
-2026-09-04 14:34:24 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.945339) guardado en e1_solo_red_s42_sc_best.pt
-2026-09-04 14:34:25 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc.pt (epoch=3, step=1509)
-2026-09-04 14:34:25 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_red_s42_sc_history.json
-2026-09-04 14:34:25 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_red_s42_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 4125.49it/s]
+2026-09-08 01:56:38 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:57:14 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc.pt (epoch=0, step=500)
+2026-09-08 01:57:16 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.5063 val_loss=0.3302 val_acc=0.8756
+2026-09-08 01:57:16 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:57:16 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.942313) guardado en e1_solo_red_s42_sc_best.pt
+2026-09-08 01:57:52 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc.pt (epoch=1, step=1000)
+2026-09-08 01:57:53 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.3824 val_loss=0.3221 val_acc=0.8781
+2026-09-08 01:57:54 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc_best.pt (epoch=2, step=1006)
+2026-09-08 01:57:54 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.945040) guardado en e1_solo_red_s42_sc_best.pt
+2026-09-08 01:58:31 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc.pt (epoch=2, step=1500)
+2026-09-08 01:58:33 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.3710 val_loss=0.3073 val_acc=0.8791
+2026-09-08 01:58:34 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc_best.pt (epoch=3, step=1509)
+2026-09-08 01:58:34 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.945339) guardado en e1_solo_red_s42_sc_best.pt
+2026-09-08 01:58:35 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s42_sc.pt (epoch=3, step=1509)
+2026-09-08 01:58:35 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_red_s42_sc_history.json
+2026-09-08 01:58:35 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_red_s42_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 7300.79it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:34:28 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_red_s42_sc_solo_red_s42_sc_preds.parquet
+2026-09-08 01:58:38 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_red_s42_sc_solo_red_s42_sc_preds.parquet
   solo_red                     semilla 42  F1=0.8622
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 8880.78it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9086.25it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:34:30 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 14:35:07 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc.pt (epoch=0, step=500)
-2026-09-04 14:35:08 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.4763 val_loss=0.3206 val_acc=0.8781
-2026-09-04 14:35:08 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc_best.pt (epoch=1, step=503)
-2026-09-04 14:35:08 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.944391) guardado en e1_solo_red_s43_sc_best.pt
-2026-09-04 14:35:46 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc.pt (epoch=1, step=1000)
-2026-09-04 14:35:47 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.3786 val_loss=0.3069 val_acc=0.8791
-2026-09-04 14:35:48 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc_best.pt (epoch=2, step=1006)
-2026-09-04 14:35:48 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.945362) guardado en e1_solo_red_s43_sc_best.pt
-2026-09-04 14:36:25 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc.pt (epoch=2, step=1500)
-2026-09-04 14:36:27 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.3734 val_loss=0.3072 val_acc=0.8791
-2026-09-04 14:36:27 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc_best.pt (epoch=3, step=1509)
-2026-09-04 14:36:27 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.945998) guardado en e1_solo_red_s43_sc_best.pt
-2026-09-04 14:36:28 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc.pt (epoch=3, step=1509)
-2026-09-04 14:36:29 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_red_s43_sc_history.json
-2026-09-04 14:36:29 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_red_s43_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 6021.54it/s]
+2026-09-08 01:58:40 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 01:59:18 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc.pt (epoch=0, step=500)
+2026-09-08 01:59:20 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.4763 val_loss=0.3206 val_acc=0.8781
+2026-09-08 01:59:20 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc_best.pt (epoch=1, step=503)
+2026-09-08 01:59:20 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.944391) guardado en e1_solo_red_s43_sc_best.pt
+2026-09-08 01:59:59 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc.pt (epoch=1, step=1000)
+2026-09-08 02:00:01 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.3786 val_loss=0.3069 val_acc=0.8791
+2026-09-08 02:00:01 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc_best.pt (epoch=2, step=1006)
+2026-09-08 02:00:01 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.945362) guardado en e1_solo_red_s43_sc_best.pt
+2026-09-08 02:00:39 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc.pt (epoch=2, step=1500)
+2026-09-08 02:00:42 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.3734 val_loss=0.3072 val_acc=0.8791
+2026-09-08 02:00:42 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc_best.pt (epoch=3, step=1509)
+2026-09-08 02:00:42 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.945998) guardado en e1_solo_red_s43_sc_best.pt
+2026-09-08 02:00:43 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s43_sc.pt (epoch=3, step=1509)
+2026-09-08 02:00:43 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_red_s43_sc_history.json
+2026-09-08 02:00:43 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_red_s43_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 10580.72it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:36:32 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_red_s43_sc_solo_red_s43_sc_preds.parquet
+2026-09-08 02:00:47 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_red_s43_sc_solo_red_s43_sc_preds.parquet
   solo_red                     semilla 43  F1=0.8622
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 5891.12it/s]
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9265.49it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:36:33 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
-2026-09-04 14:37:09 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc.pt (epoch=0, step=500)
-2026-09-04 14:37:11 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.5085 val_loss=0.3270 val_acc=0.8756
-2026-09-04 14:37:11 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc_best.pt (epoch=1, step=503)
-2026-09-04 14:37:11 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.947222) guardado en e1_solo_red_s44_sc_best.pt
-2026-09-04 14:37:48 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc.pt (epoch=1, step=1000)
-2026-09-04 14:37:50 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.3847 val_loss=0.3128 val_acc=0.8781
-2026-09-04 14:37:50 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc_best.pt (epoch=2, step=1006)
-2026-09-04 14:37:50 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.947685) guardado en e1_solo_red_s44_sc_best.pt
-2026-09-04 14:38:29 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc.pt (epoch=2, step=1500)
-2026-09-04 14:38:31 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.3722 val_loss=0.3073 val_acc=0.8791
-2026-09-04 14:38:32 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc.pt (epoch=3, step=1509)
-2026-09-04 14:38:32 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_red_s44_sc_history.json
-2026-09-04 14:38:33 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_red_s44_sc.png
-Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 6074.30it/s]
+2026-09-08 02:00:48 | INFO | phishing_model.train | Planificador de LR activo: 1509 pasos totales, 150 de calentamiento (10%)
+2026-09-08 02:01:27 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc.pt (epoch=0, step=500)
+2026-09-08 02:01:29 | INFO | phishing_model.train | Epoch 0 completado (global_step=503): train_loss_mean=0.5085 val_loss=0.3270 val_acc=0.8756
+2026-09-08 02:01:29 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc_best.pt (epoch=1, step=503)
+2026-09-08 02:01:29 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.947222) guardado en e1_solo_red_s44_sc_best.pt
+2026-09-08 02:02:08 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc.pt (epoch=1, step=1000)
+2026-09-08 02:02:11 | INFO | phishing_model.train | Epoch 1 completado (global_step=1006): train_loss_mean=0.3847 val_loss=0.3128 val_acc=0.8781
+2026-09-08 02:02:11 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc_best.pt (epoch=2, step=1006)
+2026-09-08 02:02:11 | INFO | phishing_model.train | Nuevo mejor modelo (val_auc=0.947685) guardado en e1_solo_red_s44_sc_best.pt
+2026-09-08 02:02:48 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc.pt (epoch=2, step=1500)
+2026-09-08 02:02:51 | INFO | phishing_model.train | Epoch 2 completado (global_step=1509): train_loss_mean=0.3722 val_loss=0.3073 val_acc=0.8791
+2026-09-08 02:02:52 | INFO | phishing_model.train | Checkpoint guardado: /data/calegre/Tesis/data/model/checkpoints/e1_solo_red_s44_sc.pt (epoch=3, step=1509)
+2026-09-08 02:02:52 | INFO | phishing_model.train | Historial de entrenamiento guardado: /data/calegre/Tesis/data/reports/training_logs/e1_solo_red_s44_sc_history.json
+2026-09-08 02:02:53 | INFO | phishing_model.train | Curva de aprendizaje guardada: /data/calegre/Tesis/data/reports/figures/learning_curve_e1_solo_red_s44_sc.png
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9488.30it/s]
 [transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
 Key                     | Status     |  | 
 ------------------------+------------+--+-
-vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.weight  | UNEXPECTED |  | 
-vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
 vocab_transform.bias    | UNEXPECTED |  | 
 vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-2026-09-04 14:38:36 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_red_s44_sc_solo_red_s44_sc_preds.parquet
+2026-09-08 02:02:56 | INFO | phishing_model.evaluate | Predicciones guardadas: /data/calegre/Tesis/data/predictions/e1_solo_red_s44_sc_solo_red_s44_sc_preds.parquet
   solo_red                     semilla 44  F1=0.8616
 
   piso clasico (CPU)
@@ -515,10 +513,14 @@ Notes:
   warnings.warn(msg, category=FutureWarning)
 /data/calegre/Tesis/.venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:1457: FutureWarning: 'n_jobs' has no effect since 1.8 and will be removed in 1.10. You provided 'n_jobs=-1', please leave it unspecified.
   warnings.warn(msg, category=FutureWarning)
-  B1 · TF-IDF + RL (texto)           F1=0.9945
-  B3 · RF (estructura)               F1=0.9088
-  B4 · RF (red)                      F1=0.9562
-  B5 · fusión clásica (las tres)     F1=0.9914
+  B1: TF-IDF y regresión logística
+(texto) F1=0.9945
+  B3: bosque aleatorio
+(estructura)  F1=0.9088
+  B4: bosque aleatorio
+(red)         F1=0.9562
+  B5: fusión clásica
+(las tres modalidades) F1=0.9914
   artefactos en /data/calegre/Tesis/medios_de_verificacion/experimentos/e1
 
-  veredicto: no se observa sinergia  (Δ=+0.0013, dispersión 0.0002, p=0.375)
+  veredicto: no se observa sinergia  (Δ=+0.0012, dispersión 0.0002, p=0.625)

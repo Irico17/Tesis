@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-05T04:01:11.597126+00:00",
-  "duration_seconds": 142.76,
+  "generated_at": "2026-09-08T10:21:55.875329+00:00",
+  "duration_seconds": 36.52,
   "passed": true,
   "checks": {
     "synthetic_shapes": {
@@ -45,7 +45,7 @@
     },
     "synthetic_forward_backward": {
       "passed": true,
-      "loss_value": 0.7716760039329529,
+      "loss_value": 0.7381734251976013,
       "any_grad_computed": true,
       "all_grads_finite": true,
       "non_finite_grad_params": []
@@ -76,14 +76,14 @@
       "rows_used": 200,
       "steps_run": 8,
       "loss_history": [
-        0.9689015746116638,
-        1.187635898590088,
-        1.2319862842559814,
-        0.7892110347747803,
-        0.9534971714019775,
-        0.684259831905365,
-        0.8802347779273987,
-        0.262994647026062
+        0.8689230680465698,
+        0.21567201614379883,
+        0.831994354724884,
+        0.010259547270834446,
+        1.0071395635604858,
+        1.69594144821167,
+        0.6258546710014343,
+        0.16110439598560333
       ],
       "loss_decreased": true,
       "note": "loss_decreased puede ser False con muy pocos pasos/filas (ruido normal) sin que eso invalide el chequeo -- lo que importa es que la pérdida es finita y el forward/backward corre sin error sobre datos reales. Ver loss_history completo."

@@ -11,7 +11,9 @@ La copia se hace desde `medios_de_verificacion/experimentos/`, que es la salida
 cruda de la cola y la única fuente: las carpetas por resultado se reconstruyen
 enteras en cada pasada, de modo que no pueden quedar describiendo una ejecución
 distinta de la vigente. Las figuras que produce `scripts/figuras/` se escriben
-directamente en su carpeta de resultado y no se tocan aquí.
+directamente en su carpeta de resultado y no se tocan aquí: la limpieza previa
+solo alcanza a los ficheros que esta misma pasada vuelve a poner, nombre por
+nombre.
 
 Si falta un artefacto, se dice cuál y el guion termina con código distinto de
 cero: un medio de verificación incompleto que no avisa es peor que uno ausente.
@@ -351,10 +353,17 @@ def main() -> int:
     for clave, spec in RESULTADOS.items():
         carpeta = MV / clave
         carpeta.mkdir(parents=True, exist_ok=True)
-        # Se retiran las copias de la pasada anterior, pero NO las subcarpetas que
-        # produce otro guion: borrarlas obligaría a regenerar las figuras cada vez.
+        # Se retiran SOLO las copias que esta funcion pone, nombre por nombre. La
+        # version anterior borraba todo fichero de la carpeta, y con ello las
+        # figuras que `scripts/figuras/generar_figuras_mv.py` escribe ahi
+        # directamente: el diagrama de la arquitectura de R1.3 y las tres curvas
+        # ROC de R2.2 desaparecian en cada consolidacion, pese a que el propio
+        # encabezado de este modulo dice que no se tocan. Las subcarpetas se
+        # salvaban por accidente, porque el borrado solo alcanzaba a ficheros.
+        propios = {destino for _, destino, _ in spec["artefactos"]}
+        propios.add("INDICADOR_Y_MEDIO_DE_VERIFICACION.md")
         for viejo in carpeta.glob("*"):
-            if viejo.is_file():
+            if viejo.is_file() and viejo.name in propios:
                 viejo.unlink()
 
         copiados, ausentes = [], []

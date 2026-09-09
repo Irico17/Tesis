@@ -277,8 +277,9 @@ def main() -> int:
                              ha="center", fontsize=8)
             eje.set_xticks(x + 0.19)
             eje.set_xticklabels([titulos[g] for g in grupos], fontsize=9)
-            eje.set_title(etiqueta_de(arquitectura).replace("
-", " "), fontsize=10)
+            # `etiqueta_de` devuelve nombres partidos en dos lineas para los
+            # rotulos del eje; como titulo de subgrafico se quieren en una.
+            eje.set_title(" ".join(etiqueta_de(arquitectura).split()), fontsize=10)
             eje.grid(axis="y", alpha=0.3)
         ejes[0].set_ylabel("F1")
         ejes[0].legend(fontsize=9, loc="lower left")

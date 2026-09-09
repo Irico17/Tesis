@@ -14,6 +14,12 @@
 | --- | --- |
 | `e6_latencia_y_falsos_negativos.json` | Tamaño, latencia media y percentil 95, acuerdo de cuantización y tasa de falsos negativos de cada arquitectura |
 | `registro_de_la_medicion.log` | Registro de la exportación, la cuantización y la medición |
+| `informe_de_exportacion_de_la_propuesta.json` | Exportación y cuantización de la arquitectura de la que habla el capítulo, con la ruta de los pesos resultantes |
+
+## Artefactos que no se versionan por tamaño
+
+- `data/model/onnx/atencion_cruzada_token/model_int8.onnx`: Pesos exportados y cuantizados de la arquitectura propuesta, unos 66 MB. No se versionan por tamaño; se regeneran con E6 y su huella queda en el informe de exportación.
+- `data/model/onnx/atencion_cruzada_token/model_fp32.onnx`: Los mismos pesos en coma flotante de 32 bits, unos 260 MB.
 
 ## Código fuente que sustenta el resultado
 

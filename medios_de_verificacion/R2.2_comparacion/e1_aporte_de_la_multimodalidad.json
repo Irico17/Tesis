@@ -1,7 +1,7 @@
 {
   "experimento": "E1",
   "pregunta": "¿La multimodalidad aporta sobre los unimodales?",
-  "generado_en": "2026-09-04T19:43:16.874232+00:00",
+  "generado_en": "2026-09-08T07:06:09.956144+00:00",
   "datos": {
     "n": 20098,
     "prevalencia": 0.4934,
@@ -21,14 +21,14 @@
     "atencion_cruzada_token": {
       "por_semilla": [
         {
-          "accuracy": 0.998,
-          "precision": 0.997,
+          "accuracy": 0.9975,
+          "precision": 0.996,
           "recall": 0.999,
-          "f1": 0.998,
+          "f1": 0.9975,
           "confusion_matrix": [
             [
-              1016,
-              3
+              1015,
+              4
             ],
             [
               1,
@@ -39,11 +39,11 @@
             "negative": 1019,
             "positive": 992
           },
-          "mcc": 0.996,
-          "balanced_accuracy": 0.998,
-          "roc_auc": 0.9999,
-          "pr_auc": 0.9999,
-          "specificity": 0.9971,
+          "mcc": 0.995,
+          "balanced_accuracy": 0.9975,
+          "roc_auc": 1.0,
+          "pr_auc": 1.0,
+          "specificity": 0.9961,
           "prevalencia": 0.4933,
           "f1_trivial": 0.6607,
           "brier": 0.002,
@@ -51,28 +51,28 @@
           "fpr_a_tpr95": 0.0,
           "classification_report": {
             "0": {
-              "precision": 0.9990167158308751,
-              "recall": 0.9970559371933267,
-              "f1-score": 0.9980353634577603,
+              "precision": 0.9990157480314961,
+              "recall": 0.9960745829244357,
+              "f1-score": 0.9975429975429976,
               "support": 1019.0
             },
             "1": {
-              "precision": 0.9969818913480886,
+              "precision": 0.9959798994974874,
               "recall": 0.998991935483871,
-              "f1-score": 0.9979859013091642,
+              "f1-score": 0.9974836436839456,
               "support": 992.0
             },
-            "accuracy": 0.9980109398309299,
+            "accuracy": 0.9975136747886624,
             "macro avg": {
-              "precision": 0.9979993035894819,
-              "recall": 0.9980239363385989,
-              "f1-score": 0.9980106323834623,
+              "precision": 0.9974978237644918,
+              "recall": 0.9975332592041534,
+              "f1-score": 0.9975133206134716,
               "support": 2011.0
             },
             "weighted avg": {
-              "precision": 0.9980129635250947,
-              "recall": 0.9980109398309299,
-              "f1-score": 0.9980109644267273,
+              "precision": 0.9975182036527112,
+              "recall": 0.9975136747886624,
+              "f1-score": 0.9975137190605612,
               "support": 2011.0
             }
           },
@@ -106,7 +106,7 @@
           "prevalencia": 0.4933,
           "f1_trivial": 0.6607,
           "brier": 0.0019,
-          "ece": 0.0019,
+          "ece": 0.0017,
           "fpr_a_tpr95": 0.0,
           "classification_report": {
             "0": {
@@ -164,8 +164,8 @@
           "specificity": 0.998,
           "prevalencia": 0.4933,
           "f1_trivial": 0.6607,
-          "brier": 0.0024,
-          "ece": 0.0024,
+          "brier": 0.0023,
+          "ece": 0.0025,
           "fpr_a_tpr95": 0.0,
           "classification_report": {
             "0": {
@@ -198,46 +198,46 @@
           "semilla": 44
         }
       ],
-      "f1": 0.9978,
+      "f1": 0.9977,
       "f1_desv": 0.0002,
-      "accuracy": 0.9978,
+      "accuracy": 0.9977,
       "accuracy_desv": 0.0002,
-      "precision": 0.9977,
-      "precision_desv": 0.0005,
+      "precision": 0.9973,
+      "precision_desv": 0.0009,
       "recall": 0.998,
       "recall_desv": 0.0008,
-      "roc_auc": 0.9999,
+      "roc_auc": 1.0,
       "roc_auc_desv": 0.0,
-      "pr_auc": 0.9999,
+      "pr_auc": 1.0,
       "pr_auc_desv": 0.0,
-      "mcc": 0.9957,
+      "mcc": 0.9953,
       "mcc_desv": 0.0005,
-      "balanced_accuracy": 0.9978,
+      "balanced_accuracy": 0.9977,
       "balanced_accuracy_desv": 0.0002,
-      "specificity": 0.9977,
-      "specificity_desv": 0.0004,
+      "specificity": 0.9974,
+      "specificity_desv": 0.0009,
       "brier": 0.0021,
       "brier_desv": 0.0002,
       "ece": 0.0021,
-      "ece_desv": 0.0002,
+      "ece_desv": 0.0003,
       "fpr_a_tpr95": 0.0,
       "fpr_a_tpr95_desv": 0.0,
       "punto_de_operacion": {
         "n_negativos": 1019,
         "fpr_minimo_medible": 0.000981,
-        "tpr_a_fpr_0.01": 0.999,
-        "tpr_a_fpr_0.01_umbral": 0.690697,
-        "tpr_a_fpr_0.001": 0.9889,
-        "tpr_a_fpr_0.001_umbral": 0.996332
+        "tpr_a_fpr_0.01": 1.0,
+        "tpr_a_fpr_0.01_umbral": 0.00735,
+        "tpr_a_fpr_0.001": 0.9879,
+        "tpr_a_fpr_0.001_umbral": 0.996858
       },
       "ic_bootstrap_f1": {
         "metrica": "f1",
         "n_remuestreos": 2000,
-        "valor_observado": 0.998,
+        "valor_observado": 0.9975,
         "corresponde_a": "una sola corrida, no la media entre semillas",
-        "ic95_inferior": 0.9959,
+        "ic95_inferior": 0.995,
         "ic95_superior": 0.9995,
-        "amplitud": 0.0036
+        "amplitud": 0.0045
       }
     },
     "solo_texto": {
@@ -268,8 +268,8 @@
           "specificity": 0.9941,
           "prevalencia": 0.4933,
           "f1_trivial": 0.6607,
-          "brier": 0.0032,
-          "ece": 0.0035,
+          "brier": 0.0031,
+          "ece": 0.0034,
           "fpr_a_tpr95": 0.001,
           "classification_report": {
             "0": {
@@ -327,7 +327,7 @@
           "specificity": 0.9961,
           "prevalencia": 0.4933,
           "f1_trivial": 0.6607,
-          "brier": 0.0032,
+          "brier": 0.0031,
           "ece": 0.0035,
           "fpr_a_tpr95": 0.001,
           "classification_report": {
@@ -439,8 +439,8 @@
       "specificity": 0.9951,
       "specificity_desv": 0.0008,
       "brier": 0.0032,
-      "brier_desv": 0.0,
-      "ece": 0.0036,
+      "brier_desv": 0.0001,
+      "ece": 0.0035,
       "ece_desv": 0.0001,
       "fpr_a_tpr95": 0.001,
       "fpr_a_tpr95_desv": 0.0,
@@ -448,9 +448,9 @@
         "n_negativos": 1019,
         "fpr_minimo_medible": 0.000981,
         "tpr_a_fpr_0.01": 0.999,
-        "tpr_a_fpr_0.01_umbral": 0.644254,
-        "tpr_a_fpr_0.001": 0.9778,
-        "tpr_a_fpr_0.001_umbral": 0.998778
+        "tpr_a_fpr_0.01_umbral": 0.522791,
+        "tpr_a_fpr_0.001": 0.9728,
+        "tpr_a_fpr_0.001_umbral": 0.998995
       },
       "ic_bootstrap_f1": {
         "metrica": "f1",
@@ -1792,14 +1792,14 @@
   "contraste": {
     "multimodal": "atencion_cruzada_token",
     "mejor_unimodal": "solo_texto",
-    "diferencia_f1": 0.0013,
+    "diferencia_f1": 0.0012,
     "dispersion_entre_semillas": 0.0002,
     "supera_la_dispersion": true,
     "mcnemar": {
-      "aciertos_solo_a": 4,
+      "aciertos_solo_a": 3,
       "aciertos_solo_b": 1,
-      "n_discordancias": 5,
-      "p_valor": 0.375,
+      "n_discordancias": 4,
+      "p_valor": 0.625,
       "significativo_005": false
     }
   },
@@ -1807,10 +1807,10 @@
     "b1_tfidf_lr": {
       "metrica": "f1",
       "margen_delta": 0.005,
-      "diferencia_media": 0.0036,
+      "diferencia_media": 0.003,
       "ic95_de_la_diferencia": [
-        0.0005,
-        0.0069
+        -0.0,
+        0.0065
       ],
       "equivalentes": false,
       "interpretacion": "no se puede declarar equivalencia: el intervalo excede el margen"
@@ -1818,10 +1818,10 @@
     "b3_rf_estructura": {
       "metrica": "f1",
       "margen_delta": 0.005,
-      "diferencia_media": 0.0885,
+      "diferencia_media": 0.0879,
       "ic95_de_la_diferencia": [
-        0.0755,
-        0.102
+        0.075,
+        0.1015
       ],
       "equivalentes": false,
       "interpretacion": "no se puede declarar equivalencia: el intervalo excede el margen"
@@ -1829,10 +1829,10 @@
     "b4_red": {
       "metrica": "f1",
       "margen_delta": 0.005,
-      "diferencia_media": 0.0422,
+      "diferencia_media": 0.0417,
       "ic95_de_la_diferencia": [
-        0.0324,
-        0.0521
+        0.0321,
+        0.0516
       ],
       "equivalentes": false,
       "interpretacion": "no se puede declarar equivalencia: el intervalo excede el margen"
@@ -1840,10 +1840,10 @@
     "b5_multimodal_clasico": {
       "metrica": "f1",
       "margen_delta": 0.005,
-      "diferencia_media": 0.0066,
+      "diferencia_media": 0.0061,
       "ic95_de_la_diferencia": [
-        0.0025,
-        0.0112
+        0.0016,
+        0.0109
       ],
       "equivalentes": false,
       "interpretacion": "no se puede declarar equivalencia: el intervalo excede el margen"
@@ -1853,7 +1853,7 @@
   "veredicto": "no se observa sinergia",
   "advertencia": "El legítimo del subconjunto trimodal procede casi enteramente de una comunidad. La cifra absoluta NO es rendimiento de detección de phishing; la comparación sí es válida, porque los cuatro modelos ven los mismos datos.",
   "procedencia": {
-    "generado_en": "2026-09-04T19:43:18.094530+00:00",
+    "generado_en": "2026-09-08T07:06:10.713112+00:00",
     "git": {
       "commit": "sin repositorio git en esta maquina",
       "arbol_con_cambios_sin_confirmar": false

@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-09-08T23:59:07.559877+00:00",
+  "checkpoint_path": "/data/calegre/Tesis/data/model/checkpoints/e4_atencion_cruzada_token_s42_agr_best.pt",
+  "fusion_type": "cross_attention_token_level",
+  "IS_VALIDATION_CHECKPOINT_NOT_PRODUCTION": true,
+  "evaluated_on_real_test_data": true,
+  "note": "La arquitectura exportada/cuantizada es la misma sin importar qué tan entrenado esté el checkpoint -- los tamaños de modelo y la latencia relativa FP32 vs. INT8 son representativos ya con este checkpoint. Solo `prediction_agreement_rate` debe re-verificarse sobre el checkpoint de producción (un modelo apenas entrenado puede tener salidas menos estables numéricamente que uno convergido).",
+  "model_size_mb": {
+    "fp32": 259.3,
+    "int8": 66.02,
+    "reduction_pct": 74.54
+  },
+  "latency_ms": {
+    "fp32": {
+      "n_samples": 50,
+      "batch_size": 1,
+      "data_source": "test_real",
+      "mean_ms": 112.34,
+      "p50_ms": 103.994,
+      "p95_ms": 143.514,
+      "p99_ms": 209.286,
+      "min_ms": 93.227,
+      "max_ms": 217.3
+    },
+    "int8": {
+      "n_samples": 50,
+      "batch_size": 1,
+      "data_source": "test_real",
+      "mean_ms": 73.614,
+      "p50_ms": 71.595,
+      "p95_ms": 78.618,
+      "p99_ms": 105.206,
+      "min_ms": 69.812,
+      "max_ms": 114.53
+    }
+  },
+  "latency_speedup_p50": 1.453,
+  "prediction_comparison": {
+    "n_examples": 300,
+    "prediction_agreement_rate": 1.0,
+    "max_logit_abs_diff": 1.8536,
+    "note": "prediction_agreement_rate=1.0 significa que INT8 predice EXACTAMENTE lo mismo que FP32 en todos los ejemplos evaluados -- la cuantización no cambió ninguna decisión de clasificación en esta muestra.",
+    "false_negative_analysis": {
+      "fp32": {
+        "n_phishing_reales": 114,
+        "falsos_negativos": 0,
+        "verdaderos_positivos": 114,
+        "tasa_falsos_negativos": 0.0,
+        "recall_phishing": 1.0
+      },
+      "int8": {
+        "n_phishing_reales": 114,
+        "falsos_negativos": 0,
+        "verdaderos_positivos": 114,
+        "tasa_falsos_negativos": 0.0,
+        "recall_phishing": 1.0
+      },
+      "note": "Tasa de falsos negativos = FN / (FN + TP), es decir la proporción de correos de phishing REALES que el modelo dejó pasar como legítimos (equivale a 1 - recall de la clase phishing). Calculada sobre datos reales del conjunto de prueba, no vistos en entrenamiento."
+    }
+  },
+  "modelos_exportados": {
+    "fp32": "/data/calegre/Tesis/data/model/onnx/atencion_cruzada_token/model_fp32.onnx",
+    "int8": "/data/calegre/Tesis/data/model/onnx/atencion_cruzada_token/model_int8.onnx"
+  },
+  "origen_de_las_filas": "particion de la corrida",
+  "n_filas_de_comparacion": 300
+}

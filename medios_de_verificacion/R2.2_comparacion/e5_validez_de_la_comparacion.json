@@ -2,7 +2,7 @@
   "experimento": "E5",
   "pregunta": "¿Cuánto de lo medido es procedencia y no fenómeno?",
   "naturaleza": "Auditoría de validez. No mide rendimiento y no sostiene ninguna afirmación de desempeño: califica los resultados de E1 a E4.",
-  "generado_en": "2026-09-07T03:46:40.797905+00:00",
+  "generado_en": "2026-09-08T23:57:19.833555+00:00",
   "auditoria_de_caracteristicas": [
     {
       "caracteristica": "num_images",
@@ -425,7 +425,7 @@
     "lectura_sobre_el_codificador": "Una fracción apreciable del corpus, el 16.37%, no está en inglés. El codificador empleado es monolingüe, de modo que la representación textual de esos mensajes es peor de lo necesario y conviene contrastar un codificador multilingüe. Se declara como medición y la comparación queda como trabajo futuro."
   },
   "procedencia": {
-    "generado_en": "2026-09-07T03:46:40.804409+00:00",
+    "generado_en": "2026-09-08T23:57:19.836573+00:00",
     "git": {
       "commit": "sin repositorio git en esta maquina",
       "arbol_con_cambios_sin_confirmar": false

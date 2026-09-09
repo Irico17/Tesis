@@ -2,7 +2,7 @@
   "experimento": "E6",
   "resultado_asociado": "R2.3",
   "pregunta": "Es utilizable cada arquitectura en el punto de integracion declarado, y con que tasa de falsos negativos?",
-  "generado_en": "2026-09-05T14:01:59.622983+00:00",
+  "generado_en": "2026-09-09T00:06:50.159361+00:00",
   "arquitecturas_medidas": [
     "atencion_cruzada_token",
     "atencion_cruzada_modalidad",
@@ -26,33 +26,37 @@
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 95.738,
-          "p50_ms": 95.151,
-          "p95_ms": 99.605,
-          "p99_ms": 105.266,
-          "min_ms": 94.299,
-          "max_ms": 110.004
+          "mean_ms": 112.34,
+          "p50_ms": 103.994,
+          "p95_ms": 143.514,
+          "p99_ms": 209.286,
+          "min_ms": 93.227,
+          "max_ms": 217.3
         },
         "int8": {
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 71.35,
-          "p50_ms": 70.729,
-          "p95_ms": 75.678,
-          "p99_ms": 79.551,
-          "min_ms": 70.295,
-          "max_ms": 81.319
+          "mean_ms": 73.614,
+          "p50_ms": 71.595,
+          "p95_ms": 78.618,
+          "p99_ms": 105.206,
+          "min_ms": 69.812,
+          "max_ms": 114.53
         }
       },
-      "aceleracion_p50": 1.345,
+      "aceleracion_p50": 1.453,
       "acuerdo_fp32_int8": 1.0,
+      "modelos_exportados": {
+        "fp32": "data/model/onnx/atencion_cruzada_token/model_fp32.onnx",
+        "int8": "data/model/onnx/atencion_cruzada_token/model_int8.onnx"
+      },
       "falsos_negativos_prueba_completa": {
         "origen": "e4_atencion_cruzada_token_s42_agr_atencion_cruzada_token_s42_agr_preds.parquet",
         "n_phishing_reales": 1773,
-        "falsos_negativos": 9,
-        "tasa_falsos_negativos": 0.005076,
-        "recall_phishing": 0.994924
+        "falsos_negativos": 11,
+        "tasa_falsos_negativos": 0.006204,
+        "recall_phishing": 0.993796
       }
     },
     "atencion_cruzada_modalidad": {
@@ -67,33 +71,37 @@
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 98.068,
-          "p50_ms": 94.801,
-          "p95_ms": 110.974,
-          "p99_ms": 157.075,
-          "min_ms": 93.895,
-          "max_ms": 177.224
+          "mean_ms": 100.096,
+          "p50_ms": 97.818,
+          "p95_ms": 115.939,
+          "p99_ms": 129.29,
+          "min_ms": 95.672,
+          "max_ms": 139.492
         },
         "int8": {
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 71.886,
-          "p50_ms": 71.787,
-          "p95_ms": 72.384,
-          "p99_ms": 73.563,
-          "min_ms": 71.153,
-          "max_ms": 74.53
+          "mean_ms": 75.534,
+          "p50_ms": 72.823,
+          "p95_ms": 83.221,
+          "p99_ms": 127.68,
+          "min_ms": 69.461,
+          "max_ms": 161.966
         }
       },
-      "aceleracion_p50": 1.321,
+      "aceleracion_p50": 1.343,
       "acuerdo_fp32_int8": 1.0,
+      "modelos_exportados": {
+        "fp32": "data/model/onnx/atencion_cruzada_modalidad/model_fp32.onnx",
+        "int8": "data/model/onnx/atencion_cruzada_modalidad/model_int8.onnx"
+      },
       "falsos_negativos_prueba_completa": {
         "origen": "e4_atencion_cruzada_modalidad_s42_agr_atencion_cruzada_modalidad_s42_agr_preds.parquet",
         "n_phishing_reales": 1773,
-        "falsos_negativos": 13,
-        "tasa_falsos_negativos": 0.007332,
-        "recall_phishing": 0.992668
+        "falsos_negativos": 14,
+        "tasa_falsos_negativos": 0.007896,
+        "recall_phishing": 0.992104
       }
     },
     "mezcla_de_expertos": {
@@ -108,33 +116,37 @@
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 97.337,
-          "p50_ms": 92.267,
-          "p95_ms": 126.079,
-          "p99_ms": 152.05,
-          "min_ms": 87.812,
-          "max_ms": 154.131
+          "mean_ms": 101.896,
+          "p50_ms": 93.154,
+          "p95_ms": 144.282,
+          "p99_ms": 169.657,
+          "min_ms": 90.414,
+          "max_ms": 190.903
         },
         "int8": {
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 73.09,
-          "p50_ms": 68.937,
-          "p95_ms": 96.179,
-          "p99_ms": 119.833,
-          "min_ms": 67.718,
-          "max_ms": 127.099
+          "mean_ms": 68.705,
+          "p50_ms": 68.486,
+          "p95_ms": 71.826,
+          "p99_ms": 72.518,
+          "min_ms": 66.52,
+          "max_ms": 72.7
         }
       },
-      "aceleracion_p50": 1.338,
+      "aceleracion_p50": 1.36,
       "acuerdo_fp32_int8": 1.0,
+      "modelos_exportados": {
+        "fp32": "data/model/onnx/mezcla_de_expertos/model_fp32.onnx",
+        "int8": "data/model/onnx/mezcla_de_expertos/model_int8.onnx"
+      },
       "falsos_negativos_prueba_completa": {
         "origen": "e4_mezcla_de_expertos_s42_agr_mezcla_de_expertos_s42_agr_preds.parquet",
         "n_phishing_reales": 1773,
-        "falsos_negativos": 9,
-        "tasa_falsos_negativos": 0.005076,
-        "recall_phishing": 0.994924
+        "falsos_negativos": 13,
+        "tasa_falsos_negativos": 0.007332,
+        "recall_phishing": 0.992668
       }
     },
     "fusor_mlp": {
@@ -149,33 +161,37 @@
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 88.937,
-          "p50_ms": 88.404,
-          "p95_ms": 94.039,
-          "p99_ms": 95.406,
-          "min_ms": 87.554,
-          "max_ms": 96.296
+          "mean_ms": 89.667,
+          "p50_ms": 89.227,
+          "p95_ms": 91.664,
+          "p99_ms": 91.869,
+          "min_ms": 88.21,
+          "max_ms": 91.97
         },
         "int8": {
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 71.33,
-          "p50_ms": 66.321,
-          "p95_ms": 108.72,
-          "p99_ms": 149.115,
-          "min_ms": 65.713,
-          "max_ms": 152.891
+          "mean_ms": 70.282,
+          "p50_ms": 66.158,
+          "p95_ms": 95.828,
+          "p99_ms": 127.656,
+          "min_ms": 64.911,
+          "max_ms": 135.006
         }
       },
-      "aceleracion_p50": 1.333,
-      "acuerdo_fp32_int8": 1.0,
+      "aceleracion_p50": 1.349,
+      "acuerdo_fp32_int8": 0.9967,
+      "modelos_exportados": {
+        "fp32": "data/model/onnx/fusor_mlp/model_fp32.onnx",
+        "int8": "data/model/onnx/fusor_mlp/model_int8.onnx"
+      },
       "falsos_negativos_prueba_completa": {
         "origen": "e4_fusor_mlp_s42_agr_fusor_mlp_s42_agr_preds.parquet",
         "n_phishing_reales": 1773,
-        "falsos_negativos": 11,
-        "tasa_falsos_negativos": 0.006204,
-        "recall_phishing": 0.993796
+        "falsos_negativos": 10,
+        "tasa_falsos_negativos": 0.00564,
+        "recall_phishing": 0.99436
       }
     },
     "concatenacion_tardia": {
@@ -190,33 +206,37 @@
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 92.002,
-          "p50_ms": 91.922,
-          "p95_ms": 92.538,
-          "p99_ms": 95.2,
-          "min_ms": 91.216,
-          "max_ms": 96.562
+          "mean_ms": 137.489,
+          "p50_ms": 137.057,
+          "p95_ms": 154.26,
+          "p99_ms": 180.212,
+          "min_ms": 107.133,
+          "max_ms": 195.79
         },
         "int8": {
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 67.295,
-          "p50_ms": 67.156,
-          "p95_ms": 67.841,
-          "p99_ms": 70.872,
-          "min_ms": 66.19,
-          "max_ms": 73.602
+          "mean_ms": 71.332,
+          "p50_ms": 69.961,
+          "p95_ms": 75.742,
+          "p99_ms": 108.568,
+          "min_ms": 67.301,
+          "max_ms": 137.784
         }
       },
-      "aceleracion_p50": 1.369,
+      "aceleracion_p50": 1.959,
       "acuerdo_fp32_int8": 1.0,
+      "modelos_exportados": {
+        "fp32": "data/model/onnx/concatenacion_tardia/model_fp32.onnx",
+        "int8": "data/model/onnx/concatenacion_tardia/model_int8.onnx"
+      },
       "falsos_negativos_prueba_completa": {
         "origen": "e4_concatenacion_tardia_s42_agr_concatenacion_tardia_s42_agr_preds.parquet",
         "n_phishing_reales": 1773,
-        "falsos_negativos": 14,
-        "tasa_falsos_negativos": 0.007896,
-        "recall_phishing": 0.992104
+        "falsos_negativos": 12,
+        "tasa_falsos_negativos": 0.006768,
+        "recall_phishing": 0.993232
       }
     },
     "solo_texto": {
@@ -231,40 +251,44 @@
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 88.727,
-          "p50_ms": 91.119,
-          "p95_ms": 92.367,
-          "p99_ms": 94.611,
-          "min_ms": 74.934,
-          "max_ms": 95.011
+          "mean_ms": 97.667,
+          "p50_ms": 91.592,
+          "p95_ms": 137.703,
+          "p99_ms": 199.21,
+          "min_ms": 89.055,
+          "max_ms": 206.473
         },
         "int8": {
           "n_samples": 50,
           "batch_size": 1,
           "data_source": "test_real",
-          "mean_ms": 60.09,
-          "p50_ms": 59.11,
-          "p95_ms": 63.247,
-          "p99_ms": 68.775,
-          "min_ms": 57.206,
-          "max_ms": 73.909
+          "mean_ms": 69.361,
+          "p50_ms": 68.969,
+          "p95_ms": 73.191,
+          "p99_ms": 74.205,
+          "min_ms": 66.84,
+          "max_ms": 75.017
         }
       },
-      "aceleracion_p50": 1.542,
-      "acuerdo_fp32_int8": 0.9,
+      "aceleracion_p50": 1.328,
+      "acuerdo_fp32_int8": 1.0,
+      "modelos_exportados": {
+        "fp32": "data/model/onnx/solo_texto/model_fp32.onnx",
+        "int8": "data/model/onnx/solo_texto/model_int8.onnx"
+      },
       "falsos_negativos_prueba_completa": {
         "origen": "e4_solo_texto_s42_agr_solo_texto_s42_agr_preds.parquet",
         "n_phishing_reales": 1773,
-        "falsos_negativos": 20,
-        "tasa_falsos_negativos": 0.01128,
-        "recall_phishing": 0.98872
+        "falsos_negativos": 24,
+        "tasa_falsos_negativos": 0.013536,
+        "recall_phishing": 0.986464
       }
     }
   },
-  "nota_sobre_la_tasa_de_falsos_negativos": "Se informa sin presuponer mejora respecto de la linea base, conforme al enfoque de caracterizacion adoptado en R2.2, y se calcula sobre el conjunto de prueba completo y no sobre las muestras de comparacion.",
+  "nota_sobre_la_tasa_de_falsos_negativos": "Se informa sin presuponer mejora respecto de la línea base, conforme al enfoque de caracterización adoptado en R2.2, y se calcula sobre el conjunto de prueba completo y no sobre las muestras de comparación.",
   "nota_sobre_la_referencia": "Se miden todas las arquitecturas. La referencia es la que el trabajo propone; no se selecciona ninguna por desempeno.",
   "procedencia": {
-    "generado_en": "2026-09-05T14:01:59.625867+00:00",
+    "generado_en": "2026-09-09T00:06:50.162537+00:00",
     "git": {
       "commit": "sin repositorio git en esta maquina",
       "arbol_con_cambios_sin_confirmar": false

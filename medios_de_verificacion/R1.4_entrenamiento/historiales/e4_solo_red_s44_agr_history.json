@@ -10,7 +10,7 @@
   },
   "fusion_type": "concat_late_fusion",
   "device": "cuda",
-  "generated_at": "2026-09-05T10:33:07.374106+00:00",
+  "generated_at": "2026-09-08T20:15:18.889125+00:00",
   "modality_gate": 0.0,
   "config": {
     "scaler_kind": "quantile",
