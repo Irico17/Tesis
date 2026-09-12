@@ -19,7 +19,8 @@
 | `e2_equivalencia_entre_mecanismos.json` | Pruebas de equivalencia entre mecanismos de fusión |
 | `mecanismos_de_fusion.png` | Desempeño por mecanismo de fusión |
 | `e5_validez_de_la_comparacion.json` | Qué parte de lo medido corresponde al fenómeno y qué a la procedencia |
-| `PREREGISTRO_DE_HIPOTESIS.md` | Hipótesis y umbrales fijados antes de ejecutar |
+| `e7_codificador_multilingue.json` | Contraste entre codificador monolingüe y multilingüe, por idioma |
+| `codificador_multilingue.png` | Desempeño de cada codificador sobre los subconjuntos por idioma |
 | `matrices_de_confusion/` | Matriz de confusión de cada uno de los doce modelos |
 | `curvas_roc_*.png` | Curvas ROC por familia y en la región de operación |
 

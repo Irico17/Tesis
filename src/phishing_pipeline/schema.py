@@ -55,8 +55,18 @@ CANONICAL_COLUMNS: list[str] = [
     "url_has_suspicious_tld",
     "url_domain_max_entropy",
     # Complejidad estructural del DOM (ver features/dom_stats.py). Sustituyen
-    # funcionalmente a has_form/has_iframe/has_javascript en la rama
-    # estructural del modelo, que resultaron constantes en todo el corpus.
+    # funcionalmente a has_form, has_iframe y has_javascript en la rama
+    # estructural del modelo.
+    #
+    # El motivo de la sustitucion CAMBIO y conviene dejarlo escrito. En el corpus
+    # de 110,152 correos esas tres columnas valian cero en todas las filas, porque
+    # las colecciones publicaban el HTML saneado, y una columna constante no aporta
+    # poder discriminativo. Medido sobre el corpus vigente de 44,100 ya NO son
+    # constantes: has_form aparece en 127 filas (0.288%), has_iframe en 82
+    # (0.186%) y has_javascript en 253 (0.574%), concentradas en las colecciones
+    # que conservan el cuerpo original. Siguen excluidas por su rareza extrema,
+    # que impediria estimar su efecto con fiabilidad y produciria atribuciones
+    # inestables en la fase de explicabilidad, y no por ser constantes.
     "total_nodos_dom",
     "profundidad_dom",
 ]

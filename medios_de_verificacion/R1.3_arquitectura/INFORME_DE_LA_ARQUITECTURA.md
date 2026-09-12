@@ -1,482 +1,476 @@
-# Transformers, atención cruzada y la arquitectura de esta tesis
+# La tesis explicada
 
-Documento de referencia técnica. La primera mitad explica el mecanismo general —qué es
-la atención, qué la distingue de la atención cruzada, cómo se compone un Transformer—.
-La segunda describe la arquitectura concreta de este trabajo, con las formas de los
-tensores, los ficheros donde vive cada pieza y las decisiones que la explican.
+Documento interno, escrito para el autor. No forma parte del entregable y no se
+cita en él. Su objeto es que puedas explicar tu propio trabajo sin recurrir al
+capítulo, entendiendo por qué cada pieza está donde está y qué sostiene de
+verdad cada cifra.
 
-Todo lo que aquí se afirma sobre el modelo se corresponde con el código en
-`src/phishing_model/`; los recuentos de parámetros están medidos, no estimados.
-
----
-
-## Parte I — El mecanismo
-
-### 1. El problema que la atención resuelve
-
-Antes de los Transformers, procesar una secuencia significaba recorrerla. Una red
-recurrente lee el token 1, actualiza un estado oculto, lee el token 2, lo actualiza otra
-vez, y así hasta el final. Eso impone dos costos:
-
-1. **Secuencialidad.** El token 500 no puede calcularse antes que el 499. No hay
-   paralelismo dentro de una secuencia.
-2. **Cuello de botella del estado.** Toda la información de los primeros 400 tokens tiene
-   que caber en un único vector de estado para influir en el 401. Cuanto más lejos, más
-   diluida llega.
-
-La atención sustituye el recorrido por una consulta directa: **cada posición mira a todas
-las demás a la vez** y decide, para cada una, cuánto le importa. No hay estado que
-acumular ni distancia que recorrer: el token 500 accede al token 1 con exactamente el
-mismo costo con que accede al 499.
-
-### 2. Consulta, clave y valor
-
-La operación central se formula con tres proyecciones de la entrada. Dada una secuencia
-de vectores `X` de forma `[n, d]`, se calculan
-
-```
-Q = X · W_Q      (consultas — "qué estoy buscando")
-K = X · W_K      (claves    — "qué ofrezco para ser encontrado")
-V = X · W_V      (valores   — "qué entrego si me eligen")
-```
-
-La analogía que mejor funciona es la de un índice. Cada posición emite una **consulta**
-que describe lo que necesita, y cada posición publica una **clave** que describe lo que
-tiene. El producto escalar `q_i · k_j` mide cuánto encaja lo que busca `i` con lo que
-ofrece `j`. Esos productos se normalizan a pesos que suman uno y se usan para promediar
-los **valores**:
-
-```
-Atención(Q, K, V) = softmax( Q · Kᵀ / √d_k ) · V
-```
-
-Tres detalles que importan:
-
-- **El `√d_k`.** Sin él, el producto escalar de dos vectores de dimensión grande tiene
-  varianza proporcional a `d_k`, el softmax se satura y el gradiente se anula. Dividir
-  por `√d_k` mantiene la varianza en torno a uno.
-- **La matriz `Q · Kᵀ` es de tamaño `[n, n]`.** De ahí el costo cuadrático en longitud de
-  secuencia, que es la razón práctica de truncar los correos a 512 sub-palabras.
-- **La salida tiene la misma forma que la entrada**, `[n, d]`. Cada posición sale
-  reescrita como una mezcla ponderada de todas, ella incluida.
-
-### 3. Múltiples cabezas
-
-Una sola atención impone un único criterio de relevancia por capa. La atención
-multicabeza divide `d` en `h` subespacios, ejecuta el mecanismo en cada uno con
-proyecciones propias y concatena:
-
-```
-cabeza_i = Atención(X·W_Q^i, X·W_K^i, X·W_V^i)     con W^i de dimensión d/h
-salida   = [cabeza_1 ; … ; cabeza_h] · W_O
-```
-
-Cada cabeza puede especializarse: una en concordancia sintáctica, otra en correferencia,
-otra en proximidad. No se les asigna ese papel, lo adquieren si resulta útil. En esta
-tesis, `n_heads = 8` sobre `d_model = 256`, de modo que cada cabeza opera en 32
-dimensiones.
-
-### 4. El bloque completo
-
-Un bloque Transformer no es solo atención. Es:
-
-```
-x = x + Atención(LayerNorm(x))          # subcapa 1: mezcla entre posiciones
-x = x + FFN(LayerNorm(x))               # subcapa 2: transforma cada posición por separado
-```
-
-donde `FFN(z) = W₂ · GELU(W₁ · z + b₁) + b₂` se aplica **idéntica e independientemente a
-cada posición**. La división de trabajo es nítida: la atención mueve información *entre*
-posiciones, la red densa la procesa *dentro* de cada una.
-
-Las dos piezas restantes no son adorno:
-
-- **La conexión residual** (`x + …`) crea un camino por el que el gradiente viaja sin
-  atenuarse hasta las capas bajas. Sin ella, apilar bloques deja de funcionar.
-- **La normalización por capa** estabiliza la escala de las activaciones.
-
-**Pre-normalización frente a post-normalización.** La formulación original de Vaswani et
-al. (2017) normaliza *después* de la subcapa (`x = LayerNorm(x + Atención(x))`). Esa
-variante exige un calentamiento cuidadoso de la tasa de aprendizaje: con
-post-normalización, la magnitud del gradiente que llega a las capas inferiores crece con
-la profundidad y el entrenamiento diverge con facilidad. La pre-normalización, que es lo
-que aquí se usa (`norm_first=True`), deja la trayectoria residual sin normalizar de
-extremo a extremo y es la formulación estándar desde entonces. En esta arquitectura
-importa por una razón adicional: las capas de fusión se inicializan al azar y se conectan
-a un codificador ya preentrenado, de modo que la estabilidad de los primeros pasos decide
-cuánto se degradan los pesos aprendidos.
-
-### 5. Posición
-
-La atención es **permutación-equivariante**: barajar la entrada baraja la salida sin
-cambiar nada más. Para un texto eso es inaceptable, así que se suma a cada token un
-vector que codifica su posición. DistilBERT usa posiciones aprendidas, una fila por índice
-hasta 512.
-
-Este punto tiene una consecuencia directa en la parte II: **los tokens de modalidad de
-esta tesis no llevan codificación posicional**, porque no forman una secuencia. Lo que
-necesitan es identidad, no orden, y esa identidad se les da de otro modo (§8).
-
-### 6. Auto-atención frente a atención cruzada
-
-Es la distinción que sostiene toda la arquitectura de este trabajo.
-
-**Auto-atención.** `Q`, `K` y `V` se derivan de la *misma* secuencia. Cada posición mira
-a sus compañeras. Es lo que hace un codificador BERT: contextualizar cada palabra con el
-resto de su frase.
-
-**Atención cruzada.** `Q` viene de una secuencia y `K`, `V` de **otra**:
-
-```
-CrossAttn(A, B) = softmax( (A·W_Q) · (B·W_K)ᵀ / √d_k ) · (B·W_V)
-```
-
-La secuencia `A` conserva su longitud y su papel —sigue siendo la que se está
-transformando— y `B` actúa como memoria que se consulta. La salida tiene la forma de `A`,
-no la de `B`.
-
-Tres propiedades que se aprovechan aquí:
-
-1. **Las dos secuencias pueden tener longitudes distintas.** 512 tokens de texto contra 19
-   de modalidad, sin necesidad de igualarlas.
-2. **La dirección es asimétrica.** Que el texto atienda a la modalidad no es lo mismo que
-   lo inverso. Aquí el texto es la consulta porque es la representación que alimenta al
-   clasificador: la modalidad la enriquece, no al revés.
-3. **La memoria admite máscara por elemento y por fila.** Si un correo no tiene metadatos
-   de red, se marcan esas posiciones como ausentes y quedan fuera del softmax. Esto es lo
-   que permite manejar modalidades faltantes sin imputar valores. Es también el punto
-   donde aparece el fallo numérico que la §12 explica: si *todas* las claves de una fila
-   quedan enmascaradas, el softmax opera sobre un conjunto vacío y produce `NaN`.
-
-El decodificador original de Vaswani et al. combina las dos: auto-atención sobre lo
-generado hasta el momento, y atención cruzada sobre la salida del codificador. Esta tesis
-usa **esa misma capa**, `nn.TransformerDecoderLayer`, pero no para generar secuencias sino
-como mecanismo de fusión entre modalidades.
+Corresponde a la ejecución del 8 y 9 de septiembre de 2026, que es la que el
+documento reporta. Todas las cifras que aparecen aquí salen de los informes bajo
+`medios_de_verificacion/`.
 
 ---
 
-## Parte II — La arquitectura de esta tesis
+## 1. De qué va esto, en una página
 
-### 7. Vista de conjunto
+Un correo de phishing no es solo texto. Trae, además, un cuerpo con marcado
+(HTML), unos enlaces, y unas cabeceras de tránsito que dicen por dónde pasó el
+mensaje y si superó las comprobaciones de autenticación (SPF, DKIM, DMARC). La
+mayor parte de los detectores publicados mira solo el texto.
 
-```
-correo
-  │
-  ├── cuerpo íntegro ──► tokenizador ──► DistilBERT ──► proyección
-  │                       (512 sub-palabras)   [B,512,768] ──► [B,512,256]
-  │                                                                │
-  ├── 6 características estructurales ──► StructuralTokenizer ──► [B,6,256]
-  │                                                                │
-  └── 9 continuas + 3 categóricas de red ──► NetworkTokenizer ──► [B,12,256]
-                                                                   │
-                                        [B,18,256] ── + centinela ──► [B,19,256]
-                                                                   │
-                                         ETAPA 1 · auto-atención entre modalidades
-                                                                   │
-                                                              [B,19,256]
-                                                                   │
-       texto [B,512,256] ══ ETAPA 2 · atención cruzada ═══════════►│
-              (Q = texto, K/V = modalidad)                         │
-                                                                   ▼
-                                     texto fusionado [B,512,256]
-                                                   │
-                          compuerta: texto + g·(fusionado − texto)
-                                                   │
-                             promediado enmascarado ──► [B,256]
-                                                   │
-                                             clasificador ──► [B,2]
-```
+La tesis construye un modelo que mira las tres cosas a la vez y decide con las
+tres. Eso es lo que quiere decir **multimodal**: tres fuentes de información
+distintas que se combinan dentro del mismo modelo.
 
-Ficheros: `encoders/text_encoder.py`, `encoders/structural_tokenizer.py`,
-`encoders/network_tokenizer.py`, `fusion/modality_encoder.py`,
-`fusion/cross_attention.py`, y el ensamblado en `model.py`.
+El problema de fondo, y lo que da sentido a toda la arquitectura, es que **esas
+tres fuentes casi nunca están todas presentes**. Un correo reenviado pierde las
+cabeceras. Un correo en texto plano no tiene marcado. Un modelo multimodal
+ingenuo, que concatena las tres representaciones y las pasa por una capa densa,
+se rompe cuando una falta: le llegan ceros y no sabe distinguir «esta modalidad
+vale cero» de «esta modalidad no existe».
 
-### 8. Cómo entran los datos no textuales
+**La contribución no es la multimodalidad. Es el mecanismo de fusión que sabe
+que una modalidad puede faltar.** Esto conviene tenerlo muy claro, porque es la
+respuesta a la primera pregunta que te van a hacer.
 
-Aquí está la decisión de diseño menos obvia y la que conviene poder defender.
+---
 
-Lo habitual con características tabulares es concatenarlas en un vector y pasarlo por una
-red densa. Eso produce **un** vector por correo, que la atención cruzada solo podría
-consultar como una única posición: no habría nada que atender, solo un valor que sumar.
+## 2. El corpus, y la verdad incómoda
 
-En su lugar se aplica la tokenización de FT-Transformer (Gorishniy et al., 2021): **cada
-característica se convierte en su propio token**. Para la característica `i` con valor
-escalar `x_i`:
+### Cómo está hecho
 
-```
-token_i = x_i · w_i + b_i + e_i
-```
+Ocho colecciones públicas, 44 100 correos, prevalencia 0.402.
 
-donde `w_i` y `b_i` son una proyección escalar→vector **propia de esa columna** —no una
-matriz compartida— y `e_i` es un vector de identidad, entrada `i` de una tabla de
-inmersión. El término de identidad es lo que permite al modelo distinguir «este token es
-`num_links`» de «este token es `word_count`» aunque ambos valgan lo mismo. Es el análogo
-funcional de la codificación posicional del texto, salvo que codifica *qué* característica
-es y no *dónde* está.
+| Colección | Formato | Mensajes | Clase |
+|---|---|---:|---|
+| Kaggle | tabular (CSV) | 17 409 | ambas |
+| Fedora | mbox | 13 158 | legítimo |
+| phishing_pot | .eml | 5 960 | phishing |
+| Nazario | mbox | 4 164 | phishing |
+| datacon2023 | tabular (JSONL) | 1 084 | phishing |
+| SpamAssassin | .eml | 812 | legítimo |
+| kernel_lists | mbox | 759 | legítimo |
+| CEAS_08 | tabular (JSONL) | 754 | legítimo |
 
-Las tres variables categóricas de autenticación (`spf_result`, `dkim_result`,
-`dmarc_result`) no se proyectan: cada una tiene su propia tabla de inmersión con **una
-categoría explícita para el valor ausente**. Que «no hay resultado SPF» sea una categoría
-aprendida y no un cero disfrazado importa: un cero es indistinguible de un resultado real
-que valga cero.
+De esos 44 100, **20 098 tienen las tres modalidades** (45.57 %) y 28 558 tienen
+texto y al menos una no textual (64.76 %). Eso es lo que exige el indicador de
+R1.1 y por eso el corpus se aceptó.
 
-Resultado: 6 tokens estructurales + 9 continuos de red + 3 categóricos = **18 tokens de
-modalidad**, cada uno de dimensión 256.
+### El submuestreo, que hay que declarar
 
-**Escalado.** Las continuas se transforman por cuantiles con los percentiles calculados
-**solo sobre la partición de entrenamiento** y aplicados a validación y prueba. Calcularlos
-sobre el conjunto completo sería una fuga: la partición de prueba influiría en cómo se
-representa a sí misma.
+Las colecciones disponibles aportan mucho más correo legítimo que fraudulento.
+Para que la prevalencia cayera en el rango comprometido (0.40 a 0.60), el
+pipeline **descarta 206 774 correos legítimos** al azar, con semilla fija. No se
+descarta ningún phishing ni se genera nada sintético.
 
-### 9. Etapa 1 — la fusión jerárquica
+Esto tiene dos consecuencias que el capítulo ahora declara y que tú debes
+declarar también si te preguntan:
 
-Los 18 tokens de modalidad pasan por un `nn.TransformerEncoderLayer`: **auto-atención
-entre ellos**, antes de que el texto los vea.
+1. El criterio de prevalencia **se cumple por construcción, no por medición**.
+   Acredita que el corpus se ensambló como se prometió; no dice nada sobre cómo
+   se reparten las clases en el correo real, donde el phishing es una fracción
+   mucho menor.
+2. Ninguna cifra absoluta del capítulo describe una pasarela de correo real. Por
+   eso se informa además la detección a tasas de falsos positivos del 1 % y del
+   0.1 %, que sí conserva sentido operativo.
 
-Esto es lo que hace la fusión *jerárquica* y no una simple concatenación. La estructura y
-la red se relacionan primero entre sí —`url_has_ip_link` puede modular lo que significa
-`spf_result`, `num_links` puede contextualizar `total_nodos_dom`— y solo el resultado de
-esa interacción entra en contacto con la dimensión semántica. Sin esta etapa, cada
-característica llegaría al texto aislada de las demás.
+Si te preguntan por qué equilibraste: porque el trabajo **compara arquitecturas
+entre sí**, y con una prevalencia muy baja la varianza de las métricas se
+concentra en unos pocos positivos, de modo que las diferencias entre modelos
+quedarían dominadas por el ruido de muestreo antes que por la arquitectura.
 
-### 10. Etapa 2 — la atención cruzada
+### La verdad incómoda: clase ≈ procedencia
 
-`nn.TransformerDecoderLayer` con:
+Esta es la limitación central de la tesis y conviene que la digas tú antes de que
+la diga el jurado.
 
-- `tgt` = la secuencia textual completa, `[B, 512, 256]` — **no** un vector agregado.
-- `memory` = los 19 tokens de modalidad ya auto-atendidos.
+**De las ocho colecciones, solo una (Kaggle) contiene mensajes de ambas clases.**
+Las otras siete son de clase única. Eso significa que, en la mayor parte del
+corpus, saber de dónde viene un mensaje equivale a saber su clase.
 
-Que el texto entre como secuencia completa y no agregado es el punto que hace que la
-atención cruzada sea real *a nivel de token*: cada sub-palabra del correo consulta por
-separado a los tokens de modalidad. La palabra «verificar» puede atender al resultado SPF
-mientras «adjunto» atiende al número de enlaces. Si el texto entrara agregado, habría una
-sola consulta para todo el correo y el mecanismo degeneraría en algo muy próximo a una
-suma ponderada.
+Se midió de tres maneras y las tres dan lo mismo:
 
-La capa aporta además su propia auto-atención sobre el texto antes de la cruzada, que es
-la estructura estándar del decodificador.
+- **Auditoría de características.** Para cada característica no textual se
+  compara cuánta información aporta sobre la clase (fijada la colección) contra
+  cuánta aporta sobre la colección. En las **quince**, la segunda aplasta a la
+  primera. El mayor cociente es 0.4338, y corresponde al uso de un dominio de
+  primer nivel infrecuente. Ninguna llega a 1.
+- **Suelo del confusor.** Un clasificador que solo ve **siete banderas de
+  disponibilidad** (si el mensaje trae estructura, red, SPF, DKIM, DMARC,
+  remitente, fecha), **sin mirar el contenido**, alcanza F1 0.6388 y ROC-AUC
+  **0.8378**. Ese es el suelo: cualquier modelo debe superarlo con holgura para
+  que su cifra signifique algo.
+- **Idioma.** El 16.37 % del corpus no está en inglés. En inglés la prevalencia
+  es 0.3959; en siete de los nueve idiomas restantes con muestra suficiente es
+  **≥ 0.95**, y en varios exactamente 1.0000. Estar escrito en otro idioma
+  equivale casi a ser phishing. El idioma informa 33 veces más sobre la colección
+  que sobre la clase.
 
-### 11. La compuerta modal
+La consecuencia práctica: **tu 0.9927 de F1 no es «detecta phishing el 99.27 % de
+las veces»**. Es «sobre este material, separa las clases con ese acierto, y una
+parte de esa separación es reconocimiento de procedencia». Decirlo tú te da
+credibilidad; que te lo saquen te la quita.
 
-La salida de la etapa 2 no reemplaza al texto: **se interpola con él**.
+---
+
+## 3. La arquitectura, pieza a pieza
+
+Todo lo que sigue está en `src/phishing_model/model.py`. La dimensión interna de
+trabajo es **d = 256** y la atención usa **8 cabezas**.
+
+### 3.1 Tres ramas de entrada
+
+**Rama de texto.** Un DistilBERT (`distilbert-base-uncased`) que se ajusta
+completo durante el entrenamiento. Lo importante: **no se toma el vector [CLS],
+se expone la secuencia completa de estados ocultos**. Eso es lo que permite que
+la atención cruzada apunte a palabras concretas y no a un resumen del mensaje.
+
+**Rama de estructura.** Seis características del árbol del documento (número de
+nodos, profundidad, enlaces, imágenes, si hay marcado, si hay enlaces por
+dirección numérica).
+
+**Rama de red.** Nueve características continuas más varias categóricas (los
+resultados de SPF, DKIM y DMARC).
+
+Las dos ramas no textuales no se aplanan en un vector: **cada característica se
+convierte en un token propio**, siguiendo la tokenización de datos tabulares de
+Gorishniy et al. (2021). Así la atención puede señalar *qué* característica pesó,
+que es lo que hará falta cuando llegue la fase de explicabilidad.
+
+### 3.2 La fusión, en dos etapas
+
+**Etapa 1, autoatención entre modalidades.** Los tokens de estructura y de red se
+miran entre sí. Aquí es donde el modelo puede aprender, por ejemplo, que «muchos
+enlaces» importa más cuando además «SPF falla».
+
+**Etapa 2, atención cruzada.** El texto actúa como **consulta** y el resultado de
+la etapa 1 como **clave y valor**. Es decir: el texto pregunta, las otras
+modalidades responden.
+
+### 3.3 La compuerta modal, que es la pieza clave
+
+La salida de la fusión no es lo que devuelve la atención cruzada. Es esto:
 
 ```
 fusionada = texto + tanh(g) · (atención_cruzada(texto, memoria) − texto)
 ```
 
-`g` es un único parámetro aprendido. Cuando `tanh(g) = 0`, el modelo es exactamente el de
-solo texto; cuando vale 1, es la salida cruzada pura.
+donde `g` es un parámetro aprendido.
 
-Esto no es una florritura de diseño, es **instrumentación**. El valor de `tanh(g)` es una
-medida directa y comparable entre pliegues de cuánto emplea el modelo las modalidades no
-textuales: evidencia cuantitativa sobre la pregunta central de la tesis, en lugar de una
-inferencia indirecta a partir de métricas agregadas.
+Léelo despacio, porque es la pieza que más preguntas genera:
 
-**Sobre la inicialización.** Flamingo (Alayrac et al., 2022), de donde procede la idea,
-inicializa la compuerta en cero, de modo que el modelo arranca siendo exactamente el
-textual. Aquí eso **no funciona**, y se comprobó antes de descartarlo: el gradiente que
-llega a la atención cruzada es proporcional a `tanh(g)`, luego con `g = 0` las capas de
-fusión reciben gradiente exactamente nulo en el primer paso. La compuerta sí recibe
-gradiente (0.0184 medido), pero solo puede evaluar una atención que sigue en su
-inicialización aleatoria y que, por serlo, no aporta señal: tras 30 pasos la compuerta se
-había movido a −0.000276, es decir, se cerraba en lugar de abrirse. Flamingo tolera ese
-arranque frío porque entrena con órdenes de magnitud más pasos; aquí el presupuesto es de
-tres épocas. Se inicializa por tanto en 0.5, punto medio que deja a la compuerta libre de
-crecer o decrecer y hace que su valor final sea informativo por no estar sesgado por el
-arranque.
+- Si `tanh(g) = 0`, la fusión devuelve el texto tal cual. El modelo se comporta
+  como un unimodal de texto.
+- Si `tanh(g) = 1`, devuelve la atención cruzada completa.
+- En medio, interpola.
 
-**Lo que midió.** La compuerta termina en 0.5005 de media sobre las nueve corridas, con
-recorrido de 0.4995 a 0.5014. Teniendo libertad para aumentar el peso de las modalidades,
-el entrenamiento la dejó donde estaba.
+**El texto es la base residual.** Las modalidades no textuales no aportan una
+representación propia: aportan una *corrección* sobre la del texto. Y como `g`
+es un único escalar aprendido, `tanh(g)` es una **medida directa de cuánto usa el
+modelo las modalidades no textuales**, comparable entre corridas.
 
-### 12. Qué ocurre cuando faltan ramas
+De aquí sale el tercer hallazgo del capítulo: **la arquitectura está anclada al
+texto por diseño**. Si anulas el texto por completo, no queda camino desde las
+otras modalidades hasta la decisión y el desempeño cae al de un clasificador
+trivial. Eso no es un defecto: la investigación se define sobre correo
+electrónico, que siempre tiene cuerpo. Pero delimita el sobre operativo, y por
+eso está en las limitaciones.
 
-Es la parte que el asesor pidió explícitamente y la que más consecuencias tiene. Opera en
-tres niveles.
+### 3.4 El centinela, que es una salvaguarda numérica
 
-**(a) Máscara de disponibilidad.** Cada correo trae dos banderas, `has_structure` y
-`has_network`. La bandera se replica a lo largo de todos los tokens de su rama, de modo
-que una rama ausente se excluye **en bloque** del cálculo de atención. No se imputa nada:
-las posiciones sencillamente no participan en el softmax, y su peso es cero por
-construcción y no por aprendizaje.
+Si un mensaje no trae ninguna modalidad no textual, la memoria de atención queda
+vacía. Un softmax sobre un conjunto vacío de claves devuelve **NaN** y el
+entrenamiento revienta.
 
-Se descartaron expresamente las alternativas:
+La solución: un **token centinela** aprendido, que se antepone siempre a la
+memoria y nunca se enmascara. Así ninguna fila puede quedarse sin claves.
 
-| Alternativa | Por qué no |
+Hay un detalle que conviene que sepas porque habla bien del trabajo. La versión
+anterior resolvía lo mismo desenmascarando la posición 0 de la memoria. Esa
+posición es el token de la primera característica estructural, que es un vector
+**con contenido aprendido**, no un relleno neutro. El modelo atendía a un token
+con contenido para filas que por definición no tenían contenido que mostrar. En
+este corpus no transportaba información, porque esa primera característica es
+`has_html` y la disponibilidad estructural se define justamente como
+`has_html == 1`, de modo que su valor era constante en las filas afectadas. Pero
+**la corrección dependía de esa coincidencia**: reordenar las columnas la
+convertía en una fuga real y silenciosa. Con el centinela, el aislamiento se
+sostiene por construcción.
+
+Si te preguntan «¿el centinela mejora el desempeño?»: **no, y se midió**. Con
+todas las modalidades presentes, centinela y descarte (0.9980), descarte sin
+centinela (0.9975) y mezcla de expertos (0.9970) son equivalentes dentro del
+margen de 0.005. El centinela es una salvaguarda numérica, no una propuesta
+arquitectónica.
+
+### 3.5 Dropout de modalidad
+
+Durante el entrenamiento, cada rama disponible se suprime con probabilidad 0.15.
+Es lo que enseña al modelo a operar con modalidades ausentes, en lugar de
+descubrirlo en despliegue.
+
+Hay una alternativa implementada, `randomize`, que sortea el patrón de
+disponibilidad de la distribución marginal del corpus. Se midió: la información
+mutua entre el patrón de disponibilidad y la etiqueta (el atajo) baja de 0.0790
+nats a 0.0235 con aleatorización, frente a 0.0602 con descarte independiente. **La
+aleatorización reduce el atajo un 70 %, pero no lo elimina**, porque el patrón
+sorteado se intersecta con la disponibilidad real y no puede añadirse una
+modalidad que la fila no tiene.
+
+### 3.6 Las variantes que se comparan
+
+Seis arquitecturas, entrenadas todas bajo condiciones idénticas:
+
+| Variante | Qué hace |
 |---|---|
-| Imputar valores | Introduce observaciones que el modelo no puede distinguir de las reales, y atribuye evidencia a metadatos inexistentes. Inaceptable en un sistema que debe explicar sus decisiones. |
-| Usar solo registros completos | El subconjunto con las tres modalidades tenía prevalencia 0.979 antes de incorporar los archivos de listas de discusión, es decir, era casi todo phishing e inservible para entrenar un clasificador binario. Incorporar esas colecciones es lo que lo equilibra, pero el corpus completo sigue conteniendo mensajes sin estructura ni red y descartarlos perdería el 54% de las muestras. |
-| Un modelo por subconjunto | Multiplica los modelos a mantener y no produce representación compartida, que es justamente el objeto de la arquitectura. |
+| Atención cruzada por token | La propuesta: el texto consulta token a token |
+| Atención cruzada por modalidad | Igual, pero el texto se resume antes en un vector |
+| Mezcla de expertos | Cuatro expertos con una compuerta que pondera según las banderas |
+| Fusor MLP | Concatenación y capa densa, sin atención |
+| Concatenación tardía | Se concatenan las decisiones, no las representaciones |
+| Unimodal de texto | Solo la rama textual |
 
-**(b) Token centinela.** Si una fila carece de *toda* modalidad no textual, la memoria
-queda enteramente enmascarada y el softmax opera sobre un conjunto vacío: `NaN`. Se
-resuelve anteponiendo un vector aprendido de «sin modalidad» que **acompaña siempre a la
-memoria y nunca se enmascara**, de modo que la memoria nunca está vacía.
-
-Merece la pena registrar qué sustituyó, porque es un fallo instructivo. La salvaguarda
-anterior desenmascaraba la posición 0 de la memoria. Pero esa posición es, en la variante
-a nivel de token, el token de la primera característica estructural: un vector con
-contenido aprendido —norma L2 de 16.17 medida incluso con entrada nula—, no un relleno
-neutro. El modelo atendía así a un token con contenido para filas que, por definición, no
-tienen contenido que mostrar. La fuga no transportaba información en el corpus vigente,
-porque la primera característica estructural es `has_html` y la disponibilidad estructural
-se define precisamente como `has_html == 1`, de modo que su valor era constante en las
-filas afectadas. Pero la propiedad dependía de ese detalle: reordenar las columnas o
-cambiar la definición de disponibilidad la habría convertido en una fuga real y
-silenciosa. Con el centinela el aislamiento se sostiene por construcción y no por
-coincidencia, y una prueba automatizada verifica que alterar las características de una
-rama declarada ausente no modifica la predicción.
-
-**(c) Aleatorización del patrón durante el entrenamiento.** Este es el nivel que responde
-al riesgo de fondo. Si la disponibilidad de modalidad correlaciona con la etiqueta —y en
-correo público correlaciona—, el modelo puede aprender a leer *la presencia del campo* en
-lugar de su contenido, que es aprender la procedencia del dato y no el fenómeno.
-
-Se implementaron dos formulaciones:
-
-- **Descarte independiente.** Cada rama disponible se suprime con probabilidad fija.
-- **Aleatorización del patrón** (la que se usa). Para cada correo se sortea un patrón
-  completo de disponibilidad extraído de la distribución marginal del corpus, **con
-  independencia de su etiqueta**.
-
-La diferencia no es de intensidad sino de naturaleza. El descarte suprime ramas, pero deja
-intacta la asociación entre patrón y etiqueta en las filas que no suprime: con
-probabilidad 0.15, el 85% de las observaciones conserva su patrón original y con él su
-correlación con la clase. Se comprobó: elevar la probabilidad a 0.30, 0.45 y 0.60 no
-mejora nada y degrada el área bajo la curva, porque destruye señal útil sin romper la
-asociación. **Descartar no equivale a aleatorizar.**
-
-Un matiz que conviene declarar: el mecanismo **no anula** la dependencia. El patrón
-sorteado no puede *añadir* una modalidad que la fila no posee —no hay contenido que
-mostrar—, de modo que la máscara resultante se intersecta con la disponibilidad natural, y
-esa intersección deja pasar la parte de la dependencia que proviene de la disponibilidad
-real. La reducción es del 70%, no la eliminación.
-
-En inferencia ambos mecanismos quedan desactivados: las máscaras naturales se devuelven
-sin modificar.
-
-### 13. ¿Se está reentrenando DistilBERT?
-
-**Sí. Ajuste fino completo, de principio a fin, en cada paso.** `freeze_text_encoder =
-False` y ningún parámetro tiene `requires_grad = False`.
-
-Las cifras, medidas sobre el modelo instanciado:
-
-| Componente | Parámetros | Cuota |
-|---|---:|---:|
-| DistilBERT | 66,362,880 | 97.7% |
-| Proyección 768→256 | 196,864 | 0.29% |
-| Tokenizador estructural | 4,608 | 0.007% |
-| Tokenizador de red | 12,800 | 0.019% |
-| Etapa 1 (auto-atención modal) | 527,104 | 0.78% |
-| Etapa 2 (atención cruzada) | 790,784 | 1.16% |
-| Clasificador | 1,026 | 0.002% |
-| **Total** | **67,896,323** | 100% |
-
-**Toda la maquinaria de fusión que esta tesis propone son 1,533,443 parámetros: el 2.3%
-del modelo.** La variante de solo texto tiene 66,560,770 parámetros; la multimodal,
-67,896,323. Difieren en un 2%.
-
-Ese dato no es anecdótico: es una de las claves para leer el resultado del Capítulo 4. Que
-dos modelos que comparten el 97.7% de sus pesos y el mismo régimen de optimización
-alcancen 0.9003 y 0.9004 de F1 no debería sorprender tanto como sorprende a primera vista.
-La pregunta que el experimento responde no es si el 2% adicional puede aprender algo, sino
-si tiene algo que aprender en estos datos —y la respuesta medida es que no.
-
-**Tasas de aprendizaje diferenciadas.** El codificador se ajusta a `2e-5` y todo lo demás
-a `1e-4`, cinco veces más. La razón es que DistilBERT llega con representaciones útiles ya
-formadas y las capas nuevas llegan con ruido: aplicar a ambos la misma tasa alta destruiría
-lo primero antes de que lo segundo aprendiera nada. El calentamiento lineal durante el
-primer 10% de los pasos atiende el mismo riesgo desde otro ángulo, evitando que los
-gradientes de gran magnitud de las capas aleatorias lleguen al codificador en los primeros
-pasos.
-
-**Exenciones del decaimiento de peso.** Los sesgos y los parámetros de normalización por
-capa quedan exentos. El decaimiento penaliza la norma para limitar la capacidad efectiva,
-razonamiento válido para las matrices de pesos pero no para estos: la escala y el
-desplazamiento de una normalización son parámetros de calibración cuyo valor de reposo es
-1 y 0, de modo que empujarlos hacia cero altera la normalización en lugar de regularizarla.
-Afecta a 84 de los 147 tensores entrenables.
-
-**Punto de partida.** `distilbert-base-uncased`, seis capas, 768 dimensiones ocultas, 12
-cabezas, 66M de parámetros: una destilación de BERT-base que conserva en torno al 97% de
-su desempeño con el 60% de su tamaño. La elección responde a la restricción de cómputo
-declarada en la viabilidad del proyecto.
-
-### 14. Las cuatro variantes
-
-`fusion_type` selecciona entre cuatro configuraciones que comparten todo lo demás. Existen
-porque cada una refuta una explicación alternativa concreta del resultado.
-
-| Variante | Qué hace | Qué explicación descarta |
-|---|---|---|
-| `cross_attention_token_level` | La propuesta: etapas 1 y 2 completas | — |
-| `cross_attention_modality_level` | Cada rama se colapsa a 1 token antes de la cruzada; sin etapa 1 | Que la riqueza de tokens individuales sea lo que aporta |
-| `concat_late_fusion` | Las tres ramas se agregan por separado y se concatenan; sin atención ni compuerta | Que el mecanismo de fusión importe frente a la mera disponibilidad de las modalidades |
-| `text_only` | Solo la rama textual | Que las modalidades no textuales aporten algo |
-
-`concat_late_fusion` merece una nota. No es una variante menor de la atención cruzada: es
-arquitectónicamente distinta, con una cabeza de clasificación de entrada triple (`3·256`)
-y **vectores aprendidos de ausencia** en lugar del vector nulo que devolvería el promediado
-enmascarado —un vector de ceros sería indistinguible de una rama cuyas características son
-legítimamente nulas—. Que dos maneras tan distintas de incorporar las modalidades lleguen
-al mismo resultado que no incorporarlas es lo que descarta que la atención cruzada
-estuviese mal implementada o mal parametrizada.
-
-### 15. Hiperparámetros
-
-| Parámetro | Valor | Nota |
-|---|---|---|
-| `d_model` | 256 | Dimensión interna común a todas las ramas |
-| `n_heads` | 8 | 32 dimensiones por cabeza |
-| `n_fusion_layers` | 1 | Una capa en cada etapa |
-| `dim_feedforward` | 512 | 2× `d_model` |
-| `dropout` | 0.1 | |
-| `norm_first` | `True` | Pre-normalización (§4) |
-| `fusion_activation` | `gelu` | Coincide con DistilBERT; el defecto de PyTorch es ReLU |
-| Longitud máxima | 512 sub-palabras | Límite posicional de DistilBERT |
-| `backbone_lr` / `head_lr` | 2e-5 / 1e-4 | §13 |
-| `warmup_ratio` | 0.1 | Calentamiento lineal, luego decaimiento a cero |
-| `max_grad_norm` | 1.0 | Recorte de gradiente |
-| Épocas / lote | 3 / 32 | |
-| Pérdida | Entropía cruzada sin pesos | Decisión justificada con evidencia; ver §16 |
-| Selección del punto de control | Área ROC de validación | Ver §16 |
-
-### 16. Dos decisiones de entrenamiento que conviene poder defender
-
-**Por qué no se pondera por clase.** El indicador de R1.4 exige decidirlo con evidencia y
-no a priori. La clase minoritaria representa entre el 36.3% y el 40.8% de cada pliegue
-—desbalance leve— y su exhaustividad no se desploma en ninguno: 0.9896, 0.9114 y 0.7484.
-No se observa el colapso hacia la clase mayoritaria que justificaría intervenir. Tanto la
-ponderación como la pérdida focal están implementadas y disponibles: la decisión es de
-evidencia, no de capacidad.
-
-**Por qué el criterio de selección es el área ROC y no la pérdida.** En las nueve corridas,
-la pérdida de validación deja de bajar tras la primera o segunda época mientras la de
-entrenamiento sigue descendiendo —firma clásica del sobreajuste—. Pero el área bajo la
-curva de validación **sigue mejorando** en ese mismo tramo. Ambas cosas son compatibles: la
-entropía cruzada penaliza la confianza mal calibrada, de modo que un modelo que ordena
-mejor los ejemplos puede empeorar en pérdida si además se vuelve más confiado. Lo que se
-degrada es la calibración, no la discriminación. Seleccionar por pérdida descartaría un
-modelo que ordena mejor.
+Más cuatro líneas base clásicas: B1 (TF-IDF con regresión logística), B3 (bosque
+aleatorio sobre estructura), B4 (bosque aleatorio sobre red) y B5 (fusión clásica
+de las tres).
 
 ---
 
-## Referencias
+## 4. Qué dicen los experimentos, en cristiano
 
-- Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł.,
-  & Polosukhin, I. (2017). Attention is all you need. *Advances in Neural Information
-  Processing Systems*, 30, 5998–6008.
-- Sanh, V., Debut, L., Chaumond, J., & Wolf, T. (2019). DistilBERT, a distilled version of
-  BERT: smaller, faster, cheaper and lighter. *arXiv:1910.01108*.
-- Gorishniy, Y., Rubachev, I., Khrulkov, V., & Babenko, A. (2021). Revisiting deep learning
-  models for tabular data. *Advances in Neural Information Processing Systems*, 34,
-  18932–18943.
-- Alayrac, J.-B., Donahue, J., Luc, P., Miech, A., Barr, I., Hasson, Y., … Simonyan, K.
-  (2022). Flamingo: a visual language model for few-shot learning. *Advances in Neural
-  Information Processing Systems*, 35, 23716–23736.
-- Xiong, R., Yang, Y., He, D., Zheng, K., Zheng, S., Xing, C., … Liu, T.-Y. (2020). On
-  layer normalization in the Transformer architecture. *Proceedings of the 37th
-  International Conference on Machine Learning*, 10524–10533.
-- Loshchilov, I., & Hutter, F. (2019). Decoupled weight decay regularization.
-  *International Conference on Learning Representations*.
+Ocho experimentos, cada uno con una pregunta. Van en una cola secuencial porque
+comparten GPU y los tiempos deben ser comparables.
+
+### E0 — ¿Sirve el corpus?
+
+Sí, en los cinco criterios. Ya está comentado arriba, incluido el matiz del
+submuestreo.
+
+### E1 — ¿Aporta la multimodalidad?
+
+**Aquí está el resultado que más te van a discutir, y tiene dos caras.**
+
+Sobre el **subconjunto trimodal** (2 011 mensajes de prueba), la propuesta supera
+al unimodal de texto por 0.0012 de F1, con p = 0.6250. No significativo.
+
+Pero mira el dato que importa: esa prueba se calcula sobre **4 discordancias**.
+Cuatro mensajes en los que los dos modelos difieren. Con cuatro casos ninguna
+prueba podría alcanzar significancia, exista o no una diferencia real. **Lo que
+se observa no es que sean equivalentes: es que este subconjunto no permite
+distinguirlos.**
+
+Sobre el **corpus completo** (4 411 mensajes de prueba), la misma comparación da
+una diferencia de 0.0037, **p = 0.0044**, sobre **19 discordancias** (16 aciertos
+exclusivos de la propuesta frente a 3 del unimodal), con intervalo de confianza
+[0.0014; 0.0060], **por encima** del margen de indiferencia de 0.005.
+
+¿Por qué la diferencia? Dos motivos, y los dos cuentan:
+
+1. **Resolución.** El trimodal aporta menos de la cuarta parte de las
+   discordancias.
+2. **Composición.** En el trimodal, las tres modalidades están presentes en todos
+   los mensajes. En el corpus completo faltan de forma desigual, **que es
+   exactamente la situación que la fusión propuesta gestiona**.
+
+Y la magnitud es tres veces mayor sobre el corpus completo, así que no es solo
+cuestión de tener más mensajes para medir.
+
+**La frase que debes tener preparada:** «La fusión no obtiene ventaja donde todas
+las modalidades están presentes y el texto ya resuelve la tarea, porque ahí no
+hay margen donde demostrarla. Sí la obtiene sobre el conjunto que describe el
+problema, donde las modalidades faltan de forma desigual.»
+
+### E2 — ¿Importa el mecanismo de fusión?
+
+No. Los cuatro mecanismos contrastados frente al fusor MLP resultan
+**equivalentes** dentro del margen de 0.005.
+
+La lectura correcta no es que la fusión dé igual, sino que **sobre un conjunto
+donde el texto ya resuelve la tarea con altísimo acierto, ningún mecanismo
+dispone de margen donde demostrar superioridad**. La consecuencia práctica: en
+condiciones parecidas, conviene el mecanismo más simple.
+
+### E3 — ¿Tolera que falten entradas?
+
+Sí, para las no textuales. Ocultando modalidades solo en evaluación:
+
+| Condición | F1 | Caída relativa |
+|---|---:|---:|
+| Las tres | 0.9980 | 0.0000 |
+| Sin estructura | 0.9980 | 0.0000 |
+| Sin red | 0.9943 | 0.0037 |
+| Solo texto | 0.9931 | 0.0049 |
+
+Menos de medio punto porcentual en el peor caso. **Esto es lo que la arquitectura
+existe para lograr.**
+
+Ante manipulación adversaria del texto (homóglifos, caracteres de ancho cero,
+entidades HTML, truncamiento) la caída **sí** es sustancial, y **no menor que la
+de la fusión clásica**. Eso es un resultado negativo y el capítulo lo informa como
+tal: la robustez adversaria no es una fortaleza del trabajo.
+
+### E4 — ¿Generaliza?
+
+Sobre correo no visto de las mismas colecciones, sí. Y es estable: tres
+reparticiones independientes del corpus dan una desviación de **0.0008** en F1.
+
+La curva de aprendizaje (25 %, 50 %, 75 %, 100 % → 0.9870, 0.9907, 0.9901,
+0.9932) crece de forma amortiguada y no muestra sobreajuste. **Cuidado**: no
+digas que «ha saturado». El valor más alto es el último y con cuatro puntos y una
+corrida por punto no se puede afirmar saturación. El capítulo ya se corrigió en
+esto.
+
+El cuadro comparativo completo, que es la tabla que caracteriza al sistema:
+
+| Modelo | F1 | ROC-AUC | TPR@FPR 1 % | TPR@FPR 0.1 % |
+|---|---:|---:|---:|---:|
+| Fusor MLP | 0.9931 | 0.9996 | 0.9961 | 0.9464 |
+| **Atención cruzada por token (propuesta)** | **0.9927** | 0.9995 | 0.9966 | 0.9532 |
+| Mezcla de expertos | 0.9923 | 0.9996 | 0.9961 | **0.9695** |
+| Atención cruzada por modalidad | 0.9916 | 0.9996 | 0.9972 | 0.9560 |
+| Concatenación tardía | 0.9915 | 0.9990 | 0.9972 | 0.8866 |
+| Unimodal de texto | 0.9895 | 0.9992 | 0.9944 | 0.9233 |
+| B5 fusión clásica | 0.9823 | 0.9985 | 0.9791 | 0.7625 |
+| B1 TF-IDF + regresión logística | 0.9815 | 0.9982 | 0.9780 | 0.6588 |
+| B4 bosque sobre red | 0.7280 | 0.9001 | 0.5544 | 0.4963 |
+| B3 bosque sobre estructura | 0.6949 | 0.8473 | 0.4687 | 0.2521 |
+| Unimodal de estructura | 0.6050 | 0.7261 | 0.2459 | 0.0519 |
+| Unimodal de red | 0.6010 | 0.8164 | 0.4337 | 0.2989 |
+
+**Mira la última columna, no la primera.** Al umbral de 0.5, todos los modelos
+con texto parecen iguales. Al exigir una tasa de falsos positivos del 0.1 %, que
+es la condición de una pasarela real, se abren: los neuronales con texto van de
+0.8866 a 0.9695, los clásicos con texto de 0.6588 a 0.7625, y los que no reciben
+texto no pasan de 0.4963.
+
+**Sé honesto con esto:** tu modelo obtiene 0.9532 en ese punto, que **no es el
+más alto**. El máximo, 0.9695, es de la mezcla de expertos. La lectura
+transferible es que informar solo F1 en una tarea saturada oculta esa distancia,
+no que tu arquitectura domine.
+
+### E5 — ¿Cuánto es fenómeno y cuánto procedencia?
+
+Ya está en la sección 2. Es la sección que califica a todas las demás.
+
+Un detalle sobre el diagnóstico por colección: se deja fuera cada colección
+entera y se evalúa sobre ella. **Siete de las ocho no son evaluables**, porque
+contienen una sola clase. La única evaluable, Kaggle, da F1 **0.7448** frente al
+**0.9815** que el mismo tipo de clasificador obtiene sobre la partición agrupada.
+
+Ojo: ese diagnóstico usa una **sonda ligera** (TF-IDF con regresión logística),
+no el modelo propuesto, porque hay que reentrenar una vez por colección. Por eso
+se compara contra B1 y no contra tu 0.9927. El capítulo tenía mal esta
+comparación y se corrigió.
+
+### E6 — ¿Es desplegable?
+
+Sí. La propuesta, exportada a ONNX y cuantizada a enteros de 8 bits:
+
+- **73.6 ms** de latencia media por mensaje, **78.6 ms** en el percentil 95, sobre
+  CPU y sin agrupar mensajes.
+- **66.0 MB** frente a los 259.3 MB de la versión en coma flotante (−74.5 %).
+- Aceleración de 1.45× en la mediana.
+- **Acuerdo total** entre ambas versiones, salvo el fusor MLP (0.9967).
+
+Dos matices que ahora el capítulo declara: la latencia se mide sobre **50
+mensajes**, de modo que el percentil 95 es poco estable; y los modelos exportados
+proceden de **una sola semilla (42)**, mientras que las métricas de R2.2 son
+medias de tres.
+
+### E7 — ¿Convendría un codificador multilingüe?
+
+No con este material. Se comparó DistilBERT contra `distilbert-base-multilingual-cased`,
+dos arquitecturas × dos codificadores × tres semillas, evaluando por separado los
+3 932 mensajes en inglés y los 430 que no lo están.
+
+**Ninguno de los seis contrastes alcanza significancia.** Sobre el subconjunto en
+inglés, que es donde una ventaja sería interpretable, la diferencia es +0.0019 y
+la prueba no la distingue del azar.
+
+Y hay un hallazgo colateral buenísimo: **el codificador monolingüe obtiene F1
+0.9961 sobre mensajes que no puede ni segmentar** (chino, vietnamita). Un modelo
+que no puede leer un mensaje no debería clasificarlo casi perfecto. Que lo
+consiga demuestra que **no está leyendo el contenido, sino reconociendo que el
+texto le resulta ajeno** — y en este corpus, resultar ajeno equivale a ser
+phishing. Es la coincidencia entre clase y procedencia, vista por otra vía.
+
+---
+
+## 5. Los tres hallazgos, y por qué son uno solo
+
+El capítulo declara tres hallazgos no previstos:
+
+1. **El mecanismo de fusión no determina el desempeño.** Todos equivalentes.
+2. **El punto de operación separa a los modelos por su representación del texto**,
+   no por cómo fusionan.
+3. **La arquitectura está anclada al texto por diseño.**
+
+Y la discusión los une: **los tres tienen la misma causa**, que es que la clase
+coincide en gran medida con la procedencia. No son tres limitaciones
+independientes, sino una sola observada por tres caminos.
+
+---
+
+## 6. Qué puedes afirmar y qué no
+
+**Puedes afirmar:**
+
+- Que construiste un corpus multimodal de 44 100 correos con trazabilidad
+  completa y cobertura declarada.
+- Que la arquitectura tolera la ausencia de modalidades con una caída inferior al
+  0.5 %, y que eso está medido.
+- Que sobre el corpus completo la propuesta supera al unimodal de texto de forma
+  significativa (p = 0.0044) y fuera del margen de indiferencia.
+- Que mediste la validez de tu propia evaluación y encontraste que una parte
+  sustancial de lo medido es procedencia, no fenómeno. **Esto es lo más valioso
+  del trabajo**, aunque no lo parezca.
+- Que el sistema es desplegable con latencia y tamaño medidos.
+
+**No puedes afirmar:**
+
+- Que el sistema detecte phishing al 99 % en producción.
+- Que la atención cruzada sea superior a otros mecanismos de fusión.
+- Que el modelo generalice a colecciones no vistas: no es medible con este
+  material y el capítulo lo declara.
+- Que haya saturado la curva de datos.
+- Que sea más robusto que la fusión clásica ante ataques adversarios.
+
+---
+
+## 7. Lo que falta
+
+Los tres resultados del tercer objetivo, R3.1 a R3.3, que son la explicabilidad,
+**no se reportan**: están planificados para la fase siguiente.
+
+Conviene que sepas decir esto: la arquitectura **ya expone los pesos de atención
+cruzada** entre el texto y las modalidades no textuales, de modo que el candidato
+intrínseco que R3.1 debe evaluar está disponible sin tocar el modelo. Esa
+disponibilidad es un resultado del trabajo ya hecho, aunque su evaluación
+comparativa corresponda a después.
+
+---
+
+## 8. Dónde está cada cosa
+
+| Qué | Dónde |
+|---|---|
+| El modelo | `src/phishing_model/model.py` |
+| Los hiperparámetros | `src/phishing_model/config.py` |
+| Construcción del corpus | `src/phishing_pipeline/corpus_real.py` |
+| Descarga de correo crudo | `src/phishing_pipeline/downloaders/` |
+| Los ocho experimentos | `scripts/experimentos/e0_*.py` … `e7_*.py` |
+| La cola que los ejecuta | `scripts/experimentos/cola_servidor.sh` |
+| Figuras de los medios de verificación | `scripts/figuras/generar_figuras_mv.py` |
+| La evidencia, por resultado | `medios_de_verificacion/R1.1_*` … `R2.3_*` |
+
+Para reconstruirlo todo desde cero:
+
+```bash
+python -m phishing_pipeline.downloaders.correo_real
+python -m phishing_pipeline.downloaders.listas_correo
+python -m phishing_pipeline.corpus_real
+bash scripts/experimentos/cola_servidor.sh
+```
+
+La cola tarda unas diecinueve horas en una RTX A5500 y, al terminar sin fallos,
+consolida los medios de verificación y emite las figuras por su cuenta.

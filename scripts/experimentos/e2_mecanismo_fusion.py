@@ -168,7 +168,8 @@ def main() -> int:
             "E2. ¿Importa el mecanismo de fusión?\nF1 con las mismas ramas y la "
             "misma partición, media de tres semillas",
             etiquetas, medias, desv,
-            resaltar=VARIANTES.index(BASE_DE_COMPARACION))
+            resaltar=VARIANTES.index(BASE_DE_COMPARACION),
+            etiqueta_resaltada="línea base de comparación")
 
     emitir("e2", informe, figura, corpus=corpus, particion=particion)
     orden = sorted(VARIANTES, key=lambda v: -resultados[v]["f1"])

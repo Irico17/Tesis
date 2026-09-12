@@ -9,7 +9,7 @@ Una carpeta por resultado comprometido en la matriz de objetivos. Cada una conti
 | R1.3 | [`R1.3_arquitectura/`](R1.3_arquitectura/) | 5 de 5 | completo |
 | R1.4 | [`R1.4_entrenamiento/`](R1.4_entrenamiento/) | 3 de 3 | completo |
 | R2.1 | [`R2.1_lineas_base/`](R2.1_lineas_base/) | 2 de 2 | completo |
-| R2.2 | [`R2.2_comparacion/`](R2.2_comparacion/) | 8 de 8 | completo |
+| R2.2 | [`R2.2_comparacion/`](R2.2_comparacion/) | 9 de 9 | completo |
 | R2.3 | [`R2.3_modelo_final/`](R2.3_modelo_final/) | 3 de 3 | completo |
 | R3.1 | — | — | pendiente, fase siguiente |
 | R3.2 | — | — | pendiente, fase siguiente |

@@ -13,8 +13,9 @@ alineado suplantando la marca que imita. Afirmar más que eso sería sobrevender
 supuesto.
 
 **Por qué esto no fuerza el resultado.** Los operadores y las intensidades se
-fijan en `doc/PREREGISTRO_HIPOTESIS.md` ANTES de ejecutar; se aplican idénticos a
-todos los modelos, sin reentrenar a ninguno; y se informa la rejilla completa,
+declaran en este modulo ANTES de ejecutar y no se retocan despues de ver las
+cifras; se aplican identicos a todos los modelos, sin reentrenar a ninguno; y se
+informa la rejilla completa,
 incluidas las celdas donde el modelo propuesto pierde. Elegir después el operador
 que más separa sería exactamente la manipulación que esto evita.
 

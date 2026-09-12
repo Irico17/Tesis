@@ -1,0 +1,81 @@
+{
+  "que_es": "Ventana temporal de la ejecución completa de la cola de experimentos, reconstruida desde su propio registro.",
+  "inicio": "2026-09-08 00:29:32",
+  "fin": "2026-09-09 08:01:34",
+  "duracion": "31 h 32 min",
+  "huso": "hora local del servidor de ejecución",
+  "n_experimentos": 8,
+  "orden_de_ejecucion": [
+    "e0_corpus_y_pipeline",
+    "e1_multimodalidad",
+    "e2_mecanismo_fusion",
+    "e3_ausencia_ramas",
+    "e4_generalizacion",
+    "e5_validez",
+    "e7_codificador_multilingue",
+    "e6_modelo_optimizado"
+  ],
+  "tramos": [
+    {
+      "experimento": "e0_corpus_y_pipeline",
+      "inicio": "2026-09-08 00:29:32",
+      "fin": "2026-09-08 00:29:37",
+      "duracion": "0 min",
+      "resultado": "terminado"
+    },
+    {
+      "experimento": "e1_multimodalidad",
+      "inicio": "2026-09-08 00:29:37",
+      "fin": "2026-09-08 02:06:12",
+      "duracion": "1 h 36 min",
+      "resultado": "terminado"
+    },
+    {
+      "experimento": "e2_mecanismo_fusion",
+      "inicio": "2026-09-08 02:06:12",
+      "fin": "2026-09-08 05:21:14",
+      "duracion": "3 h 15 min",
+      "resultado": "terminado"
+    },
+    {
+      "experimento": "e3_ausencia_ramas",
+      "inicio": "2026-09-08 05:21:14",
+      "fin": "2026-09-08 09:13:57",
+      "duracion": "3 h 52 min",
+      "resultado": "terminado"
+    },
+    {
+      "experimento": "e4_generalizacion",
+      "inicio": "2026-09-08 09:13:57",
+      "fin": "2026-09-08 18:56:06",
+      "duracion": "9 h 42 min",
+      "resultado": "terminado"
+    },
+    {
+      "experimento": "e5_validez",
+      "inicio": "2026-09-08 18:56:06",
+      "fin": "2026-09-08 18:57:23",
+      "duracion": "1 min",
+      "resultado": "terminado"
+    },
+    {
+      "experimento": "e7_codificador_multilingue",
+      "inicio": "2026-09-08 18:57:23",
+      "fin": "2026-09-08 18:57:23",
+      "duracion": "0 min",
+      "resultado": "falló"
+    },
+    {
+      "experimento": "e6_modelo_optimizado",
+      "inicio": "2026-09-08 18:57:23",
+      "fin": "2026-09-08 19:06:51",
+      "duracion": "9 min",
+      "resultado": "terminado"
+    }
+  ],
+  "experimentos_repetidos": [
+    "e7_codificador_multilingue"
+  ],
+  "nota_sobre_repeticiones": "Un experimento que falla no cancela los demás. Si alguno hubo de repetirse, su reejecución concluye después del último tramo de la cola y el cierre espera a que termine antes de consolidar.",
+  "marca_de_cierre": "2026-09-09 08:01:34"
+}

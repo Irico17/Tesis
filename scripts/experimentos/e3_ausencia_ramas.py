@@ -389,7 +389,8 @@ def main() -> int:
             destino, "e3_degradacion",
             f"E3. Degradación al ocultar ramas en evaluación\nmecanismo: {mejor}",
             list(degradacion), [d["f1"] for d in degradacion.values()],
-            [d.get("f1_desv", 0.0) for d in degradacion.values()], resaltar=3)
+            [d.get("f1_desv", 0.0) for d in degradacion.values()], resaltar=3,
+            etiqueta_resaltada="condición sin modalidades no textuales")
 
     emitir("e3", informe, figura, corpus=corpus, particion=particion)
     print(f"\n  mejor mecanismo: {mejor}")

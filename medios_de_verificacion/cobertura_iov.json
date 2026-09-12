@@ -1,5 +1,5 @@
 {
-  "generado_en": "2026-09-09T13:01:15.019441+00:00",
+  "generado_en": "2026-09-12T16:31:18.649371+00:00",
   "resultados": {
     "R1.1_corpus_multimodal": {
       "carpeta": "R1.1_corpus_multimodal",
@@ -81,7 +81,8 @@
         "e2_equivalencia_entre_mecanismos.json",
         "mecanismos_de_fusion.png",
         "e5_validez_de_la_comparacion.json",
-        "PREREGISTRO_DE_HIPOTESIS.md"
+        "e7_codificador_multilingue.json",
+        "codificador_multilingue.png"
       ],
       "ausentes": [],
       "cubierto": true

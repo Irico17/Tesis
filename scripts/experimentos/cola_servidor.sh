@@ -98,7 +98,10 @@ for exp in $EXPERIMENTOS; do
         exit 1
     fi
 done
-for aux in scripts/experimentos/consolidar_iov.py scripts/figuras/generar_figuras_mv.py; do
+AUXILIARES="scripts/experimentos/consolidar_iov.py
+scripts/figuras/generar_figuras_mv.py
+scripts/experimentos/manifiesto_de_ejecucion.py"
+for aux in $AUXILIARES; do
     if ! "$PY_BIN" -m py_compile "$aux"; then
         echo "ABORTA: $aux no compila." >&2
         exit 1
@@ -140,6 +143,11 @@ if [ "$fallos" -eq 0 ]; then
     # Las figuras que exigen los medios de verificacion y que ningun experimento
     # emite: matrices de confusion, curvas ROC y curvas de aprendizaje.
     "$PY_BIN" -u scripts/figuras/generar_figuras_mv.py 2>&1 | tee "$REG/figuras_mv.log"
+    # Ventana temporal de la ejecucion COMPLETA. Cada informe declara cuando se
+    # genero el, pero el capitulo necesita declarar cuando corrio el conjunto, y
+    # un experimento reejecutado despues deja de representar a la corrida.
+    "$PY_BIN" -u scripts/experimentos/manifiesto_de_ejecucion.py 2>&1 \
+        | tee "$REG/manifiesto.log"
 else
     echo "COLA TERMINADA CON $fallos FALLO(S) · no se escribe la marca"
 fi

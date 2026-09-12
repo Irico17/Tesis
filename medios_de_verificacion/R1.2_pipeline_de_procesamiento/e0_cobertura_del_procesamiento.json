@@ -4,7 +4,7 @@
     "R1.1",
     "R1.2"
   ],
-  "generado_en": "2026-09-08T05:29:34.302746+00:00",
+  "generado_en": "2026-09-12T06:18:48.119349+00:00",
   "corpus": {
     "n": 44100,
     "prevalencia": 0.402,
@@ -52,6 +52,105 @@
       }
     }
   },
+  "cobertura_modal_por_coleccion": {
+    "por_coleccion": {
+      "CEAS_08": {
+        "formato_de_publicacion": "tabular",
+        "n": 754,
+        "con_estructura": 0,
+        "con_red": 536,
+        "trimodales": 0,
+        "pct_estructura": 0.0,
+        "pct_red": 71.09,
+        "pct_trimodal": 0.0
+      },
+      "Fedora": {
+        "formato_de_publicacion": "mensaje original",
+        "n": 13158,
+        "con_estructura": 10217,
+        "con_red": 11823,
+        "trimodales": 10056,
+        "pct_estructura": 77.65,
+        "pct_red": 89.85,
+        "pct_trimodal": 76.42
+      },
+      "Kaggle": {
+        "formato_de_publicacion": "tabular",
+        "n": 17409,
+        "con_estructura": 4,
+        "con_red": 4026,
+        "trimodales": 2,
+        "pct_estructura": 0.02,
+        "pct_red": 23.13,
+        "pct_trimodal": 0.01
+      },
+      "Nazario": {
+        "formato_de_publicacion": "mensaje original",
+        "n": 4164,
+        "con_estructura": 3985,
+        "con_red": 3994,
+        "trimodales": 3872,
+        "pct_estructura": 95.7,
+        "pct_red": 95.92,
+        "pct_trimodal": 92.99
+      },
+      "SpamAssassin": {
+        "formato_de_publicacion": "mensaje original",
+        "n": 812,
+        "con_estructura": 103,
+        "con_red": 723,
+        "trimodales": 101,
+        "pct_estructura": 12.68,
+        "pct_red": 89.04,
+        "pct_trimodal": 12.44
+      },
+      "datacon2023": {
+        "formato_de_publicacion": "tabular",
+        "n": 1084,
+        "con_estructura": 1026,
+        "con_red": 734,
+        "trimodales": 703,
+        "pct_estructura": 94.65,
+        "pct_red": 67.71,
+        "pct_trimodal": 64.85
+      },
+      "kernel_lists": {
+        "formato_de_publicacion": "mensaje original",
+        "n": 759,
+        "con_estructura": 29,
+        "con_red": 348,
+        "trimodales": 24,
+        "pct_estructura": 3.82,
+        "pct_red": 45.85,
+        "pct_trimodal": 3.16
+      },
+      "phishing_pot": {
+        "formato_de_publicacion": "mensaje original",
+        "n": 5960,
+        "con_estructura": 5673,
+        "con_red": 5435,
+        "trimodales": 5340,
+        "pct_estructura": 95.18,
+        "pct_red": 91.19,
+        "pct_trimodal": 89.6
+      }
+    },
+    "por_formato": {
+      "tabular": {
+        "colecciones": 3,
+        "n": 19247,
+        "trimodales": 705,
+        "pct_de_los_trimodales": 3.51
+      },
+      "mensaje original": {
+        "colecciones": 5,
+        "n": 24853,
+        "trimodales": 19393,
+        "pct_de_los_trimodales": 96.49
+      }
+    },
+    "trimodales_del_corpus": 20098
+  },
   "indicador_r1_1": {
     "criterios": [
       {
@@ -76,6 +175,12 @@
         "criterio": "Prevalencia del subconjunto bimodal",
         "umbral": "0.40 – 0.60",
         "medido": "0.4092",
+        "cumple": true
+      },
+      {
+        "criterio": "Formato estándar listo para ingesta",
+        "umbral": ".parquet, .csv o .json",
+        "medido": ".parquet",
         "cumple": true
       }
     ],
@@ -125,14 +230,14 @@
         "detalle": "0"
       },
       {
-        "comprobacion": "template_cluster_id completo",
+        "comprobacion": "identificador de conglomerado de plantilla sin valores ausentes",
         "resultado": "OK",
         "detalle": "0 nulos"
       },
       {
         "comprobacion": "al menos dos colecciones con ambas clases o el corpus equilibrado",
         "resultado": "OK",
-        "detalle": "2 clases"
+        "detalle": "1 de 8 colecciones con ambas clases; prevalencia del corpus 0.4020"
       }
     ],
     "veredicto": "TODAS SUPERADAS"
@@ -256,10 +361,10 @@
     "veredicto": "SIN_FUGAS"
   },
   "procedencia": {
-    "generado_en": "2026-09-08T05:29:34.307330+00:00",
+    "generado_en": "2026-09-12T06:18:48.250268+00:00",
     "git": {
-      "commit": "sin repositorio git en esta maquina",
-      "arbol_con_cambios_sin_confirmar": false
+      "commit": "243cb2c",
+      "arbol_con_cambios_sin_confirmar": true
     },
     "semillas_de_modelo": [
       42,
@@ -268,14 +373,14 @@
     ],
     "semilla_de_particion": 7,
     "entorno": {
-      "python": "3.12.3",
-      "sistema": "Linux 6.8.0-136-generic",
+      "python": "3.13.6",
+      "sistema": "Windows 11",
       "numpy": "2.5.2",
       "pandas": "3.0.5",
       "sklearn": "1.9.0",
-      "torch": "2.13.0+cu126",
+      "torch": "2.13.0+cpu",
       "transformers": "5.15.0",
-      "gpu": "NVIDIA RTX A5500"
+      "gpu": "sin GPU"
     },
     "corpus": {
       "n": 44100,

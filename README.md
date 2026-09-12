@@ -137,6 +137,7 @@ cualquier número:
    está medida, no supuesta: un clasificador que solo ve las banderas de
    disponibilidad, sin acceso al contenido, alcanza F1 0.6388. Las comparaciones
    entre modelos sí son válidas, porque todos se evalúan sobre las mismas filas.
-2. **Los umbrales se fijaron antes de ejecutar** y están en
-   [`doc/PREREGISTRO_HIPOTESIS.md`](doc/PREREGISTRO_HIPOTESIS.md). El contraste se
-   informa completo, incluidas las hipótesis que no se sostienen.
+2. **Las preguntas son exploratorias.** Se dirigen a caracterizar el desempeño
+   de las arquitecturas sobre el material disponible y no llevan umbral que
+   superar. Se responden con lo que la evidencia permite afirmar, y cuando no
+   permite afirmar nada se declara así.

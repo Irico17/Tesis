@@ -15,6 +15,13 @@ Tres mediciones, ninguna de las cuales entrena el modelo propuesto:
    identificadores de la colección, sin acceso al contenido. Su desempeño es el
    suelo del confusor: cualquier modelo debe superarlo con holgura para que su
    cifra signifique algo.
+2b. **Origen de la ventaja multimodal.** Lo anterior deja abierta una objeción: si
+   las banderas de disponibilidad bastan para separar buena parte del corpus, la
+   ventaja del modelo multimodal sobre el unimodal de texto podría venir de leer
+   en ellas la procedencia y no de correlacionar modalidades. Se reparten los
+   aciertos exclusivos de cada modelo por perfil de disponibilidad y se comprueba
+   si van a favor o en contra de ese atajo. No reentrena nada: lee las
+   predicciones fila por fila que dejó E4.
 3. **Pliegues por colección, como diagnóstico.** Dejar fuera colecciones enteras y
    observar dónde se desploman las modalidades no textuales. No mide
    generalización, porque la colección es un artefacto del ensamblado y no una
@@ -39,7 +46,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from comun import cargar_corpus, emitir, metricas, particion_agrupada
+from comun import BASE, cargar_corpus, emitir, metricas, particion_agrupada
 
 
 def auditoria_de_caracteristicas(df: pd.DataFrame) -> list[dict]:
@@ -107,6 +114,123 @@ def control_de_procedencia(df: pd.DataFrame) -> dict:
         "n_prueba": int(len(y_true)),
         **{k: m[k] for k in ("f1", "accuracy", "roc_auc", "mcc", "balanced_accuracy")
            if k in m},
+    }
+
+
+def origen_de_la_ventaja(df: pd.DataFrame,
+                         referencia: str = "atencion_cruzada_token",
+                         rival: str = "solo_texto") -> dict:
+    """De dónde sale la ventaja del modelo multimodal sobre el unimodal de texto.
+
+    Existe para responder a una objeción concreta y previsible. El control de
+    procedencia de este mismo experimento demuestra que las banderas de
+    disponibilidad de modalidad bastan para separar buena parte del corpus, de
+    modo que cabe sospechar que la ventaja del modelo multimodal no proceda de
+    correlacionar modalidades sino de leer en esas banderas de qué colección
+    viene el correo. La sospecha es razonable y hay que medirla, no argumentarla.
+
+    La medición no reentrena nada. Toma las predicciones fila por fila que la
+    corrida de E4 dejó guardadas, localiza los mensajes en que un modelo acierta y
+    el otro falla, y pregunta si esos aciertos van a favor o en contra del atajo.
+
+    El atajo se define sin ambigüedad: para cada perfil de disponibilidad (las
+    tres modalidades, texto y estructura, texto y red, solo texto) se toma su
+    clase mayoritaria en el conjunto de prueba. Eso es lo mejor que puede hacer
+    quien solo vea las banderas. Si la ventaja del modelo multimodal viniera de
+    ahí, sus aciertos exclusivos se concentrarían en los mensajes que el atajo
+    predice bien. Cuántos caen de cada lado es lo que decide la cuestión.
+    """
+    from scipy.stats import binomtest
+    from phishing_baseline.evaluation import DEFAULT_PREDICTIONS_DIR
+
+    def leer(variante: str) -> pd.DataFrame | None:
+        corrida = f"e4_{variante}_s42_agr"
+        ruta = DEFAULT_PREDICTIONS_DIR / f"{corrida}_{variante}_s42_agr_preds.parquet"
+        return pd.read_parquet(ruta) if ruta.exists() else None
+
+    multi, uni = leer(referencia), leer(rival)
+    if multi is None or uni is None:
+        return {"medible": False,
+                "motivo": ("no están guardadas las predicciones fila por fila de "
+                           "la corrida agrupada de E4; la medición se omite")}
+
+    perfiles = pd.DataFrame({
+        "email_id": df["email_id"],
+        "estructura": df["has_structure_modality"].astype(bool),
+        "red": df["has_network_modality"].astype(bool),
+    })
+    m = (multi.merge(uni, on="email_id", suffixes=("_multi", "_uni"))
+              .merge(perfiles, on="email_id"))
+    m["perfil"] = np.select(
+        [m.estructura & m.red, m.estructura & ~m.red, ~m.estructura & m.red],
+        ["las tres modalidades", "texto y estructura", "texto y red"],
+        default="solo texto")
+
+    acierta_multi = m["y_pred_multi"] == m["y_true_multi"]
+    acierta_uni = m["y_pred_uni"] == m["y_true_uni"]
+    solo_multi = int((acierta_multi & ~acierta_uni).sum())
+    solo_uni = int((~acierta_multi & acierta_uni).sum())
+    discordancias = solo_multi + solo_uni
+    p = (float(binomtest(solo_multi, discordancias, 0.5).pvalue)
+         if discordancias else 1.0)
+
+    # Clase mayoritaria de cada perfil: la predicción del atajo.
+    mayoritaria = m.groupby("perfil")["y_true_multi"].mean().gt(0.5).astype(int)
+    ganados = m[acierta_multi & ~acierta_uni]
+    a_favor = int((ganados["y_true_multi"]
+                   == ganados["perfil"].map(mayoritaria)).sum())
+    en_contra = int(len(ganados) - a_favor)
+
+    por_perfil = {}
+    for perfil, g in m.groupby("perfil"):
+        i = g.index
+        por_perfil[perfil] = {
+            "n": int(len(g)),
+            "prevalencia": round(float(g["y_true_multi"].mean()), 4),
+            "clase_mayoritaria": int(mayoritaria[perfil]),
+            "aciertos_multimodal": int(acierta_multi[i].sum()),
+            "aciertos_unimodal": int(acierta_uni[i].sum()),
+            "ganancia_neta": int(acierta_multi[i].sum() - acierta_uni[i].sum()),
+        }
+
+    lectura = (
+        f"De los {len(ganados)} mensajes que el modelo multimodal acierta y el "
+        f"unimodal de texto falla, {en_contra} van en contra de lo que predeciría "
+        "el perfil de disponibilidad y solo {} coinciden con él. Si la ventaja "
+        "procediera de leer la procedencia en las banderas de disponibilidad, los "
+        "aciertos exclusivos se concentrarían en los mensajes que ese atajo "
+        "predice bien, y ocurre lo contrario.".format(a_favor)
+        if en_contra > a_favor else
+        f"De los {len(ganados)} mensajes que el modelo multimodal acierta y el "
+        f"unimodal de texto falla, {a_favor} coinciden con lo que predeciría el "
+        f"perfil de disponibilidad y {en_contra} van en contra. La ventaja es "
+        "compatible con que el modelo esté leyendo la procedencia en las banderas "
+        "de disponibilidad, y así debe declararse."
+    )
+
+    return {
+        "medible": True,
+        "naturaleza": ("Análisis posterior sobre las predicciones ya guardadas. No "
+                       "reentrena ningún modelo y no produce ninguna cifra de "
+                       "desempeño nueva: reparte las que ya existen."),
+        "modelos": {"multimodal": referencia, "unimodal": rival},
+        "corrida": "semilla 42, partición agrupada, corpus completo",
+        "n_prueba": int(len(m)),
+        "contraste": {
+            "aciertos_solo_del_multimodal": solo_multi,
+            "aciertos_solo_del_unimodal": solo_uni,
+            "n_discordancias": discordancias,
+            "p_valor": round(p, 6),
+        },
+        "atajo_por_disponibilidad": {
+            "definicion": ("clase mayoritaria del perfil de disponibilidad del "
+                           "mensaje, que es cuanto puede predecirse viendo solo "
+                           "qué modalidades están presentes"),
+            "aciertos_exclusivos_a_favor_del_atajo": a_favor,
+            "aciertos_exclusivos_en_contra_del_atajo": en_contra,
+        },
+        "por_perfil_de_disponibilidad": por_perfil,
+        "lectura": lectura,
     }
 
 
@@ -332,6 +456,8 @@ def main() -> int:
     caracteristicas = auditoria_de_caracteristicas(df)
     print("  entrenando el control de procedencia…")
     control = control_de_procedencia(df)
+    print("  repartiendo la ventaja del multimodal por perfil de disponibilidad…")
+    ventaja = origen_de_la_ventaja(df)
     estructura = clase_por_coleccion(df)
     print("  pliegues por colección (diagnóstico)…")
     pliegues = pliegues_por_coleccion(df)
@@ -359,32 +485,63 @@ def main() -> int:
             "procedencia; revisar cuál y por qué."
         ),
         "control_de_procedencia": control,
+        "origen_de_la_ventaja_multimodal": ventaja,
         "estructura_del_corpus": estructura,
         "pliegues_por_coleccion": pliegues,
         "composicion_por_idioma": idioma,
     }
 
     def figura(destino: Path) -> None:
-        import matplotlib
-        matplotlib.use("Agg")
+        # La lámina se dibuja al ancho al que el documento la imprime, conforme a
+        # `scripts/figuras/formato.py`. Con el lienzo de 8.5 pulgadas anterior, la
+        # caja de texto de 15.9 cm la comprimía a 0.74 y los nombres de las
+        # características salían por debajo de siete puntos.
+        import sys as _sys
+
+        _sys.path.insert(0, str(BASE / "scripts" / "figuras"))
+        import formato
+        from generar_figuras_mv import CARACTERISTICAS
+
+        formato.estilo()
         import matplotlib.pyplot as plt
 
-        top = caracteristicas[-14:]
-        fig, ax = plt.subplots(figsize=(8.5, 5.6))
-        y = np.arange(len(top))
-        ax.barh(y, [f["mi_coleccion"] for f in top], 0.4,
-                label="sobre la colección", color="#C44E52")
-        ax.barh(y + 0.42, [f["mi_clase_dada_la_coleccion"] for f in top], 0.4,
-                label="sobre la clase, dada la colección", color="#4C72B0")
-        ax.set_yticks(y + 0.21)
-        ax.set_yticklabels([f["caracteristica"] for f in top], fontsize=9)
-        ax.set_xlabel("información mutua (nats)")
-        ax.set_title("E5. Qué informa cada característica no textual")
-        ax.legend(fontsize=9)
+        filas = sorted(caracteristicas, key=lambda f: f.get("mi_coleccion") or 0)
+        nombres = [CARACTERISTICAS.get(f["caracteristica"],
+                                       f["caracteristica"].replace("_", " "))
+                   for f in filas]
+        coleccion = [f.get("mi_coleccion") or 0 for f in filas]
+        clase = [f.get("mi_clase_dada_la_coleccion") or 0 for f in filas]
+        y = np.arange(len(filas))
+        fig, ax = plt.subplots(figsize=(formato.ANCHO_VERTICAL,
+                                        formato.alto_por_filas(len(filas), 0.34, 1.5)))
+        ax.barh(y + 0.20, coleccion, height=0.38, color="#C44E52",
+                edgecolor="#7A2E31", linewidth=0.5,
+                label="sobre la colección de procedencia")
+        # El trazado distingue las dos series sin depender del color: impresa en
+        # blanco y negro, la luminancia del rojo y la del azul son casi la misma.
+        ax.barh(y - 0.20, clase, height=0.38, color="#4C72B0", hatch="///",
+                edgecolor="#1A2733", linewidth=0.5,
+                label="sobre la clase, fijada la colección")
+        # Una barra de longitud cero es indistinguible de una barra ausente, y son
+        # varias las características que informan exactamente cero sobre la clase.
+        for pos, v in zip(y, clase):
+            if v == 0:
+                ax.plot([0], [pos - 0.20], marker="|", markersize=6, color="#1A2733")
+                ax.text(max(coleccion) * 0.012, pos - 0.20, "0", va="center",
+                        ha="left", fontsize=formato.MINIMO_LEGIBLE - 1,
+                        color="#1A2733")
+        ax.set_yticks(y)
+        ax.set_yticklabels(nombres)
+        ax.set_xlim(0, max(coleccion) * 1.06)
+        ax.set_xlabel("Información mutua (nats)")
+        ax.set_title("Qué informa cada característica no textual", pad=10)
         ax.grid(axis="x", alpha=0.3)
+        for lado in ("top", "right"):
+            ax.spines[lado].set_visible(False)
+        ax.legend(loc="lower right", frameon=True, framealpha=0.95,
+                  fontsize=formato.MINIMO_LEGIBLE)
         fig.tight_layout()
-        fig.savefig(destino / "e5_auditoria_caracteristicas.png", dpi=160)
-        plt.close(fig)
+        formato.guardar(fig, destino, "e5_auditoria_caracteristicas")
 
     emitir("e5", informe, figura, corpus=df)
     print(f"\n  mayor cociente entre las 18: {mayor:.4f}")

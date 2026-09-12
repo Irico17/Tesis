@@ -1,0 +1,380 @@
+{
+  "experimento": "E7",
+  "pregunta": "Conviene un codificador multilingue, y que mediria una mejora si la hubiera?",
+  "naturaleza": "Contraste de diseño con un confusor declarado. La comparación global no es interpretable porque en este corpus el idioma distinto del inglés casi determina la clase; el contraste que decide es el del subconjunto en inglés.",
+  "generado_en": "2026-09-09T10:27:46.021015+00:00",
+  "codificadores": {
+    "monolingue": "distilbert-base-uncased",
+    "multilingue": "distilbert-base-multilingual-cased"
+  },
+  "arquitecturas": [
+    "solo_texto",
+    "atencion_cruzada_token"
+  ],
+  "semillas": [
+    42,
+    43,
+    44
+  ],
+  "composicion_de_la_prueba": {
+    "ingles": 3932,
+    "no_ingles": 430,
+    "indeterminado": 49
+  },
+  "limite_del_material": "La comparacion limpia ideal, entrenando y evaluando solo sobre mensajes no ingleses de ambas clases, no es posible: la unica coleccion con las dos clases es Kaggle y contiene 275 mensajes no ingleses, 112 legitimos y 163 de phishing. Se declara la imposibilidad en lugar de fabricar un resultado sin respaldo.",
+  "resultados": {
+    "solo_texto__monolingue": {
+      "arquitectura": "solo_texto",
+      "condicion": "monolingue",
+      "codificador": "distilbert-base-uncased",
+      "f1": 0.9901,
+      "f1_desv": 0.0002,
+      "accuracy": 0.9921,
+      "accuracy_desv": 0.0002,
+      "precision": 0.9908,
+      "precision_desv": 0.0003,
+      "recall": 0.9895,
+      "recall_desv": 0.0002,
+      "roc_auc": 0.9991,
+      "roc_auc_desv": 0.0001,
+      "pr_auc": 0.9987,
+      "pr_auc_desv": 0.0,
+      "mcc": 0.9835,
+      "mcc_desv": 0.0004,
+      "balanced_accuracy": 0.9916,
+      "balanced_accuracy_desv": 0.0002,
+      "specificity": 0.9938,
+      "specificity_desv": 0.0001,
+      "brier": 0.0071,
+      "brier_desv": 0.0,
+      "ece": 0.0068,
+      "ece_desv": 0.0002,
+      "fpr_a_tpr95": 0.0016,
+      "fpr_a_tpr95_desv": 0.0005,
+      "punto_de_operacion": {
+        "n_negativos": 2638,
+        "fpr_minimo_medible": 0.000379,
+        "tpr_a_fpr_0.01": 0.9955,
+        "tpr_a_fpr_0.01_umbral": 0.006017,
+        "tpr_a_fpr_0.001": 0.9487,
+        "tpr_a_fpr_0.001_umbral": 0.99842
+      },
+      "por_idioma": {
+        "ingles": {
+          "n": 3932,
+          "evaluable": true,
+          "f1": 0.9888,
+          "accuracy": 0.9924,
+          "precision": 0.9918,
+          "recall": 0.9859,
+          "roc_auc": 0.9993
+        },
+        "no_ingles": {
+          "n": 430,
+          "evaluable": true,
+          "f1": 0.9961,
+          "accuracy": 0.993,
+          "precision": 0.9923,
+          "recall": 1.0,
+          "roc_auc": 0.9881
+        }
+      }
+    },
+    "solo_texto__multilingue": {
+      "arquitectura": "solo_texto",
+      "condicion": "multilingue",
+      "codificador": "distilbert-base-multilingual-cased",
+      "f1": 0.9911,
+      "f1_desv": 0.0008,
+      "accuracy": 0.9928,
+      "accuracy_desv": 0.0007,
+      "precision": 0.9917,
+      "precision_desv": 0.0003,
+      "recall": 0.9904,
+      "recall_desv": 0.0014,
+      "roc_auc": 0.9995,
+      "roc_auc_desv": 0.0001,
+      "pr_auc": 0.9993,
+      "pr_auc_desv": 0.0001,
+      "mcc": 0.9851,
+      "mcc_desv": 0.0014,
+      "balanced_accuracy": 0.9924,
+      "balanced_accuracy_desv": 0.0008,
+      "specificity": 0.9944,
+      "specificity_desv": 0.0002,
+      "brier": 0.0064,
+      "brier_desv": 0.0003,
+      "ece": 0.0062,
+      "ece_desv": 0.0004,
+      "fpr_a_tpr95": 0.002,
+      "fpr_a_tpr95_desv": 0.0005,
+      "punto_de_operacion": {
+        "n_negativos": 2638,
+        "fpr_minimo_medible": 0.000379,
+        "tpr_a_fpr_0.01": 0.9977,
+        "tpr_a_fpr_0.01_umbral": 0.003647,
+        "tpr_a_fpr_0.001": 0.8325,
+        "tpr_a_fpr_0.001_umbral": 0.999693
+      },
+      "por_idioma": {
+        "ingles": {
+          "n": 3932,
+          "evaluable": true,
+          "f1": 0.9907,
+          "accuracy": 0.9936,
+          "precision": 0.9918,
+          "recall": 0.9896,
+          "roc_auc": 0.9995
+        },
+        "no_ingles": {
+          "n": 430,
+          "evaluable": true,
+          "f1": 0.9987,
+          "accuracy": 0.9977,
+          "precision": 0.9974,
+          "recall": 1.0,
+          "roc_auc": 0.9979
+        }
+      }
+    },
+    "atencion_cruzada_token__monolingue": {
+      "arquitectura": "atencion_cruzada_token",
+      "condicion": "monolingue",
+      "codificador": "distilbert-base-uncased",
+      "f1": 0.9918,
+      "f1_desv": 0.0002,
+      "accuracy": 0.9934,
+      "accuracy_desv": 0.0002,
+      "precision": 0.9917,
+      "precision_desv": 0.0005,
+      "recall": 0.9919,
+      "recall_desv": 0.0003,
+      "roc_auc": 0.9997,
+      "roc_auc_desv": 0.0,
+      "pr_auc": 0.9996,
+      "pr_auc_desv": 0.0,
+      "mcc": 0.9863,
+      "mcc_desv": 0.0004,
+      "balanced_accuracy": 0.9932,
+      "balanced_accuracy_desv": 0.0002,
+      "specificity": 0.9944,
+      "specificity_desv": 0.0004,
+      "brier": 0.0059,
+      "brier_desv": 0.0001,
+      "ece": 0.0056,
+      "ece_desv": 0.0,
+      "fpr_a_tpr95": 0.0006,
+      "fpr_a_tpr95_desv": 0.0003,
+      "punto_de_operacion": {
+        "n_negativos": 2638,
+        "fpr_minimo_medible": 0.000379,
+        "tpr_a_fpr_0.01": 0.9977,
+        "tpr_a_fpr_0.01_umbral": 0.004519,
+        "tpr_a_fpr_0.001": 0.9475,
+        "tpr_a_fpr_0.001_umbral": 0.999095
+      },
+      "por_idioma": {
+        "ingles": {
+          "n": 3932,
+          "evaluable": true,
+          "f1": 0.9911,
+          "accuracy": 0.9939,
+          "precision": 0.9925,
+          "recall": 0.9896,
+          "roc_auc": 0.9997
+        },
+        "no_ingles": {
+          "n": 430,
+          "evaluable": true,
+          "f1": 0.9974,
+          "accuracy": 0.9953,
+          "precision": 0.9949,
+          "recall": 1.0,
+          "roc_auc": 0.9995
+        }
+      }
+    },
+    "atencion_cruzada_token__multilingue": {
+      "arquitectura": "atencion_cruzada_token",
+      "condicion": "multilingue",
+      "codificador": "distilbert-base-multilingual-cased",
+      "f1": 0.9923,
+      "f1_desv": 0.0001,
+      "accuracy": 0.9938,
+      "accuracy_desv": 0.0001,
+      "precision": 0.9918,
+      "precision_desv": 0.0007,
+      "recall": 0.9928,
+      "recall_desv": 0.0005,
+      "roc_auc": 0.9996,
+      "roc_auc_desv": 0.0001,
+      "pr_auc": 0.9993,
+      "pr_auc_desv": 0.0002,
+      "mcc": 0.9871,
+      "mcc_desv": 0.0002,
+      "balanced_accuracy": 0.9937,
+      "balanced_accuracy_desv": 0.0001,
+      "specificity": 0.9944,
+      "specificity_desv": 0.0005,
+      "brier": 0.0056,
+      "brier_desv": 0.0002,
+      "ece": 0.0054,
+      "ece_desv": 0.0004,
+      "fpr_a_tpr95": 0.002,
+      "fpr_a_tpr95_desv": 0.0007,
+      "punto_de_operacion": {
+        "n_negativos": 2638,
+        "fpr_minimo_medible": 0.000379,
+        "tpr_a_fpr_0.01": 0.9961,
+        "tpr_a_fpr_0.01_umbral": 0.002076,
+        "tpr_a_fpr_0.001": 0.8787,
+        "tpr_a_fpr_0.001_umbral": 0.999462
+      },
+      "por_idioma": {
+        "ingles": {
+          "n": 3932,
+          "evaluable": true,
+          "f1": 0.9914,
+          "accuracy": 0.9942,
+          "precision": 0.9925,
+          "recall": 0.9903,
+          "roc_auc": 0.9995
+        },
+        "no_ingles": {
+          "n": 430,
+          "evaluable": true,
+          "f1": 0.9987,
+          "accuracy": 0.9977,
+          "precision": 0.9974,
+          "recall": 1.0,
+          "roc_auc": 1.0
+        }
+      }
+    }
+  },
+  "contrastes": {
+    "solo_texto": {
+      "ingles": {
+        "n": 3932,
+        "evaluable": true,
+        "f1_monolingue": 0.9888,
+        "f1_multilingue": 0.9907,
+        "diferencia": 0.0019,
+        "mcnemar": {
+          "aciertos_solo_a": 11,
+          "aciertos_solo_b": 16,
+          "n_discordancias": 27,
+          "p_valor": 0.442068,
+          "significativo_005": false
+        }
+      },
+      "no_ingles": {
+        "n": 430,
+        "evaluable": true,
+        "f1_monolingue": 0.9961,
+        "f1_multilingue": 0.9987,
+        "diferencia": 0.0026,
+        "mcnemar": {
+          "aciertos_solo_a": 0,
+          "aciertos_solo_b": 2,
+          "n_discordancias": 2,
+          "p_valor": 0.5,
+          "significativo_005": false
+        }
+      },
+      "global": {
+        "n": 4411,
+        "evaluable": true,
+        "f1_monolingue": 0.9901,
+        "f1_multilingue": 0.9911,
+        "diferencia": 0.001,
+        "mcnemar": {
+          "aciertos_solo_a": 11,
+          "aciertos_solo_b": 19,
+          "n_discordancias": 30,
+          "p_valor": 0.200488,
+          "significativo_005": false
+        }
+      }
+    },
+    "atencion_cruzada_token": {
+      "ingles": {
+        "n": 3932,
+        "evaluable": true,
+        "f1_monolingue": 0.9911,
+        "f1_multilingue": 0.9914,
+        "diferencia": 0.0003,
+        "mcnemar": {
+          "aciertos_solo_a": 10,
+          "aciertos_solo_b": 11,
+          "n_discordancias": 21,
+          "p_valor": 1.0,
+          "significativo_005": false
+        }
+      },
+      "no_ingles": {
+        "n": 430,
+        "evaluable": true,
+        "f1_monolingue": 0.9974,
+        "f1_multilingue": 0.9987,
+        "diferencia": 0.0013,
+        "mcnemar": {
+          "aciertos_solo_a": 0,
+          "aciertos_solo_b": 1,
+          "n_discordancias": 1,
+          "p_valor": 1.0,
+          "significativo_005": false
+        }
+      },
+      "global": {
+        "n": 4411,
+        "evaluable": true,
+        "f1_monolingue": 0.9918,
+        "f1_multilingue": 0.9923,
+        "diferencia": 0.0005,
+        "mcnemar": {
+          "aciertos_solo_a": 11,
+          "aciertos_solo_b": 12,
+          "n_discordancias": 23,
+          "p_valor": 1.0,
+          "significativo_005": false
+        }
+      }
+    }
+  },
+  "lectura": "Sobre el subconjunto en inglés, donde el idioma no puede predecir la clase, la diferencia entre ambos codificadores es de +0.0019 en F1 y la prueba de McNemar no la distingue del azar. El codificador multilingüe no representa mejor el material en la parte donde su ventaja podría atribuirse a la calidad de la representación.",
+  "procedencia": {
+    "generado_en": "2026-09-09T10:27:46.023973+00:00",
+    "git": {
+      "commit": "sin repositorio git en esta maquina",
+      "arbol_con_cambios_sin_confirmar": false
+    },
+    "semillas_de_modelo": [
+      42,
+      43,
+      44
+    ],
+    "semilla_de_particion": 7,
+    "entorno": {
+      "python": "3.12.3",
+      "sistema": "Linux 6.8.0-136-generic",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "sklearn": "1.9.0",
+      "torch": "2.13.0+cu126",
+      "transformers": "5.15.0",
+      "gpu": "NVIDIA RTX A5500"
+    },
+    "corpus": {
+      "n": 44100,
+      "prevalencia": 0.402018,
+      "huella": "f078576f098f129d"
+    },
+    "particion": {
+      "entrenamiento": 35279,
+      "validacion": 4410,
+      "prueba": 4411,
+      "huella": "5795f25e0b1c986d"
+    }
+  }
+}

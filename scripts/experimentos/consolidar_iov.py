@@ -188,8 +188,10 @@ RESULTADOS: dict[str, dict] = {
              "Desempeño por mecanismo de fusión"),
             (EXP / "e5" / "e5.json", "e5_validez_de_la_comparacion.json",
              "Qué parte de lo medido corresponde al fenómeno y qué a la procedencia"),
-            (BASE / "doc" / "PREREGISTRO_HIPOTESIS.md", "PREREGISTRO_DE_HIPOTESIS.md",
-             "Hipótesis y umbrales fijados antes de ejecutar"),
+            (EXP / "e7" / "e7.json", "e7_codificador_multilingue.json",
+             "Contraste entre codificador monolingüe y multilingüe, por idioma"),
+            (EXP / "e7" / "e7_codificador.png", "codificador_multilingue.png",
+             "Desempeño de cada codificador sobre los subconjuntos por idioma"),
         ],
         "generadas": {
             "matrices_de_confusion/": "Matriz de confusión de cada uno de los doce modelos",

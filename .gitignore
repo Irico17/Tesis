@@ -44,10 +44,16 @@ data/reports/
 !medios_de_verificacion/
 
 # Material de estudio y de sustentacion. Son documentos de trabajo del autor, no
-# forman parte de lo que reproduce la tesis ni acreditan ningun indicador.
-doc/GUIA_DE_ESTUDIO_CAPITULO4.md
-doc/PRESENTACION_DEFENSA_CAPITULO4.md
-doc/PRESENTACION_DEFENSA_CAPITULO4.pptx
+# forman parte de lo que reproduce la tesis ni acreditan ningun indicador, y por
+# eso se excluyen en todos sus formatos y no solo en aquel en que se escribieron.
+doc/GUIA_DE_ESTUDIO_CAPITULO4.*
+doc/PRESENTACION_DEFENSA_CAPITULO4.*
+doc/ARQUITECTURA_EXPLICADA.md
+doc/COMO_INTERPRETAR_LOS_RESULTADOS.md
+
+# Lo que SI vive en doc/: los instrumentos de la validacion con expertos, que
+# acreditan R3.3 y forman parte del trabajo, no de su explicacion.
+!doc/validacion_xai/
 
 # -------------------------------------------------------- entregables y trabajo
 # Los documentos en formato Word y los guiones que los generan no pertenecen al

@@ -26,6 +26,9 @@ import pandas as pd
 
 BASE = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(BASE / "src"))
+sys.path.insert(0, str(BASE / "scripts" / "figuras"))
+
+import formato  # noqa: E402
 
 from phishing_baseline.evaluation import compute_metrics  # noqa: E402
 from phishing_pipeline.features.vectorizer import compute_modality_availability  # noqa: E402
@@ -414,52 +417,15 @@ def emitir(experimento: str, informe: dict,
 def barras_con_error(destino: Path, nombre: str, titulo: str,
                      etiquetas: list[str], medias: list[float],
                      desviaciones: list[float], ylabel: str = "F1",
-                     resaltar: int | None = None) -> None:
-    """Gráfico de barras con dispersión entre semillas, eje acotado al rango útil.
+                     resaltar: int | None = None,
+                     etiqueta_resaltada: str = "arquitectura propuesta") -> None:
+    """Lámina de barras de un experimento. La dibuja `formato.barras`.
 
-    El eje no arranca en cero de forma deliberada: cuando todas las barras están
-    entre 0.85 y 0.95, un eje de 0 a 1 las vuelve indistinguibles y oculta
-    justamente lo que la lámina debe mostrar. La compresión se declara en el
-    rótulo del eje, no como una nota flotante sobre las barras: allí se
-    superponía a los valores y quedaba ilegible.
-
-    `resaltar` señala la arquitectura propuesta, y solo eso. Se distingue con un
-    trazado distinto y con una entrada de leyenda que dice qué es, no con un
-    color de alarma: el trabajo no presupone ganadora y la lámina no debe
-    sugerirla.
+    La implementación está en `scripts/figuras/formato.py` porque el guion de
+    figuras rehace estas mismas láminas desde los informes, sin reentrenar, y
+    tener dos copias del código las hizo divergir: una rotulaba «arquitectura
+    propuesta» la barra que la otra rotulaba «línea base de comparación».
     """
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    n_lineas = 1 + titulo.count(chr(10))
-    # El ancho se acota: con doce arquitecturas la figura llegaba a dieciocho
-    # pulgadas y no cabía en una página vertical.
-    ancho = min(13.0, max(6.0, 1.15 * len(etiquetas)))
-    fig, ax = plt.subplots(figsize=(ancho, 4.8 + 0.35 * (n_lineas - 1)))
-
-    barras = ax.bar(etiquetas, medias, yerr=desviaciones, capsize=4,
-                    color="#4C72B0", edgecolor="#22303F", linewidth=0.6)
-    if resaltar is not None and 0 <= resaltar < len(barras):
-        barras[resaltar].set_hatch("//")
-        barras[resaltar].set_edgecolor("#1A2733")
-        barras[resaltar].set_linewidth(1.4)
-        ax.legend([barras[resaltar]], ["arquitectura propuesta"],
-                  fontsize=8.5, loc="upper right", framealpha=0.9)
-
-    bajo = max(0.0, min(m - d for m, d in zip(medias, desviaciones)) - 0.05)
-    alto = min(1.0, max(m + d for m, d in zip(medias, desviaciones)) + 0.04)
-    ax.set_ylim(bajo, alto)
-    ax.set_ylabel(f"{ylabel}  (eje recortado desde {bajo:.2f})")
-    # `pad` reserva sitio: con titulo de dos lineas la segunda caia sobre las
-    # barras mas altas y tapaba su valor, que es justo el dato que se mira.
-    ax.set_title(titulo, fontsize=11, pad=14)
-    ax.grid(axis="y", alpha=0.3)
-    for i, (m, d) in enumerate(zip(medias, desviaciones)):
-        ax.text(i, m + d + (alto - bajo) * 0.02, f"{m:.4f}",
-                ha="center", fontsize=8.5)
-    tam = 9 if len(etiquetas) <= 8 else 7.5
-    plt.xticks(rotation=25, ha="right", fontsize=tam)
-    fig.tight_layout()
-    fig.savefig(destino / f"{nombre}.png", dpi=160)
-    plt.close(fig)
+    formato.barras(destino, nombre, titulo, etiquetas, medias, desviaciones,
+                   ylabel=ylabel, resaltar=resaltar,
+                   etiqueta_resaltada=etiqueta_resaltada)
