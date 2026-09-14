@@ -4,7 +4,7 @@
     "R1.1",
     "R1.2"
   ],
-  "generado_en": "2026-09-12T06:18:48.119349+00:00",
+  "generado_en": "2026-09-12T17:36:38.319140+00:00",
   "corpus": {
     "n": 44100,
     "prevalencia": 0.402,
@@ -150,6 +150,37 @@
       }
     },
     "trimodales_del_corpus": 20098
+  },
+  "composicion_de_la_prueba": {
+    "n_prueba": 4411,
+    "por_tamano": {
+      "campañas únicas": {
+        "n": 3893,
+        "prevalencia": 0.3578,
+        "clases_presentes": [
+          0,
+          1
+        ],
+        "evaluable": true
+      },
+      "conglomerados de 2 a 5": {
+        "n": 391,
+        "prevalencia": 0.6471,
+        "clases_presentes": [
+          0,
+          1
+        ],
+        "evaluable": true
+      },
+      "conglomerados de más de 5": {
+        "n": 127,
+        "prevalencia": 1.0,
+        "clases_presentes": [
+          1
+        ],
+        "evaluable": false
+      }
+    }
   },
   "indicador_r1_1": {
     "criterios": [
@@ -361,7 +392,7 @@
     "veredicto": "SIN_FUGAS"
   },
   "procedencia": {
-    "generado_en": "2026-09-12T06:18:48.250268+00:00",
+    "generado_en": "2026-09-12T17:36:38.683486+00:00",
     "git": {
       "commit": "243cb2c",
       "arbol_con_cambios_sin_confirmar": true

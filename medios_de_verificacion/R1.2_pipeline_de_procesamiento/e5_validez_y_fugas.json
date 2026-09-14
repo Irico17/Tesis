@@ -2,7 +2,7 @@
   "experimento": "E5",
   "pregunta": "¿Cuánto de lo medido es procedencia y no fenómeno?",
   "naturaleza": "Auditoría de validez. No mide rendimiento y no sostiene ninguna afirmación de desempeño: califica los resultados de E1 a E4.",
-  "generado_en": "2026-09-08T23:57:19.833555+00:00",
+  "generado_en": "2026-09-13T03:52:54.947839+00:00",
   "auditoria_de_caracteristicas": [
     {
       "caracteristica": "num_images",
@@ -113,6 +113,62 @@
     "roc_auc": 0.8378,
     "mcc": 0.586,
     "balanced_accuracy": 0.7344
+  },
+  "origen_de_la_ventaja_multimodal": {
+    "medible": true,
+    "naturaleza": "Análisis posterior sobre las predicciones ya guardadas. No reentrena ningún modelo y no produce ninguna cifra de desempeño nueva: reparte las que ya existen.",
+    "modelos": {
+      "multimodal": "atencion_cruzada_token",
+      "unimodal": "solo_texto"
+    },
+    "corrida": "semilla 42, partición agrupada, corpus completo",
+    "n_prueba": 4411,
+    "contraste": {
+      "aciertos_solo_del_multimodal": 16,
+      "aciertos_solo_del_unimodal": 3,
+      "n_discordancias": 19,
+      "p_valor": 0.004425
+    },
+    "atajo_por_disponibilidad": {
+      "definicion": "clase mayoritaria del perfil de disponibilidad del mensaje, que es cuanto puede predecirse viendo solo qué modalidades están presentes",
+      "aciertos_exclusivos_a_favor_del_atajo": 3,
+      "aciertos_exclusivos_en_contra_del_atajo": 13
+    },
+    "por_perfil_de_disponibilidad": {
+      "las tres modalidades": {
+        "n": 2025,
+        "prevalencia": 0.4864,
+        "clase_mayoritaria": 0,
+        "aciertos_multimodal": 2020,
+        "aciertos_unimodal": 2016,
+        "ganancia_neta": 4
+      },
+      "solo texto": {
+        "n": 1543,
+        "prevalencia": 0.3966,
+        "clase_mayoritaria": 0,
+        "aciertos_multimodal": 1525,
+        "aciertos_unimodal": 1520,
+        "ganancia_neta": 5
+      },
+      "texto y estructura": {
+        "n": 88,
+        "prevalencia": 0.8068,
+        "clase_mayoritaria": 1,
+        "aciertos_multimodal": 88,
+        "aciertos_unimodal": 88,
+        "ganancia_neta": 0
+      },
+      "texto y red": {
+        "n": 755,
+        "prevalencia": 0.1391,
+        "clase_mayoritaria": 0,
+        "aciertos_multimodal": 752,
+        "aciertos_unimodal": 748,
+        "ganancia_neta": 4
+      }
+    },
+    "lectura": "De los 16 mensajes que el modelo multimodal acierta y el unimodal de texto falla, 13 van en contra de lo que predeciría el perfil de disponibilidad y solo 3 coinciden con él. Si la ventaja procediera de leer la procedencia en las banderas de disponibilidad, los aciertos exclusivos se concentrarían en los mensajes que ese atajo predice bien, y ocurre lo contrario."
   },
   "estructura_del_corpus": {
     "por_coleccion": {
@@ -425,7 +481,7 @@
     "lectura_sobre_el_codificador": "Una fracción apreciable del corpus, el 16.37%, no está en inglés. El codificador empleado es monolingüe, de modo que la representación textual de esos mensajes es peor de lo necesario y conviene contrastar un codificador multilingüe. Se declara como medición y la comparación queda como trabajo futuro."
   },
   "procedencia": {
-    "generado_en": "2026-09-08T23:57:19.836573+00:00",
+    "generado_en": "2026-09-13T03:52:54.950538+00:00",
     "git": {
       "commit": "sin repositorio git en esta maquina",
       "arbol_con_cambios_sin_confirmar": false
@@ -444,7 +500,7 @@
       "sklearn": "1.9.0",
       "torch": "2.13.0+cu126",
       "transformers": "5.15.0",
-      "gpu": "NVIDIA RTX A5500"
+      "gpu": "sin GPU"
     },
     "corpus": {
       "n": 44100,
