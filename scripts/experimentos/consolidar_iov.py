@@ -233,11 +233,63 @@ RESULTADOS: dict[str, dict] = {
     },
 }
 
-PENDIENTES = {
-    "R3.1": "Selección del esquema técnico de interpretabilidad",
-    "R3.2": "Módulo XAI integrado operativamente",
-    "R3.3": "Reporte de validación de transparencia operativa",
-}
+# Los tres resultados del tercer objetivo proceden de E8 y E9, que se ejecutan
+# sobre el punto de control que deja la cola. Su componente humano, el panel de
+# analistas de R3.3, no lo produce ningún experimento: se declara pendiente en
+# la nota de la carpeta y en el índice, en lugar de dar el resultado por cerrado.
+RESULTADOS.update({
+    "R3.1_seleccion_de_la_tecnica": {
+        "titulo": "Selección del esquema técnico de interpretabilidad",
+        "medio": "Matriz de decisiones técnicas y informe de selección",
+        "indicador": ("Cuadro comparativo que justifique la selección de al menos una "
+                      "técnica XAI idónea para la arquitectura."),
+        "artefactos": [
+            (EXP / "e8" / "e8.json", "e8_comparacion_de_familias.json",
+             "Comparación de la atención intrínseca, los valores de Shapley y la "
+             "aproximación local en fidelidad, estabilidad, alcance y coste, sobre el "
+             "punto de control reportado, con la técnica seleccionada"),
+        ],
+        "codigo": ["src/phishing_model/xai/",
+                   "src/phishing_model/explicabilidad/",
+                   "scripts/experimentos/e8_explicabilidad.py"],
+    },
+    "R3.2_modulo_de_interpretacion": {
+        "titulo": "Módulo XAI integrado operativamente",
+        "medio": "Código fuente del módulo acoplado.",
+        "indicador": ("Extracción exitosa de pesos de importancia en la muestra de "
+                      "prueba de predicciones positivas."),
+        "artefactos": [
+            (EXP / "e9" / "e9.json", "e9_narrativas_de_la_muestra_critica.json",
+             "Cobertura de la extracción y de las narrativas sobre toda la muestra "
+             "clasificada como fraudulenta, con su legibilidad y una muestra de "
+             "explicaciones"),
+        ],
+        "codigo": ["src/phishing_model/xai/narrative.py",
+                   "scripts/experimentos/e9_narrativa_y_validacion.py"],
+    },
+    "R3.3_validacion_de_las_explicaciones": {
+        "titulo": "Reporte de validación de transparencia operativa",
+        "medio": ("Formularios de evaluación UX y resultados de validación vía LLM"),
+        "indicador": (
+            "Reporte estructurado por modalidad que traduzca el peso matemático en una "
+            "justificación técnica comprensible. El desempeño del panel de evaluación "
+            "se contrasta contra dos referencias: una meta objetivo del 90% de "
+            "comprensión y un umbral mínimo aceptable del 80%, este último como "
+            "criterio formal de cumplimiento del resultado."),
+        "artefactos": [
+            (EXP / "e9" / "e9.json", "e9_validacion_y_panel.json",
+             "Verificación numérica de las narrativas frente a su vector de "
+             "atribución, instrumento del panel y ejemplos seleccionados"),
+        ],
+        "pendiente": ("El panel de analistas, criterio primario del indicador, está "
+                      "preparado y pendiente de aplicación. Su instrumento, la guía de "
+                      "reclutamiento y el cálculo de la puntuación están en "
+                      "`doc/validacion_xai/`."),
+        "codigo": ["src/phishing_model/xai/fidelity_check.py",
+                   "src/phishing_model/explicabilidad/procedencia.py",
+                   "doc/validacion_xai/script_scoring.py"],
+    },
+})
 
 
 def _nota(carpeta: Path, clave: str, spec: dict, copiados: list, ausentes: list) -> None:
@@ -269,6 +321,8 @@ def _nota(carpeta: Path, clave: str, spec: dict, copiados: list, ausentes: list)
     if spec.get("codigo"):
         lineas += ["", "## Código fuente que sustenta el resultado", ""]
         lineas += [f"- `{c}`" for c in spec["codigo"]]
+    if spec.get("pendiente"):
+        lineas += ["", "## Parte pendiente", "", spec["pendiente"]]
     if ausentes:
         lineas += ["", "## Artefactos que faltan", ""]
         lineas += [f"- `{a}`" for a in ausentes]
@@ -303,10 +357,10 @@ def _indice(estado: dict) -> None:
         n = len(datos["presentes"])
         total = n + len(datos["ausentes"])
         marca = "completo" if datos["cubierto"] else f"faltan {len(datos['ausentes'])}"
+        if datos.get("pendiente"):
+            marca += "; panel humano pendiente"
         lineas.append(f"| {clave.split('_')[0]} | [`{carpeta}/`]({carpeta}/) "
                       f"| {n} de {total} | {marca} |")
-    for clave, titulo in PENDIENTES.items():
-        lineas.append(f"| {clave} | — | — | pendiente, fase siguiente |")
     lineas += [
         "",
         "## Salida cruda de los experimentos",
@@ -385,6 +439,7 @@ def main() -> int:
             "presentes": [d for d, _ in copiados],
             "ausentes": ausentes,
             "cubierto": not ausentes,
+            "pendiente": spec.get("pendiente", ""),
         }
         faltan_todos += [f"{clave}: {a}" for a in ausentes]
 
@@ -393,7 +448,7 @@ def main() -> int:
     informe = {
         "generado_en": datetime.now(timezone.utc).isoformat(),
         "resultados": estado,
-        "pendientes": PENDIENTES,
+        "pendientes": {c: d["pendiente"] for c, d in estado.items() if d["pendiente"]},
         "cubiertos": sum(1 for d in estado.values() if d["cubierto"]),
         "total": len(estado),
         "faltantes": faltan_todos,

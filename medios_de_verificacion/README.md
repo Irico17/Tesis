@@ -11,9 +11,9 @@ Una carpeta por resultado comprometido en la matriz de objetivos. Cada una conti
 | R2.1 | [`R2.1_lineas_base/`](R2.1_lineas_base/) | 2 de 2 | completo |
 | R2.2 | [`R2.2_comparacion/`](R2.2_comparacion/) | 9 de 9 | completo |
 | R2.3 | [`R2.3_modelo_final/`](R2.3_modelo_final/) | 3 de 3 | completo |
-| R3.1 | — | — | pendiente, fase siguiente |
-| R3.2 | — | — | pendiente, fase siguiente |
-| R3.3 | — | — | pendiente, fase siguiente |
+| R3.1 | [`R3.1_seleccion_de_la_tecnica/`](R3.1_seleccion_de_la_tecnica/) | 1 de 1 | completo |
+| R3.2 | [`R3.2_modulo_de_interpretacion/`](R3.2_modulo_de_interpretacion/) | 1 de 1 | completo |
+| R3.3 | [`R3.3_validacion_de_las_explicaciones/`](R3.3_validacion_de_las_explicaciones/) | 1 de 1 | completo; panel humano pendiente |
 
 ## Salida cruda de los experimentos
 

@@ -1,5 +1,5 @@
 {
-  "generado_en": "2026-09-13T03:53:21.262255+00:00",
+  "generado_en": "2026-10-07T12:28:07.452226+00:00",
   "resultados": {
     "R1.1_corpus_multimodal": {
       "carpeta": "R1.1_corpus_multimodal",
@@ -13,7 +13,8 @@
         "viabilidad_de_las_listas_de_correo.json"
       ],
       "ausentes": [],
-      "cubierto": true
+      "cubierto": true,
+      "pendiente": ""
     },
     "R1.2_pipeline_de_procesamiento": {
       "carpeta": "R1.2_pipeline_de_procesamiento",
@@ -26,7 +27,8 @@
         "pipeline_r1_1_r1_2.ipynb"
       ],
       "ausentes": [],
-      "cubierto": true
+      "cubierto": true,
+      "pendiente": ""
     },
     "R1.3_arquitectura": {
       "carpeta": "R1.3_arquitectura",
@@ -41,7 +43,8 @@
         "INFORME_DE_LA_ARQUITECTURA.md"
       ],
       "ausentes": [],
-      "cubierto": true
+      "cubierto": true,
+      "pendiente": ""
     },
     "R1.4_entrenamiento": {
       "carpeta": "R1.4_entrenamiento",
@@ -54,7 +57,8 @@
         "e1_multimodalidad.json"
       ],
       "ausentes": [],
-      "cubierto": true
+      "cubierto": true,
+      "pendiente": ""
     },
     "R2.1_lineas_base": {
       "carpeta": "R2.1_lineas_base",
@@ -66,7 +70,8 @@
         "e2_mecanismos_de_fusion.json"
       ],
       "ausentes": [],
-      "cubierto": true
+      "cubierto": true,
+      "pendiente": ""
     },
     "R2.2_comparacion": {
       "carpeta": "R2.2_comparacion",
@@ -85,7 +90,8 @@
         "codificador_multilingue.png"
       ],
       "ausentes": [],
-      "cubierto": true
+      "cubierto": true,
+      "pendiente": ""
     },
     "R2.3_modelo_final": {
       "carpeta": "R2.3_modelo_final",
@@ -98,15 +104,50 @@
         "informe_de_exportacion_de_la_propuesta.json"
       ],
       "ausentes": [],
-      "cubierto": true
+      "cubierto": true,
+      "pendiente": ""
+    },
+    "R3.1_seleccion_de_la_tecnica": {
+      "carpeta": "R3.1_seleccion_de_la_tecnica",
+      "titulo": "Selección del esquema técnico de interpretabilidad",
+      "medio_de_verificacion": "Matriz de decisiones técnicas y informe de selección",
+      "indicador": "Cuadro comparativo que justifique la selección de al menos una técnica XAI idónea para la arquitectura.",
+      "presentes": [
+        "e8_comparacion_de_familias.json"
+      ],
+      "ausentes": [],
+      "cubierto": true,
+      "pendiente": ""
+    },
+    "R3.2_modulo_de_interpretacion": {
+      "carpeta": "R3.2_modulo_de_interpretacion",
+      "titulo": "Módulo XAI integrado operativamente",
+      "medio_de_verificacion": "Código fuente del módulo acoplado.",
+      "indicador": "Extracción exitosa de pesos de importancia en la muestra de prueba de predicciones positivas.",
+      "presentes": [
+        "e9_narrativas_de_la_muestra_critica.json"
+      ],
+      "ausentes": [],
+      "cubierto": true,
+      "pendiente": ""
+    },
+    "R3.3_validacion_de_las_explicaciones": {
+      "carpeta": "R3.3_validacion_de_las_explicaciones",
+      "titulo": "Reporte de validación de transparencia operativa",
+      "medio_de_verificacion": "Formularios de evaluación UX y resultados de validación vía LLM",
+      "indicador": "Reporte estructurado por modalidad que traduzca el peso matemático en una justificación técnica comprensible. El desempeño del panel de evaluación se contrasta contra dos referencias: una meta objetivo del 90% de comprensión y un umbral mínimo aceptable del 80%, este último como criterio formal de cumplimiento del resultado.",
+      "presentes": [
+        "e9_validacion_y_panel.json"
+      ],
+      "ausentes": [],
+      "cubierto": true,
+      "pendiente": "El panel de analistas, criterio primario del indicador, está preparado y pendiente de aplicación. Su instrumento, la guía de reclutamiento y el cálculo de la puntuación están en `doc/validacion_xai/`."
     }
   },
   "pendientes": {
-    "R3.1": "Selección del esquema técnico de interpretabilidad",
-    "R3.2": "Módulo XAI integrado operativamente",
-    "R3.3": "Reporte de validación de transparencia operativa"
+    "R3.3_validacion_de_las_explicaciones": "El panel de analistas, criterio primario del indicador, está preparado y pendiente de aplicación. Su instrumento, la guía de reclutamiento y el cálculo de la puntuación están en `doc/validacion_xai/`."
   },
-  "cubiertos": 7,
-  "total": 7,
+  "cubiertos": 10,
+  "total": 10,
   "faltantes": []
 }
