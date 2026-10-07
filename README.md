@@ -23,18 +23,21 @@ evidencia que los sustenta; nada más. El documento de la tesis se redacta apart
 
 ## Objetivos, resultados y dónde se acreditan
 
+Los nombres de los resultados, sus medios de verificación y sus indicadores son
+los de la matriz de objetivos de la tesis (Tabla 2).
+
 | Objetivo específico | Resultado | Experimento | Evidencia | Estado |
 | --- | --- | --- | --- | --- |
 | **OE1.** Diseñar e implementar el modelo multimodal | R1.1 Corpus multimodal consolidado | E0 | [`R1.1_corpus_multimodal/`](medios_de_verificacion/R1.1_corpus_multimodal/) | reportado |
-| | R1.2 Pipeline de procesamiento | E0, E5 | [`R1.2_pipeline_de_procesamiento/`](medios_de_verificacion/R1.2_pipeline_de_procesamiento/) | reportado |
-| | R1.3 Arquitectura de fusión | E3 | [`R1.3_arquitectura/`](medios_de_verificacion/R1.3_arquitectura/) | reportado |
-| | R1.4 Pipeline de entrenamiento | E1, E4 | [`R1.4_entrenamiento/`](medios_de_verificacion/R1.4_entrenamiento/) | reportado |
+| | R1.2 Pipeline de procesamiento estandarizado | E0, E5 | [`R1.2_pipeline_de_procesamiento/`](medios_de_verificacion/R1.2_pipeline_de_procesamiento/) | reportado |
+| | R1.3 Arquitectura funcional de atención cruzada | E3 | [`R1.3_arquitectura/`](medios_de_verificacion/R1.3_arquitectura/) | reportado |
+| | R1.4 Pipeline de entrenamiento automatizado | E1, E4 | [`R1.4_entrenamiento/`](medios_de_verificacion/R1.4_entrenamiento/) | reportado |
 | **OE2.** Evaluar el modelo frente a enfoques unimodales | R2.1 Modelos de referencia | E1, E2 | [`R2.1_lineas_base/`](medios_de_verificacion/R2.1_lineas_base/) | reportado |
 | | R2.2 Cuadro comparativo de desempeño | E1, E2, E4, E5, E7 | [`R2.2_comparacion/`](medios_de_verificacion/R2.2_comparacion/) | reportado |
-| | R2.3 Modelo optimizado para despliegue | E6 | [`R2.3_modelo_final/`](medios_de_verificacion/R2.3_modelo_final/) | reportado |
-| **OE3.** Integrar técnicas de IA explicable | R3.1 Selección de la técnica de explicabilidad | E8 | [`R3.1_seleccion_de_la_tecnica/`](medios_de_verificacion/R3.1_seleccion_de_la_tecnica/) | reportado |
-| | R3.2 Módulo de interpretación semántica | E9 | [`R3.2_modulo_de_interpretacion/`](medios_de_verificacion/R3.2_modulo_de_interpretacion/) | reportado |
-| | R3.3 Validación de las explicaciones | E9 | [`R3.3_validacion_de_las_explicaciones/`](medios_de_verificacion/R3.3_validacion_de_las_explicaciones/) | verificación numérica completa; panel de analistas preparado y pendiente |
+| | R2.3 Modelo final optimizado | E6 | [`R2.3_modelo_final/`](medios_de_verificacion/R2.3_modelo_final/) | reportado |
+| **OE3.** Integrar técnicas de IA explicable | R3.1 Selección del esquema técnico de interpretabilidad | E8 | [`R3.1_seleccion_de_la_tecnica/`](medios_de_verificacion/R3.1_seleccion_de_la_tecnica/) | reportado |
+| | R3.2 Módulo XAI integrado operativamente | E9 | [`R3.2_modulo_de_interpretacion/`](medios_de_verificacion/R3.2_modulo_de_interpretacion/) | reportado |
+| | R3.3 Reporte de validación de transparencia operativa | E9 | [`R3.3_validacion_de_las_explicaciones/`](medios_de_verificacion/R3.3_validacion_de_las_explicaciones/) | verificación numérica completa; panel de analistas preparado y pendiente |
 
 ---
 

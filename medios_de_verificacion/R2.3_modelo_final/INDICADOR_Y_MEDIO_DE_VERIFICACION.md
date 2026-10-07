@@ -1,4 +1,4 @@
-# R2.3: Modelo final optimizado y validado
+# R2.3: Modelo final optimizado
 
 ## Medio de verificación comprometido
 
@@ -6,7 +6,7 @@
 
 ## Indicador objetivamente verificable
 
-> El modelo optimizado es funcional para realizar inferencias sobre datos nuevos no vistos, y reporta su tasa de falsos negativos observada en el conjunto de prueba, sin presuponer una reducción respecto de la línea base, conforme al enfoque de caracterización adoptado en R2.2.
+> El modelo optimizado es funcional para realizar inferencias sobre nuevos datos no vistos, reportando su tasa de falsos negativos observada en el conjunto de prueba (sin presuponer una reducción respecto al baseline, conforme al enfoque de caracterización adoptado en R2.2).
 
 ## Qué contiene esta carpeta
 

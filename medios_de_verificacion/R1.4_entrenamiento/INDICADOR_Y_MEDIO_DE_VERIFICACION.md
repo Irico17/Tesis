@@ -6,7 +6,7 @@
 
 ## Indicador objetivamente verificable
 
-> Pipeline automatizado que demuestre convergencia matemática y ausencia de sobreajuste crítico. Evaluación empírica, durante el entrenamiento, de la necesidad de aplicar ponderación de clases, con base en el comportamiento de la exhaustividad de la clase minoritaria. Esta decisión se documenta con evidencia experimental y no se asume a priori.
+> Pipeline automatizado demostrando convergencia y estabilidad empíricas y ausencia de sobreajuste crítico (overfitting). Evaluación empírica, durante el entrenamiento, de la necesidad de aplicar class weighting, con base en el comportamiento del recall de la clase minoritaria a lo largo de las particiones de validación agrupadas por campaña. Esta decisión se documentará con evidencia experimental y no se asume a priori.
 
 ## Qué contiene esta carpeta
 

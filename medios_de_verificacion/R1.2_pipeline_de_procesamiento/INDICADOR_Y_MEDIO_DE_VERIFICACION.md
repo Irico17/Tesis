@@ -6,7 +6,7 @@
 
 ## Indicador objetivamente verificable
 
-> Ejecución sin errores del script de limpieza y extracción de características del 90% de las muestras del dataset.
+> Ejecución sin errores del script de limpieza, extracción de características del 90 % de las muestras del dataset.
 
 ## Qué contiene esta carpeta
 

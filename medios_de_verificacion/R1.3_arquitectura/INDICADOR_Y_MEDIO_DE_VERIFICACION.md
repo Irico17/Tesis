@@ -6,7 +6,7 @@
 
 ## Indicador objetivamente verificable
 
-> Implementación en código (PyTorch/TensorFlow) de al menos dos ramas de extracción modal y una capa de fusión jerárquica o atención cruzada documentada. Prueba funcional de entrenamiento.
+> Implementación en código (PyTorch/TensorFlow) de al menos 2 ramas de extracción modal y una capa de Fusión Jerárquica o Atención Cruzada documentada. Prueba funcional de entrenamiento.
 
 ## Qué contiene esta carpeta
 

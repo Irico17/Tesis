@@ -47,23 +47,20 @@ CARPETAS = [
 ]
 
 # Los medios de verificación y los indicadores se transcriben LITERALMENTE de la
-# matriz de objetivos del plan de tesis. No se parafrasean: el jurado contrasta
+# Tabla 2 del documento (matriz de objetivos), con los mismos nombres de resultado. No se parafrasean: el jurado contrasta
 # contra ese texto y una paráfrasis convierte la comprobación en interpretación.
 RESULTADOS: dict[str, dict] = {
     "R1.1_corpus_multimodal": {
-        "titulo": "Dataset multimodal consolidado",
-        "medio": ("Repositorio digital documentado con estructura clara de datos "
-                  "crudos y procesados. Informe descriptivo del tratamiento de los "
-                  "datasets."),
-        "indicador": (
-            "Corpus consolidado en el que al menos el 25% de las muestras integra "
-            "simultáneamente texto, estructura HTML/DOM y metadatos de red, y al "
-            "menos el 40% integra texto y al menos una modalidad no textual. "
-            "Prevalencia de la clase positiva entre 0.40 y 0.60, tanto en el corpus "
-            "como en el subconjunto de dos modalidades. Formato estándar (.parquet, "
-            ".csv o .json) listo para ingesta. Prueba de humo automatizada que valide "
-            "la integridad del corpus, incluida la ausencia de fuga por "
-            "disponibilidad de campo."),
+        "titulo": "Corpus multimodal consolidado",
+        "medio": ("Repositorio digital documentado con estructura clara de datos crudos y "
+                  "procesados. Informe descriptivo del tratamiento de los datasets."),
+        "indicador": ("Corpus consolidado en el que al menos el 25% de las muestras integra "
+                      "simultáneamente texto, estructura HTML/DOM y metadatos de red, y al menos "
+                      "el 40% integra texto y al menos una modalidad no textual. Prevalencia de "
+                      "la clase positiva entre 0.40 y 0.60, tanto en el corpus como en el "
+                      "subconjunto de dos modalidades. Formato estándar (.parquet, .csv o .json) "
+                      "listo para ingesta. Prueba de humo automatizada que valide la integridad "
+                      "del corpus, incluida la ausencia de fuga por disponibilidad de campo."),
         "artefactos": [
             (EXP / "e0" / "e0.json", "e0_corpus_y_prueba_de_humo.json",
              "Criterios del indicador contrastados uno a uno y prueba de humo"),
@@ -80,8 +77,8 @@ RESULTADOS: dict[str, dict] = {
     "R1.2_pipeline_de_procesamiento": {
         "titulo": "Pipeline de procesamiento estandarizado",
         "medio": "Código fuente y notebook de Jupyter/Colab (.ipynb) documentado.",
-        "indicador": ("Ejecución sin errores del script de limpieza y extracción de "
-                      "características del 90% de las muestras del dataset."),
+        "indicador": ("Ejecución sin errores del script de limpieza, extracción de "
+                      "características del 90 % de las muestras del dataset."),
         "artefactos": [
             (EXP / "e0" / "e0.json", "e0_cobertura_del_procesamiento.json",
              "Cobertura del procesamiento y comprobaciones de integridad"),
@@ -94,12 +91,11 @@ RESULTADOS: dict[str, dict] = {
     },
     "R1.3_arquitectura": {
         "titulo": "Arquitectura funcional de atención cruzada",
-        "medio": ("Informe descriptivo de la arquitectura. Diagrama de arquitectura "
-                  "del modelo y código fuente de la red neuronal."),
-        "indicador": ("Implementación en código (PyTorch/TensorFlow) de al menos dos "
-                      "ramas de extracción modal y una capa de fusión jerárquica o "
-                      "atención cruzada documentada. Prueba funcional de "
-                      "entrenamiento."),
+        "medio": ("Informe descriptivo de la arquitectura. Diagrama de arquitectura del "
+                  "modelo y código fuente de la red neuronal."),
+        "indicador": ("Implementación en código (PyTorch/TensorFlow) de al menos 2 ramas de "
+                      "extracción modal y una capa de Fusión Jerárquica o Atención Cruzada "
+                      "documentada. Prueba funcional de entrenamiento."),
         "artefactos": [
             (BASE / "data" / "reports" / "model_sanity_check.json",
              "prueba_funcional_de_la_arquitectura.json",
@@ -122,14 +118,14 @@ RESULTADOS: dict[str, dict] = {
     },
     "R1.4_entrenamiento": {
         "titulo": "Pipeline de entrenamiento automatizado",
-        "medio": ("Scripts de entrenamiento automatizados. Logs de ejecución y curvas "
-                  "de aprendizaje (Loss/Accuracy)."),
-        "indicador": (
-            "Pipeline automatizado que demuestre convergencia matemática y ausencia de "
-            "sobreajuste crítico. Evaluación empírica, durante el entrenamiento, de la "
-            "necesidad de aplicar ponderación de clases, con base en el comportamiento "
-            "de la exhaustividad de la clase minoritaria. Esta decisión se documenta "
-            "con evidencia experimental y no se asume a priori."),
+        "medio": ("Scripts de entrenamiento automatizados. Logs de ejecución y curvas de "
+                  "aprendizaje (Loss/Accuracy)."),
+        "indicador": ("Pipeline automatizado demostrando convergencia y estabilidad empíricas y "
+                      "ausencia de sobreajuste crítico (overfitting). Evaluación empírica, "
+                      "durante el entrenamiento, de la necesidad de aplicar class weighting, con "
+                      "base en el comportamiento del recall de la clase minoritaria a lo largo de"
+                      " las particiones de validación agrupadas por campaña. Esta decisión se "
+                      "documentará con evidencia experimental y no se asume a priori."),
         "artefactos": [
             (EXP / "e4" / "e4.json", "e4_generalizacion_y_ponderacion.json",
              "Curva de aprendizaje, protocolo de partición y decisión de ponderación"),
@@ -149,10 +145,10 @@ RESULTADOS: dict[str, dict] = {
                    "src/phishing_model/train.py"],
     },
     "R2.1_lineas_base": {
-        "titulo": "Selección e implementación de líneas base unimodales",
-        "medio": "Informe de selección y código de implementación.",
-        "indicador": ("Justificación e implementación de al menos dos enfoques "
-                      "unimodales funcionales como líneas base."),
+        "titulo": "Modelos de referencia",
+        "medio": "Informe de selección y código de implementación",
+        "indicador": ("Justificación e implementación de al menos 2 enfoques unimodales "
+                      "funcionales como baselines."),
         "artefactos": [
             (EXP / "e1" / "e1.json", "e1_unimodales_y_piso_clasico.json",
              "Desempeño de los tres unimodales neuronales y las cuatro líneas base"),
@@ -163,16 +159,15 @@ RESULTADOS: dict[str, dict] = {
                    "src/phishing_baseline/"],
     },
     "R2.2_comparacion": {
-        "titulo": "Pipeline de comparación de modelos",
-        "medio": ("Informe técnico y gráficos de rendimiento (curvas ROC, matriz de "
-                  "confusión). Reporte de métricas comparativas."),
-        "indicador": (
-            "Cuadro comparativo que cuantifique y caracterice las diferencias en "
-            "exactitud, precisión, exhaustividad, F1 y ROC-AUC entre el modelo "
-            "propuesto y las líneas base unimodales, acompañado de pruebas de "
-            "significancia estadística (McNemar o t de Student) que determinen si las "
-            "diferencias observadas son estadísticamente significativas (p < 0.05) o "
-            "producto de varianza aleatoria."),
+        "titulo": "Cuadro comparativo de desempeño",
+        "medio": ("Informe técnico y gráficos de rendimiento (Curvas ROC, Matriz de "
+                  "Confusión). Reporte de métricas comparativas."),
+        "indicador": ("Cuadro comparativo que cuantifique y caracterice las diferencias en "
+                      "exactitud, precisión, recall, F1-Score y AUC-ROC entre el modelo propuesto"
+                      " y los baselines unimodales, acompañado de pruebas de significancia "
+                      "estadística (McNemar o T-Test) que determinen si las diferencias "
+                      "observadas son estadísticamente significativas (p < 0.05) o producto de "
+                      "varianza aleatoria."),
         "artefactos": [
             (EXP / "e4" / "e4.json", "cuadro_comparativo_corpus_completo.json",
              "Cuadro comparativo de las doce arquitecturas con sus pruebas"),
@@ -199,14 +194,13 @@ RESULTADOS: dict[str, dict] = {
         },
     },
     "R2.3_modelo_final": {
-        "titulo": "Modelo final optimizado y validado",
-        "medio": ("Informe final junto a archivo de pesos algorítmicos exportados y "
-                  "reporte de latencia."),
-        "indicador": (
-            "El modelo optimizado es funcional para realizar inferencias sobre datos "
-            "nuevos no vistos, y reporta su tasa de falsos negativos observada en el "
-            "conjunto de prueba, sin presuponer una reducción respecto de la línea "
-            "base, conforme al enfoque de caracterización adoptado en R2.2."),
+        "titulo": "Modelo final optimizado",
+        "medio": ("Informe final junto a archivo de pesos algorítmicos exportados y reporte "
+                  "de latencia."),
+        "indicador": ("El modelo optimizado es funcional para realizar inferencias sobre nuevos "
+                      "datos no vistos, reportando su tasa de falsos negativos observada en el "
+                      "conjunto de prueba (sin presuponer una reducción respecto al baseline, "
+                      "conforme al enfoque de caracterización adoptado en R2.2)."),
         "artefactos": [
             (EXP / "e6" / "e6.json", "e6_latencia_y_falsos_negativos.json",
              "Tamaño, latencia media y percentil 95, acuerdo de cuantización y "
@@ -241,8 +235,8 @@ RESULTADOS.update({
     "R3.1_seleccion_de_la_tecnica": {
         "titulo": "Selección del esquema técnico de interpretabilidad",
         "medio": "Matriz de decisiones técnicas y informe de selección",
-        "indicador": ("Cuadro comparativo que justifique la selección de al menos una "
-                      "técnica XAI idónea para la arquitectura."),
+        "indicador": ("Cuadro comparativo que justifique la selección de al menos una técnica XAI"
+                      " idónea para la arquitectura."),
         "artefactos": [
             (EXP / "e8" / "e8.json", "e8_comparacion_de_familias.json",
              "Comparación de la atención intrínseca, los valores de Shapley y la "
@@ -256,8 +250,8 @@ RESULTADOS.update({
     "R3.2_modulo_de_interpretacion": {
         "titulo": "Módulo XAI integrado operativamente",
         "medio": "Código fuente del módulo acoplado.",
-        "indicador": ("Extracción exitosa de pesos de importancia en la muestra de "
-                      "prueba de predicciones positivas."),
+        "indicador": ("Extracción exitosa de pesos de importancia en la muestra de prueba de "
+                      "predicciones positivas."),
         "artefactos": [
             (EXP / "e9" / "e9.json", "e9_narrativas_de_la_muestra_critica.json",
              "Cobertura de la extracción y de las narrativas sobre toda la muestra "
@@ -269,13 +263,16 @@ RESULTADOS.update({
     },
     "R3.3_validacion_de_las_explicaciones": {
         "titulo": "Reporte de validación de transparencia operativa",
-        "medio": ("Formularios de evaluación UX y resultados de validación vía LLM"),
-        "indicador": (
-            "Reporte estructurado por modalidad que traduzca el peso matemático en una "
-            "justificación técnica comprensible. El desempeño del panel de evaluación "
-            "se contrasta contra dos referencias: una meta objetivo del 90% de "
-            "comprensión y un umbral mínimo aceptable del 80%, este último como "
-            "criterio formal de cumplimiento del resultado."),
+        "medio": ("Formularios de evaluación UX y resultados de la verificación automatizada "
+                  "de las narrativas"),
+        "indicador": ("Reporte estructurado por modalidad que traduzca el peso matemático en una "
+                      "justificación técnica comprensible. El desempeño del panel de evaluación "
+                      "se contrasta contra dos referencias: una meta objetivo del 90% de "
+                      "comprensión y un umbral mínimo aceptable del 80%, este último como "
+                      "criterio formal de cumplimiento del resultado. El resultado se clasifica "
+                      "en tres bandas, que son meta alcanzada, mínimo cumplido o no cumplido, y "
+                      "se reporta con esa precisión, sin ajustar el instrumento con posterioridad"
+                      " a su aplicación."),
         "artefactos": [
             (EXP / "e9" / "e9.json", "e9_validacion_y_panel.json",
              "Verificación numérica de las narrativas frente a su vector de "

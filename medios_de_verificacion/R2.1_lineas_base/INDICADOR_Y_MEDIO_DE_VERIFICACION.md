@@ -1,12 +1,12 @@
-# R2.1: Selección e implementación de líneas base unimodales
+# R2.1: Modelos de referencia
 
 ## Medio de verificación comprometido
 
-> Informe de selección y código de implementación.
+> Informe de selección y código de implementación
 
 ## Indicador objetivamente verificable
 
-> Justificación e implementación de al menos dos enfoques unimodales funcionales como líneas base.
+> Justificación e implementación de al menos 2 enfoques unimodales funcionales como baselines.
 
 ## Qué contiene esta carpeta
 

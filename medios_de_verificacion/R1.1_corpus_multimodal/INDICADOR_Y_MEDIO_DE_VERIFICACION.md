@@ -1,4 +1,4 @@
-# R1.1: Dataset multimodal consolidado
+# R1.1: Corpus multimodal consolidado
 
 ## Medio de verificación comprometido
 

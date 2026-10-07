@@ -2,11 +2,11 @@
 
 ## Medio de verificación comprometido
 
-> Formularios de evaluación UX y resultados de validación vía LLM
+> Formularios de evaluación UX y resultados de la verificación automatizada de las narrativas
 
 ## Indicador objetivamente verificable
 
-> Reporte estructurado por modalidad que traduzca el peso matemático en una justificación técnica comprensible. El desempeño del panel de evaluación se contrasta contra dos referencias: una meta objetivo del 90% de comprensión y un umbral mínimo aceptable del 80%, este último como criterio formal de cumplimiento del resultado.
+> Reporte estructurado por modalidad que traduzca el peso matemático en una justificación técnica comprensible. El desempeño del panel de evaluación se contrasta contra dos referencias: una meta objetivo del 90% de comprensión y un umbral mínimo aceptable del 80%, este último como criterio formal de cumplimiento del resultado. El resultado se clasifica en tres bandas, que son meta alcanzada, mínimo cumplido o no cumplido, y se reporta con esa precisión, sin ajustar el instrumento con posterioridad a su aplicación.
 
 ## Qué contiene esta carpeta
 

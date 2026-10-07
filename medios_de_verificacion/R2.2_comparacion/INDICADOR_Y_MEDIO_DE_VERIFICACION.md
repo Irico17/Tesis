@@ -1,12 +1,12 @@
-# R2.2: Pipeline de comparación de modelos
+# R2.2: Cuadro comparativo de desempeño
 
 ## Medio de verificación comprometido
 
-> Informe técnico y gráficos de rendimiento (curvas ROC, matriz de confusión). Reporte de métricas comparativas.
+> Informe técnico y gráficos de rendimiento (Curvas ROC, Matriz de Confusión). Reporte de métricas comparativas.
 
 ## Indicador objetivamente verificable
 
-> Cuadro comparativo que cuantifique y caracterice las diferencias en exactitud, precisión, exhaustividad, F1 y ROC-AUC entre el modelo propuesto y las líneas base unimodales, acompañado de pruebas de significancia estadística (McNemar o t de Student) que determinen si las diferencias observadas son estadísticamente significativas (p < 0.05) o producto de varianza aleatoria.
+> Cuadro comparativo que cuantifique y caracterice las diferencias en exactitud, precisión, recall, F1-Score y AUC-ROC entre el modelo propuesto y los baselines unimodales, acompañado de pruebas de significancia estadística (McNemar o T-Test) que determinen si las diferencias observadas son estadísticamente significativas (p < 0.05) o producto de varianza aleatoria.
 
 ## Qué contiene esta carpeta
 

@@ -1,9 +1,9 @@
 {
-  "generado_en": "2026-10-07T12:28:07.452226+00:00",
+  "generado_en": "2026-10-07T16:04:00.948489+00:00",
   "resultados": {
     "R1.1_corpus_multimodal": {
       "carpeta": "R1.1_corpus_multimodal",
-      "titulo": "Dataset multimodal consolidado",
+      "titulo": "Corpus multimodal consolidado",
       "medio_de_verificacion": "Repositorio digital documentado con estructura clara de datos crudos y procesados. Informe descriptivo del tratamiento de los datasets.",
       "indicador": "Corpus consolidado en el que al menos el 25% de las muestras integra simultáneamente texto, estructura HTML/DOM y metadatos de red, y al menos el 40% integra texto y al menos una modalidad no textual. Prevalencia de la clase positiva entre 0.40 y 0.60, tanto en el corpus como en el subconjunto de dos modalidades. Formato estándar (.parquet, .csv o .json) listo para ingesta. Prueba de humo automatizada que valide la integridad del corpus, incluida la ausencia de fuga por disponibilidad de campo.",
       "presentes": [
@@ -20,7 +20,7 @@
       "carpeta": "R1.2_pipeline_de_procesamiento",
       "titulo": "Pipeline de procesamiento estandarizado",
       "medio_de_verificacion": "Código fuente y notebook de Jupyter/Colab (.ipynb) documentado.",
-      "indicador": "Ejecución sin errores del script de limpieza y extracción de características del 90% de las muestras del dataset.",
+      "indicador": "Ejecución sin errores del script de limpieza, extracción de características del 90 % de las muestras del dataset.",
       "presentes": [
         "e0_cobertura_del_procesamiento.json",
         "e5_validez_y_fugas.json",
@@ -34,7 +34,7 @@
       "carpeta": "R1.3_arquitectura",
       "titulo": "Arquitectura funcional de atención cruzada",
       "medio_de_verificacion": "Informe descriptivo de la arquitectura. Diagrama de arquitectura del modelo y código fuente de la red neuronal.",
-      "indicador": "Implementación en código (PyTorch/TensorFlow) de al menos dos ramas de extracción modal y una capa de fusión jerárquica o atención cruzada documentada. Prueba funcional de entrenamiento.",
+      "indicador": "Implementación en código (PyTorch/TensorFlow) de al menos 2 ramas de extracción modal y una capa de Fusión Jerárquica o Atención Cruzada documentada. Prueba funcional de entrenamiento.",
       "presentes": [
         "prueba_funcional_de_la_arquitectura.json",
         "e3_tolerancia_y_degradacion.json",
@@ -50,7 +50,7 @@
       "carpeta": "R1.4_entrenamiento",
       "titulo": "Pipeline de entrenamiento automatizado",
       "medio_de_verificacion": "Scripts de entrenamiento automatizados. Logs de ejecución y curvas de aprendizaje (Loss/Accuracy).",
-      "indicador": "Pipeline automatizado que demuestre convergencia matemática y ausencia de sobreajuste crítico. Evaluación empírica, durante el entrenamiento, de la necesidad de aplicar ponderación de clases, con base en el comportamiento de la exhaustividad de la clase minoritaria. Esta decisión se documenta con evidencia experimental y no se asume a priori.",
+      "indicador": "Pipeline automatizado demostrando convergencia y estabilidad empíricas y ausencia de sobreajuste crítico (overfitting). Evaluación empírica, durante el entrenamiento, de la necesidad de aplicar class weighting, con base en el comportamiento del recall de la clase minoritaria a lo largo de las particiones de validación agrupadas por campaña. Esta decisión se documentará con evidencia experimental y no se asume a priori.",
       "presentes": [
         "e4_generalizacion_y_ponderacion.json",
         "curva_por_cantidad_de_datos.png",
@@ -62,9 +62,9 @@
     },
     "R2.1_lineas_base": {
       "carpeta": "R2.1_lineas_base",
-      "titulo": "Selección e implementación de líneas base unimodales",
-      "medio_de_verificacion": "Informe de selección y código de implementación.",
-      "indicador": "Justificación e implementación de al menos dos enfoques unimodales funcionales como líneas base.",
+      "titulo": "Modelos de referencia",
+      "medio_de_verificacion": "Informe de selección y código de implementación",
+      "indicador": "Justificación e implementación de al menos 2 enfoques unimodales funcionales como baselines.",
       "presentes": [
         "e1_unimodales_y_piso_clasico.json",
         "e2_mecanismos_de_fusion.json"
@@ -75,9 +75,9 @@
     },
     "R2.2_comparacion": {
       "carpeta": "R2.2_comparacion",
-      "titulo": "Pipeline de comparación de modelos",
-      "medio_de_verificacion": "Informe técnico y gráficos de rendimiento (curvas ROC, matriz de confusión). Reporte de métricas comparativas.",
-      "indicador": "Cuadro comparativo que cuantifique y caracterice las diferencias en exactitud, precisión, exhaustividad, F1 y ROC-AUC entre el modelo propuesto y las líneas base unimodales, acompañado de pruebas de significancia estadística (McNemar o t de Student) que determinen si las diferencias observadas son estadísticamente significativas (p < 0.05) o producto de varianza aleatoria.",
+      "titulo": "Cuadro comparativo de desempeño",
+      "medio_de_verificacion": "Informe técnico y gráficos de rendimiento (Curvas ROC, Matriz de Confusión). Reporte de métricas comparativas.",
+      "indicador": "Cuadro comparativo que cuantifique y caracterice las diferencias en exactitud, precisión, recall, F1-Score y AUC-ROC entre el modelo propuesto y los baselines unimodales, acompañado de pruebas de significancia estadística (McNemar o T-Test) que determinen si las diferencias observadas son estadísticamente significativas (p < 0.05) o producto de varianza aleatoria.",
       "presentes": [
         "cuadro_comparativo_corpus_completo.json",
         "cuadro_comparativo.png",
@@ -95,9 +95,9 @@
     },
     "R2.3_modelo_final": {
       "carpeta": "R2.3_modelo_final",
-      "titulo": "Modelo final optimizado y validado",
+      "titulo": "Modelo final optimizado",
       "medio_de_verificacion": "Informe final junto a archivo de pesos algorítmicos exportados y reporte de latencia.",
-      "indicador": "El modelo optimizado es funcional para realizar inferencias sobre datos nuevos no vistos, y reporta su tasa de falsos negativos observada en el conjunto de prueba, sin presuponer una reducción respecto de la línea base, conforme al enfoque de caracterización adoptado en R2.2.",
+      "indicador": "El modelo optimizado es funcional para realizar inferencias sobre nuevos datos no vistos, reportando su tasa de falsos negativos observada en el conjunto de prueba (sin presuponer una reducción respecto al baseline, conforme al enfoque de caracterización adoptado en R2.2).",
       "presentes": [
         "e6_latencia_y_falsos_negativos.json",
         "registro_de_la_medicion.log",
@@ -134,8 +134,8 @@
     "R3.3_validacion_de_las_explicaciones": {
       "carpeta": "R3.3_validacion_de_las_explicaciones",
       "titulo": "Reporte de validación de transparencia operativa",
-      "medio_de_verificacion": "Formularios de evaluación UX y resultados de validación vía LLM",
-      "indicador": "Reporte estructurado por modalidad que traduzca el peso matemático en una justificación técnica comprensible. El desempeño del panel de evaluación se contrasta contra dos referencias: una meta objetivo del 90% de comprensión y un umbral mínimo aceptable del 80%, este último como criterio formal de cumplimiento del resultado.",
+      "medio_de_verificacion": "Formularios de evaluación UX y resultados de la verificación automatizada de las narrativas",
+      "indicador": "Reporte estructurado por modalidad que traduzca el peso matemático en una justificación técnica comprensible. El desempeño del panel de evaluación se contrasta contra dos referencias: una meta objetivo del 90% de comprensión y un umbral mínimo aceptable del 80%, este último como criterio formal de cumplimiento del resultado. El resultado se clasifica en tres bandas, que son meta alcanzada, mínimo cumplido o no cumplido, y se reporta con esa precisión, sin ajustar el instrumento con posterioridad a su aplicación.",
       "presentes": [
         "e9_validacion_y_panel.json"
       ],
