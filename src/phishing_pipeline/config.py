@@ -41,8 +41,7 @@ SPAM_GENUINE_FILE = "email_dataset_100k.csv"
 
 # PhishMMF
 PHISH_MMF_GITHUB_URL = "https://github.com/12345677876/PhishMMF.git"
-# Commit fijado para reproducibilidad (mejora de Fase I, ver
-# doc/INFORME_R1.3_R1.4_R2.2_R3.md §11): PhishMMF es un repositorio de
+# Commit fijado para reproducibilidad: PhishMMF es un repositorio de
 # terceros sin versionado formal; un `git clone --depth 1` sin referencia fija
 # trae lo que sea que esté en HEAD el día de la ejecución, que puede diferir
 # de lo usado para construir el corpus actual. Este es el commit real bajo el

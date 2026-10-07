@@ -126,7 +126,7 @@ def construir_escalador(kind: str, n_muestras: int):
 # percentil 99 de 1,423, de modo que MinMaxScaler comprimía el 99% de las
 # observaciones por debajo de 0.0004, dejando la característica indistinguible de
 # cero. log1p es monótona (preserva el orden), está definida en 0 y acota el
-# efecto de los extremos. Ver doc/REVISION_CODIGO_MODELO.md, hallazgo 2.
+# efecto de los extremos.
 LONG_TAIL_COUNT_COLS = frozenset(
     {
         "word_count",
@@ -230,8 +230,7 @@ class MultimodalPhishingDataset(Dataset):
         # corpus: la mediana de longitud es de 19 palabras y el percentil 75 de
         # 28, frente a un máximo de 512 -- rellenar siempre a 512 desperdiciaba
         # más de un orden de magnitud de cómputo en atención, que escala de
-        # forma cuadrática con la longitud. Ver doc/REVISION_CODIGO_MODELO.md,
-        # hallazgo 3.
+        # forma cuadrática con la longitud.
         #
         # pad_to_max_length=True se usa donde la longitud debe ser fija: la
         # exportación a ONNX traza el grafo con la dimensión de secuencia fija

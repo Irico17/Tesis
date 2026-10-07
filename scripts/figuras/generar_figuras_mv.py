@@ -828,7 +828,92 @@ def comparativas() -> int:
     return 0
 
 
+# Recuentos de la revisión sistemática, tal como los declaran las Tablas 5, 6 y 8
+# del Capítulo 3: registros por motor y bloque de búsqueda, registros que superan
+# el cribado por título y resumen, y estudios retenidos en la tabla de extracción.
+REVISION = {
+    "registros": {"Scopus": (188, 36), "ACM Digital Library": (3, 0),
+                  "IEEE Xplore": (73, 4)},
+    "duplicados": 0,
+    "tras_el_cribado": 49 + 14,
+    "incluidos": 16,
+}
+PRISMA = FIGURAS_ARQ / "prisma.png"
+
+
+def prisma() -> int:
+    """Diagrama de flujo de la selección de estudios según PRISMA 2020.
+
+    El Capítulo 3 daba los recuentos repartidos en tres tablas, una por bloque de
+    búsqueda y otra con los estudios retenidos, y el lector debía reconstruir por
+    su cuenta cuántos registros se descartaban en cada etapa. El diagrama los
+    encadena en las cuatro fases de la declaración PRISMA 2020.
+    """
+    print("Diagrama PRISMA de la revisión sistemática:")
+    formato.estilo()
+    r = REVISION
+    por_motor = {m: a + b for m, (a, b) in r["registros"].items()}
+    identificados = sum(por_motor.values())
+    cribados = identificados - r["duplicados"]
+    excluidos_cribado = cribados - r["tras_el_cribado"]
+    excluidos_lectura = r["tras_el_cribado"] - r["incluidos"]
+
+    fig, ax = plt.subplots(figsize=(formato.ANCHO_VERTICAL, formato.ANCHO_VERTICAL * 0.78))
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 10)
+    ax.axis("off")
+    borde, fondo, fase = "#042354", "#FFFFFF", "#E6EAF0"
+
+    def caja(x, y, w, h, texto, negrita=False):
+        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="square,pad=0",
+                                    facecolor=fondo, edgecolor=borde, linewidth=1.0))
+        ax.text(x + w / 2, y + h / 2, texto, ha="center", va="center",
+                fontsize=formato.CUERPO, color="black", linespacing=1.35,
+                fontweight="bold" if negrita else "normal")
+
+    def flecha(x0, y0, x1, y1):
+        ax.annotate("", xy=(x1, y1), xytext=(x0, y0),
+                    arrowprops=dict(arrowstyle="-|>", color="black", lw=0.9,
+                                    shrinkA=0, shrinkB=0))
+
+    # Bandas de fase a la izquierda, con el texto en vertical.
+    fases = (("Identificación", 7.3, 2.5), ("Cribado", 2.6, 4.5),
+             ("Inclusión", 0.2, 2.2))
+    for nombre, y, h in fases:
+        ax.add_patch(FancyBboxPatch((0.05, y), 0.75, h, boxstyle="square,pad=0",
+                                    facecolor=fase, edgecolor="none"))
+        ax.text(0.425, y + h / 2, nombre, rotation=90, ha="center", va="center",
+                fontsize=formato.ROTULO, color="black", fontweight="bold")
+
+    xi, wi, xd, wd = 1.1, 4.3, 6.0, 3.9
+    detalle = "\n".join(f"{m}: {n}" for m, n in por_motor.items())
+    caja(xi, 7.5, wi, 2.1, f"Registros identificados en\nbases de datos (n = {identificados})\n"
+         f"{detalle}")
+    caja(xd, 7.8, wd, 1.5, f"Registros eliminados antes\ndel cribado: duplicados\n"
+         f"(n = {r['duplicados']})")
+    caja(xi, 5.35, wi, 1.2, f"Registros cribados por\ntítulo y resumen (n = {cribados})")
+    caja(xd, 5.2, wd, 1.5, f"Registros excluidos por\nlos criterios de inclusión\n"
+         f"y exclusión (n = {excluidos_cribado})")
+    caja(xi, 2.85, wi, 1.2, f"Informes evaluados en\nlectura completa (n = {r['tras_el_cribado']})")
+    caja(xd, 2.7, wd, 1.5, f"Informes excluidos por no\naportar a las preguntas\n"
+         f"de revisión (n = {excluidos_lectura})")
+    caja(xi, 0.45, wi, 1.2, f"Estudios incluidos en\nla revisión (n = {r['incluidos']})",
+         negrita=True)
+
+    centro = xi + wi / 2
+    flecha(centro, 7.5, centro, 6.55)
+    flecha(centro, 5.35, centro, 4.05)
+    flecha(centro, 2.85, centro, 1.65)
+    flecha(xi + wi, 8.55, xd, 8.55)
+    flecha(xi + wi, 5.95, xd, 5.95)
+    flecha(xi + wi, 3.45, xd, 3.45)
+
+    formato.guardar(fig, ((FIGURAS_ARQ, PRISMA.name),), "prisma")
+    return 0
+
+
 TAREAS = {
+    "prisma": prisma,
     "comparativas": comparativas,
     "matrices": matrices_de_confusion,
     "curvas_roc": curvas_roc,

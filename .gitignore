@@ -65,3 +65,7 @@ scripts/entregable/
 scratch/
 *backup*.zip
 .~lock.*
+
+# Instrucciones locales del entorno de trabajo; no forman parte de lo que
+# reproduce la tesis.
+CLAUDE.md

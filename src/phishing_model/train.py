@@ -513,8 +513,7 @@ def train(
 
     collate_fn = make_collate_fn(tokenizer)  # relleno dinámico por lote
     # Agrupamiento por longitud SOLO en entrenamiento: reduce el costo de atención
-    # en un factor ~7.6x medido sobre este corpus (ver doc/REVISION_CODIGO_MODELO.md,
-    # hallazgo 3). En validación no se usa: el orden allí es irrelevante para el
+    # en un factor ~7.6x medido sobre este corpus. En validación no se usa: el orden allí es irrelevante para el
     # resultado y conviene mantener el recorrido secuencial simple.
     train_sampler = LengthGroupedSampler(
         train_dataset.approx_lengths,

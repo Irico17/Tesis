@@ -510,8 +510,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--raw-dir", type=Path, default=None)
     parser.add_argument("--salida", type=Path, default=SALIDA)
-    # La prevalencia es un parámetro de diseño y se expone como tal: la
-    # justificación de 0.40 está en doc/DECISIONES_CORPUS_Y_PROTOCOLO.md.
+    # La prevalencia es un parámetro de diseño y se expone como tal: 0.40 sitúa
+    # el corpus dentro del rango que fija el indicador de R1.1.
     parser.add_argument("--prevalencia", type=float, default=0.40)
     parser.add_argument("--semilla", type=int, default=42)
     parser.add_argument(

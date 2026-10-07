@@ -18,7 +18,7 @@ modalidad por separado, después la fusión ingenua, y finalmente la fusión
 propuesta—, verificando que cada escalón supere al anterior.
 
 Advertencia de interpretación. Los metadatos de autenticación presentan una
-cobertura desigual entre fuentes (documentada en `doc/INFORME_PIPELINE_DATOS.md`),
+cobertura desigual entre fuentes (medida en el informe de E0, por colección),
 por lo que un desempeño elevado de B4 en la partición agrupada debe contrastarse
 siempre con su resultado en la validación por fuente no observada: la brecha
 entre ambos cuantifica en qué medida el modelo se apoya en la disponibilidad del

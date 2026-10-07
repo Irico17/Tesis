@@ -35,8 +35,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from comun import BASE, CORPUS, cargar_corpus, emitir
 
-# Umbrales del indicador de R1.1, confirmados por los asesores. La justificación
-# de la prevalencia está en doc/DECISIONES_CORPUS_Y_PROTOCOLO.md.
+# Umbrales del indicador de R1.1, confirmados por los asesores. La prevalencia
+# objetivo de 0.40 es un parámetro de diseño de phishing_pipeline.corpus_real.
 UMBRAL_TRIMODAL = 25.0
 UMBRAL_BIMODAL = 40.0
 RANGO_PREVALENCIA = (0.40, 0.60)

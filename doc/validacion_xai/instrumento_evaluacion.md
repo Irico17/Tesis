@@ -228,7 +228,7 @@ A nivel de panel (los 10 evaluadores):
 % comprensión (panel) = promedio del % de comprensión de todos los evaluadores
 ```
 
-**Criterio de aceptación de R3.3 — dos referencias, tres bandas.** A raíz de la observación del Jurado 1 en la revisión del E3 (*"se puede iniciar con 90 e ir bajando"*, pág. 12 del PDF; ver `doc/OBSERVACIONES_JURADO_E3.md`, C5), el resultado del panel se reporta contra **dos** referencias en lugar de una sola:
+**Criterio de aceptación de R3.3 — dos referencias, tres bandas.** A raíz de la observación del Jurado 1 en la revisión del E3 (*"se puede iniciar con 90 e ir bajando"*, pág. 12 del PDF), el resultado del panel se reporta contra **dos** referencias en lugar de una sola:
 
 | Banda | Rango | Interpretación |
 |---|---|---|

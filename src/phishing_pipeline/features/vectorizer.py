@@ -24,7 +24,7 @@ logger = get_logger(__name__)
 # incorporan los estadísticos de complejidad del DOM, que sí discriminan sobre
 # este corpus: media de 13.78 nodos en phishing frente a 1.87 en legítimos.
 # Se conservan en el esquema para que el pipeline siga extrayéndolas -- serían
-# informativas sobre un corpus no sanitizado. Ver doc/REVISION_CODIGO_MODELO.md.
+# informativas sobre un corpus no sanitizado.
 STRUCTURAL_FEATURE_COLS = [
     "has_html",
     "num_links",

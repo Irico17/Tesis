@@ -1,5 +1,4 @@
-# Lockfile de reproducibilidad exacta (mejora de Fase I, ver
-# doc/INFORME_R1.3_R1.4_R2.2_R3.md, §11). `requirements.txt` fija cotas
+# Lockfile de reproducibilidad exacta. `requirements.txt` fija cotas
 # mínimas (>=) para permitir parches de seguridad; este archivo fija
 # versiones EXACTAS -- generado con `pip freeze` desde un entorno virtual
 # limpio en el que solo se instaló `requirements.txt` (no el entorno de

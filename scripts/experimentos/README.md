@@ -1,20 +1,28 @@
-# Experimentos E1–E5
+# Experimentos E0–E9
 
-Cinco preguntas, cada una con su protocolo, sus líneas base y sus artefactos. El
-orden importa: **E1 a E3 comparten partición fija** y responden si el mecanismo
-funciona; E4 pregunta si generaliza; E5 no mide rendimiento, sino cuánto de lo
-medido es procedencia y no fenómeno.
+Diez preguntas, cada una con su protocolo, sus líneas base y sus artefactos. E0
+comprueba el corpus y el pipeline. El orden de los siguientes importa: **E1 a E3
+comparten partición fija** y responden si el mecanismo funciona; E4 pregunta si
+generaliza; E5 no mide rendimiento, sino cuánto de lo medido es procedencia y no
+fenómeno. E6 mide el modelo optimizado, E7 contrasta el codificador, y E8 y E9
+cubren la explicabilidad. Esta página detalla de E1 a E5; los demás se describen
+en la cabecera de su propio guion.
 
 Separarlos así responde a la indicación del asesor: *«hay que separar los
 experimentos de forma sistemática, porque si combinamos todo no vamos a saber qué
 ha hecho efecto»*.
 
 ```bash
+python scripts/experimentos/e0_corpus_y_pipeline.py
 python scripts/experimentos/e1_multimodalidad.py
 python scripts/experimentos/e2_mecanismo_fusion.py
 python scripts/experimentos/e3_ausencia_ramas.py
 python scripts/experimentos/e4_generalizacion.py
 python scripts/experimentos/e5_validez.py
+python scripts/experimentos/e6_modelo_optimizado.py
+python scripts/experimentos/e7_codificador_multilingue.py
+python scripts/experimentos/e8_explicabilidad.py --muestra 60
+python scripts/experimentos/e9_narrativa_y_validacion.py --verificar 100
 ```
 
 Cada uno escribe su JSON y su figura en `medios_de_verificacion/experimentos/<eN>/`
@@ -84,7 +92,7 @@ Sobre el **corpus completo**, no solo el trimodal.
 
 Se declara, con la medición que lo demuestra, que los tres ejes de cambio de
 distribución —tiempo, remitente, colección— no son medibles con corpus público.
-Ver `doc/DECISIONES_CORPUS_Y_PROTOCOLO.md`.
+Las cifras quedan en la clave `ejes_no_medibles` del informe de E4.
 
 ## E5 · Validez (sección, no experimento)
 

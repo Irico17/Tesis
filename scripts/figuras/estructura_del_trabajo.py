@@ -49,10 +49,10 @@ PAQUETES = [
       "5.3 Validación de fidelidad de las explicaciones"],
      "R3.1, R3.2 y R3.3", "II"),
     ("6. Cierre documental",
-     ["6.1 Redacción del capítulo de resultados",
+     ["6.1 Redacción de los capítulos de resultados",
       "6.2 Conclusiones, limitaciones y trabajo futuro",
       "6.3 Integración de la entrega y sustentación"],
-     "Capítulos 4 y 5", "II"),
+     "Capítulos 4 a 7", "II"),
 ]
 
 # Nombre canónico de cada resultado comprometido. Se emplea allí donde la tabla

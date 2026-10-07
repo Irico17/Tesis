@@ -22,7 +22,7 @@ temporal excluiría el 40% de los correos porque Kaggle no conserva fechas; la
 partición por remitente excluiría lo mismo y además el 99.5% de los dominios es de
 clase única; y la partición por colección tiene clase idéntica a procedencia en
 cinco de ocho colecciones. Se declara como propiedad medida del corpus público
-disponible, con las cifras en `doc/DECISIONES_CORPUS_Y_PROTOCOLO.md`.
+disponible, con las cifras en la clave `ejes_no_medibles` del informe.
 
     python scripts/experimentos/e4_generalizacion.py [--epocas 3] [--rapido]
 """
@@ -272,7 +272,6 @@ def main() -> int:
             "temporal": "Kaggle no conserva fechas: 0 columnas, 3.46% recuperable del cuerpo",
             "remitente": "Kaggle sin sender; 99.5% de los 7,002 dominios es de clase única",
             "coleccion": "clase idéntica a procedencia en cinco de ocho colecciones",
-            "referencia": "doc/DECISIONES_CORPUS_Y_PROTOCOLO.md",
         },
     }
 

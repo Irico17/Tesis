@@ -90,7 +90,7 @@ PSSUQ_OVERALL_ITEMS = list(range(1, 17))   # q1-q16
 COMPRENSION_N_ITEMS = 5
 COMPRENSION_UMBRAL_R3_3 = 80.0  # % mínimo comprometido en la Tabla 2 (IOV de R3.3)
 # Meta objetivo sugerida por el Jurado 1 en la revisión del E3 ("se puede iniciar
-# con 90 e ir bajando", pág. 12 del PDF -- ver doc/OBSERVACIONES_JURADO_E3.md, C5).
+# con 90 e ir bajando", pág. 12 del PDF).
 # Se reporta contra AMBAS referencias: partir de una meta exigente sin renegociar
 # el compromiso formal del IOV, y clasificar el resultado real en tres bandas.
 COMPRENSION_META_OBJETIVO = 90.0

@@ -2,7 +2,7 @@
 Estadísticos de complejidad estructural del DOM: número de nodos y profundidad
 de anidamiento.
 
-Motivación (ver `doc/REVISION_CODIGO_MODELO.md`, hallazgos 1 y 5). La rama
+Motivación. La rama
 estructural del modelo dependía de características que resultaron constantes en
 todo el corpus: `has_form`, `has_iframe` y `has_javascript` valen cero en las
 110,152 filas, porque las fuentes publicaron el HTML ya sanitizado, sin

@@ -9,8 +9,7 @@ predictiva" -- por eso este módulo no solo mide latencia, también compara
 predicciones FP32 vs. INT8 sobre las MISMAS filas para cuantificar cuánto
 (si acaso) degrada la cuantización la exactitud, en vez de asumir que no.
 
-Mismo patrón de verificación que el resto del proyecto (ver
-`doc/INFORME_R1.3_R1.4_R2.2_R3.md`, §9): se construye y se prueba de punta a
+Mismo patrón de verificación que el resto del proyecto: se construye y se prueba de punta a
 punta contra el checkpoint de validación disponible; los NÚMEROS de latencia
 reales (relevantes para la tesis) deben re-generarse contra el checkpoint
 entrenado en GPU -- la latencia de un modelo sub-entrenado es la misma

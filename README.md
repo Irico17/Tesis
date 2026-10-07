@@ -6,10 +6,12 @@ Cristhofer Alegre (PUCP), asesorada por el Dr. Edwin Villanueva.
 El trabajo propone una arquitectura que analiza simultáneamente tres modalidades
 del mensaje —el texto, la estructura del cuerpo en HTML y los metadatos de
 tránsito y autenticación— y las combina mediante fusión jerárquica con atención
-cruzada. Su objeto no es demostrar superioridad sobre un enfoque unimodal, sino
-**caracterizar** el comportamiento de esa arquitectura y de las alternativas con
-las que compite, incluidas líneas base clásicas, bajo un protocolo declarado de
-antemano.
+cruzada, y acompaña cada alerta de una explicación en lenguaje natural. Sobre un
+corpus de 44 100 correos, la arquitectura supera a los enfoques unimodales y a la
+fusión clásica con diferencias estadísticamente significativas, y la ventaja crece
+en el punto de operación exigente: con una falsa alarma por cada mil correos
+legítimos detecta el 95.3% del phishing, frente al 92.3% del mejor unimodal y al
+76.2% de la fusión clásica.
 
 Este repositorio contiene lo necesario para reproducir esos resultados y la
 evidencia que los sustenta. El documento de la tesis se redacta aparte.
@@ -22,7 +24,7 @@ evidencia que los sustenta. El documento de la tesis se redacta aparte.
 | --- | --- | --- |
 | 1. Diseñar e implementar el modelo multimodal | R1.1 a R1.4 | reportados |
 | 2. Evaluar el desempeño frente a enfoques unimodales | R2.1 a R2.3 | reportados |
-| 3. Integrar técnicas de IA explicable | R3.1 a R3.3 | fase siguiente |
+| 3. Integrar técnicas de IA explicable | R3.1 a R3.3 | reportados; el panel humano de R3.3 está preparado y pendiente |
 
 La evidencia de cada resultado está en [`medios_de_verificacion/`](medios_de_verificacion/),
 una carpeta por resultado, con una nota que enuncia el medio de verificación y el
@@ -39,14 +41,14 @@ src/phishing_model/        la arquitectura: ramas de extracción, mecanismos de
                            fusión, entrenamiento, evaluación y cuantización
 src/phishing_baseline/     líneas base clásicas B1, B3, B4 y B5
 
-scripts/experimentos/      la cola de siete experimentos, de E0 a E6
+scripts/experimentos/      los diez experimentos, de E0 a E9
 scripts/figuras/           figuras que exigen los medios de verificación
 scripts/prueba_integral.py prueba de integración de la cadena completa
 notebooks/                 recorrido documentado del pipeline de datos
 
 medios_de_verificacion/    evidencia, una carpeta por resultado comprometido
-doc/                       informe de la arquitectura, pre-registro de hipótesis
-                           y guía de lectura de los resultados
+doc/validacion_xai/        instrumento, guía de reclutamiento y puntuación del
+                           panel de analistas de R3.3
 data/                      artefactos de trabajo; no se versionan
 ```
 
@@ -117,6 +119,17 @@ python scripts/experimentos/consolidar_iov.py
 | E4 | ¿Generaliza a correo no visto? Cuadro comparativo completo | R1.4, R2.2 |
 | E5 | ¿Cuánto de lo medido es fenómeno y cuánto procedencia? | R1.2, R2.2 |
 | E6 | ¿Es utilizable en el punto de integración declarado? | R2.3 |
+| E7 | ¿Cambia el resultado con un codificador multilingüe? | R2.2 |
+| E8 | ¿Qué familia de explicabilidad conviene a la arquitectura? | R3.1 |
+| E9 | ¿Se explica toda alerta y coinciden las cifras de la narrativa con su atribución? | R3.2, R3.3 |
+
+Los ocho primeros forman la cola; E8 y E9 se ejecutan después, sobre el punto de
+control que la cola deja:
+
+```bash
+python scripts/experimentos/e8_explicabilidad.py --muestra 60
+python scripts/experimentos/e9_narrativa_y_validacion.py --verificar 100
+```
 
 Desde Windows, `scripts/estado_cola.ps1` consulta el avance de la cola en el
 servidor.
@@ -125,8 +138,10 @@ servidor.
 
 ## Cómo leer los resultados
 
-[`doc/COMO_INTERPRETAR_LOS_RESULTADOS.md`](doc/COMO_INTERPRETAR_LOS_RESULTADOS.md)
-explica qué significa cada cifra de cada informe y qué pregunta responde.
+Cada carpeta de [`medios_de_verificacion/`](medios_de_verificacion/) enuncia el
+indicador de su resultado y qué artefacto lo acredita; los informes en JSON de
+`medios_de_verificacion/experimentos/` registran, junto a cada cifra, la huella del
+corpus y de la partición, las semillas y el entorno con que se calculó.
 
 Dos advertencias que atraviesan todo el trabajo y conviene leer antes que
 cualquier número:

@@ -67,8 +67,7 @@ class ModalityEncoder(nn.Module):
         `torch.onnx.export` desde torch 2.x) traza el grafo simbólicamente y no
         puede manejar ramas Python que dependen del CONTENIDO de un tensor (solo
         de su forma) -- un `if` así rompe la exportación (error real encontrado y
-        corregido durante el desarrollo de R2.3, ver
-        `doc/INFORME_R1.3_R1.4_R2.2_R3.md`). La forma branchless de abajo logra el
+        corregido durante el desarrollo de R2.3). La forma branchless de abajo logra el
         mismo efecto con álgebra de tensores pura, exportable a ONNX.
         """
         fully_masked = key_padding_mask.all(dim=1, keepdim=True)  # [batch, 1]
