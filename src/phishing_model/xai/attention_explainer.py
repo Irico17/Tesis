@@ -21,7 +21,6 @@ retira al salir del context manager, sin efectos secundarios permanentes.
 from __future__ import annotations
 
 from contextlib import contextmanager
-from typing import Any
 
 import torch
 import torch.nn as nn

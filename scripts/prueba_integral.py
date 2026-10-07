@@ -29,12 +29,13 @@ import traceback
 from pathlib import Path
 from typing import Any, Callable
 
+import numpy as np
 import pandas as pd
 import torch
 
 from phishing_baseline.evaluation import DEFAULT_PREDICTIONS_DIR
 from phishing_model.config import MODEL_DIR, FusionType, ModelConfig, TrainConfig
-from phishing_pipeline.config import REPORTS_DIR, SPLITS_DIR_GROUP_AWARE
+from phishing_pipeline.config import REPORTS_DIR
 from phishing_pipeline.logging_utils import get_logger
 
 logger = get_logger(__name__)
@@ -174,9 +175,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Prueba de integración con datos mínimos")
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--rows", type=int, default=240, help="Filas de entrenamiento por variante")
-    # Se conserva por compatibilidad, pero ya no gobierna la carga: la partición
-    # se construye con el mismo código que la cola.
-    parser.add_argument("--splits-dir", type=str, default=str(SPLITS_DIR_GROUP_AWARE))
     parser.add_argument("--saltar-cuantizacion", action="store_true")
     parser.add_argument("--saltar-xai", action="store_true")
     parser.add_argument("--conservar", action="store_true", help="No borrar los artefactos generados")
@@ -190,7 +188,6 @@ def main() -> None:
     logger.info("Dispositivo: %s | filas por variante: %d", device, args.rows)
 
     r = Resultado()
-    splits_dir = Path(args.splits_dir)
 
     # ---------- 1. Datos ----------
     def cargar():
@@ -439,46 +436,39 @@ def main() -> None:
 
         r.ejecutar("7. Exportación a ONNX y cuantización", cuantizar, critico=False)
 
-    # ---------- 8. Estructura de los pliegues por fuente ----------
-    def pliegues():
-        from phishing_model.train_loso import build_loso_folds
-        from phishing_pipeline.config import PROCESSED_DIR
+    # ---------- 8. Partición agrupada por campaña ----------
+    def particion_por_campana():
+        # La comprobación se hace con el mismo código que reparte el corpus en la
+        # cola y sobre el corpus entero: una campaña partida entre entrenamiento
+        # y prueba deja que el modelo memorice su plantilla e infla la métrica,
+        # y solo aparece al repartir todas las filas.
+        raiz = Path(__file__).resolve().parents[1]
+        sys.path.insert(0, str(raiz / "scripts" / "experimentos"))
+        from comun import cargar_corpus, particion_agrupada
 
-        # El corpus COMPLETO, no la partición de entrenamiento: la validación
-        # por pliegue reparte todas las filas en cada uno —unas colecciones para
-        # entrenar y las retenidas íntegras como prueba—, de modo que
-        # comprobarlo sobre una partición no reflejaría el uso real y podría
-        # ocultar un fallo que solo aparece con el corpus entero.
-        completo = pd.read_parquet(corpus_del_trabajo())
-        folds = build_loso_folds(completo)
-        for f in folds:
-            total = len(f["train_df"]) + len(f["val_df"]) + len(f["test_df"])
-            if total != len(completo):
+        corpus = cargar_corpus()
+        p = particion_agrupada(corpus, agrupar=True)
+        lados = {"entrenamiento": p.entrenamiento, "validacion": p.validacion,
+                 "prueba": p.prueba}
+        total = sum(len(v) for v in lados.values())
+        todos = np.concatenate(list(lados.values()))
+        if total != len(corpus) or len(np.unique(todos)) != len(corpus):
+            raise AssertionError(
+                f"La partición reparte {total} filas ({len(np.unique(todos))} distintas) "
+                f"de un corpus de {len(corpus)}: se pierden o se duplican filas.")
+        if "template_cluster_id" not in corpus.columns:
+            raise AssertionError("El corpus no trae el identificador de campaña.")
+        campanas = {k: set(corpus.loc[v, "template_cluster_id"].dropna()) for k, v in lados.items()}
+        for a, b in (("entrenamiento", "validacion"), ("entrenamiento", "prueba"),
+                     ("validacion", "prueba")):
+            comunes = campanas[a] & campanas[b]
+            if comunes:
                 raise AssertionError(
-                    f"El pliegue que excluye {f['held_out_source']} suma {total} filas, "
-                    f"pero el corpus tiene {len(completo)}: se están perdiendo o duplicando filas."
-                )
-        if len(folds) < 2:
-            raise AssertionError(f"Se esperaban al menos 2 pliegues, se obtuvieron {len(folds)}")
-        for f in folds:
-            fuentes_test = set(f["test_df"]["source_dataset"].apply(_familia))
-            fuentes_train = set(f["train_df"]["source_dataset"].apply(_familia))
-            solapan = fuentes_test & fuentes_train
-            if solapan:
-                raise AssertionError(
-                    f"Fuga entre pliegues: la fuente excluida {f['held_out_source']} también "
-                    f"aparece en entrenamiento ({solapan})."
-                )
-            ids_train = set(f["train_df"]["email_id"])
-            ids_val = set(f["val_df"]["email_id"])
-            if ids_train & ids_val:
-                raise AssertionError(
-                    f"Pliegue {f['held_out_source']}: {len(ids_train & ids_val)} identificadores "
-                    "compartidos entre entrenamiento y validación."
-                )
-        return {"pliegues": len(folds)}
+                    f"{len(comunes)} campañas aparecen a la vez en {a} y en {b}.")
+        return {k: int(len(v)) for k, v in lados.items()}
 
-    r.ejecutar("8. Pliegues por fuente sin fuga entre particiones", pliegues)
+    r.ejecutar("8. Partición agrupada por campaña sin fuga entre particiones",
+               particion_por_campana)
 
     # ---------- 9. Ausencia de fugas por disponibilidad de campo ----------
     def sin_fugas_por_disponibilidad():
@@ -547,12 +537,6 @@ def main() -> None:
     print("  Los resultados reales del proyecto quedan intactos.")
 
     raise SystemExit(0 if ok else 1)
-
-
-def _familia(s: str) -> str:
-    from phishing_pipeline.config import get_source_family
-
-    return get_source_family(s)
 
 
 if __name__ == "__main__":

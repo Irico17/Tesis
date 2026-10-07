@@ -13,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 
 from phishing_pipeline.config import RANDOM_STATE
 from phishing_pipeline.features.vectorizer import STRUCTURAL_FEATURE_COLS
-from phishing_baseline.evaluation import compute_metrics, save_predictions
+from phishing_baseline.evaluation import save_predictions
 from phishing_baseline.group_cv import run_group_loso_cv, run_holdout_eval, run_stratified_cv
 
 BASELINE_NAME = "B3_RF_Structural"

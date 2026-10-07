@@ -27,7 +27,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from phishing_model.config import SANITY_CHECK_REPORT_PATH, FusionType, ModelConfig, TrainConfig
+from phishing_model.config import SANITY_CHECK_REPORT_PATH, FusionType, ModelConfig
 from phishing_model.dataset import (
     MultimodalPhishingDataset,
     construir_escalador,

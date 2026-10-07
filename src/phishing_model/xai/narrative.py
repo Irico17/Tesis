@@ -13,7 +13,7 @@ la misma plantilla Jinja2 -- ver `ExplanationInput` y los adaptadores
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from jinja2 import Template
 

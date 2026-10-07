@@ -36,7 +36,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from phishing_baseline.evaluation import compute_metrics, save_predictions
+from phishing_baseline.evaluation import save_predictions
 from phishing_baseline.group_cv import run_group_loso_cv, run_holdout_eval, run_stratified_cv
 from phishing_model.config import NETWORK_CATEGORICAL_COLS, NETWORK_CATEGORICAL_VOCABS
 from phishing_pipeline.config import RANDOM_STATE

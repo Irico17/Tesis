@@ -9,7 +9,7 @@ import pandas as pd
 from sklearn.model_selection import GroupKFold, StratifiedKFold
 
 from phishing_baseline.evaluation import save_predictions
-from phishing_pipeline.config import RANDOM_STATE, asignar_pliegues, get_source_family
+from phishing_pipeline.config import RANDOM_STATE, asignar_pliegues
 from phishing_baseline.evaluation import aggregate_cv_results, compute_metrics
 
 

@@ -32,7 +32,6 @@ import email
 import hashlib
 import mailbox
 import re
-import uuid
 from datetime import datetime, timezone
 from email import policy
 from email.message import Message

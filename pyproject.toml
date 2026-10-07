@@ -3,10 +3,10 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "phishing-pipeline"
-version = "1.1.0"
-description = "Pipeline R1.1/R1.2 + Baselines R2.1 para dataset multimodal de phishing"
-readme = "README_pipeline.md"
+name = "deteccion-multimodal-phishing"
+version = "2.0.0"
+description = "Detección multimodal de phishing en correo con fusión jerárquica y explicabilidad (tesis PUCP)"
+readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "pandas>=2.0.0",
@@ -17,9 +17,7 @@ dependencies = [
     "scikit-learn>=1.3.0",
     "transformers>=4.36.0",
     "torch>=2.0.0",
-    "tqdm>=4.66.0",
     "matplotlib>=3.8.0",
-    "seaborn>=0.13.0",
     "pyarrow>=14.0.0",
     "joblib>=1.3.0",
     "scipy>=1.11.0",
@@ -35,8 +33,7 @@ dependencies = [
 ]
 
 [project.scripts]
-phishing-pipeline = "phishing_pipeline.pipeline:main"
-phishing-baselines = "phishing_baseline.run_baselines:main"
+construir-corpus = "phishing_pipeline.corpus_real:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

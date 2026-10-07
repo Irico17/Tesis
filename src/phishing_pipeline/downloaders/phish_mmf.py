@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import shutil
 import subprocess
 import zipfile
 from datetime import datetime, timezone
@@ -13,7 +12,6 @@ from urllib.request import urlretrieve
 from phishing_pipeline.config import (
     MIN_PHISH_MMF_JSONL_LINES,
     PHISH_MMF_DIR,
-    PHISH_MMF_EXTRACTED,
     PHISH_MMF_GITHUB_URL,
     PHISH_MMF_PINNED_COMMIT,
     PHISH_MMF_ZIP_FILES,

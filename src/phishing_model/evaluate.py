@@ -19,7 +19,7 @@ import torch
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer
 
-from phishing_model.config import CHECKPOINT_DIR, FusionType, ModelConfig
+from phishing_model.config import FusionType, ModelConfig
 from phishing_model.dataset import MultimodalPhishingDataset, load_scalers, make_collate_fn
 from phishing_model.model import MultimodalPhishingClassifier, cargar_pesos
 from phishing_baseline.evaluation import compute_metrics, save_predictions

@@ -22,7 +22,6 @@ para no depender del límite de recursión en documentos muy anidados.
 
 from __future__ import annotations
 
-import pandas as pd
 from lxml import html as lxml_html
 
 from phishing_pipeline.features.dom_parser import ETIQUETA_HTML
@@ -77,70 +76,3 @@ def compute_dom_stats(body_raw: str | None) -> dict[str, int]:
             max_depth = depth
 
     return {"total_nodos_dom": total_nodes, "profundidad_dom": max_depth}
-
-
-def compute_dom_stats_batch(bodies: pd.Series) -> pd.DataFrame:
-    """Aplica `compute_dom_stats` sobre una serie de cuerpos y devuelve un DataFrame."""
-    records = [compute_dom_stats(b) for b in bodies]
-    return pd.DataFrame(records, index=bodies.index)
-
-
-def compute_dom_stats_enrichment(unified_path=None):
-    """
-    Calcula los estadísticos de DOM sobre TODAS las filas del corpus unificado.
-
-    Sigue el mismo patrón que `compute_network_lexical_enrichment`: se calcula
-    fila por fila sobre `body_raw`, la misma columna que emplean los tres
-    limpiadores, y se devuelve un DataFrame indexado por `email_id` listo para
-    fusionar con el corpus.
-    """
-    from phishing_pipeline.config import PROCESSED_DIR
-    from phishing_pipeline.splits import load_unified_for_splits
-
-    unified_path = unified_path or (PROCESSED_DIR / "Dataset_Unificado.parquet")
-    unified = load_unified_for_splits(unified_path)
-    stats = compute_dom_stats_batch(unified["body_raw"].fillna("").astype(str))
-    stats.insert(0, "email_id", unified["email_id"].values)
-    return stats
-
-
-def main() -> None:
-    """Genera el parquet de enriquecimiento de complejidad del DOM."""
-    import json
-    from datetime import datetime, timezone
-
-    from phishing_pipeline.config import PROCESSED_DIR, REPORTS_DIR
-    from phishing_pipeline.logging_utils import get_logger
-
-    logger = get_logger(__name__)
-    output_path = PROCESSED_DIR / "dom_stats_enrichment.parquet"
-
-    logger.info("=== Enriquecimiento de complejidad del DOM sobre el corpus completo ===")
-    stats = compute_dom_stats_enrichment()
-    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-    stats.to_parquet(output_path, index=False)
-    logger.info("Guardado: %s (%d filas)", output_path, len(stats))
-
-    report = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "n_rows": int(len(stats)),
-        "total_nodos_dom": {
-            "media": round(float(stats["total_nodos_dom"].mean()), 4),
-            "mediana": int(stats["total_nodos_dom"].median()),
-            "maximo": int(stats["total_nodos_dom"].max()),
-        },
-        "profundidad_dom": {
-            "media": round(float(stats["profundidad_dom"].mean()), 4),
-            "mediana": int(stats["profundidad_dom"].median()),
-            "maximo": int(stats["profundidad_dom"].max()),
-        },
-    }
-    report_path = REPORTS_DIR / "dom_stats_enrichment_report.json"
-    report_path.parent.mkdir(parents=True, exist_ok=True)
-    report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
-    logger.info("Reporte: %s", report_path)
-    print(json.dumps(report, indent=2, ensure_ascii=False))
-
-
-if __name__ == "__main__":
-    main()
