@@ -276,14 +276,44 @@ RESULTADOS.update({
         "artefactos": [
             (EXP / "e9" / "e9.json", "e9_validacion_y_panel.json",
              "Verificación numérica de las narrativas frente a su vector de "
-             "atribución, instrumento del panel y ejemplos seleccionados"),
+             "atribución (100 de 100 correctas)"),
+            (EXP / "e9" / "ejemplos_del_panel.json", "ejemplos_del_panel.json",
+             "Correos del panel y su explicación, con los criterios de selección y "
+             "cuántos candidatos superó cada filtro"),
+            (BASE / "doc" / "validacion_xai" / "formulario" / "vista_previa.html", "formulario_del_panel.html",
+             "Formulario de evaluación tal como lo ve el evaluador: consentimiento, "
+             "perfil, inducción, diez preguntas de comprensión, SUS y PSSUQ"),
+            (BASE / "doc" / "validacion_xai" / "formulario" / "crear_formulario.gs", "crear_formulario.gs",
+             "Apps Script que crea ese mismo formulario en Google Forms"),
+            (BASE / "doc" / "validacion_xai" / "formulario" / "clave_de_respuestas.json",
+             "clave_de_respuestas.json",
+             "Respuesta correcta de cada pregunta de comprensión, derivada del reporte"),
         ],
-        "pendiente": ("El panel de analistas, criterio primario del indicador, está "
-                      "preparado y pendiente de aplicación. Su instrumento, la guía de "
-                      "reclutamiento y el cálculo de la puntuación están en "
-                      "`doc/validacion_xai/`."),
+        "explicacion": (
+            "El panel lee cuatro correos reales del conjunto de prueba, dos de "
+            "phishing y dos legítimos, con el reporte que el modelo reportado generó "
+            "para cada uno, y responde diez preguntas de comprensión; después completa "
+            "el SUS y el PSSUQ. Los correos se eligieron con "
+            "`scripts/experimentos/e9_ejemplos_del_panel.py`, con criterios fijos "
+            "declarados antes de aplicar el instrumento: bien clasificados, en inglés o "
+            "español, cuerpo legible, tres palabras decisivas legibles y visibles en el "
+            "correo mostrado y, en los legítimos, distintas de un nombre propio. Los "
+            "enlaces se desactivan y se ocultan direcciones y teléfonos. "
+            "`ejemplos_del_panel.json` registra cuántos candidatos superó cada filtro. "
+            "El formulario se genera con `doc/validacion_xai/generar_formulario.py` a "
+            "partir del instrumento (`doc/validacion_xai/instrumento_evaluacion.md`), y "
+            "las respuestas exportadas se califican con "
+            "`doc/validacion_xai/respuestas_a_csv.py` y "
+            "`doc/validacion_xai/script_scoring.py`."),
+        "pendiente": ("El panel de evaluadores, criterio primario del indicador, tiene "
+                      "su instrumento listo y está pendiente de resultados. Cuando "
+                      "lleguen, el resultado de `script_scoring.py` se añadirá a esta "
+                      "carpeta."),
         "codigo": ["src/phishing_model/xai/fidelity_check.py",
                    "src/phishing_model/explicabilidad/procedencia.py",
+                   "scripts/experimentos/e9_ejemplos_del_panel.py",
+                   "doc/validacion_xai/generar_formulario.py",
+                   "doc/validacion_xai/respuestas_a_csv.py",
                    "doc/validacion_xai/script_scoring.py"],
     },
 })
@@ -318,6 +348,8 @@ def _nota(carpeta: Path, clave: str, spec: dict, copiados: list, ausentes: list)
     if spec.get("codigo"):
         lineas += ["", "## Código fuente que sustenta el resultado", ""]
         lineas += [f"- `{c}`" for c in spec["codigo"]]
+    if spec.get("explicacion"):
+        lineas += ["", "## Cómo se obtuvo", "", spec["explicacion"]]
     if spec.get("pendiente"):
         lineas += ["", "## Parte pendiente", "", spec["pendiente"]]
     if ausentes:

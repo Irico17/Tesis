@@ -40,13 +40,13 @@ Columnas requeridas:
                                   (q16 es además el ítem individual de
                                   satisfacción general del instrumento)
 
-  comprension_q1 ... comprension_q5      : str/opcional. La respuesta cruda
+  comprension_q1 ... comprension_q10     : str/opcional. La respuesta cruda
                               que dio el evaluador en la Sección C (letra de
                               opción elegida, o "V"/"F"). Se conserva para
                               trazabilidad/auditoría, pero NO se usa para el
                               cálculo de comprensión — ver siguiente columna.
 
-  comprension_correcta_q1 ... comprension_correcta_q5 : int, 0 o 1. Ya
+  comprension_correcta_q1 ... comprension_correcta_q10 : int, 0 o 1. Ya
                               codifica si esa respuesta fue correcta (1) o
                               incorrecta (0), comparándola contra la clave de
                               respuestas de instrumento_evaluacion.md en el
@@ -87,7 +87,7 @@ PSSUQ_INFOQUAL_ITEMS = list(range(7, 13))  # q7-q12
 PSSUQ_INTQUAL_ITEMS = list(range(13, 16))  # q13-q15
 PSSUQ_OVERALL_ITEMS = list(range(1, 17))   # q1-q16
 
-COMPRENSION_N_ITEMS = 5
+COMPRENSION_N_ITEMS = 10  # sección C: cuatro correos, diez preguntas
 COMPRENSION_UMBRAL_R3_3 = 80.0  # % mínimo comprometido en la Tabla 2 (IOV de R3.3)
 # Meta objetivo sugerida por el Jurado 1 en la revisión del E3 ("se puede iniciar
 # con 90 e ir bajando", pág. 12 del PDF).
@@ -357,11 +357,11 @@ def build_synthetic_panel(n: int = 5) -> pd.DataFrame:
     ]
     pssuq_base = [5, 4, 4, 3, 4, 4, 4, 3, 4, 4, 3, 4, 4, 4, 3, 4]
     comprension_correcta_patterns = [
-        [1, 1, 1, 1, 1],  # 100%
-        [1, 1, 1, 1, 0],  # 80%
-        [1, 1, 0, 1, 0],  # 60% (por debajo del umbral individual)
-        [1, 1, 1, 0, 1],  # 80%
-        [1, 1, 1, 1, 1],  # 100%
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # 100%
+        [1, 1, 1, 1, 0, 1, 1, 1, 1, 0],  # 80%
+        [1, 1, 0, 1, 0, 1, 0, 1, 1, 0],  # 60% (por debajo del umbral individual)
+        [1, 1, 1, 0, 1, 1, 1, 1, 0, 1],  # 80%
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],  # 90%
     ]
 
     for idx in range(n):
@@ -375,7 +375,7 @@ def build_synthetic_panel(n: int = 5) -> pd.DataFrame:
         row.update({f"sus_q{i + 1}": sus_vals[i] for i in range(SUS_N_ITEMS)})
         row.update({f"pssuq_q{i + 1}": pssuq_vals[i] for i in range(PSSUQ_N_ITEMS)})
         row.update(
-            {f"comprension_q{i + 1}": ["A", "B", "C", "V", "F"][i] for i in range(COMPRENSION_N_ITEMS)}
+            {f"comprension_q{i + 1}": "A" for i in range(COMPRENSION_N_ITEMS)}
         )
         row.update(
             {

@@ -1,0 +1,687 @@
+{
+  "experimento": "e9_ejemplos_del_panel",
+  "resultado": "R3.3",
+  "corrida_explicada": "e4_atencion_cruzada_token_s42_agr",
+  "tecnica_de_texto": "atencion",
+  "criterios": {
+    "bien_clasificados": true,
+    "largo_del_cuerpo": [
+      250,
+      1600
+    ],
+    "idiomas": [
+      "en",
+      "es"
+    ],
+    "alta_confianza": ">= 0.99",
+    "confianza_intermedia": "entre 0.5 y 0.95, sin límite de largo; el cuerpo se recorta al mostrarlo",
+    "palabras_citadas": "las tres decisivas, legibles (criterio de E9); la principal, alfabética, de 3 o más letras y no vacía; ninguna repetida en el bloque; las tres visibles en el correo mostrado; en el grupo legítimo, ninguna decisiva que sea un nombre propio",
+    "idioma": "un solo idioma, detectado por tramos con probabilidad >= 0.9",
+    "orden": "huella SHA-256 del identificador, determinista",
+    "seguridad": "enlaces desactivados; correos y teléfonos ocultos"
+  },
+  "conteo": {
+    "prueba_bien_clasificados": 4385,
+    "con_cuerpo_legible": 1363,
+    "en_ingles_o_espanol": 907,
+    "dudosos_bien_clasificados_en_ingles_o_espanol": 4
+  },
+  "grupos": {
+    "phishing_alta_confianza": {
+      "candidatos": 353,
+      "explicados": 300,
+      "aptos": 11
+    },
+    "legitimo": {
+      "candidatos": 551,
+      "explicados": 300,
+      "aptos": 7
+    },
+    "confianza_intermedia": {
+      "candidatos": 4,
+      "explicados": 4,
+      "aptos": 0
+    }
+  },
+  "ejemplos": {
+    "phishing_1": {
+      "email_id": "79f02a89-933a-47fc-a1bf-f9947cc9686b",
+      "coleccion": "Nazario",
+      "etiqueta_real": "phishing",
+      "idioma": "en",
+      "asunto": "USAA REQUEST YOUR APPROVAL FOR AN INCOMING ACCOUNT DEPOSIT",
+      "remitente": "[remitente oculto]",
+      "cuerpo": "To ensure delivery to your inbox, please add [correo oculto] to your address book.\t \n \n   \t  \n   \n  \t  \n   Payment Approval Notification\n  View Accounts | Privacy Promise | Contact Us\n\t  \n    \n   \t \n  \t \n  \t \n\t  \n   USAA SECURITY ZONE  \nUSAA # ending in: - XXXX\n\t  \n   \n  \n  \n   \n  \n \n    Dear Customer,\nA payment was transffered to your account from another US bank account using the Authomated Clearing House (ACH).\n\n For security reasons, We have temporarily hold the payment until necessary verification is done. You are to sign on and verify your account as a means to accept the payment. Payment will be posted within 2-3 business working days after your verification. \n \n   \t Approve Your Payment\n Thank you,\nUSAA\n P.S. Texting and driving ... it can wait. Take the pledge to never text and drive.\n\t  \n  \n  \n\t \t \n  \t \t \t \n   \n  Please do not reply to this e-mail. To send a secure message to USAA, please contact us.\n\nPrivacy Promise\nUSAA, 9800 Fredericksburg Road, San Antonio, Texas 78288\n\n  \n  \t USAA means United Services Automobile Association and its insurance, banking, investment and other companies. Banks Member FDIC. Investments provided by USAA Investment Management Company and USAA Financial Advisors Inc., both registered broker dealers. \t \n  \n  [teléfono oculto]",
+      "explicacion": {
+        "clase_predicha": 1,
+        "confianza": 0.995966,
+        "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.6%. Los factores que más influyeron en la decisión fueron: la palabra \"inbox\" (peso 1.4%), la palabra \"transffered\" (peso 0.9%), la palabra \"authomated\" (peso 0.9%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.6%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"inbox\": 29.9%\n  · la palabra \"transffered\": 19.6%\n  · la palabra \"authomated\": 19.1%\n  · la palabra \"0514\": 16.4%\n  · la palabra \"your\": 15.0%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "estructurado": {
+          "label": 1,
+          "label_text": "phishing",
+          "confidence_pct": 99.6,
+          "xai_method": "attention",
+          "xai_method_display": "los pesos de atención intrínseca del modelo",
+          "modality_blocks": [
+            {
+              "modality": "texto",
+              "display_name": "Contenido textual (semántica del mensaje)",
+              "total_pct": 100.0,
+              "factors": [
+                {
+                  "name": "inbox",
+                  "human_name": "la palabra \"inbox\"",
+                  "pct": 29.9,
+                  "raw_weight": 0.013868843670934439
+                },
+                {
+                  "name": "transffered",
+                  "human_name": "la palabra \"transffered\"",
+                  "pct": 19.6,
+                  "raw_weight": 0.00911149987950921
+                },
+                {
+                  "name": "authomated",
+                  "human_name": "la palabra \"authomated\"",
+                  "pct": 19.1,
+                  "raw_weight": 0.008855622727423906
+                },
+                {
+                  "name": "0514",
+                  "human_name": "la palabra \"0514\"",
+                  "pct": 16.4,
+                  "raw_weight": 0.007612000685185194
+                },
+                {
+                  "name": "your",
+                  "human_name": "la palabra \"your\"",
+                  "pct": 15.0,
+                  "raw_weight": 0.006984047591686249
+                }
+              ],
+              "n_factors_total": 5
+            },
+            {
+              "modality": "estructura",
+              "display_name": "Estructura HTML/DOM",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "num_images",
+                  "human_name": "la cantidad de imágenes",
+                  "pct": 0.0,
+                  "raw_weight": 8.761882781982422e-06
+                },
+                {
+                  "name": "profundidad_dom",
+                  "human_name": "el grado de anidamiento de la estructura HTML",
+                  "pct": 0.0,
+                  "raw_weight": -4.649162292480469e-06
+                }
+              ],
+              "n_factors_total": 2
+            },
+            {
+              "modality": "red",
+              "display_name": "Metadatos de red y autenticación",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "url_max_subdomain_count",
+                  "human_name": "la cantidad de subdominios en las URLs",
+                  "pct": 0.0,
+                  "raw_weight": -3.933906555175781e-06
+                },
+                {
+                  "name": "num_urls_metadata",
+                  "human_name": "la cantidad de URLs reportadas",
+                  "pct": 0.0,
+                  "raw_weight": 2.9206275939941406e-06
+                },
+                {
+                  "name": "url_max_length",
+                  "human_name": "la longitud de las URLs",
+                  "pct": 0.0,
+                  "raw_weight": 2.2649765014648438e-06
+                }
+              ],
+              "n_factors_total": 3
+            }
+          ],
+          "dominant_modality": "texto",
+          "synthesis": "La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión)."
+        },
+        "atribucion_en_porcentaje": {
+          "inbox": 1.4,
+          "transffered": 0.9,
+          "authomated": 0.9,
+          "0514": 0.8,
+          "your": 0.7,
+          "num_images": 0.0,
+          "profundidad_dom": 0.0,
+          "url_max_subdomain_count": 0.0,
+          "num_urls_metadata": 0.0,
+          "url_max_length": 0.0
+        },
+        "legibilidad": {
+          "factores_citados": 3,
+          "citados_del_texto": 3,
+          "citados_legibles": 3,
+          "ilegibles": []
+        }
+      }
+    },
+    "induccion": {
+      "email_id": "a68f6ab2-d2d5-4570-9914-ea410c4f788e",
+      "coleccion": "Nazario",
+      "etiqueta_real": "phishing",
+      "idioma": "en",
+      "asunto": "Protect Your Account",
+      "remitente": "[remitente oculto]",
+      "cuerpo": "PROTECTING YOUR ACCOUNT Due to concerns, for the safety and integrity of the TD Canada Trust Bank Online Service we have issued this warning message. As a result of too many incorrect attempts to access and Login failures, Please note that Your TD Canada Trust EasyWeb Account has been terminated. In order for it to remain active, Please use the link below to proceed and restore access to Your Account: hxxps://easyweb[.]tdcanadatrust[.]com/ Thank You. Accounts Management As outlined in our User Agreement, TD Canada Trust Bank will periodically send you information about site changes and enhancements. Visit our Privacy Policy and User Agreement if you have any questions. Privacy Policy PROTECTING YOUR ACCOUNT Due to concerns, for the safety and integrity of the Commonwealth Bank of Australia Online Service we have issued this warning message. As a result of too many incorrect attempts to access and Login failures, Please note that Your Commonwealth NetBank Online Account has been terminated. In order for it to remain active, Please use the link below to proceed and restore access to Your Account: hxxps://www3[.]netbank[.]commbank[.]com[.]au/netbank/bankmain Thank You. Accounts Management As outlined in our User Agreement, Commonwealth Bank of Australia will periodically send you information about site changes and enhancements. Visit our Privacy Policy and User Agreement if you have any questions. hxxp://www[.]commbank[.]com[.]au/SecurityandPrivacy/default[.]asp",
+      "explicacion": {
+        "clase_predicha": 1,
+        "confianza": 0.998437,
+        "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.8%. Los factores que más influyeron en la decisión fueron: la palabra \"asp\" (peso 1.1%), la palabra \"tdcanadatrust\" (peso 0.9%), la palabra \"securityandprivacy\" (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.8%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"asp\": 26.5%\n  · la palabra \"tdcanadatrust\": 22.0%\n  · la palabra \"securityandprivacy\": 19.4%\n  · la palabra \".\": 16.3%\n  · la palabra \"your\": 15.7%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "estructurado": {
+          "label": 1,
+          "label_text": "phishing",
+          "confidence_pct": 99.8,
+          "xai_method": "attention",
+          "xai_method_display": "los pesos de atención intrínseca del modelo",
+          "modality_blocks": [
+            {
+              "modality": "texto",
+              "display_name": "Contenido textual (semántica del mensaje)",
+              "total_pct": 100.0,
+              "factors": [
+                {
+                  "name": "asp",
+                  "human_name": "la palabra \"asp\"",
+                  "pct": 26.5,
+                  "raw_weight": 0.01087303925305605
+                },
+                {
+                  "name": "tdcanadatrust",
+                  "human_name": "la palabra \"tdcanadatrust\"",
+                  "pct": 22.0,
+                  "raw_weight": 0.009033889975398779
+                },
+                {
+                  "name": "securityandprivacy",
+                  "human_name": "la palabra \"securityandprivacy\"",
+                  "pct": 19.4,
+                  "raw_weight": 0.007972735562361777
+                },
+                {
+                  "name": ".",
+                  "human_name": "la palabra \".\"",
+                  "pct": 16.3,
+                  "raw_weight": 0.006701238453388214
+                },
+                {
+                  "name": "your",
+                  "human_name": "la palabra \"your\"",
+                  "pct": 15.7,
+                  "raw_weight": 0.006461527198553085
+                }
+              ],
+              "n_factors_total": 5
+            },
+            {
+              "modality": "estructura",
+              "display_name": "Estructura HTML/DOM",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "num_images",
+                  "human_name": "la cantidad de imágenes",
+                  "pct": 0.0,
+                  "raw_weight": 3.2186508178710938e-06
+                },
+                {
+                  "name": "profundidad_dom",
+                  "human_name": "el grado de anidamiento de la estructura HTML",
+                  "pct": 0.0,
+                  "raw_weight": -9.5367431640625e-07
+                }
+              ],
+              "n_factors_total": 2
+            },
+            {
+              "modality": "red",
+              "display_name": "Metadatos de red y autenticación",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "url_max_subdomain_count",
+                  "human_name": "la cantidad de subdominios en las URLs",
+                  "pct": 0.0,
+                  "raw_weight": -2.1457672119140625e-06
+                },
+                {
+                  "name": "num_urls_metadata",
+                  "human_name": "la cantidad de URLs reportadas",
+                  "pct": 0.0,
+                  "raw_weight": 1.1920928955078125e-06
+                },
+                {
+                  "name": "url_max_length",
+                  "human_name": "la longitud de las URLs",
+                  "pct": 0.0,
+                  "raw_weight": 7.152557373046875e-07
+                }
+              ],
+              "n_factors_total": 3
+            }
+          ],
+          "dominant_modality": "texto",
+          "synthesis": "La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión)."
+        },
+        "atribucion_en_porcentaje": {
+          "asp": 1.1,
+          "tdcanadatrust": 0.9,
+          "securityandprivacy": 0.8,
+          ".": 0.7,
+          "your": 0.6,
+          "num_images": 0.0,
+          "profundidad_dom": 0.0,
+          "url_max_subdomain_count": 0.0,
+          "num_urls_metadata": 0.0,
+          "url_max_length": 0.0
+        },
+        "legibilidad": {
+          "factores_citados": 3,
+          "citados_del_texto": 3,
+          "citados_legibles": 3,
+          "ilegibles": []
+        }
+      }
+    },
+    "phishing_2": {
+      "email_id": "e1aeef24-31fe-4ab8-ac02-c1fb84efdc06",
+      "coleccion": "phishing_pot",
+      "etiqueta_real": "phishing",
+      "idioma": "en",
+      "asunto": "Your chance to receive Icon Core Master Tool Set!",
+      "remitente": "[remitente oculto]",
+      "cuerpo": "Hurry up. The number of prizes to be won is limited! Confirm Now! Customer feedback has always been key to improving your shopping experience with us. Take a quick survey for a chance to win a fantastic prize, and let us know how you really feel. Just answer a few questions for a chance to win a brand new Icon Core Master Tool Set! GET STARTED NOW !--Button--> Loyalty pays off! You have been chosen to participate in our Loyalty Program for FREE! It will take you only a minute to receive this fantastic prize. GET STARTED NOW !--Button--> If you no longer wish to receive these emails, you may unsubscribe by clicking here. This email was sent to you by a business partner. Do you have problems unsubscribing or complain about advertising? click on the link here",
+      "explicacion": {
+        "clase_predicha": 1,
+        "confianza": 0.998894,
+        "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.9%. Los factores que más influyeron en la decisión fueron: la palabra \"unsubscribe\" (peso 1.3%), la palabra \"unsubscribing\" (peso 1.2%), la palabra \"here\" (peso 1.1%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.9%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"unsubscribe\": 23.8%\n  · la palabra \"unsubscribing\": 22.2%\n  · la palabra \"here\": 19.7%\n  · la palabra \".\": 17.3%\n  · la palabra \"shopping\": 17.1%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "estructurado": {
+          "label": 1,
+          "label_text": "phishing",
+          "confidence_pct": 99.9,
+          "xai_method": "attention",
+          "xai_method_display": "los pesos de atención intrínseca del modelo",
+          "modality_blocks": [
+            {
+              "modality": "texto",
+              "display_name": "Contenido textual (semántica del mensaje)",
+              "total_pct": 100.0,
+              "factors": [
+                {
+                  "name": "unsubscribe",
+                  "human_name": "la palabra \"unsubscribe\"",
+                  "pct": 23.8,
+                  "raw_weight": 0.01320508192293346
+                },
+                {
+                  "name": "unsubscribing",
+                  "human_name": "la palabra \"unsubscribing\"",
+                  "pct": 22.2,
+                  "raw_weight": 0.012330867000855505
+                },
+                {
+                  "name": "here",
+                  "human_name": "la palabra \"here\"",
+                  "pct": 19.7,
+                  "raw_weight": 0.010928783565759659
+                },
+                {
+                  "name": ".",
+                  "human_name": "la palabra \".\"",
+                  "pct": 17.3,
+                  "raw_weight": 0.009582080878317356
+                },
+                {
+                  "name": "shopping",
+                  "human_name": "la palabra \"shopping\"",
+                  "pct": 17.1,
+                  "raw_weight": 0.009468917734920979
+                }
+              ],
+              "n_factors_total": 5
+            },
+            {
+              "modality": "estructura",
+              "display_name": "Estructura HTML/DOM",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "num_images",
+                  "human_name": "la cantidad de imágenes",
+                  "pct": 0.0,
+                  "raw_weight": 1.3113021850585938e-06
+                }
+              ],
+              "n_factors_total": 1
+            },
+            {
+              "modality": "red",
+              "display_name": "Metadatos de red y autenticación",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "url_domain_max_entropy",
+                  "human_name": "un dominio con apariencia generada aleatoriamente",
+                  "pct": 0.0,
+                  "raw_weight": 9.5367431640625e-07
+                },
+                {
+                  "name": "url_max_subdomain_count",
+                  "human_name": "la cantidad de subdominios en las URLs",
+                  "pct": 0.0,
+                  "raw_weight": -8.940696716308594e-07
+                },
+                {
+                  "name": "url_max_digit_ratio",
+                  "human_name": "la proporción de dígitos en las URLs",
+                  "pct": 0.0,
+                  "raw_weight": 7.152557373046875e-07
+                },
+                {
+                  "name": "url_max_length",
+                  "human_name": "la longitud de las URLs",
+                  "pct": 0.0,
+                  "raw_weight": 3.5762786865234375e-07
+                }
+              ],
+              "n_factors_total": 4
+            }
+          ],
+          "dominant_modality": "texto",
+          "synthesis": "La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión)."
+        },
+        "atribucion_en_porcentaje": {
+          "unsubscribe": 1.3,
+          "unsubscribing": 1.2,
+          "here": 1.1,
+          ".": 1.0,
+          "shopping": 0.9,
+          "num_images": 0.0,
+          "url_domain_max_entropy": 0.0,
+          "url_max_subdomain_count": 0.0,
+          "url_max_digit_ratio": 0.0,
+          "url_max_length": 0.0
+        },
+        "legibilidad": {
+          "factores_citados": 3,
+          "citados_del_texto": 3,
+          "citados_legibles": 3,
+          "ilegibles": []
+        }
+      }
+    },
+    "legitimo_1": {
+      "email_id": "f36407aa-5ea4-4c8a-ab86-9f18dc3661ec",
+      "coleccion": "Fedora",
+      "etiqueta_real": "safe",
+      "idioma": "en",
+      "asunto": "Re: how to enable/start \"git@.service\" via systemd?",
+      "remitente": "[remitente oculto]",
+      "cuerpo": "On Saturday, October 7, 2017 4:18:48 AM CDT Robert P. J. Day wrote:\n>   (probably OT: more a systemd question than a fedora question, but\n> i'm sure the experts will clear this up in short order.)\n> \n>   wanted to experiment with the git daemon so, on my fully-updated F26\n> system, installed git-daemon package, whose contents are simply:\n> \n> $ rpm -ql git-daemon\n> /usr/lib/systemd/system/git.socket\n> /usr/lib/systemd/system/git(a).service\n> /usr/libexec/git-core/git-daemon\n> /usr/share/doc/git/git-daemon.html\n> /usr/share/doc/git/git-daemon.txt\n> /usr/share/man/man1/git-daemon.1.gz\n> /var/lib/git\n> $\n> \n>   i enabled the socket component easily enough with:\n> \n> $ sudo systemctl enable git.socket\n> [sudo] password for rpjday:\n> Created symlink /etc/systemd/system/sockets.target.wants/git.socket →\n> /usr/lib/systemd/system/git.socket.\n> $\n> \n> and started it as well, but i'm not sure how to start the git daemon\n> itself since, as i understand it, the presence of the \"@\" in the\n> service name typically means there can be multiple instances of them\n> running (eg., getty(a).service), but i have no interest in multiple\n> invocations (and am not even sure why that would be a good thing).\n> \n>   cut to the chase -- what's the proper way to start the git daemon on\n> F26? put another way, what am i hopelessly misunderstanding here?\n> \n> rday\n\nThe git-daemon service should be started \"on-demand\" when something connects \nto the socket.  -A\n\n-- \nAnthony - hxxps://messinet[.]com/ - hxxps://messinet[.]com/~amessina/gallery\nF9B6 560E 68EA 037D 8C3D  D1C9 FF31 3BDB D9D8 99B6",
+      "explicacion": {
+        "clase_predicha": 0,
+        "confianza": 0.99994,
+        "narrativa": "Este correo fue clasificado como legítimo con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"fedora\" (peso 1.4%), la palabra \"invocations\" (peso 0.4%), la palabra \"wrote\" (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+        "reporte_por_modalidad": "VEREDICTO: LEGÍTIMO (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"fedora\": 45.0%\n  · la palabra \"invocations\": 14.8%\n  · la palabra \"wrote\": 14.7%\n  · la palabra \"libexec\": 13.0%\n  · la palabra \"cdt\": 12.6%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · la cantidad de imágenes: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n\nSÍNTESIS: La clasificación como legítimo se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "estructurado": {
+          "label": 0,
+          "label_text": "legítimo",
+          "confidence_pct": 100.0,
+          "xai_method": "attention",
+          "xai_method_display": "los pesos de atención intrínseca del modelo",
+          "modality_blocks": [
+            {
+              "modality": "texto",
+              "display_name": "Contenido textual (semántica del mensaje)",
+              "total_pct": 100.0,
+              "factors": [
+                {
+                  "name": "fedora",
+                  "human_name": "la palabra \"fedora\"",
+                  "pct": 45.0,
+                  "raw_weight": 0.013592579867690802
+                },
+                {
+                  "name": "invocations",
+                  "human_name": "la palabra \"invocations\"",
+                  "pct": 14.8,
+                  "raw_weight": 0.004472834290936589
+                },
+                {
+                  "name": "wrote",
+                  "human_name": "la palabra \"wrote\"",
+                  "pct": 14.7,
+                  "raw_weight": 0.004437122493982315
+                },
+                {
+                  "name": "libexec",
+                  "human_name": "la palabra \"libexec\"",
+                  "pct": 13.0,
+                  "raw_weight": 0.003922925854567438
+                },
+                {
+                  "name": "cdt",
+                  "human_name": "la palabra \"cdt\"",
+                  "pct": 12.6,
+                  "raw_weight": 0.003793689887970686
+                }
+              ],
+              "n_factors_total": 5
+            },
+            {
+              "modality": "estructura",
+              "display_name": "Estructura HTML/DOM",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "has_html",
+                  "human_name": "la presencia de código HTML",
+                  "pct": 0.0,
+                  "raw_weight": 0.0
+                },
+                {
+                  "name": "num_links",
+                  "human_name": "la cantidad de enlaces",
+                  "pct": 0.0,
+                  "raw_weight": 0.0
+                },
+                {
+                  "name": "num_images",
+                  "human_name": "la cantidad de imágenes",
+                  "pct": 0.0,
+                  "raw_weight": 0.0
+                }
+              ],
+              "n_factors_total": 3
+            },
+            {
+              "modality": "red",
+              "display_name": "Metadatos de red y autenticación",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "num_urls_metadata",
+                  "human_name": "la cantidad de URLs reportadas",
+                  "pct": 0.0,
+                  "raw_weight": -1.1920928955078125e-07
+                },
+                {
+                  "name": "url_domain_max_entropy",
+                  "human_name": "un dominio con apariencia generada aleatoriamente",
+                  "pct": 0.0,
+                  "raw_weight": -1.1920928955078125e-07
+                }
+              ],
+              "n_factors_total": 2
+            }
+          ],
+          "dominant_modality": "texto",
+          "synthesis": "La clasificación como legítimo se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión)."
+        },
+        "atribucion_en_porcentaje": {
+          "fedora": 1.4,
+          "invocations": 0.4,
+          "wrote": 0.4,
+          "libexec": 0.4,
+          "cdt": 0.4,
+          "has_html": 0.0,
+          "num_links": 0.0,
+          "num_images": 0.0,
+          "num_urls_metadata": 0.0,
+          "url_domain_max_entropy": 0.0
+        },
+        "legibilidad": {
+          "factores_citados": 3,
+          "citados_del_texto": 3,
+          "citados_legibles": 3,
+          "ilegibles": []
+        }
+      }
+    },
+    "legitimo_2": {
+      "email_id": "5cb90d93-86fc-4eb6-a9ea-d410b5b977eb",
+      "coleccion": "Fedora",
+      "etiqueta_real": "safe",
+      "idioma": "en",
+      "asunto": "Mysterious autostart behaviour",
+      "remitente": "[remitente oculto]",
+      "cuerpo": "I have a number of things listed in KDE's Autostart menu. These all\nwork correctly.\n\nOne thing that isn't listed is Ktorrent, yet it starts on every session\nand has to be manually killed. I only ever use qBittorrent now though\nI've occasionally used Ktorrent in the distant past, so some cruft may\nhave been left lying around.\n\nIt isn't listed anywhere in /etc/xdg/autostart, nor in any of the usual\n.profile, .bashrc etc. places.\n\nIs there anywhere else I should look?\n\npoc",
+      "explicacion": {
+        "clase_predicha": 0,
+        "confianza": 0.999944,
+        "narrativa": "Este correo fue clasificado como legítimo con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"kde\" (peso 1.9%), la palabra \"qbittorrent\" (peso 1.7%), la palabra \"poc\" (peso 1.5%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+        "reporte_por_modalidad": "VEREDICTO: LEGÍTIMO (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"kde\": 23.9%\n  · la palabra \"qbittorrent\": 21.8%\n  · la palabra \"poc\": 19.0%\n  · la palabra \"autostart\": 17.8%\n  · la palabra \"ktorrent\": 17.4%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · la longitud del mensaje: 0.0%\n  · la complejidad estructural del mensaje (cantidad de elementos HTML): 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · Sin evidencia atribuida a esta modalidad en esta predicción.\n\nSÍNTESIS: La clasificación como legítimo se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "estructurado": {
+          "label": 0,
+          "label_text": "legítimo",
+          "confidence_pct": 100.0,
+          "xai_method": "attention",
+          "xai_method_display": "los pesos de atención intrínseca del modelo",
+          "modality_blocks": [
+            {
+              "modality": "texto",
+              "display_name": "Contenido textual (semántica del mensaje)",
+              "total_pct": 100.0,
+              "factors": [
+                {
+                  "name": "kde",
+                  "human_name": "la palabra \"kde\"",
+                  "pct": 23.9,
+                  "raw_weight": 0.018720896914601326
+                },
+                {
+                  "name": "qbittorrent",
+                  "human_name": "la palabra \"qbittorrent\"",
+                  "pct": 21.8,
+                  "raw_weight": 0.01709113991819322
+                },
+                {
+                  "name": "poc",
+                  "human_name": "la palabra \"poc\"",
+                  "pct": 19.0,
+                  "raw_weight": 0.014893876388669014
+                },
+                {
+                  "name": "autostart",
+                  "human_name": "la palabra \"autostart\"",
+                  "pct": 17.8,
+                  "raw_weight": 0.01394709199666977
+                },
+                {
+                  "name": "ktorrent",
+                  "human_name": "la palabra \"ktorrent\"",
+                  "pct": 17.4,
+                  "raw_weight": 0.013590062502771616
+                }
+              ],
+              "n_factors_total": 5
+            },
+            {
+              "modality": "estructura",
+              "display_name": "Estructura HTML/DOM",
+              "total_pct": 0.0,
+              "factors": [
+                {
+                  "name": "has_html",
+                  "human_name": "la presencia de código HTML",
+                  "pct": 0.0,
+                  "raw_weight": 0.0
+                },
+                {
+                  "name": "num_links",
+                  "human_name": "la cantidad de enlaces",
+                  "pct": 0.0,
+                  "raw_weight": 0.0
+                },
+                {
+                  "name": "num_images",
+                  "human_name": "la cantidad de imágenes",
+                  "pct": 0.0,
+                  "raw_weight": 0.0
+                },
+                {
+                  "name": "word_count",
+                  "human_name": "la longitud del mensaje",
+                  "pct": 0.0,
+                  "raw_weight": 0.0
+                },
+                {
+                  "name": "total_nodos_dom",
+                  "human_name": "la complejidad estructural del mensaje (cantidad de elementos HTML)",
+                  "pct": 0.0,
+                  "raw_weight": 0.0
+                }
+              ],
+              "n_factors_total": 5
+            },
+            {
+              "modality": "red",
+              "display_name": "Metadatos de red y autenticación",
+              "total_pct": 0.0,
+              "factors": [],
+              "n_factors_total": 0
+            }
+          ],
+          "dominant_modality": "texto",
+          "synthesis": "La clasificación como legítimo se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión)."
+        },
+        "atribucion_en_porcentaje": {
+          "kde": 1.9,
+          "qbittorrent": 1.7,
+          "poc": 1.5,
+          "autostart": 1.4,
+          "ktorrent": 1.4,
+          "has_html": 0.0,
+          "num_links": 0.0,
+          "num_images": 0.0,
+          "word_count": 0.0,
+          "total_nodos_dom": 0.0
+        },
+        "legibilidad": {
+          "factores_citados": 3,
+          "citados_del_texto": 3,
+          "citados_legibles": 3,
+          "ilegibles": []
+        }
+      }
+    }
+  }
+}

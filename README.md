@@ -57,7 +57,7 @@ los de la matriz de objetivos de la tesis (Tabla 2).
 │   ├── prueba_integral.py        OE1–OE3            prueba de integración de la cadena
 │   └── estado_cola.ps1                              seguimiento de la cola en el servidor
 ├── notebooks/                    OE1 · R1.1, R1.2   recorrido documentado del pipeline
-├── doc/validacion_xai/           OE3 · R3.3         instrumento del panel de analistas
+├── doc/validacion_xai/           OE3 · R3.3         instrumento, formulario y calificación del panel
 ├── medios_de_verificacion/       OE1–OE3            evidencia, una carpeta por resultado
 └── data/                                            datos y modelos; no se versionan
 ```
@@ -125,7 +125,8 @@ partición, las semillas y el entorno de cada cifra.
 
 Piezas compartidas: `comun.py` (partición, métricas y emisión de informes),
 `ejecutor.py` y `entrenar.py` (entrenamiento de cada variante), `clasicos.py`
-(líneas base clásicas B1, B3, B4 y B5), `degradacion.py` (perturbaciones adversarias del texto, en E3),
+(líneas base clásicas B1, B3, B4 y B5), `e9_ejemplos_del_panel.py` (correos del
+panel de R3.3, con criterios de selección fijos), `degradacion.py` (perturbaciones adversarias del texto, en E3),
 `cola_servidor.sh` (cola E0 a E7), `manifiesto_de_ejecucion.py` (ventana temporal
 de la cola) y `consolidar_iov.py` (arma las carpetas de medios de verificación).
 

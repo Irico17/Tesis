@@ -1,5 +1,5 @@
 {
-  "generado_en": "2026-10-07T16:04:00.948489+00:00",
+  "generado_en": "2026-10-12T05:16:52.927508+00:00",
   "resultados": {
     "R1.1_corpus_multimodal": {
       "carpeta": "R1.1_corpus_multimodal",
@@ -137,15 +137,19 @@
       "medio_de_verificacion": "Formularios de evaluación UX y resultados de la verificación automatizada de las narrativas",
       "indicador": "Reporte estructurado por modalidad que traduzca el peso matemático en una justificación técnica comprensible. El desempeño del panel de evaluación se contrasta contra dos referencias: una meta objetivo del 90% de comprensión y un umbral mínimo aceptable del 80%, este último como criterio formal de cumplimiento del resultado. El resultado se clasifica en tres bandas, que son meta alcanzada, mínimo cumplido o no cumplido, y se reporta con esa precisión, sin ajustar el instrumento con posterioridad a su aplicación.",
       "presentes": [
-        "e9_validacion_y_panel.json"
+        "e9_validacion_y_panel.json",
+        "ejemplos_del_panel.json",
+        "formulario_del_panel.html",
+        "crear_formulario.gs",
+        "clave_de_respuestas.json"
       ],
       "ausentes": [],
       "cubierto": true,
-      "pendiente": "El panel de analistas, criterio primario del indicador, está preparado y pendiente de aplicación. Su instrumento, la guía de reclutamiento y el cálculo de la puntuación están en `doc/validacion_xai/`."
+      "pendiente": "El panel de evaluadores, criterio primario del indicador, tiene su instrumento listo y está pendiente de resultados. Cuando lleguen, el resultado de `script_scoring.py` se añadirá a esta carpeta."
     }
   },
   "pendientes": {
-    "R3.3_validacion_de_las_explicaciones": "El panel de analistas, criterio primario del indicador, está preparado y pendiente de aplicación. Su instrumento, la guía de reclutamiento y el cálculo de la puntuación están en `doc/validacion_xai/`."
+    "R3.3_validacion_de_las_explicaciones": "El panel de evaluadores, criterio primario del indicador, tiene su instrumento listo y está pendiente de resultados. Cuando lleguen, el resultado de `script_scoring.py` se añadirá a esta carpeta."
   },
   "cubiertos": 10,
   "total": 10,
