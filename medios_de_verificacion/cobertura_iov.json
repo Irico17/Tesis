@@ -1,5 +1,5 @@
 {
-  "generado_en": "2026-10-12T05:16:52.927508+00:00",
+  "generado_en": "2026-10-12T05:52:04.036018+00:00",
   "resultados": {
     "R1.1_corpus_multimodal": {
       "carpeta": "R1.1_corpus_multimodal",
@@ -125,7 +125,8 @@
       "medio_de_verificacion": "Código fuente del módulo acoplado.",
       "indicador": "Extracción exitosa de pesos de importancia en la muestra de prueba de predicciones positivas.",
       "presentes": [
-        "e9_narrativas_de_la_muestra_critica.json"
+        "e9_narrativas_de_la_muestra_critica.json",
+        "ejemplo_de_correo_resaltado.png"
       ],
       "ausentes": [],
       "cubierto": true,

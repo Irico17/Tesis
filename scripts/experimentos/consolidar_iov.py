@@ -257,8 +257,13 @@ RESULTADOS.update({
              "Cobertura de la extracción y de las narrativas sobre toda la muestra "
              "clasificada como fraudulenta, con su legibilidad y una muestra de "
              "explicaciones"),
+            (BASE / "doc" / "validacion_xai" / "formulario" / "resaltado_phishing_1.png",
+             "ejemplo_de_correo_resaltado.png",
+             "Correo resaltado que el módulo devuelve junto al reporte: cada palabra "
+             "sombreada según su peso en la decisión"),
         ],
         "codigo": ["src/phishing_model/xai/narrative.py",
+                   "src/phishing_model/xai/resaltado.py",
                    "scripts/experimentos/e9_narrativa_y_validacion.py"],
     },
     "R3.3_validacion_de_las_explicaciones": {

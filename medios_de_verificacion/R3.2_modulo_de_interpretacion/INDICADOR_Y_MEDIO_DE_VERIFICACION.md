@@ -13,10 +13,12 @@
 | Artefacto | Qué acredita |
 | --- | --- |
 | `e9_narrativas_de_la_muestra_critica.json` | Cobertura de la extracción y de las narrativas sobre toda la muestra clasificada como fraudulenta, con su legibilidad y una muestra de explicaciones |
+| `ejemplo_de_correo_resaltado.png` | Correo resaltado que el módulo devuelve junto al reporte: cada palabra sombreada según su peso en la decisión |
 
 ## Código fuente que sustenta el resultado
 
 - `src/phishing_model/xai/narrative.py`
+- `src/phishing_model/xai/resaltado.py`
 - `scripts/experimentos/e9_narrativa_y_validacion.py`
 
 ---

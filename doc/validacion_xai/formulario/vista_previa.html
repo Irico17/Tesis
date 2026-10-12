@@ -15,7 +15,7 @@
 <div class='q'><p><b>P2. ¿Cuál es tu carrera o área de formación?</b></p><ul><li>&#9711; Ingeniería Informática</li><li>&#9711; Ingeniería de Sistemas</li><li>&#9711; Ingeniería de Telecomunicaciones o Electrónica</li><li>&#9711; Ciencias de la Computación</li><li>&#9711; Otra</li></ul></div>
 <div class='q'><p><b>P3. ¿Tienes formación o experiencia en ciberseguridad (cursos, trabajo en un centro de operaciones de seguridad, competencias tipo CTF)?</b></p><ul><li>&#9711; Sí</li><li>&#9711; No</li></ul></div>
 <h2>Cómo leer el reporte</h2>
-<p class='desc'>Antes de empezar, este es un ejemplo de cómo leer el reporte. No forma parte de las preguntas.<br><br>1. La primera línea indica la decisión del sistema (phishing o legítimo) y su confianza, entre 0% y 100%.<br>2. Después, el reporte se divide en tres bloques, uno por cada tipo de información del correo: su contenido textual, su estructura HTML y sus metadatos de red y autenticación. Cada bloque indica qué parte del peso total de la decisión le corresponde.<br>3. Dentro de cada bloque, los factores aparecen ordenados de mayor a menor peso. En el bloque de texto, los factores son palabras del correo; un porcentaje mayor significa que esa palabra influyó más. A veces el sistema cita como palabra un fragmento de un enlace o un signo de puntuación: se lee igual, como algo que el sistema tuvo en cuenta.<br>4. La síntesis final resume qué tipo de información sustentó la decisión.<br><br>El párrafo inicial (narrativa) dice lo mismo en una frase: la decisión, la confianza y las tres palabras más influyentes.</p>
+<p class='desc'>Antes de empezar, este es un ejemplo de cómo leer el reporte. No forma parte de las preguntas.<br><br>1. La primera línea indica la decisión del sistema (phishing o legítimo) y su confianza, entre 0% y 100%.<br>2. Después, el reporte se divide en tres bloques, uno por cada tipo de información del correo: su contenido textual, su estructura HTML y sus metadatos de red y autenticación. Cada bloque indica qué parte del peso total de la decisión le corresponde.<br>3. Dentro de cada bloque, los factores aparecen ordenados de mayor a menor peso. En el bloque de texto, los factores son palabras del correo; un porcentaje mayor significa que esa palabra influyó más. A veces el sistema cita como palabra un fragmento de un enlace o un signo de puntuación: se lee igual, como algo que el sistema tuvo en cuenta.<br>4. La síntesis final resume qué tipo de información sustentó la decisión.<br>5. Debajo del reporte verás el mismo correo con sus palabras sombreadas: cuanto más intenso el color, más pesó esa palabra en la decisión. Las palabras que cita el reporte llevan un recuadro.<br><br>El párrafo inicial (narrativa) dice lo mismo en una frase: la decisión, la confianza y las tres palabras más influyentes.</p>
 <h3>Ejemplo guiado: el correo</h3><pre>Asunto: Protect Your Account
 Remitente: [remitente oculto]
 
@@ -42,6 +42,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la longitud de las URLs: 0.0%
 
 SÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
+<h3>Ejemplo guiado: el correo resaltado</h3><img src='resaltado_induccion.png' style='width:100%'>
 <h2>Sección C. Comprensión: correo 1 de 4</h2>
 <p class='desc'>Ahora verás cuatro correos reales ya clasificados por el sistema, cada uno con su reporte. Léelos con calma y responde basándote únicamente en lo que dice el reporte.</p>
 <h3>Correo 1</h3><pre>Asunto: USAA REQUEST YOUR APPROVAL FOR AN INCOMING ACCOUNT DEPOSIT
@@ -95,6 +96,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la longitud de las URLs: 0.0%
 
 SÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
+<h3>Correo 1 resaltado</h3><img src='resaltado_phishing_1.png' style='width:100%'>
 <div class='q'><p><b>C1. Según el reporte, ¿qué palabra tuvo mayor peso en la clasificación de este correo como phishing?</b></p><ul><li>&#9711; account</li><li>&#9711; transffered</li><li>&#9711; inbox</li><li>&#9711; payment</li></ul></div>
 <div class='q'><p><b>C2. Según el reporte, la estructura HTML del correo pesó más que su contenido textual en esta decisión.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <div class='q'><p><b>C3. Según el reporte, ¿con qué nivel de confianza clasificó el sistema este correo?</b></p><ul><li>&#9711; Menos del 60%</li><li>&#9711; Entre 60% y 90%</li><li>&#9711; Entre 90% y 99%</li><li>&#9711; Más del 99%</li></ul></div>
@@ -166,6 +168,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · un dominio con apariencia generada aleatoriamente: 0.0%
 
 SÍNTESIS: La clasificación como legítimo se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
+<h3>Correo 2 resaltado</h3><img src='resaltado_legitimo_1.png' style='width:100%'>
 <div class='q'><p><b>C4. Según el reporte, ¿qué palabra contribuyó más a que el sistema considerara legítimo este correo?</b></p><ul><li>&#9711; socket</li><li>&#9711; fedora</li><li>&#9711; daemon</li><li>&#9711; invocations</li></ul></div>
 <div class='q'><p><b>C5. Según el reporte, la decisión sobre este correo se apoyó principalmente en su contenido textual.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <h2>Sección C. Comprensión: correo 3 de 4</h2>
@@ -195,6 +198,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la longitud de las URLs: 0.0%
 
 SÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
+<h3>Correo 3 resaltado</h3><img src='resaltado_phishing_2.png' style='width:100%'>
 <div class='q'><p><b>C6. ¿Cuál de estas palabras NO figura entre las que el reporte señala como influyentes?</b></p><ul><li>&#9711; unsubscribing</li><li>&#9711; here</li><li>&#9711; chance</li><li>&#9711; unsubscribe</li></ul></div>
 <div class='q'><p><b>C7. Según el reporte, la palabra «here» tuvo más peso que la palabra «unsubscribe».</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <h2>Sección C. Comprensión: correo 4 de 4</h2>
@@ -238,6 +242,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · Sin evidencia atribuida a esta modalidad en esta predicción.
 
 SÍNTESIS: La clasificación como legítimo se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
+<h3>Correo 4 resaltado</h3><img src='resaltado_legitimo_2.png' style='width:100%'>
 <div class='q'><p><b>C8. Según el reporte, ¿qué decidió el sistema sobre este correo?</b></p><ul><li>&#9711; Legítimo, con entre 60% y 90% de confianza</li><li>&#9711; Phishing, con más del 99% de confianza</li><li>&#9711; Legítimo, con más del 99% de confianza</li><li>&#9711; Phishing, con entre 60% y 90% de confianza</li></ul></div>
 <div class='q'><p><b>C9. ¿Cuál de estas palabras está entre las tres que, según el reporte, más influyeron en la decisión?</b></p><ul><li>&#9711; around</li><li>&#9711; listed</li><li>&#9711; qbittorrent</li><li>&#9711; anywhere</li></ul></div>
 <div class='q'><p><b>C10. Según el reporte, la estructura HTML del correo no aportó peso a esta decisión.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>

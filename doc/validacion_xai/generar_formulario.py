@@ -17,6 +17,10 @@ Produce tres ficheros en `doc/validacion_xai/formulario/`:
   sección C, que usa `respuestas_a_csv.py` para calificar.
 - `vista_previa.html`: el formulario completo en una página, para revisarlo o
   imprimirlo.
+- `resaltado_*.png`: cada correo con sus palabras sombreadas según su peso en
+  la decisión (`phishing_model.xai.resaltado`). El Apps Script las inserta
+  desde el repositorio público, de modo que deben estar subidas antes de
+  ejecutarlo.
 
 El formulario no se configura como cuestionario con nota: Google Forms mostraría
 las respuestas correctas al terminar y un evaluador podría pasárselas a otro. La
@@ -31,6 +35,7 @@ import hashlib
 import html
 import json
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 
@@ -43,6 +48,9 @@ SALIDA = AQUI / "formulario"
 TITULO = "Evaluación de explicaciones de un detector de phishing"
 AUTOR = "Cristhofer Alegre"
 CONTACTO = "a20210577@pucp.edu.pe"
+# Desde aquí el Apps Script descarga las imágenes de resaltado.
+URL_IMAGENES = ("https://raw.githubusercontent.com/Irico17/Tesis/master/"
+                "doc/validacion_xai/formulario/")
 ESCALA = ["1 (totalmente en desacuerdo)", "2", "3", "4", "5 (totalmente de acuerdo)"]
 
 VACIAS = set("""
@@ -247,7 +255,10 @@ COMO_LEER = (
     "significa que esa palabra influyó más. A veces el sistema cita como palabra un "
     "fragmento de un enlace o un signo de puntuación: se lee igual, como algo que el "
     "sistema tuvo en cuenta.\n"
-    "4. La síntesis final resume qué tipo de información sustentó la decisión.\n\n"
+    "4. La síntesis final resume qué tipo de información sustentó la decisión.\n"
+    "5. Debajo del reporte verás el mismo correo con sus palabras sombreadas: cuanto "
+    "más intenso el color, más pesó esa palabra en la decisión. Las palabras que cita "
+    "el reporte llevan un recuadro.\n\n"
     "El párrafo inicial (narrativa) dice lo mismo en una frase: la decisión, la "
     "confianza y las tres palabras más influyentes."
 )
@@ -268,6 +279,34 @@ def _ejemplo_texto(ej: dict) -> str:
             f"{_cuerpo_limpio(ej['cuerpo'])}")
 
 
+def _desactivar_enlace(url: str) -> str:
+    return re.sub(r"^http", "hxxp", url, flags=re.I).replace(".", "[.]")
+
+
+# Lo mismo que oculta la selección de correos, aplicado al texto de la imagen.
+OCULTAR = [
+    (r"[\w.+-]+(?:@|\(a\)|\[at\])[\w-]+(?:\.[\w-]+)+", lambda m: "[correo oculto]"),
+    (r"\bphishing@pot\b,?", lambda m: ""),
+    (r"(?:https?://|www\.)\S+", _desactivar_enlace),
+    (r"(?<!\w)(?:\+?\d[\d\s().-]{7,}\d)(?!\w)", lambda m: "[teléfono oculto]"),
+]
+
+
+def generar_imagenes(datos: dict) -> dict[str, str]:
+    """Dibuja cada correo resaltado y devuelve el nombre de fichero de cada uno."""
+    sys.path.insert(0, str(BASE / "src"))
+    from phishing_model.xai.resaltado import dibujar_resaltado
+
+    nombres = {}
+    for clave, ej in datos["ejemplos"].items():
+        citadas = [f["name"] for f in _bloques(ej)["texto"]["factors"]]
+        nombre = f"resaltado_{clave}.png"
+        dibujar_resaltado(ej["texto_leido"], ej["resaltado"], SALIDA / nombre,
+                          citadas=citadas, ocultar=OCULTAR)
+        nombres[clave] = nombre
+    return nombres
+
+
 def _reporte_texto(ej: dict) -> str:
     exp = ej["explicacion"]
     return f"{exp['narrativa']}\n\n{exp['reporte_por_modalidad'].strip()}"
@@ -277,7 +316,7 @@ def _reporte_texto(ej: dict) -> str:
 # Estructura común del formulario
 # --------------------------------------------------------------------------
 
-def estructura(datos: dict) -> list[dict]:
+def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict]:
     """El formulario como lista de elementos, que luego se traduce a cada salida.
 
     La comprensión va antes que las escalas de opinión: el SUS y el PSSUQ se
@@ -315,6 +354,10 @@ def estructura(datos: dict) -> list[dict]:
         {"tipo": "texto", "titulo": "Ejemplo guiado: el reporte del sistema",
          "texto": _reporte_texto(ind)},
     ]
+    imagenes = imagenes or {}
+    if "induccion" in imagenes:
+        el.append({"tipo": "imagen", "titulo": "Ejemplo guiado: el correo resaltado",
+                   "archivo": imagenes["induccion"]})
     for n, correo in enumerate(correos, 1):
         el += [
             {"tipo": "pagina", "titulo": f"Sección C. Comprensión: correo {n} de 4",
@@ -323,6 +366,10 @@ def estructura(datos: dict) -> list[dict]:
             {"tipo": "texto", "titulo": f"Reporte del sistema para el correo {n}",
              "texto": _reporte_texto(correo)},
         ]
+        clave = ("phishing_1", "legitimo_1", "phishing_2", "legitimo_2")[n - 1]
+        if clave in imagenes:
+            el.append({"tipo": "imagen", "titulo": f"Correo {n} resaltado",
+                       "archivo": imagenes[clave]})
         el += [dict(q, tipo="pregunta") for q in preguntas if q["ejemplo"] == n]
     el += [
         {"tipo": "pagina", "titulo": "Sección A. Opinión sobre los reportes (1 de 2)",
@@ -393,6 +440,9 @@ def apps_script(el: list[dict]) -> str:
                   f".setColumns({json.dumps(ESCALA)}).setRequired(true);"]
         elif t == "parrafo":
             l.append(f"  form.addParagraphTextItem().setTitle({_js(e['titulo'])});")
+        elif t == "imagen":
+            l.append(f"  form.addImageItem().setTitle({_js(e['titulo'])})"
+                     f".setImage(UrlFetchApp.fetch({_js(URL_IMAGENES + e['archivo'])}));")
     l += [
         "  Logger.log('Enlace para responder: ' + form.getPublishedUrl());",
         "  Logger.log('Enlace para editar: ' + form.getEditUrl());",
@@ -427,6 +477,9 @@ def vista_previa(el: list[dict]) -> str:
         elif t == "parrafo":
             partes.append(f"<div class='q'><p><b>{h(e['titulo'])}</b></p>"
                           "<div class='caja'></div></div>")
+        elif t == "imagen":
+            partes.append(f"<h3>{h(e['titulo'])}</h3>"
+                          f"<img src='{e['archivo']}' style='width:100%'>")
     estilo = """
     body{font-family:Georgia,serif;max-width:820px;margin:32px auto;padding:0 16px;color:#111}
     h1{font-size:24px} h2{font-size:19px;margin-top:36px;border-top:1px solid #999;padding-top:16px}
@@ -443,8 +496,8 @@ def vista_previa(el: list[dict]) -> str:
 
 def main() -> int:
     datos = json.loads(EJEMPLOS.read_text(encoding="utf-8"))
-    el = estructura(datos)
     SALIDA.mkdir(exist_ok=True)
+    el = estructura(datos, generar_imagenes(datos))
     (SALIDA / "crear_formulario.gs").write_text(apps_script(el), encoding="utf-8")
     (SALIDA / "vista_previa.html").write_text(vista_previa(el), encoding="utf-8")
     clave = {

@@ -51,6 +51,7 @@ from comun import BASE, SALIDA, cargar_corpus  # noqa: E402
 sys.path.insert(0, str(BASE / "src"))
 
 from phishing_model.explicabilidad import carga  # noqa: E402
+from phishing_model.xai.resaltado import palabras_con_mas_peso, pesos_por_palabra  # noqa: E402
 
 import e9_narrativa_y_validacion as e9  # noqa: E402
 
@@ -256,6 +257,15 @@ def main() -> int:
                 "remitente": "[remitente oculto]",
                 "cuerpo": _desactivar(_recortar(fila["cuerpo"])),
                 "explicacion": exp,
+                # El correo tal como lo leyó el modelo, con el peso de cada palabra,
+                # para dibujarlo resaltado. Se comprueba que sus cinco palabras de
+                # más peso sean las que cita el reporte: es el mismo vector.
+                "texto_leido": str(fila["clean_text"]),
+                "resaltado": (res := pesos_por_palabra(cargado, str(fila["clean_text"]))),
+                "resaltado_coincide_con_el_reporte": sorted(
+                    palabras_con_mas_peso(str(fila["clean_text"]), res["spans"])) == sorted(
+                    f["name"].lower() for b in exp["estructurado"]["modality_blocks"]
+                    if b["modality"] == "texto" for f in b["factors"]),
             }
 
     informe = {

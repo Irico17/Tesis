@@ -133,6 +133,8 @@ Esta sección es la que responde directamente al resultado **R3.3** de la tesis:
 
 La sección usa **cuatro correos reales** del conjunto de prueba, todos correctamente clasificados por el modelo reportado: dos de phishing y dos legítimos, presentados en orden alterno. Un quinto correo de phishing se usa solo en la inducción. Los selecciona `scripts/experimentos/e9_ejemplos_del_panel.py` con criterios fijos y registrados en su informe (`medios_de_verificacion/experimentos/e9/ejemplos_del_panel.json`): idioma inglés o español, cuerpo legible, palabras decisivas legibles y visibles en el correo mostrado, ninguna repetida y, en los legítimos, ninguna que sea un nombre propio. Los enlaces se desactivan y se ocultan direcciones y teléfonos.
 
+Cada reporte va acompañado del propio correo con sus palabras sombreadas según su peso en la decisión (`src/phishing_model/xai/resaltado.py`), con recuadro en las que cita el reporte; el sombreado usa el mismo vector de atención que el reporte, y en los cinco correos sus cinco palabras de más peso coinciden con las citadas.
+
 No hay ejemplo de confianza intermedia: el modelo casi nunca duda, y ningún correo bien clasificado con esa confianza tiene una explicación legible. La pregunta prevista para él, qué factor empuja hacia cada clase, tampoco podría responderse, porque la atención no tiene signo.
 
 Las diez preguntas, y su respuesta correcta, se derivan del propio reporte que el evaluador lee (`generar_formulario.py`); la clave queda en `formulario/clave_de_respuestas.json`. Cubren lo que un analista necesita leer en el reporte:
