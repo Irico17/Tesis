@@ -1,5 +1,5 @@
 {
-  "generado_en": "2026-10-12T05:52:04.036018+00:00",
+  "generado_en": "2026-10-12T05:54:33.334011+00:00",
   "resultados": {
     "R1.1_corpus_multimodal": {
       "carpeta": "R1.1_corpus_multimodal",
@@ -142,7 +142,12 @@
         "ejemplos_del_panel.json",
         "formulario_del_panel.html",
         "crear_formulario.gs",
-        "clave_de_respuestas.json"
+        "clave_de_respuestas.json",
+        "resaltado_induccion.png",
+        "resaltado_phishing_1.png",
+        "resaltado_legitimo_1.png",
+        "resaltado_phishing_2.png",
+        "resaltado_legitimo_2.png"
       ],
       "ausentes": [],
       "cubierto": true,

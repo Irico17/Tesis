@@ -17,6 +17,11 @@
 | `formulario_del_panel.html` | Formulario de evaluación tal como lo ve el evaluador: consentimiento, perfil, inducción, diez preguntas de comprensión, SUS y PSSUQ |
 | `crear_formulario.gs` | Apps Script que crea ese mismo formulario en Google Forms |
 | `clave_de_respuestas.json` | Respuesta correcta de cada pregunta de comprensión, derivada del reporte |
+| `resaltado_induccion.png` | Correo del panel resaltado según el peso de cada palabra, como aparece en el formulario |
+| `resaltado_phishing_1.png` | Correo del panel resaltado según el peso de cada palabra, como aparece en el formulario |
+| `resaltado_legitimo_1.png` | Correo del panel resaltado según el peso de cada palabra, como aparece en el formulario |
+| `resaltado_phishing_2.png` | Correo del panel resaltado según el peso de cada palabra, como aparece en el formulario |
+| `resaltado_legitimo_2.png` | Correo del panel resaltado según el peso de cada palabra, como aparece en el formulario |
 
 ## Código fuente que sustenta el resultado
 

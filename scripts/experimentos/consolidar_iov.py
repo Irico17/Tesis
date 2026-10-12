@@ -293,6 +293,12 @@ RESULTADOS.update({
             (BASE / "doc" / "validacion_xai" / "formulario" / "clave_de_respuestas.json",
              "clave_de_respuestas.json",
              "Respuesta correcta de cada pregunta de comprensión, derivada del reporte"),
+        ] + [
+            (BASE / "doc" / "validacion_xai" / "formulario" / f"resaltado_{c}.png",
+             f"resaltado_{c}.png",
+             "Correo del panel resaltado según el peso de cada palabra, como aparece "
+             "en el formulario")
+            for c in ("induccion", "phishing_1", "legitimo_1", "phishing_2", "legitimo_2")
         ],
         "explicacion": (
             "El panel lee cuatro correos reales del conjunto de prueba, dos de "
