@@ -1,5 +1,5 @@
 {
-  "generado_en": "2026-10-12T05:54:33.334011+00:00",
+  "generado_en": "2026-10-13T01:55:58.728430+00:00",
   "resultados": {
     "R1.1_corpus_multimodal": {
       "carpeta": "R1.1_corpus_multimodal",
@@ -113,6 +113,7 @@
       "medio_de_verificacion": "Matriz de decisiones técnicas y informe de selección",
       "indicador": "Cuadro comparativo que justifique la selección de al menos una técnica XAI idónea para la arquitectura.",
       "presentes": [
+        "e8_comparacion_de_familias_prueba_completa.json",
         "e8_comparacion_de_familias.json"
       ],
       "ausentes": [],

@@ -129,10 +129,57 @@ class ExplanationInput:
     max_factors: int = 3
 
 
+def es_palabra_legible(cadena: str) -> bool:
+    """Si el factor citado es una palabra que un analista puede leer.
+
+    Los correos arrastran fronteras MIME, identificadores codificados en base 64 y
+    signos sueltos, y el codificador los convierte en tokens como cualquier otro.
+    El discriminante es la longitud junto con la proporción de letras y la
+    presencia de vocales: una cadena de cuarenta y ocho caracteres cae por larga,
+    una secuencia de consonantes por impronunciable, y un término alfanumérico
+    corto, como el nombre de un protocolo, se conserva. Mide legibilidad y no
+    pertinencia.
+    """
+    if not (2 <= len(cadena) <= 20):
+        return False
+    limpia = cadena.replace("-", "").replace("'", "")
+    letras = sum(1 for c in limpia if c.isalpha())
+    if not limpia or letras / len(limpia) < 0.6:
+        return False
+    return any(v in cadena.lower() for v in "aeiouáéíóú")
+
+
+def _tipo_de_token(cadena: str) -> str:
+    """Qué es un token que no es una palabra legible, dicho para el analista.
+
+    La explicación es fiel a lo que el modelo atiende, y eso incluye elementos que
+    no son lenguaje. Citarlos por su cadena («cm9kcmlnby1m…») no le dice nada al
+    analista; citarlos por su tipo le dice que el modelo se apoyó en el formato
+    del mensaje. El peso no cambia, y la cadena se conserva, abreviada, para que
+    el reporte siga siendo auditable.
+    """
+    if not any(c.isalnum() for c in cadena):
+        return "un signo de puntuación"
+    if all(c.isdigit() or c in ".,:/-" for c in cadena):
+        return "una cifra"
+    if any(c.isalpha() and not c.isascii() for c in cadena) and \
+            not any(c.isascii() and c.isalpha() for c in cadena):
+        return "un texto en otro alfabeto"
+    if cadena.isascii() and cadena.isalpha() and len(cadena) <= 5:
+        return "una abreviatura"
+    return "un fragmento codificado"
+
+
 def humanize_factor_name(name: str) -> str:
     """Traduce un nombre técnico de feature a frase legible; si es una palabra del texto
-    (candidatos SHAP/LIME), la cita directamente entre comillas."""
-    return FEATURE_DISPLAY_NAMES.get(name, f'la palabra "{name}"')
+    (candidatos SHAP/LIME), la cita directamente entre comillas, y si es un token que
+    no es una palabra legible, lo nombra por su tipo."""
+    if name in FEATURE_DISPLAY_NAMES:
+        return FEATURE_DISPLAY_NAMES[name]
+    if es_palabra_legible(name):
+        return f'la palabra "{name}"'
+    visible = name if len(name) <= 12 else name[:10] + "…"
+    return f'{_tipo_de_token(name)} "{visible}"'
 
 
 def generate_narrative(explanation: ExplanationInput) -> str:

@@ -209,8 +209,12 @@ cola deja.
 
 ```bash
 bash scripts/experimentos/cola_servidor.sh                              # E0 a E7
-python scripts/experimentos/e8_explicabilidad.py --muestra 60
+for k in 0 1 2; do                                                      # E8 en 3 GPU
+  CUDA_VISIBLE_DEVICES=$k python scripts/experimentos/e8_explicabilidad.py --fragmento $k/3 &
+done; wait
+python scripts/experimentos/e8_explicabilidad.py --unir                 # 4 411 correos
 python scripts/experimentos/e9_narrativa_y_validacion.py --verificar 100
+python scripts/experimentos/e9_ejemplos_del_panel.py                    # panel de R3.3
 python scripts/figuras/generar_figuras_mv.py
 python scripts/experimentos/consolidar_iov.py
 ```

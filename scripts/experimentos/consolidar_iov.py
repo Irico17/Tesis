@@ -238,11 +238,26 @@ RESULTADOS.update({
         "indicador": ("Cuadro comparativo que justifique la selección de al menos una técnica XAI"
                       " idónea para la arquitectura."),
         "artefactos": [
-            (EXP / "e8" / "e8.json", "e8_comparacion_de_familias.json",
+            (EXP / "e8" / "e8_prueba_completa.json",
+             "e8_comparacion_de_familias_prueba_completa.json",
              "Comparación de la atención intrínseca, los valores de Shapley y la "
-             "aproximación local en fidelidad, estabilidad, alcance y coste, sobre el "
-             "punto de control reportado, con la técnica seleccionada"),
+             "aproximación local en fidelidad, estabilidad, alcance y coste sobre los "
+             "4 411 correos del conjunto de prueba, con resúmenes por clase predicha; "
+             "es la comparación que sustenta la selección"),
+            (EXP / "e8" / "e8.json", "e8_comparacion_de_familias.json",
+             "Primera comparación, sobre sesenta correos clasificados como phishing; "
+             "se conserva como antecedente"),
         ],
+        "explicacion": (
+            "La metodología fija cuatro criterios de decisión: coste computacional, "
+            "compatibilidad nativa con la arquitectura, estabilidad y respaldo teórico. "
+            "La fidelidad (exhaustividad y suficiencia) se mide como comprobación de "
+            "validez. En los correos clasificados como phishing, que son los que explica "
+            "el módulo de R3.2, las tres familias no se distinguen en fidelidad; en los "
+            "legítimos, los gradientes integrados son más fieles. Se selecciona la "
+            "atención: gana en coste y compatibilidad, empata en estabilidad y pierde en "
+            "respaldo teórico. La comparación se ejecuta en fragmentos paralelos con "
+            "`e8_explicabilidad.py --fragmento K/N` y se une con `--unir`."),
         "codigo": ["src/phishing_model/xai/",
                    "src/phishing_model/explicabilidad/",
                    "scripts/experimentos/e8_explicabilidad.py"],

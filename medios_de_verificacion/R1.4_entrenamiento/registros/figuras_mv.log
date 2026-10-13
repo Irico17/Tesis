@@ -1,0 +1,5 @@
+Figuras de los medios de verificación:
+  matrices de confusión: 12 en medios_de_verificacion/R2.2_comparacion/matrices_de_confusion
+  curvas ROC: 12 modelos en medios_de_verificacion/R2.2_comparacion
+  curvas de aprendizaje: 85 en medios_de_verificacion/R1.4_entrenamiento/curvas_de_aprendizaje
+  diagrama de arquitectura en medios_de_verificacion/R1.3_arquitectura

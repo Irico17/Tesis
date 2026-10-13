@@ -7,7 +7,7 @@
     td:not(:first-child),th{text-align:center;width:36px} ul{list-style:none;padding-left:8px}
     .q{margin:14px 0} .caja{border:1px solid #999;height:80px}
     @media print{h2{page-break-before:always}}</style></head><body><h1>Evaluación de explicaciones de un detector de phishing</h1>
-<p class='desc'>Este formulario forma parte de la tesis de Ingeniería Informática de Cristhofer Alegre (PUCP), sobre detección de phishing en correo electrónico con inteligencia artificial explicable. El sistema clasifica cada correo como phishing o legítimo y genera un reporte que explica qué factores pesaron en esa decisión. Queremos saber si ese reporte se entiende.<br><br>Tomará unos 25 minutos. Verás un ejemplo guiado, leerás cuatro correos reales con su reporte y contestarás diez preguntas sobre lo que el reporte dice y, al final, responderás dos cuestionarios breves de opinión. Las preguntas de comprensión tienen respuestas correctas, pero no te evalúan a ti: miden si el reporte comunica bien. Las de opinión no tienen respuestas correctas.<br><br>La participación es voluntaria y anónima. No se registra tu nombre ni tu correo, y las respuestas se analizan de forma agregada. Puedes retirarte en cualquier momento cerrando el formulario.<br><br>Seguridad: los correos son ejemplos reales de phishing. Sus enlaces están desactivados (hxxp, [.]) y se han ocultado direcciones y teléfonos. No intentes abrir ningún enlace.<br><br>Consultas: a20210577@pucp.edu.pe</p>
+<p class='desc'>Este formulario forma parte de la tesis de Ingeniería Informática de Cristhofer Alegre (PUCP), sobre detección de phishing en correo electrónico con inteligencia artificial explicable. El sistema clasifica cada correo como phishing o legítimo y genera un reporte que explica qué factores pesaron en esa decisión. Queremos saber si ese reporte se entiende.<br><br>Tomará unos 25 minutos. Verás un ejemplo guiado, leerás cuatro correos reales con su reporte y contestarás diez preguntas sobre lo que el reporte dice y, al final, responderás dos cuestionarios breves de opinión. Las preguntas de comprensión tienen respuestas correctas, pero no te evalúan a ti: miden si el reporte comunica bien. Las de opinión no tienen respuestas correctas.<br><br>La participación es voluntaria y anónima. No se registra tu nombre ni tu correo, y las respuestas se analizan de forma agregada. Puedes retirarte en cualquier momento cerrando el formulario.<br><br>Seguridad: los correos son ejemplos reales, de phishing y legítimos. Sus enlaces están desactivados (hxxp, [.]) y se han ocultado los teléfonos. En los de phishing se muestra el dominio de cada dirección, también desactivado, porque es parte de la evidencia; en los legítimos, las direcciones se ocultan. No intentes abrir ningún enlace.<br><br>Consultas: a20210577@pucp.edu.pe</p>
 <div class='q'><p><b>Confirmo que participo de forma voluntaria, que puedo retirarme en cualquier momento y que mis respuestas se usarán de forma anónima y agregada con fines de investigación.</b></p><ul><li>&#9711; Acepto participar</li><li>&#9711; No acepto</li></ul></div>
 <h2>Sobre ti</h2>
 <p class='desc'>Estas preguntas solo sirven para describir al grupo de participantes.</p>
@@ -15,7 +15,7 @@
 <div class='q'><p><b>P2. ¿Cuál es tu carrera o área de formación?</b></p><ul><li>&#9711; Ingeniería Informática</li><li>&#9711; Ingeniería de Sistemas</li><li>&#9711; Ingeniería de Telecomunicaciones o Electrónica</li><li>&#9711; Ciencias de la Computación</li><li>&#9711; Otra</li></ul></div>
 <div class='q'><p><b>P3. ¿Tienes formación o experiencia en ciberseguridad (cursos, trabajo en un centro de operaciones de seguridad, competencias tipo CTF)?</b></p><ul><li>&#9711; Sí</li><li>&#9711; No</li></ul></div>
 <h2>Cómo leer el reporte</h2>
-<p class='desc'>Antes de empezar, este es un ejemplo de cómo leer el reporte. No forma parte de las preguntas.<br><br>1. La primera línea indica la decisión del sistema (phishing o legítimo) y su confianza, entre 0% y 100%.<br>2. Después, el reporte se divide en tres bloques, uno por cada tipo de información del correo: su contenido textual, su estructura HTML y sus metadatos de red y autenticación. Cada bloque indica qué parte del peso total de la decisión le corresponde.<br>3. Dentro de cada bloque, los factores aparecen ordenados de mayor a menor peso. En el bloque de texto, los factores son palabras del correo; un porcentaje mayor significa que esa palabra influyó más. A veces el sistema cita como palabra un fragmento de un enlace o un signo de puntuación: se lee igual, como algo que el sistema tuvo en cuenta.<br>4. La síntesis final resume qué tipo de información sustentó la decisión.<br>5. Debajo del reporte verás el mismo correo con sus palabras sombreadas: cuanto más intenso el color, más pesó esa palabra en la decisión. Las palabras que cita el reporte llevan un recuadro.<br><br>El párrafo inicial (narrativa) dice lo mismo en una frase: la decisión, la confianza y las tres palabras más influyentes.</p>
+<p class='desc'>Antes de empezar, este es un ejemplo de cómo leer el reporte. No forma parte de las preguntas.<br><br>1. La primera línea indica la decisión del sistema (phishing o legítimo) y su confianza, entre 0% y 100%.<br>2. Después, el reporte se divide en tres bloques, uno por cada tipo de información del correo: su contenido textual, su estructura HTML y sus metadatos de red y autenticación. Cada bloque indica qué parte del peso total de la decisión le corresponde.<br>3. Dentro de cada bloque, los factores aparecen ordenados de mayor a menor peso. En el bloque de texto, los factores son palabras del correo; un porcentaje mayor significa que esa palabra influyó más. A veces el sistema se fija en algo que no es una palabra; entonces el reporte lo nombra por su tipo (un signo de puntuación, una cifra, una abreviatura o un fragmento codificado) seguido del texto exacto. Se lee igual: es algo del correo que el sistema tuvo en cuenta.<br>4. La síntesis final resume qué tipo de información sustentó la decisión.<br>5. Debajo del reporte verás el mismo correo con sus palabras sombreadas: cuanto más intenso el color, más pesó esa palabra en la decisión. Las palabras que cita el reporte llevan un recuadro.<br><br>El párrafo inicial (narrativa) dice lo mismo en una frase: la decisión, la confianza y las tres palabras más influyentes.</p>
 <h3>Ejemplo guiado: el correo</h3><pre>Asunto: Protect Your Account
 Remitente: [remitente oculto]
 
@@ -29,7 +29,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la palabra &quot;asp&quot;: 26.5%
   · la palabra &quot;tdcanadatrust&quot;: 22.0%
   · la palabra &quot;securityandprivacy&quot;: 19.4%
-  · la palabra &quot;.&quot;: 16.3%
+  · un signo de puntuación &quot;.&quot;: 16.3%
   · la palabra &quot;your&quot;: 15.7%
 
 [Estructura HTML/DOM] — contribución agregada: 0.0%
@@ -48,7 +48,7 @@ SÍNTESIS: La clasificación como phishing se apoya principalmente en la modalid
 <h3>Correo 1</h3><pre>Asunto: USAA REQUEST YOUR APPROVAL FOR AN INCOMING ACCOUNT DEPOSIT
 Remitente: [remitente oculto]
 
-To ensure delivery to your inbox, please add [correo oculto] to your address book.
+To ensure delivery to your inbox, please add [usuario]@customermail[.]usaa[.]com to your address book.
 
 Payment Approval Notification
 View Accounts | Privacy Promise | Contact Us
@@ -83,7 +83,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la palabra &quot;inbox&quot;: 29.9%
   · la palabra &quot;transffered&quot;: 19.6%
   · la palabra &quot;authomated&quot;: 19.1%
-  · la palabra &quot;0514&quot;: 16.4%
+  · una cifra &quot;0514&quot;: 16.4%
   · la palabra &quot;your&quot;: 15.0%
 
 [Estructura HTML/DOM] — contribución agregada: 0.0%
@@ -156,7 +156,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la palabra &quot;invocations&quot;: 14.8%
   · la palabra &quot;wrote&quot;: 14.7%
   · la palabra &quot;libexec&quot;: 13.0%
-  · la palabra &quot;cdt&quot;: 12.6%
+  · una abreviatura &quot;cdt&quot;: 12.6%
 
 [Estructura HTML/DOM] — contribución agregada: 0.0%
   · la presencia de código HTML: 0.0%
@@ -185,7 +185,7 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la palabra &quot;unsubscribe&quot;: 23.8%
   · la palabra &quot;unsubscribing&quot;: 22.2%
   · la palabra &quot;here&quot;: 19.7%
-  · la palabra &quot;.&quot;: 17.3%
+  · un signo de puntuación &quot;.&quot;: 17.3%
   · la palabra &quot;shopping&quot;: 17.1%
 
 [Estructura HTML/DOM] — contribución agregada: 0.0%

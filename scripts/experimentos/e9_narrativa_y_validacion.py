@@ -61,25 +61,19 @@ TOP_PALABRAS = 5
 TOP_CARACTERISTICAS = 5
 
 
-def _tecnica_mas_fiel(por_defecto: str = "lime") -> str:
-    """Lee de E8 qué técnica de texto resultó más fiel, si E8 ya se ejecutó.
+# La técnica la fija R3.1 con los criterios que declara la metodología: coste
+# computacional, compatibilidad nativa con la arquitectura, estabilidad y
+# respaldo teórico. La fidelidad se mide como comprobación de validez: sobre el
+# conjunto de prueba completo (e8_prueba_completa.json), en las alertas de
+# phishing, que son lo que este módulo explica, las tres familias no se
+# distinguen en exhaustividad ni en suficiencia. Antes se elegía la de mayor
+# exhaustividad media sobre sesenta correos, una media que dominaba un solo
+# mensaje.
+TECNICA_SELECCIONADA = "atencion"
 
-    La exhaustividad manda: mide cuánto cae la predicción al retirar lo que la
-    técnica declaró decisivo, que es la evidencia directa de que la explicación
-    describe lo que el modelo usa. Si no hay informe de E8 se emplea el valor por
-    omisión y el informe lo declara, en vez de aparentar una decisión que no se
-    tomó con evidencia.
-    """
-    ruta = SALIDA / "e8" / "e8.json"
-    if not ruta.exists():
-        return por_defecto
-    resumen = json.loads(ruta.read_text(encoding="utf-8")).get("resumen", {})
-    exhaustividad = resumen.get("fidelidad_exhaustividad", {})
-    candidatas = {k: v for k, v in exhaustividad.items()
-                  if v is not None and k in ("lime", "shap_texto", "atencion")}
-    if not candidatas:
-        return por_defecto
-    return max(candidatas, key=candidatas.get)
+
+def _tecnica_seleccionada() -> str:
+    return TECNICA_SELECCIONADA
 
 
 def _fusionar_subpalabras(tokens: list[str], pesos: list[float]) -> list[tuple[str, float]]:
@@ -107,32 +101,10 @@ def _fusionar_subpalabras(tokens: list[str], pesos: list[float]) -> list[tuple[s
 
 
 def _parece_palabra(cadena: str) -> bool:
-    """Si el factor citado es una palabra que un analista puede leer.
-
-    Los correos arrastran fronteras MIME, identificadores codificados en base 64 y
-    nombres de fuentes tipográficas, y el codificador los convierte en tokens como
-    cualquier otro. Una cadena de cuarenta y ocho caracteres alfanuméricos sin
-    vocales reconocibles no es evidencia de phishing para quien lee el reporte,
-    aunque el modelo la haya atendido.
-
-    Mide legibilidad y no pertinencia, y conviene no confundirlas: el nombre de
-    una fuente tipográfica es perfectamente legible y no es evidencia de nada.
-
-    Exigir que la cadena fuese solo alfabética rechazaba términos de seguridad
-    como el del protocolo de autenticación de tarjetas, que llevan un dígito, y
-    por tanto subestimaba la legibilidad precisamente donde el dominio la
-    concentra. El discriminante que sí separa la basura de codificación es la
-    longitud junto con la presencia de vocales: una cadena de cuarenta y ocho
-    caracteres cae por larga, y una secuencia de consonantes sin vocal alguna cae
-    por impronunciable, mientras un término alfanumérico corto se conserva.
-    """
-    if not (2 <= len(cadena) <= 20):
-        return False
-    limpia = cadena.replace("-", "").replace("'", "")
-    letras = sum(1 for c in limpia if c.isalpha())
-    if not limpia or letras / len(limpia) < 0.6:
-        return False
-    return any(v in cadena.lower() for v in "aeiouáéíóú")
+    """Si el factor citado es una palabra legible; el criterio vive en el módulo
+    de narrativa, que lo usa también para nombrar por su tipo lo que no lo es."""
+    from phishing_model.xai.narrative import es_palabra_legible
+    return es_palabra_legible(cadena)
 
 
 def _palabras_de(tecnica: str, cargado, entrada, clase: int) -> list[tuple[str, float]]:
@@ -245,10 +217,10 @@ def main() -> int:
     particion = particion_agrupada(corpus)
     cargado = carga.cargar(BASE, args.corrida, dispositivo=dispositivo)
 
-    tecnica = args.tecnica or _tecnica_mas_fiel()
-    elegida_por_evidencia = args.tecnica is None and (SALIDA / "e8" / "e8.json").exists()
+    tecnica = args.tecnica or _tecnica_seleccionada()
+    elegida_por_evidencia = args.tecnica is None
     print(f"  técnica de texto: {tecnica} "
-          f"({'elegida por la fidelidad medida en E8' if elegida_por_evidencia else 'por omisión'})")
+          f"({'la seleccionada en R3.1' if elegida_por_evidencia else 'impuesta por argumento'})")
 
     filas = carga.muestra_de_positivos(BASE, corpus, args.muestra, corrida=args.corrida)
     lotes = carga.filas_como_lotes(cargado, filas, dispositivo=dispositivo)

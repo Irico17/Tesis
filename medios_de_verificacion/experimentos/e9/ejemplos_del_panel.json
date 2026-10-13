@@ -18,7 +18,7 @@
     "palabras_citadas": "las tres decisivas, legibles (criterio de E9); la principal, alfabética, de 3 o más letras y no vacía; ninguna repetida en el bloque; las tres visibles en el correo mostrado; en el grupo legítimo, ninguna decisiva que sea un nombre propio",
     "idioma": "un solo idioma, detectado por tramos con probabilidad >= 0.9",
     "orden": "huella SHA-256 del identificador, determinista",
-    "seguridad": "enlaces desactivados; correos y teléfonos ocultos"
+    "seguridad": "enlaces desactivados; teléfonos ocultos; en el phishing, el dominio de cada dirección se muestra desactivado y se oculta la parte local; en los legítimos, las direcciones se ocultan enteras"
   },
   "conteo": {
     "prueba_bien_clasificados": 4385,
@@ -51,12 +51,12 @@
       "idioma": "en",
       "asunto": "USAA REQUEST YOUR APPROVAL FOR AN INCOMING ACCOUNT DEPOSIT",
       "remitente": "[remitente oculto]",
-      "cuerpo": "To ensure delivery to your inbox, please add [correo oculto] to your address book.\t \n \n   \t  \n   \n  \t  \n   Payment Approval Notification\n  View Accounts | Privacy Promise | Contact Us\n\t  \n    \n   \t \n  \t \n  \t \n\t  \n   USAA SECURITY ZONE  \nUSAA # ending in: - XXXX\n\t  \n   \n  \n  \n   \n  \n \n    Dear Customer,\nA payment was transffered to your account from another US bank account using the Authomated Clearing House (ACH).\n\n For security reasons, We have temporarily hold the payment until necessary verification is done. You are to sign on and verify your account as a means to accept the payment. Payment will be posted within 2-3 business working days after your verification. \n \n   \t Approve Your Payment\n Thank you,\nUSAA\n P.S. Texting and driving ... it can wait. Take the pledge to never text and drive.\n\t  \n  \n  \n\t \t \n  \t \t \t \n   \n  Please do not reply to this e-mail. To send a secure message to USAA, please contact us.\n\nPrivacy Promise\nUSAA, 9800 Fredericksburg Road, San Antonio, Texas 78288\n\n  \n  \t USAA means United Services Automobile Association and its insurance, banking, investment and other companies. Banks Member FDIC. Investments provided by USAA Investment Management Company and USAA Financial Advisors Inc., both registered broker dealers. \t \n  \n  [teléfono oculto]",
+      "cuerpo": "To ensure delivery to your inbox, please add [usuario]@customermail[.]usaa[.]com to your address book.\t \n \n   \t  \n   \n  \t  \n   Payment Approval Notification\n  View Accounts | Privacy Promise | Contact Us\n\t  \n    \n   \t \n  \t \n  \t \n\t  \n   USAA SECURITY ZONE  \nUSAA # ending in: - XXXX\n\t  \n   \n  \n  \n   \n  \n \n    Dear Customer,\nA payment was transffered to your account from another US bank account using the Authomated Clearing House (ACH).\n\n For security reasons, We have temporarily hold the payment until necessary verification is done. You are to sign on and verify your account as a means to accept the payment. Payment will be posted within 2-3 business working days after your verification. \n \n   \t Approve Your Payment\n Thank you,\nUSAA\n P.S. Texting and driving ... it can wait. Take the pledge to never text and drive.\n\t  \n  \n  \n\t \t \n  \t \t \t \n   \n  Please do not reply to this e-mail. To send a secure message to USAA, please contact us.\n\nPrivacy Promise\nUSAA, 9800 Fredericksburg Road, San Antonio, Texas 78288\n\n  \n  \t USAA means United Services Automobile Association and its insurance, banking, investment and other companies. Banks Member FDIC. Investments provided by USAA Investment Management Company and USAA Financial Advisors Inc., both registered broker dealers. \t \n  \n  [teléfono oculto]",
       "explicacion": {
         "clase_predicha": 1,
         "confianza": 0.995966,
         "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.6%. Los factores que más influyeron en la decisión fueron: la palabra \"inbox\" (peso 1.4%), la palabra \"transffered\" (peso 0.9%), la palabra \"authomated\" (peso 0.9%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.6%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"inbox\": 29.9%\n  · la palabra \"transffered\": 19.6%\n  · la palabra \"authomated\": 19.1%\n  · la palabra \"0514\": 16.4%\n  · la palabra \"your\": 15.0%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.6%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"inbox\": 29.9%\n  · la palabra \"transffered\": 19.6%\n  · la palabra \"authomated\": 19.1%\n  · una cifra \"0514\": 16.4%\n  · la palabra \"your\": 15.0%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
         "estructurado": {
           "label": 1,
           "label_text": "phishing",
@@ -89,7 +89,7 @@
                 },
                 {
                   "name": "0514",
-                  "human_name": "la palabra \"0514\"",
+                  "human_name": "una cifra \"0514\"",
                   "pct": 16.4,
                   "raw_weight": 0.007612000685185194
                 },
@@ -1322,7 +1322,7 @@
         "clase_predicha": 1,
         "confianza": 0.998437,
         "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.8%. Los factores que más influyeron en la decisión fueron: la palabra \"asp\" (peso 1.1%), la palabra \"tdcanadatrust\" (peso 0.9%), la palabra \"securityandprivacy\" (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.8%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"asp\": 26.5%\n  · la palabra \"tdcanadatrust\": 22.0%\n  · la palabra \"securityandprivacy\": 19.4%\n  · la palabra \".\": 16.3%\n  · la palabra \"your\": 15.7%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.8%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"asp\": 26.5%\n  · la palabra \"tdcanadatrust\": 22.0%\n  · la palabra \"securityandprivacy\": 19.4%\n  · un signo de puntuación \".\": 16.3%\n  · la palabra \"your\": 15.7%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
         "estructurado": {
           "label": 1,
           "label_text": "phishing",
@@ -1355,7 +1355,7 @@
                 },
                 {
                   "name": ".",
-                  "human_name": "la palabra \".\"",
+                  "human_name": "un signo de puntuación \".\"",
                   "pct": 16.3,
                   "raw_weight": 0.006701238453388214
                 },
@@ -2843,7 +2843,7 @@
         "clase_predicha": 1,
         "confianza": 0.998894,
         "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.9%. Los factores que más influyeron en la decisión fueron: la palabra \"unsubscribe\" (peso 1.3%), la palabra \"unsubscribing\" (peso 1.2%), la palabra \"here\" (peso 1.1%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.9%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"unsubscribe\": 23.8%\n  · la palabra \"unsubscribing\": 22.2%\n  · la palabra \"here\": 19.7%\n  · la palabra \".\": 17.3%\n  · la palabra \"shopping\": 17.1%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.9%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"unsubscribe\": 23.8%\n  · la palabra \"unsubscribing\": 22.2%\n  · la palabra \"here\": 19.7%\n  · un signo de puntuación \".\": 17.3%\n  · la palabra \"shopping\": 17.1%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
         "estructurado": {
           "label": 1,
           "label_text": "phishing",
@@ -2876,7 +2876,7 @@
                 },
                 {
                   "name": ".",
-                  "human_name": "la palabra \".\"",
+                  "human_name": "un signo de puntuación \".\"",
                   "pct": 17.3,
                   "raw_weight": 0.009582080878317356
                 },
@@ -3799,7 +3799,7 @@
         "clase_predicha": 0,
         "confianza": 0.99994,
         "narrativa": "Este correo fue clasificado como legítimo con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"fedora\" (peso 1.4%), la palabra \"invocations\" (peso 0.4%), la palabra \"wrote\" (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-        "reporte_por_modalidad": "VEREDICTO: LEGÍTIMO (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"fedora\": 45.0%\n  · la palabra \"invocations\": 14.8%\n  · la palabra \"wrote\": 14.7%\n  · la palabra \"libexec\": 13.0%\n  · la palabra \"cdt\": 12.6%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · la cantidad de imágenes: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n\nSÍNTESIS: La clasificación como legítimo se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "reporte_por_modalidad": "VEREDICTO: LEGÍTIMO (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"fedora\": 45.0%\n  · la palabra \"invocations\": 14.8%\n  · la palabra \"wrote\": 14.7%\n  · la palabra \"libexec\": 13.0%\n  · una abreviatura \"cdt\": 12.6%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · la cantidad de imágenes: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n\nSÍNTESIS: La clasificación como legítimo se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
         "estructurado": {
           "label": 0,
           "label_text": "legítimo",
@@ -3838,7 +3838,7 @@
                 },
                 {
                   "name": "cdt",
-                  "human_name": "la palabra \"cdt\"",
+                  "human_name": "una abreviatura \"cdt\"",
                   "pct": 12.6,
                   "raw_weight": 0.003793689887970686
                 }

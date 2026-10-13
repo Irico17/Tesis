@@ -231,9 +231,11 @@ PRESENTACION = (
     "La participación es voluntaria y anónima. No se registra tu nombre ni tu correo, "
     "y las respuestas se analizan de forma agregada. Puedes retirarte en cualquier "
     "momento cerrando el formulario.\n\n"
-    "Seguridad: los correos son ejemplos reales de phishing. Sus enlaces están "
-    "desactivados (hxxp, [.]) y se han ocultado direcciones y teléfonos. No intentes "
-    "abrir ningún enlace.\n\n"
+    "Seguridad: los correos son ejemplos reales, de phishing y legítimos. Sus enlaces "
+    "están desactivados (hxxp, [.]) y se han ocultado los teléfonos. En los de "
+    "phishing se muestra el dominio de cada dirección, también desactivado, porque "
+    "es parte de la evidencia; en los legítimos, las direcciones se ocultan. No "
+    "intentes abrir ningún enlace.\n\n"
     "Consultas: {contacto}"
 )
 
@@ -252,9 +254,10 @@ COMO_LEER = (
     "de la decisión le corresponde.\n"
     "3. Dentro de cada bloque, los factores aparecen ordenados de mayor a menor peso. "
     "En el bloque de texto, los factores son palabras del correo; un porcentaje mayor "
-    "significa que esa palabra influyó más. A veces el sistema cita como palabra un "
-    "fragmento de un enlace o un signo de puntuación: se lee igual, como algo que el "
-    "sistema tuvo en cuenta.\n"
+    "significa que esa palabra influyó más. A veces el sistema se fija en algo que no "
+    "es una palabra; entonces el reporte lo nombra por su tipo (un signo de "
+    "puntuación, una cifra, una abreviatura o un fragmento codificado) seguido del "
+    "texto exacto. Se lee igual: es algo del correo que el sistema tuvo en cuenta.\n"
     "4. La síntesis final resume qué tipo de información sustentó la decisión.\n"
     "5. Debajo del reporte verás el mismo correo con sus palabras sombreadas: cuanto "
     "más intenso el color, más pesó esa palabra en la decisión. Las palabras que cita "
@@ -283,13 +286,27 @@ def _desactivar_enlace(url: str) -> str:
     return re.sub(r"^http", "hxxp", url, flags=re.I).replace(".", "[.]")
 
 
-# Lo mismo que oculta la selección de correos, aplicado al texto de la imagen.
-OCULTAR = [
-    (r"[\w.+-]+(?:@|\(a\)|\[at\])[\w-]+(?:\.[\w-]+)+", lambda m: "[correo oculto]"),
-    (r"\bphishing@pot\b,?", lambda m: ""),
-    (r"(?:https?://|www\.)\S+", _desactivar_enlace),
-    (r"(?<!\w)(?:\+?\d[\d\s().-]{7,}\d)(?!\w)", lambda m: "[teléfono oculto]"),
-]
+DIRECCION = r"([\w.+-]+)(?:@|\(a\)|\[at\])([\w-]+(?:\.[\w-]+)+)"
+
+
+def ocultar_para(phishing: bool) -> list:
+    """Lo mismo que aplica la selección de correos, aplicado al texto de la imagen.
+
+    En el phishing el dominio de cada dirección es evidencia y se conserva
+    desactivado; en los legítimos la dirección es de una persona y se oculta.
+    """
+    if phishing:
+        direccion = (DIRECCION,
+                     lambda txt: "[usuario]@" + re.match(DIRECCION, txt).group(2)
+                     .replace(".", "[.]"))
+    else:
+        direccion = (DIRECCION, lambda m: "[correo oculto]")
+    return [
+        (r"\bphishing@pot\b,?", lambda m: ""),
+        direccion,
+        (r"(?:https?://|www\.)\S+", _desactivar_enlace),
+        (r"(?<!\w)(?:\+?\d[\d\s().-]{7,}\d)(?!\w)", lambda m: "[teléfono oculto]"),
+    ]
 
 
 def generar_imagenes(datos: dict) -> dict[str, str]:
@@ -302,7 +319,8 @@ def generar_imagenes(datos: dict) -> dict[str, str]:
         citadas = [f["name"] for f in _bloques(ej)["texto"]["factors"]]
         nombre = f"resaltado_{clave}.png"
         dibujar_resaltado(ej["texto_leido"], ej["resaltado"], SALIDA / nombre,
-                          citadas=citadas, ocultar=OCULTAR)
+                          citadas=citadas,
+                          ocultar=ocultar_para(ej["etiqueta_real"].lower().startswith("phish")))
         nombres[clave] = nombre
     return nombres
 

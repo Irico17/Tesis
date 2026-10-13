@@ -218,7 +218,7 @@
       "clase_predicha": 1,
       "confianza": 0.715704,
       "narrativa": "Este correo fue clasificado como phishing con una confianza del 71.6%. Los factores que más influyeron en la decisión fueron: la palabra \"unsubscribe\" (peso 2.4%), la palabra \"toyabc\" (peso 1.8%), la palabra \"forever\" (peso 1.7%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 71.6%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"unsubscribe\": 29.5%\n  · la palabra \"toyabc\": 22.7%\n  · la palabra \"forever\": 21.3%\n  · la palabra \",\": 14.1%\n  · la palabra \"dianne\": 12.3%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · la longitud del mensaje: 0.0%\n  · la complejidad estructural del mensaje (cantidad de elementos HTML): 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · Sin evidencia atribuida a esta modalidad en esta predicción.\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 71.6%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"unsubscribe\": 29.5%\n  · la palabra \"toyabc\": 22.7%\n  · la palabra \"forever\": 21.3%\n  · un signo de puntuación \",\": 14.1%\n  · la palabra \"dianne\": 12.3%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · la longitud del mensaje: 0.0%\n  · la complejidad estructural del mensaje (cantidad de elementos HTML): 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · Sin evidencia atribuida a esta modalidad en esta predicción.\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
       "estructurado": {
         "label": 1,
         "label_text": "phishing",
@@ -251,7 +251,7 @@
               },
               {
                 "name": ",",
-                "human_name": "la palabra \",\"",
+                "human_name": "un signo de puntuación \",\"",
                 "pct": 14.1,
                 "raw_weight": 0.011264674365520477
               },
@@ -342,8 +342,8 @@
     {
       "clase_predicha": 1,
       "confianza": 0.999853,
-      "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"team\" (peso 1.3%), la palabra \"phishing\" (peso 1.3%), la palabra \".\" (peso 1.1%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"team\": 22.9%\n  · la palabra \"phishing\": 22.1%\n  · la palabra \".\": 19.2%\n  · la palabra \".\": 18.5%\n  · la palabra \"the\": 17.3%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+      "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"team\" (peso 1.3%), la palabra \"phishing\" (peso 1.3%), un signo de puntuación \".\" (peso 1.1%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"team\": 22.9%\n  · la palabra \"phishing\": 22.1%\n  · un signo de puntuación \".\": 19.2%\n  · un signo de puntuación \".\": 18.5%\n  · la palabra \"the\": 17.3%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
       "estructurado": {
         "label": 1,
         "label_text": "phishing",
@@ -370,13 +370,13 @@
               },
               {
                 "name": ".",
-                "human_name": "la palabra \".\"",
+                "human_name": "un signo de puntuación \".\"",
                 "pct": 19.2,
                 "raw_weight": 0.011089541018009186
               },
               {
                 "name": ".",
-                "human_name": "la palabra \".\"",
+                "human_name": "un signo de puntuación \".\"",
                 "pct": 18.5,
                 "raw_weight": 0.0107112480327487
               },
@@ -462,8 +462,8 @@
     {
       "clase_predicha": 1,
       "confianza": 0.998935,
-      "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.9%. Los factores que más influyeron en la decisión fueron: la palabra \".\" (peso 2.4%), la palabra \"123milhas\" (peso 1.6%), la palabra \"oportunidade\" (peso 1.6%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.9%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \".\": 29.3%\n  · la palabra \"123milhas\": 20.1%\n  · la palabra \"oportunidade\": 19.6%\n  · la palabra \"destinos\": 16.8%\n  · la palabra \"aproveite\": 14.1%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+      "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.9%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \".\" (peso 2.4%), la palabra \"123milhas\" (peso 1.6%), la palabra \"oportunidade\" (peso 1.6%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.9%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · un signo de puntuación \".\": 29.3%\n  · la palabra \"123milhas\": 20.1%\n  · la palabra \"oportunidade\": 19.6%\n  · la palabra \"destinos\": 16.8%\n  · la palabra \"aproveite\": 14.1%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
       "estructurado": {
         "label": 1,
         "label_text": "phishing",
@@ -478,7 +478,7 @@
             "factors": [
               {
                 "name": ".",
-                "human_name": "la palabra \".\"",
+                "human_name": "un signo de puntuación \".\"",
                 "pct": 29.3,
                 "raw_weight": 0.0235134344547987
               },
@@ -583,8 +583,8 @@
     {
       "clase_predicha": 1,
       "confianza": 0.999702,
-      "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"cm9kcmlnby1mlxbaag90bwfpbc5jb20\" (peso 3.1%), la palabra \"=\" (peso 1.5%), la palabra \"corvo\" (peso 1.0%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"cm9kcmlnby1mlxbaag90bwfpbc5jb20\": 41.8%\n  · la palabra \"=\": 20.2%\n  · la palabra \"corvo\": 13.8%\n  · la palabra \"leontyne\": 12.3%\n  · la palabra \"2023\": 11.9%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la longitud del mensaje: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · la cantidad de imágenes: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · Sin evidencia atribuida a esta modalidad en esta predicción.\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+      "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: un fragmento codificado \"cm9kcmlnby…\" (peso 3.1%), un signo de puntuación \"=\" (peso 1.5%), la palabra \"corvo\" (peso 1.0%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · un fragmento codificado \"cm9kcmlnby…\": 41.8%\n  · un signo de puntuación \"=\": 20.2%\n  · la palabra \"corvo\": 13.8%\n  · la palabra \"leontyne\": 12.3%\n  · una cifra \"2023\": 11.9%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la longitud del mensaje: 0.0%\n  · el grado de anidamiento de la estructura HTML: 0.0%\n  · la cantidad de enlaces: 0.0%\n  · la cantidad de imágenes: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · Sin evidencia atribuida a esta modalidad en esta predicción.\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
       "estructurado": {
         "label": 1,
         "label_text": "phishing",
@@ -599,13 +599,13 @@
             "factors": [
               {
                 "name": "cm9kcmlnby1mlxbaag90bwfpbc5jb20",
-                "human_name": "la palabra \"cm9kcmlnby1mlxbaag90bwfpbc5jb20\"",
+                "human_name": "un fragmento codificado \"cm9kcmlnby…\"",
                 "pct": 41.8,
                 "raw_weight": 0.030777762178331614
               },
               {
                 "name": "=",
-                "human_name": "la palabra \"=\"",
+                "human_name": "un signo de puntuación \"=\"",
                 "pct": 20.2,
                 "raw_weight": 0.014838296920061111
               },
@@ -623,7 +623,7 @@
               },
               {
                 "name": "2023",
-                "human_name": "la palabra \"2023\"",
+                "human_name": "una cifra \"2023\"",
                 "pct": 11.9,
                 "raw_weight": 0.008733195252716541
               }
@@ -704,8 +704,8 @@
     {
       "clase_predicha": 1,
       "confianza": 0.99985,
-      "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"uninterrupted\" (peso 2.3%), la palabra \"9vg2j\" (peso 2.1%), la palabra \"42l7mg\" (peso 1.7%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"uninterrupted\": 25.4%\n  · la palabra \"9vg2j\": 23.1%\n  · la palabra \"42l7mg\": 18.7%\n  · la palabra \"2023\": 18.0%\n  · la palabra \".\": 14.9%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · la cantidad de enlaces: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+      "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"uninterrupted\" (peso 2.3%), un fragmento codificado \"9vg2j\" (peso 2.1%), un fragmento codificado \"42l7mg\" (peso 1.7%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"uninterrupted\": 25.4%\n  · un fragmento codificado \"9vg2j\": 23.1%\n  · un fragmento codificado \"42l7mg\": 18.7%\n  · una cifra \"2023\": 18.0%\n  · un signo de puntuación \".\": 14.9%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · la presencia de código HTML: 0.0%\n  · la cantidad de imágenes: 0.0%\n  · la cantidad de enlaces: 0.0%\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
       "estructurado": {
         "label": 1,
         "label_text": "phishing",
@@ -726,25 +726,25 @@
               },
               {
                 "name": "9vg2j",
-                "human_name": "la palabra \"9vg2j\"",
+                "human_name": "un fragmento codificado \"9vg2j\"",
                 "pct": 23.1,
                 "raw_weight": 0.020919589791446924
               },
               {
                 "name": "42l7mg",
-                "human_name": "la palabra \"42l7mg\"",
+                "human_name": "un fragmento codificado \"42l7mg\"",
                 "pct": 18.7,
                 "raw_weight": 0.016927016666159034
               },
               {
                 "name": "2023",
-                "human_name": "la palabra \"2023\"",
+                "human_name": "una cifra \"2023\"",
                 "pct": 18.0,
                 "raw_weight": 0.016331367660313845
               },
               {
                 "name": ".",
-                "human_name": "la palabra \".\"",
+                "human_name": "un signo de puntuación \".\"",
                 "pct": 14.9,
                 "raw_weight": 0.01348067820072174
               }
@@ -826,8 +826,8 @@
     {
       "clase_predicha": 1,
       "confianza": 0.999509,
-      "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"されました\" (peso 4.6%), la palabra \"メッセーシ\" (peso 4.4%), la palabra \"このメールは\" (peso 3.7%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"されました\": 28.8%\n  · la palabra \"メッセーシ\": 27.8%\n  · la palabra \"このメールは\": 23.5%\n  · la palabra \"fantasydax\": 10.0%\n  · la palabra \".\": 9.9%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · Sin evidencia atribuida a esta modalidad en esta predicción.\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+      "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: un texto en otro alfabeto \"されました\" (peso 4.6%), un texto en otro alfabeto \"メッセーシ\" (peso 4.4%), un texto en otro alfabeto \"このメールは\" (peso 3.7%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+      "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · un texto en otro alfabeto \"されました\": 28.8%\n  · un texto en otro alfabeto \"メッセーシ\": 27.8%\n  · un texto en otro alfabeto \"このメールは\": 23.5%\n  · la palabra \"fantasydax\": 10.0%\n  · un signo de puntuación \".\": 9.9%\n\n[Estructura HTML/DOM] — contribución agregada: 0.0%\n  · Sin evidencia atribuida a esta modalidad en esta predicción.\n\n[Metadatos de red y autenticación] — contribución agregada: 0.0%\n  · la cantidad de subdominios en las URLs: 0.0%\n  · un dominio con apariencia generada aleatoriamente: 0.0%\n  · la proporción de dígitos en las URLs: 0.0%\n  · la cantidad de URLs reportadas: 0.0%\n  · la longitud de las URLs: 0.0%\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
       "estructurado": {
         "label": 1,
         "label_text": "phishing",
@@ -842,19 +842,19 @@
             "factors": [
               {
                 "name": "されました",
-                "human_name": "la palabra \"されました\"",
+                "human_name": "un texto en otro alfabeto \"されました\"",
                 "pct": 28.8,
                 "raw_weight": 0.04579130979254842
               },
               {
                 "name": "メッセーシ",
-                "human_name": "la palabra \"メッセーシ\"",
+                "human_name": "un texto en otro alfabeto \"メッセーシ\"",
                 "pct": 27.8,
                 "raw_weight": 0.044147382490336895
               },
               {
                 "name": "このメールは",
-                "human_name": "la palabra \"このメールは\"",
+                "human_name": "un texto en otro alfabeto \"このメールは\"",
                 "pct": 23.5,
                 "raw_weight": 0.03731237119063735
               },
@@ -866,7 +866,7 @@
               },
               {
                 "name": ".",
-                "human_name": "la palabra \".\"",
+                "human_name": "un signo de puntuación \".\"",
                 "pct": 9.9,
                 "raw_weight": 0.015715770423412323
               }
@@ -947,7 +947,7 @@
     }
   ],
   "procedencia": {
-    "generado_en": "2026-09-16T04:56:13.528398+00:00",
+    "generado_en": "2026-10-13T01:46:04.463035+00:00",
     "git": {
       "commit": "sin repositorio git en esta maquina",
       "arbol_con_cambios_sin_confirmar": false
@@ -960,7 +960,7 @@
     "semilla_de_particion": 7,
     "entorno": {
       "python": "3.12.3",
-      "sistema": "Linux 6.8.0-136-generic",
+      "sistema": "Linux 6.8.0-146-generic",
       "numpy": "2.5.2",
       "pandas": "3.0.5",
       "sklearn": "1.9.0",

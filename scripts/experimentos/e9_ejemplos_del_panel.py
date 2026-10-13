@@ -96,9 +96,24 @@ def _idioma(texto: str) -> str | None:
     return idiomas.pop() if len(idiomas) == 1 else None
 
 
-def _desactivar(texto: str) -> str:
-    """Enlaces sin activar, y sin direcciones de correo ni teléfonos."""
-    texto = re.sub(r"[\w.+-]+(?:@|\(a\)|\[at\])[\w-]+(?:\.[\w-]+)+", "[correo oculto]", texto)
+# Una dirección de correo: parte local, separador y dominio.
+DIRECCION = r"([\w.+-]+)(?:@|\(a\)|\[at\])([\w-]+(?:\.[\w-]+)+)"
+
+
+def _desactivar(texto: str, phishing: bool = False) -> str:
+    """Enlaces sin activar, y sin datos personales ni teléfonos.
+
+    En el phishing, el dominio del remitente o de un enlace es evidencia (un
+    dominio que imita al de un banco), y ocultarlo borraría justo lo que el
+    analista debe ver: se conserva desactivado y solo se oculta la parte local,
+    que puede ser la de la víctima. En la correspondencia legítima, las
+    direcciones son de personas reales de las listas, y se ocultan enteras.
+    """
+    if phishing:
+        texto = re.sub(DIRECCION,
+                       lambda m: "[usuario]@" + m.group(2).replace(".", "[.]"), texto)
+    else:
+        texto = re.sub(DIRECCION, "[correo oculto]", texto)
     # La colección phishing_pot reescribe el destinatario como «phishing@pot»,
     # que delataría la clase del correo al evaluador.
     texto = re.sub(r"\bphishing@pot\b,?\s*", "", texto, flags=re.I)
@@ -203,7 +218,7 @@ def main() -> int:
         "confianza_intermedia": dudosos,
     }
     cargado = carga.cargar(BASE, corrida, dispositivo=dispositivo)
-    tecnica = e9._tecnica_mas_fiel()
+    tecnica = e9._tecnica_seleccionada()
 
     elegidos, informe_grupos = {}, {}
     for nombre, g in grupos.items():
@@ -217,7 +232,9 @@ def main() -> int:
             # Las palabras decisivas tienen que verse en el correo tal como se
             # muestra. Si proceden de una dirección que se oculta, el evaluador no
             # podría encontrarlas y la pregunta mediría otra cosa.
-            visible = (str(fila["subject"]) + " " + _desactivar(_recortar(fila["cuerpo"]))).lower()
+            es_ph = int(fila["y_pred"]) == 1
+            visible = (str(fila["subject"]) + " "
+                       + _desactivar(_recortar(fila["cuerpo"]), es_ph)).lower()
             tres = [f["name"] for b in exp["estructurado"]["modality_blocks"]
                     if b["modality"] == "texto" for f in b["factors"][:3]]
             if not all(w.lower() in visible for w in tres):
@@ -253,9 +270,9 @@ def main() -> int:
                 "coleccion": fila["source_dataset"],
                 "etiqueta_real": fila["label_text"],
                 "idioma": fila["idioma"],
-                "asunto": _desactivar(str(fila["subject"]).strip()),
+                "asunto": _desactivar(str(fila["subject"]).strip(), int(fila["y_pred"]) == 1),
                 "remitente": "[remitente oculto]",
-                "cuerpo": _desactivar(_recortar(fila["cuerpo"])),
+                "cuerpo": _desactivar(_recortar(fila["cuerpo"]), int(fila["y_pred"]) == 1),
                 "explicacion": exp,
                 # El correo tal como lo leyó el modelo, con el peso de cada palabra,
                 # para dibujarlo resaltado. Se comprueba que sus cinco palabras de
@@ -287,7 +304,9 @@ def main() -> int:
                                  "decisiva que sea un nombre propio"),
             "idioma": "un solo idioma, detectado por tramos con probabilidad >= 0.9",
             "orden": "huella SHA-256 del identificador, determinista",
-            "seguridad": "enlaces desactivados; correos y teléfonos ocultos",
+            "seguridad": ("enlaces desactivados; teléfonos ocultos; en el phishing, el dominio de "
+                          "cada dirección se muestra desactivado y se oculta la parte local; en "
+                          "los legítimos, las direcciones se ocultan enteras"),
         },
         "conteo": conteo,
         "grupos": informe_grupos,

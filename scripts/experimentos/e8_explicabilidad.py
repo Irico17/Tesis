@@ -40,16 +40,19 @@ niega a ejecutarse sobre cualquier otro: ver `explicabilidad.procedencia`.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import time
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from comun import BASE, cargar_corpus, emitir, metricas, particion_agrupada  # noqa: E402
+from comun import (BASE, SALIDA, cargar_corpus, emitir, metricas,  # noqa: E402
+                   particion_agrupada, procedencia)
 
 sys.path.insert(0, str(BASE / "src"))
 
@@ -283,6 +286,94 @@ def _promedio(filas: list[dict], camino: list[str]) -> float | None:
     return round(float(np.mean(valores)), 6) if valores else None
 
 
+def _contrastar(cargado, corpus, particion, corrida: str, dispositivo: str) -> dict:
+    """El contraste contra la cifra publicada acredita que se explica el modelo del
+    capítulo y no otra corrida de la misma arquitectura."""
+    prueba = corpus.loc[particion.prueba]
+    lotes = carga.filas_como_lotes(cargado, prueba, dispositivo=dispositivo)
+    y_true, y_pred, y_proba = [], [], []
+    with torch.no_grad():
+        for lote in lotes:
+            etiqueta = int(lote["label"][0])
+            pr = float(torch.softmax(cargado.modelo(lote_limpio(lote)), dim=-1)[0, 1])
+            y_true.append(etiqueta); y_proba.append(pr); y_pred.append(int(pr >= 0.5))
+    m = metricas(np.array(y_true), np.array(y_pred), np.array(y_proba))
+    publicado = f1_reportado(BASE / "medios_de_verificacion" / "experimentos" / "e4" / "e4.json")
+    punto, _ = carga.rutas_de(BASE, corrida)
+    contraste = comprobar_contra_lo_reportado(m["f1"], publicado, punto)
+    print(f"  contraste: F1 medido {m['f1']:.4f} frente a {publicado} publicado")
+    return contraste
+
+
+# --- Conjunto de prueba completo -------------------------------------------
+# La comparación original usa sesenta correos porque LIME domina el coste. Sobre
+# el conjunto de prueba entero, con las dos clases, se reparte en fragmentos (uno
+# por GPU) que guardan su avance y se reanudan, y un último paso los une.
+
+def _prueba_completa(corpus, corrida: str) -> pd.DataFrame:
+    ruta = sorted((BASE / "data" / "predictions").glob(f"{corrida}*_preds.parquet"))[0]
+    pred = pd.read_parquet(ruta)[["email_id", "y_true", "y_pred", "y_proba"]]
+    return corpus.merge(pred, on="email_id").sort_values("email_id").reset_index(drop=True)
+
+
+def _fragmento(args, corpus, cargado, dispositivo: str) -> int:
+    k, n = (int(x) for x in args.fragmento.split("/"))
+    filas = _prueba_completa(corpus, args.corrida).iloc[k::n]
+    ruta = SALIDA / "e8" / f"{args.nombre}_parte{k}.json"
+    hechos = json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else []
+    vistos = {r["email_id"] for r in hechos}
+    filas = filas[~filas["email_id"].isin(vistos)]
+    print(f"  fragmento {k}/{n}: {len(vistos)} ya hechos, {len(filas)} por hacer")
+    t0 = time.time()
+    for i, (_, fila) in enumerate(filas.iterrows(), 1):
+        lote = carga.filas_como_lotes(cargado, fila.to_frame().T, dispositivo=dispositivo)[0]
+        r = _sobre_un_correo(cargado, lote)
+        r.update({"email_id": fila["email_id"], "etiqueta_real": int(fila["y_true"]),
+                  "coleccion": fila["source_dataset"]})
+        hechos.append(r)
+        if i % 25 == 0 or i == len(filas):
+            ruta.write_text(json.dumps(hechos, ensure_ascii=False, default=str),
+                            encoding="utf-8")
+            ritmo = (time.time() - t0) / i
+            print(f"    {len(hechos)} hechos, {ritmo:.1f} s/correo, "
+                  f"faltan {(len(filas) - i) * ritmo / 60:.0f} min", flush=True)
+    return 0
+
+
+def _unir(args, corpus, particion, cargado, dispositivo: str) -> int:
+    partes = sorted((SALIDA / "e8").glob(f"{args.nombre}_parte*.json"))
+    resultados = [r for p in partes for r in json.loads(p.read_text(encoding="utf-8"))]
+    esperados = len(_prueba_completa(corpus, args.corrida))
+    if len(resultados) != esperados:
+        raise SystemExit(f"Faltan correos: {len(resultados)} de {esperados}.")
+    contraste = _contrastar(cargado, corpus, particion, args.corrida, dispositivo)
+    por_clase = {}
+    for nombre, clase in (("predichos_phishing", 1), ("predichos_legitimos", 0)):
+        sub = [r for r in resultados if r["clase_predicha"] == clase]
+        por_clase[nombre] = {"n_correos": len(sub), "resumen": _resumir(sub)}
+    informe = {
+        "experimento": "e8",
+        "variante": "conjunto de prueba completo, ambas clases",
+        "pregunta": ("Cual de las familias de explicabilidad describe con fidelidad lo que "
+                     "el modelo multimodal usa para decidir, y con que alcance y coste"),
+        "corrida_explicada": args.corrida,
+        "punto_de_control": cargado.metadatos,
+        "contraste_con_lo_reportado": contraste,
+        "n_correos": len(resultados),
+        "familias_comparadas": ["atencion intrinseca", "valores de Shapley mediante Captum",
+                                "aproximaciones lineales locales"],
+        "resumen": _resumir(resultados),
+        "por_clase_predicha": por_clase,
+        "por_correo": resultados,
+        "procedencia": procedencia(corpus, particion),
+    }
+    destino = SALIDA / "e8" / f"{args.nombre}.json"
+    destino.write_text(json.dumps(informe, indent=2, ensure_ascii=False, default=str),
+                       encoding="utf-8")
+    print(f"  informe en {destino}")
+    return 0
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--muestra", type=int, default=30,
@@ -290,6 +381,12 @@ def main() -> int:
     p.add_argument("--corrida", default=carga.CORRIDA_DE_REFERENCIA)
     p.add_argument("--sin-contraste", action="store_true",
                    help="omite la evaluación completa que contrasta contra la cifra publicada")
+    p.add_argument("--fragmento", help="K/N: procesa el fragmento K de N del conjunto de "
+                                       "prueba completo, guardando el avance")
+    p.add_argument("--unir", action="store_true",
+                   help="une los fragmentos del conjunto de prueba completo en un informe")
+    p.add_argument("--nombre", default="e8_prueba_completa",
+                   help="nombre del informe del conjunto de prueba completo")
     args = p.parse_args()
 
     dispositivo = "cuda" if torch.cuda.is_available() else "cpu"
@@ -301,23 +398,14 @@ def main() -> int:
     print(f"  punto de control: {args.corrida} "
           f"(paso {cargado.metadatos['global_step']}, época {cargado.metadatos['epoch']})")
 
-    # El contraste contra la cifra publicada es lo que acredita que se explica el
-    # modelo del capítulo y no otra corrida de la misma arquitectura.
+    if args.fragmento:
+        return _fragmento(args, corpus, cargado, dispositivo)
+    if args.unir:
+        return _unir(args, corpus, particion, cargado, dispositivo)
+
     contraste = {"contrastado": False, "motivo": "omitido por --sin-contraste"}
     if not args.sin_contraste:
-        prueba = corpus.loc[particion.prueba]
-        lotes = carga.filas_como_lotes(cargado, prueba, dispositivo=dispositivo)
-        y_true, y_pred, y_proba = [], [], []
-        with torch.no_grad():
-            for lote in lotes:
-                etiqueta = int(lote["label"][0])
-                pr = float(torch.softmax(cargado.modelo(lote_limpio(lote)), dim=-1)[0, 1])
-                y_true.append(etiqueta); y_proba.append(pr); y_pred.append(int(pr >= 0.5))
-        m = metricas(np.array(y_true), np.array(y_pred), np.array(y_proba))
-        publicado = f1_reportado(BASE / "medios_de_verificacion" / "experimentos" / "e4" / "e4.json")
-        punto, _ = carga.rutas_de(BASE, args.corrida)
-        contraste = comprobar_contra_lo_reportado(m["f1"], publicado, punto)
-        print(f"  contraste: F1 medido {m['f1']:.4f} frente a {publicado} publicado")
+        contraste = _contrastar(cargado, corpus, particion, args.corrida, dispositivo)
 
     filas_df = carga.muestra_de_positivos(BASE, corpus, args.muestra, corrida=args.corrida)
     print(f"  muestra: {len(filas_df)} correos clasificados como phishing")
@@ -329,7 +417,26 @@ def main() -> int:
         if i % 5 == 0 or i == len(lotes):
             print(f"    {i}/{len(lotes)}")
 
-    resumen = {
+    informe = {
+        "experimento": "e8",
+        "pregunta": ("Cual de las familias de explicabilidad describe con fidelidad lo que "
+                     "el modelo multimodal usa para decidir, y con que alcance y coste"),
+        "corrida_explicada": args.corrida,
+        "punto_de_control": cargado.metadatos,
+        "contraste_con_lo_reportado": contraste,
+        "n_correos": len(resultados),
+        "familias_comparadas": ["atencion intrinseca", "valores de Shapley mediante Captum",
+                                "aproximaciones lineales locales"],
+        "resumen": _resumir(resultados),
+        "por_correo": resultados,
+    }
+    emitir("e8", informe, corpus=corpus, particion=particion)
+    print("  informe emitido")
+    return 0
+
+
+def _resumir(resultados: list[dict]) -> dict:
+    return {
         "fidelidad_exhaustividad": {
             t: _promedio(resultados, [t, "fidelidad", "comprehensiveness"])
             for t in ("atencion", "shap_texto", "lime")},
@@ -362,23 +469,6 @@ def main() -> int:
             "ablacion": "solo modalidades",
         },
     }
-
-    informe = {
-        "experimento": "e8",
-        "pregunta": ("Cual de las familias de explicabilidad describe con fidelidad lo que "
-                     "el modelo multimodal usa para decidir, y con que alcance y coste"),
-        "corrida_explicada": args.corrida,
-        "punto_de_control": cargado.metadatos,
-        "contraste_con_lo_reportado": contraste,
-        "n_correos": len(resultados),
-        "familias_comparadas": ["atencion intrinseca", "valores de Shapley mediante Captum",
-                                "aproximaciones lineales locales"],
-        "resumen": resumen,
-        "por_correo": resultados,
-    }
-    emitir("e8", informe, corpus=corpus, particion=particion)
-    print("  informe emitido")
-    return 0
 
 
 if __name__ == "__main__":

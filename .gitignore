@@ -38,6 +38,8 @@ data/features/
 data/model/
 data/predictions/
 data/reports/
+data/registros_servidor/
+data/_respaldo_local_*/
 
 # La carpeta de medios de verificacion SI se versiona entera: es lo que el
 # jurado necesita para comprobar cada cifra, una carpeta por resultado.
