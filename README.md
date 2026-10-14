@@ -168,9 +168,21 @@ export PYTHONPATH=src
 
 Kaggle exige credenciales propias: colocar `kaggle.json` en `~/.kaggle/`.
 
+## Obtener el corpus
+
+El corpus con el que se obtuvieron todos los resultados se publica en la release
+[`corpus-v1`](https://github.com/Irico17/Tesis/releases/tag/corpus-v1): 44 100
+correos, 589 MB. No se versiona en git para no hacer pesado cada clon. Este
+comando lo descarga en `data/Datasets_Procesados/Dataset_Real.parquet` y
+comprueba su SHA-256 y la huella que citan los informes (`f078576f098f129d`):
+
+```bash
+python scripts/descargar_corpus.py
+```
+
 ## Reconstruir el corpus
 
-Ocho colecciones públicas. Cinco se ingieren en formato de mensaje original
+Para generarlo desde cero en lugar de descargarlo: ocho colecciones públicas. Cinco se ingieren en formato de mensaje original
 (`.eml` y buzones `mbox`), que es de donde procede toda la cobertura de las
 modalidades no textuales; tres se publican en formato tabular y aportan solo
 texto.
@@ -183,10 +195,13 @@ python -m phishing_pipeline.downloaders.phish_mmf        # CEAS_08, datacon2023
 python -m phishing_pipeline.corpus_real                  # Dataset_Real.parquet
 ```
 
-El corpus (589 MB), los puntos de control (74 GB) y las predicciones fila por
-fila no se versionan por tamaño. La huella criptográfica del corpus queda en la
-procedencia de cada informe, de modo que puede comprobarse que una reconstrucción
-coincide con la que produjo los resultados publicados.
+Los puntos de control (74 GB) y las predicciones fila por fila no se versionan
+por tamaño. La huella criptográfica del corpus queda en la procedencia de cada
+informe, de modo que puede comprobarse que una reconstrucción coincide con la que
+produjo los resultados publicados. Las colecciones públicas cambian con el
+tiempo (phishing_pot sigue sumando correos), así que una reconstrucción puede
+diferir de la release; para reproducir los resultados, la referencia es la
+release.
 
 El cuaderno [`notebooks/pipeline_r1_1_r1_2.ipynb`](notebooks/pipeline_r1_1_r1_2.ipynb)
 recorre este pipeline paso a paso y contrasta el indicador de R1.1. Puede leerse
