@@ -110,6 +110,39 @@ def _distractores(ejemplo: dict, n: int = 2) -> list[str]:
     return candidatas[:n]
 
 
+def _segunda_legible(palabras: list[str]) -> str:
+    """La palabra legible de más peso después de la primera, para comparar con ella.
+
+    Comparar con un signo de puntuación («,») haría la pregunta confusa sin medir
+    mejor la lectura del orden.
+    """
+    sys.path.insert(0, str(BASE / "src"))
+    from phishing_model.xai.narrative import es_palabra_legible
+    return next((w for w in palabras[1:] if es_palabra_legible(w)), palabras[2])
+
+
+def _no_textuales(ejemplo: dict) -> list[str]:
+    """Características de estructura y red que el reporte cita con peso, en orden."""
+    b = _bloques(ejemplo)
+    factores = [f for m in ("estructura", "red") for f in b[m]["factors"] if f["pct"] > 0]
+    return [f["human_name"] for f in sorted(factores, key=lambda f: -f["pct"])]
+
+
+def _caracteristicas_no_citadas(ejemplo: dict, n: int) -> list[str]:
+    """Características continuas que el reporte de este correo no cita.
+
+    Las de autenticación (SPF, DKIM, DMARC) se excluyen: el reporte nunca puede
+    citarlas, y ofrecerlas como distractor premiaría saberlo y no leer el reporte.
+    """
+    sys.path.insert(0, str(BASE / "src"))
+    from phishing_model.xai.narrative import FEATURE_DISPLAY_NAMES
+    citadas = {f["name"] for m in ("estructura", "red") for f in _bloques(ejemplo)[m]["factors"]
+               if f["pct"] > 0}
+    candidatas = [v for k, v in FEATURE_DISPLAY_NAMES.items()
+                  if k not in citadas and not k.endswith("_result")]
+    return sorted(candidatas, key=lambda v: hashlib.sha256(f"C6{v}".encode()).hexdigest())[:n]
+
+
 def _barajar(opciones: list[str], semilla: str, correcta: str) -> list[str]:
     """Orden determinista en el que la respuesta correcta nunca va primera.
 
@@ -161,6 +194,7 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
                                                    b2["red"]["total_pct"])
     sin_estructura = b4["estructura"]["total_pct"] < 1
     no_citada = _distractores(e3, 1)[0]
+    no_textuales = _no_textuales(e3)
     c8_correcta = f"{clase4}, con {_banda_de_confianza(conf4).lower()} de confianza"
     c8_ops = [f"{c}, con {b} de confianza" for c in ("Legítimo", "Phishing")
               for b in ("más del 99%", "entre 60% y 90%")]
@@ -189,14 +223,22 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
          "titulo": ("C5. Según el reporte, la decisión sobre este correo se apoyó "
                     "principalmente en su contenido textual."),
          "opciones": vf, "correcta": "Verdadero" if texto_domina else "Falso"},
-        {"id": "C6", "ejemplo": 3, "tipo": "opcion",
-         "titulo": ("C6. ¿Cuál de estas palabras NO figura entre las que el reporte "
-                    "señala como influyentes?"),
-         "opciones": _barajar(p3[:3] + [no_citada], "C6", no_citada),
-         "correcta": no_citada},
+        ({"id": "C6", "ejemplo": 3, "tipo": "opcion",
+          "titulo": ("C6. Según el reporte, ¿cuál de estas características de la "
+                     "estructura HTML o de la red influyó en la decisión sobre este "
+                     "correo?"),
+          "opciones": _barajar([no_textuales[0]] + _caracteristicas_no_citadas(e3, 3),
+                               "C6", no_textuales[0]),
+          "correcta": no_textuales[0]}
+         if no_textuales else
+         {"id": "C6", "ejemplo": 3, "tipo": "opcion",
+          "titulo": ("C6. ¿Cuál de estas palabras NO figura entre las que el reporte "
+                     "señala como influyentes?"),
+          "opciones": _barajar(p3[:3] + [no_citada], "C6", no_citada),
+          "correcta": no_citada}),
         {"id": "C7", "ejemplo": 3, "tipo": "vf",
-         "titulo": (f"C7. Según el reporte, la palabra «{p3[2]}» tuvo más peso que la "
-                    f"palabra «{p3[0]}»."),
+         "titulo": (f"C7. Según el reporte, en el bloque de texto «{_segunda_legible(p3)}» "
+                    f"tuvo más peso que «{p3[0]}»."),
          "opciones": vf, "correcta": "Falso"},
         {"id": "C8", "ejemplo": 4, "tipo": "opcion",
          "titulo": "C8. Según el reporte, ¿qué decidió el sistema sobre este correo?",
@@ -282,11 +324,18 @@ def _ejemplo_texto(ej: dict) -> str:
             f"{_cuerpo_limpio(ej['cuerpo'])}")
 
 
-def _desactivar_enlace(url: str) -> str:
-    return re.sub(r"^http", "hxxp", url, flags=re.I).replace(".", "[.]")
-
-
 DIRECCION = r"([\w.+-]+)(?:@|\(a\)|\[at\])([\w-]+(?:\.[\w-]+)+)"
+
+
+def _desactivar_enlace(url: str, phishing: bool = True) -> str:
+    """Enlace desactivado; la dirección que lleve dentro sigue la regla de su clase.
+
+    Los puntos ya envueltos en corchetes no se vuelven a envolver.
+    """
+    url = re.sub(DIRECCION, (lambda m: "[usuario]@" + m.group(2)) if phishing
+                 else (lambda m: "[correo oculto]"), url)
+    url = re.sub(r"^http", "hxxp", url, flags=re.I)
+    return re.sub(r"(?<!\[)\.(?!\])", "[.]", url)
 
 
 def ocultar_para(phishing: bool) -> list:
@@ -303,8 +352,10 @@ def ocultar_para(phishing: bool) -> list:
         direccion = (DIRECCION, lambda m: "[correo oculto]")
     return [
         (r"\bphishing@pot\b,?", lambda m: ""),
+        # El enlace va antes que la dirección: una dirección dentro de un enlace
+        # se resuelve en `_desactivar_enlace`, y el enlace no queda sin desactivar.
+        (r"(?:https?://|www\.)\S+", lambda txt: _desactivar_enlace(txt, phishing)),
         direccion,
-        (r"(?:https?://|www\.)\S+", _desactivar_enlace),
         (r"(?<!\w)(?:\+?\d[\d\s().-]{7,}\d)(?!\w)", lambda m: "[teléfono oculto]"),
     ]
 

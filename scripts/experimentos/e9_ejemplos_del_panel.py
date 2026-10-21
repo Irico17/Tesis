@@ -56,6 +56,20 @@ from phishing_model.xai.resaltado import palabras_con_mas_peso, pesos_por_palabr
 import e9_narrativa_y_validacion as e9  # noqa: E402
 
 LARGO_MIN, LARGO_MAX = 250, 1600       # caracteres del cuerpo mostrado
+
+# Correos que se imponen en una posición del panel, fuera de los criterios.
+# Ningún correo bien clasificado que cumpla todos los criterios atribuye peso a la
+# estructura o a la red en su reporte (ver modalidades_del_reporte.json), y el
+# panel necesita uno en que esos bloques no estén vacíos para que las preguntas
+# sobre ellos tengan contenido. Se elige el de mayor peso no textual entre los
+# legibles en inglés: estructura 0.6% y red 0.4%. Incumple el criterio de
+# palabras legibles (su factor principal es un código postal), y así se declara.
+CORREOS_IMPUESTOS = {
+    "phishing_2": ("f048a4c7-2b9c-4b3b-8e5a-8587e7a9b5c6",
+                   "mayor peso no textual en el reporte entre los correos legibles "
+                   "(estructura 0.6%, red 0.4%); incumple el criterio de palabras "
+                   "decisivas legibles"),
+}
 CANDIDATOS_POR_GRUPO = 300             # cuántos se explican antes de elegir
 VACIAS = set("""
 a an and are as at be been but by can do for from had has have he her his i if in
@@ -122,7 +136,9 @@ def _desactivar(texto: str, phishing: bool = False) -> str:
     def enlace(m: re.Match) -> str:
         url = m.group(0)
         url = re.sub(r"^http", "hxxp", url, flags=re.I)
-        return url.replace(".", "[.]")
+        # Un enlace puede llevar dentro una dirección ya desactivada; sus puntos
+        # entre corchetes no se vuelven a envolver.
+        return re.sub(r"(?<!\[)\.(?!\])", "[.]", url)
     texto = re.sub(r"(?:https?://|www\.)\S+", enlace, texto, flags=re.I)
     return texto
 
@@ -177,6 +193,29 @@ def _es_nombre_propio(palabra: str, cuerpo: str) -> bool:
     """
     apariciones = re.findall(r"\b" + re.escape(palabra) + r"\b", cuerpo, flags=re.I)
     return bool(apariciones) and all(a[:1].isupper() and not a.isupper() for a in apariciones)
+
+
+def _ficha(fila, exp, cargado) -> dict:
+    """Lo que el panel muestra de un correo y lo que hace falta para dibujarlo."""
+    return {
+        "email_id": fila["email_id"],
+        "coleccion": fila["source_dataset"],
+        "etiqueta_real": fila["label_text"],
+        "idioma": fila["idioma"],
+        "asunto": _desactivar(str(fila["subject"]).strip(), int(fila["y_pred"]) == 1),
+        "remitente": "[remitente oculto]",
+        "cuerpo": _desactivar(_recortar(fila["cuerpo"]), int(fila["y_pred"]) == 1),
+        "explicacion": exp,
+        # El correo tal como lo leyó el modelo, con el peso de cada palabra,
+        # para dibujarlo resaltado. Se comprueba que sus cinco palabras de
+        # más peso sean las que cita el reporte: es el mismo vector.
+        "texto_leido": str(fila["clean_text"]),
+        "resaltado": (res := pesos_por_palabra(cargado, str(fila["clean_text"]))),
+        "resaltado_coincide_con_el_reporte": sorted(
+            palabras_con_mas_peso(str(fila["clean_text"]), res["spans"])) == sorted(
+            f["name"].lower() for b in exp["estructurado"]["modality_blocks"]
+            if b["modality"] == "texto" for f in b["factors"]),
+    }
 
 
 def main() -> int:
@@ -265,25 +304,19 @@ def main() -> int:
         orden.append(next(((f, e) for f, e in resto if f["source_dataset"] not in vistas),
                           resto[0]))
         for clave, (fila, exp) in zip(claves, orden):
-            elegidos[clave] = {
-                "email_id": fila["email_id"],
-                "coleccion": fila["source_dataset"],
-                "etiqueta_real": fila["label_text"],
-                "idioma": fila["idioma"],
-                "asunto": _desactivar(str(fila["subject"]).strip(), int(fila["y_pred"]) == 1),
-                "remitente": "[remitente oculto]",
-                "cuerpo": _desactivar(_recortar(fila["cuerpo"]), int(fila["y_pred"]) == 1),
-                "explicacion": exp,
-                # El correo tal como lo leyó el modelo, con el peso de cada palabra,
-                # para dibujarlo resaltado. Se comprueba que sus cinco palabras de
-                # más peso sean las que cita el reporte: es el mismo vector.
-                "texto_leido": str(fila["clean_text"]),
-                "resaltado": (res := pesos_por_palabra(cargado, str(fila["clean_text"]))),
-                "resaltado_coincide_con_el_reporte": sorted(
-                    palabras_con_mas_peso(str(fila["clean_text"]), res["spans"])) == sorted(
-                    f["name"].lower() for b in exp["estructurado"]["modality_blocks"]
-                    if b["modality"] == "texto" for f in b["factors"]),
-            }
+            elegidos[clave] = _ficha(fila, exp, cargado)
+
+    # Los correos impuestos sustituyen al que la selección puso en su posición.
+    excepciones = {}
+    for clave, (email_id, motivo) in CORREOS_IMPUESTOS.items():
+        fila = prueba[prueba["email_id"] == email_id].iloc[0].copy()
+        fila["idioma"] = _idioma(fila["cuerpo"])
+        lote = carga.filas_como_lotes(cargado, fila.to_frame().T, dispositivo=dispositivo)[0]
+        exp = e9._explicar(cargado, lote, tecnica)
+        excepciones[clave] = {"sustituye_a": elegidos.get(clave, {}).get("email_id"),
+                              "email_id": email_id, "motivo": motivo}
+        elegidos[clave] = {**_ficha(fila, exp, cargado), "seleccion": "impuesto", "motivo": motivo}
+        print(f"  {clave}: impuesto {email_id[:8]} ({motivo})")
 
     informe = {
         "experimento": "e9_ejemplos_del_panel",
@@ -310,6 +343,7 @@ def main() -> int:
         },
         "conteo": conteo,
         "grupos": informe_grupos,
+        "excepciones": excepciones,
         "ejemplos": elegidos,
     }
     destino = SALIDA / "e9" / "ejemplos_del_panel.json"
