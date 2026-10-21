@@ -7,7 +7,7 @@
     td:not(:first-child),th{text-align:center;width:36px} ul{list-style:none;padding-left:8px}
     .q{margin:14px 0} .caja{border:1px solid #999;height:80px}
     @media print{h2{page-break-before:always}}</style></head><body><h1>Evaluación de explicaciones de un detector de phishing</h1>
-<p class='desc'>Este formulario forma parte de la tesis de Ingeniería Informática de Cristhofer Alegre (PUCP), sobre detección de phishing en correo electrónico con inteligencia artificial explicable. El sistema clasifica cada correo como phishing o legítimo y genera un reporte que explica qué factores pesaron en esa decisión. Queremos saber si ese reporte se entiende.<br><br>Tomará unos 25 minutos. Verás un ejemplo guiado, leerás cuatro correos reales con su reporte y contestarás diez preguntas sobre lo que el reporte dice y, al final, responderás dos cuestionarios breves de opinión. Las preguntas de comprensión tienen respuestas correctas, pero no te evalúan a ti: miden si el reporte comunica bien. Las de opinión no tienen respuestas correctas.<br><br>La participación es voluntaria y anónima. No se registra tu nombre ni tu correo, y las respuestas se analizan de forma agregada. Puedes retirarte en cualquier momento cerrando el formulario.<br><br>Seguridad: los correos son ejemplos reales, de phishing y legítimos. Sus enlaces están desactivados (hxxp, [.]) y se han ocultado los teléfonos. En los de phishing se muestra el dominio de cada dirección, también desactivado, porque es parte de la evidencia; en los legítimos, las direcciones se ocultan. No intentes abrir ningún enlace.<br><br>Consultas: a20210577@pucp.edu.pe</p>
+<p class='desc'>Este formulario forma parte de la tesis de Ingeniería Informática de Cristhofer Alegre (PUCP), sobre detección de phishing en correo electrónico con inteligencia artificial explicable. El sistema clasifica cada correo como phishing o legítimo y genera un reporte que explica qué factores pesaron en esa decisión. Queremos saber si ese reporte se entiende.<br><br>Tomará unos 20 minutos. Verás un ejemplo guiado, leerás cuatro correos reales con su reporte y contestarás diez preguntas sobre lo que el reporte dice y, al final, responderás dos cuestionarios breves de opinión. Las preguntas de comprensión tienen respuestas correctas, pero no te evalúan a ti: miden si el reporte comunica bien. Las de opinión no tienen respuestas correctas.<br><br>La participación es voluntaria y anónima. No se registra tu nombre ni tu correo, y las respuestas se analizan de forma agregada. Puedes retirarte en cualquier momento cerrando el formulario.<br><br>Seguridad: los correos son ejemplos reales, de phishing y legítimos. Sus enlaces están desactivados (hxxp, [.]) y se han ocultado los teléfonos. En los de phishing se muestra el dominio de cada dirección, también desactivado, porque es parte de la evidencia; en los legítimos, las direcciones se ocultan. No intentes abrir ningún enlace.<br><br>Consultas: a20210577@pucp.edu.pe</p>
 <div class='q'><p><b>Confirmo que participo de forma voluntaria, que puedo retirarme en cualquier momento y que mis respuestas se usarán de forma anónima y agregada con fines de investigación.</b></p><ul><li>&#9711; Acepto participar</li><li>&#9711; No acepto</li></ul></div>
 <h2>Sobre ti</h2>
 <p class='desc'>Estas preguntas solo sirven para describir al grupo de participantes.</p>
@@ -15,12 +15,9 @@
 <div class='q'><p><b>P2. ¿Cuál es tu carrera o área de formación?</b></p><ul><li>&#9711; Ingeniería Informática</li><li>&#9711; Ingeniería de Sistemas</li><li>&#9711; Ingeniería de Telecomunicaciones o Electrónica</li><li>&#9711; Ciencias de la Computación</li><li>&#9711; Otra</li></ul></div>
 <div class='q'><p><b>P3. ¿Tienes formación o experiencia en ciberseguridad (cursos, trabajo en un centro de operaciones de seguridad, competencias tipo CTF)?</b></p><ul><li>&#9711; Sí</li><li>&#9711; No</li></ul></div>
 <h2>Cómo leer el reporte</h2>
-<p class='desc'>Antes de empezar, este es un ejemplo de cómo leer el reporte. No forma parte de las preguntas.<br><br>1. La primera línea indica la decisión del sistema (phishing o legítimo) y su confianza, entre 0% y 100%.<br>2. Después, el reporte se divide en tres bloques, uno por cada tipo de información del correo: su contenido textual, su estructura HTML y sus metadatos de red y autenticación. Cada bloque indica qué parte del peso total de la decisión le corresponde.<br>3. Dentro de cada bloque, los factores aparecen ordenados de mayor a menor peso. En el bloque de texto, los factores son palabras del correo; un porcentaje mayor significa que esa palabra influyó más. A veces el sistema se fija en algo que no es una palabra; entonces el reporte lo nombra por su tipo (un signo de puntuación, una cifra, una abreviatura o un fragmento codificado) seguido del texto exacto. Se lee igual: es algo del correo que el sistema tuvo en cuenta.<br>4. La síntesis final resume qué tipo de información sustentó la decisión.<br>5. Debajo del reporte verás el mismo correo con sus palabras sombreadas: cuanto más intenso el color, más pesó esa palabra en la decisión. Las palabras que cita el reporte llevan un recuadro.<br><br>El párrafo inicial (narrativa) dice lo mismo en una frase: la decisión, la confianza y las tres palabras más influyentes.</p>
-<h3>Ejemplo guiado: el correo</h3><pre>Asunto: Protect Your Account
-Remitente: [remitente oculto]
-
-PROTECTING YOUR ACCOUNT Due to concerns, for the safety and integrity of the TD Canada Trust Bank Online Service we have issued this warning message. As a result of too many incorrect attempts to access and Login failures, Please note that Your TD Canada Trust EasyWeb Account has been terminated. In order for it to remain active, Please use the link below to proceed and restore access to Your Account: hxxps://easyweb[.]tdcanadatrust[.]com/ Thank You. Accounts Management As outlined in our User Agreement, TD Canada Trust Bank will periodically send you information about site changes and enhancements. Visit our Privacy Policy and User Agreement if you have any questions. Privacy Policy PROTECTING YOUR ACCOUNT Due to concerns, for the safety and integrity of the Commonwealth Bank of Australia Online Service we have issued this warning message. As a result of too many incorrect attempts to access and Login failures, Please note that Your Commonwealth NetBank Online Account has been terminated. In order for it to remain active, Please use the link below to proceed and restore access to Your Account: hxxps://www3[.]netbank[.]commbank[.]com[.]au/netbank/bankmain Thank You. Accounts Management As outlined in our User Agreement, Commonwealth Bank of Australia will periodically send you information about site changes and enhancements. Visit our Privacy Policy and User Agreement if you have any questions. hxxp://www[.]commbank[.]com[.]au/SecurityandPrivacy/default[.]asp</pre>
-<h3>Ejemplo guiado: el reporte del sistema</h3><pre>Este correo fue clasificado como phishing con una confianza del 99.8%. Los factores que más influyeron en la decisión fueron: la palabra &quot;asp&quot; (peso 1.1%), la palabra &quot;tdcanadatrust&quot; (peso 0.9%), la palabra &quot;securityandprivacy&quot; (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo.
+<p class='desc'>Abajo hay un ejemplo resuelto; no forma parte de las preguntas.<br><br>• El correo aparece con sus palabras sombreadas: más intenso, más pesó en la decisión. Las que cita el reporte llevan recuadro.<br>• El reporte empieza con una frase que resume la decisión (phishing o legítimo), la confianza y las tres palabras que más influyeron.<br>• Luego divide el peso en tres bloques: texto, estructura HTML y red y autenticación. Cada bloque muestra su porcentaje y sus factores, de mayor a menor; si no pesó, dice «sin peso en esta decisión».<br>• Si el sistema se fijó en algo que no es una palabra, lo nombra por su tipo (un signo, una cifra, una abreviatura) junto al texto exacto.<br>• La síntesis final dice qué bloque sustentó la decisión.</p>
+<h3>Ejemplo guiado</h3><p class='desc'>Asunto: Protect Your Account</p><img src='resaltado_induccion.png' style='width:100%'>
+<h3>Reporte del sistema: ejemplo guiado</h3><pre>Este correo fue clasificado como phishing con una confianza del 99.8%. Los factores que más influyeron en la decisión fueron: la palabra &quot;asp&quot; (peso 1.1%), la palabra &quot;tdcanadatrust&quot; (peso 0.9%), la palabra &quot;securityandprivacy&quot; (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo.
 
 VEREDICTO: PHISHING (confianza 99.8%)
 Técnica de explicabilidad: los pesos de atención intrínseca del modelo
@@ -32,49 +29,15 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · un signo de puntuación &quot;.&quot;: 16.3%
   · la palabra &quot;your&quot;: 15.7%
 
-[Estructura HTML/DOM] — contribución agregada: 0.0%
-  · la cantidad de imágenes: 0.0%
-  · el grado de anidamiento de la estructura HTML: 0.0%
+[Estructura HTML/DOM] — sin peso en esta decisión
 
-[Metadatos de red y autenticación] — contribución agregada: 0.0%
-  · la cantidad de subdominios en las URLs: 0.0%
-  · la cantidad de URLs reportadas: 0.0%
-  · la longitud de las URLs: 0.0%
+[Metadatos de red y autenticación] — sin peso en esta decisión
 
 SÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
-<h3>Ejemplo guiado: el correo resaltado</h3><img src='resaltado_induccion.png' style='width:100%'>
 <h2>Sección C. Comprensión: correo 1 de 4</h2>
 <p class='desc'>Ahora verás cuatro correos reales ya clasificados por el sistema, cada uno con su reporte. Léelos con calma y responde basándote únicamente en lo que dice el reporte.</p>
-<h3>Correo 1</h3><pre>Asunto: USAA REQUEST YOUR APPROVAL FOR AN INCOMING ACCOUNT DEPOSIT
-Remitente: [remitente oculto]
-
-To ensure delivery to your inbox, please add [usuario]@customermail[.]usaa[.]com to your address book.
-
-Payment Approval Notification
-View Accounts | Privacy Promise | Contact Us
-
-USAA SECURITY ZONE
-USAA # ending in: - XXXX
-
-Dear Customer,
-A payment was transffered to your account from another US bank account using the Authomated Clearing House (ACH).
-
-For security reasons, We have temporarily hold the payment until necessary verification is done. You are to sign on and verify your account as a means to accept the payment. Payment will be posted within 2-3 business working days after your verification.
-
-Approve Your Payment
-Thank you,
-USAA
-P.S. Texting and driving ... it can wait. Take the pledge to never text and drive.
-
-Please do not reply to this e-mail. To send a secure message to USAA, please contact us.
-
-Privacy Promise
-USAA, 9800 Fredericksburg Road, San Antonio, Texas 78288
-
-USAA means United Services Automobile Association and its insurance, banking, investment and other companies. Banks Member FDIC. Investments provided by USAA Investment Management Company and USAA Financial Advisors Inc., both registered broker dealers.
-
-[teléfono oculto]</pre>
-<h3>Reporte del sistema para el correo 1</h3><pre>Este correo fue clasificado como phishing con una confianza del 99.6%. Los factores que más influyeron en la decisión fueron: la palabra &quot;inbox&quot; (peso 1.4%), la palabra &quot;transffered&quot; (peso 0.9%), la palabra &quot;authomated&quot; (peso 0.9%). Explicación generada mediante los pesos de atención intrínseca del modelo.
+<h3>Correo 1</h3><p class='desc'>Asunto: USAA REQUEST YOUR APPROVAL FOR AN INCOMING ACCOUNT DEPOSIT</p><img src='resaltado_phishing_1.png' style='width:100%'>
+<h3>Reporte del sistema: correo 1</h3><pre>Este correo fue clasificado como phishing con una confianza del 99.6%. Los factores que más influyeron en la decisión fueron: la palabra &quot;inbox&quot; (peso 1.4%), la palabra &quot;transffered&quot; (peso 0.9%), la palabra &quot;authomated&quot; (peso 0.9%). Explicación generada mediante los pesos de atención intrínseca del modelo.
 
 VEREDICTO: PHISHING (confianza 99.6%)
 Técnica de explicabilidad: los pesos de atención intrínseca del modelo
@@ -86,67 +49,17 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · una cifra &quot;0514&quot;: 16.4%
   · la palabra &quot;your&quot;: 15.0%
 
-[Estructura HTML/DOM] — contribución agregada: 0.0%
-  · la cantidad de imágenes: 0.0%
-  · el grado de anidamiento de la estructura HTML: 0.0%
+[Estructura HTML/DOM] — sin peso en esta decisión
 
-[Metadatos de red y autenticación] — contribución agregada: 0.0%
-  · la cantidad de subdominios en las URLs: 0.0%
-  · la cantidad de URLs reportadas: 0.0%
-  · la longitud de las URLs: 0.0%
+[Metadatos de red y autenticación] — sin peso en esta decisión
 
 SÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
-<h3>Correo 1 resaltado</h3><img src='resaltado_phishing_1.png' style='width:100%'>
 <div class='q'><p><b>C1. Según el reporte, ¿qué palabra tuvo mayor peso en la clasificación de este correo como phishing?</b></p><ul><li>&#9711; account</li><li>&#9711; transffered</li><li>&#9711; inbox</li><li>&#9711; payment</li></ul></div>
 <div class='q'><p><b>C2. Según el reporte, la estructura HTML del correo pesó más que su contenido textual en esta decisión.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <div class='q'><p><b>C3. Según el reporte, ¿con qué nivel de confianza clasificó el sistema este correo?</b></p><ul><li>&#9711; Menos del 60%</li><li>&#9711; Entre 60% y 90%</li><li>&#9711; Entre 90% y 99%</li><li>&#9711; Más del 99%</li></ul></div>
 <h2>Sección C. Comprensión: correo 2 de 4</h2>
-<h3>Correo 2</h3><pre>Asunto: Re: how to enable/start &quot;git@.service&quot; via systemd?
-Remitente: [remitente oculto]
-
-On Saturday, October 7, 2017 4:18:48 AM CDT Robert P. J. Day wrote:
-&gt;   (probably OT: more a systemd question than a fedora question, but
-&gt; i&#x27;m sure the experts will clear this up in short order.)
-&gt;
-&gt;   wanted to experiment with the git daemon so, on my fully-updated F26
-&gt; system, installed git-daemon package, whose contents are simply:
-&gt;
-&gt; $ rpm -ql git-daemon
-&gt; /usr/lib/systemd/system/git.socket
-&gt; /usr/lib/systemd/system/git(a).service
-&gt; /usr/libexec/git-core/git-daemon
-&gt; /usr/share/doc/git/git-daemon.html
-&gt; /usr/share/doc/git/git-daemon.txt
-&gt; /usr/share/man/man1/git-daemon.1.gz
-&gt; /var/lib/git
-&gt; $
-&gt;
-&gt;   i enabled the socket component easily enough with:
-&gt;
-&gt; $ sudo systemctl enable git.socket
-&gt; [sudo] password for rpjday:
-&gt; Created symlink /etc/systemd/system/sockets.target.wants/git.socket →
-&gt; /usr/lib/systemd/system/git.socket.
-&gt; $
-&gt;
-&gt; and started it as well, but i&#x27;m not sure how to start the git daemon
-&gt; itself since, as i understand it, the presence of the &quot;@&quot; in the
-&gt; service name typically means there can be multiple instances of them
-&gt; running (eg., getty(a).service), but i have no interest in multiple
-&gt; invocations (and am not even sure why that would be a good thing).
-&gt;
-&gt;   cut to the chase -- what&#x27;s the proper way to start the git daemon on
-&gt; F26? put another way, what am i hopelessly misunderstanding here?
-&gt;
-&gt; rday
-
-The git-daemon service should be started &quot;on-demand&quot; when something connects
-to the socket.  -A
-
---
-Anthony - hxxps://messinet[.]com/ - hxxps://messinet[.]com/~amessina/gallery
-F9B6 560E 68EA 037D 8C3D  D1C9 FF31 3BDB D9D8 99B6</pre>
-<h3>Reporte del sistema para el correo 2</h3><pre>Este correo fue clasificado como legítimo con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra &quot;fedora&quot; (peso 1.4%), la palabra &quot;invocations&quot; (peso 0.4%), la palabra &quot;wrote&quot; (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo.
+<h3>Correo 2</h3><p class='desc'>Asunto: Re: how to enable/start &quot;git@.service&quot; via systemd?</p><img src='resaltado_legitimo_1.png' style='width:100%'>
+<h3>Reporte del sistema: correo 2</h3><pre>Este correo fue clasificado como legítimo con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra &quot;fedora&quot; (peso 1.4%), la palabra &quot;invocations&quot; (peso 0.4%), la palabra &quot;wrote&quot; (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo.
 
 VEREDICTO: LEGÍTIMO (confianza 100.0%)
 Técnica de explicabilidad: los pesos de atención intrínseca del modelo
@@ -158,108 +71,39 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la palabra &quot;libexec&quot;: 13.0%
   · una abreviatura &quot;cdt&quot;: 12.6%
 
-[Estructura HTML/DOM] — contribución agregada: 0.0%
-  · la presencia de código HTML: 0.0%
-  · la cantidad de enlaces: 0.0%
-  · la cantidad de imágenes: 0.0%
+[Estructura HTML/DOM] — sin peso en esta decisión
 
-[Metadatos de red y autenticación] — contribución agregada: 0.0%
-  · la cantidad de URLs reportadas: 0.0%
-  · un dominio con apariencia generada aleatoriamente: 0.0%
+[Metadatos de red y autenticación] — sin peso en esta decisión
 
 SÍNTESIS: La clasificación como legítimo se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
-<h3>Correo 2 resaltado</h3><img src='resaltado_legitimo_1.png' style='width:100%'>
 <div class='q'><p><b>C4. Según el reporte, ¿qué palabra contribuyó más a que el sistema considerara legítimo este correo?</b></p><ul><li>&#9711; socket</li><li>&#9711; fedora</li><li>&#9711; daemon</li><li>&#9711; invocations</li></ul></div>
 <div class='q'><p><b>C5. Según el reporte, la decisión sobre este correo se apoyó principalmente en su contenido textual.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <h2>Sección C. Comprensión: correo 3 de 4</h2>
-<h3>Correo 3</h3><pre>Asunto: username, Careers in National Security &amp; Criminal Justice - Important Info...
-Remitente: [remitente oculto]
+<h3>Correo 3</h3><p class='desc'>Asunto: RE: ITS HELP DESK: PASSWORD UPDATE</p><img src='resaltado_phishing_2.png' style='width:100%'>
+<h3>Reporte del sistema: correo 3</h3><pre>Este correo fue clasificado como phishing con una confianza del 95.6%. Los factores que más influyeron en la decisión fueron: un signo de puntuación &quot;*&quot; (peso 0.9%), la palabra &quot;expires&quot; (peso 0.8%), la palabra &quot;account&quot; (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo.
 
-Hi username!
-
-Would you like to help protect our country?
-
-Homeland Security is creating more jobs - get educated &amp; take advantage... hxxp://e[.]theuseful[.]com/57336252/2658/1/762/ the US Department of Labor predicted that by 2010 there will be more than a 29% increase in the demand for criminal justice professionals.
-
-Here are some of the many careers in national security
-and criminal justice:
-
-* Counter-Terrorism
-* Detective
-* FBI
-* Forensics Analyst
-* Juvenile Justice
-* Police Officer
-
-and many more other rewarding careers.
-
-Learn More about Homeland Security! hxxp://e[.]theuseful[.]com/57336252/2658/1/762/
-
-Best Wishes,
-
-Megan Matthews
-EducationAdvance
-
-____________________________
-
-This communication was sent to you by an EducationAdvance affiliate.
-If you have any questions, you may contact: EducationAdvance,
-P.O. Box 78361, San Francisco, CA [teléfono oculto]. If you wish to
-re-move yourself from future EducationAdvance offers please
-go to hxxp://e[.]theuseful[.]com/57336252/2658/1/762/[.]
-
-=============================
-
-You received this communication since you joined TheUseful or an
-affiliate on [teléfono oculto] for [usuario]@domain[.]com. If you no longer
-desire to receive coupons, gifts and deals:
-hxxp://e[.]theuseful[.]com/57336252/2658/u/?e=[usuario]@domain[.]com
-
-14545 J Military Trail #189 Delray Beach, FL  33484</pre>
-<h3>Reporte del sistema para el correo 3</h3><pre>Este correo fue clasificado como phishing con una confianza del 93.2%. Los factores que más influyeron en la decisión fueron: una cifra &quot;33484&quot; (peso 1.4%), la palabra &quot;username&quot; (peso 1.1%), un signo de puntuación &quot;,&quot; (peso 0.9%). Explicación generada mediante los pesos de atención intrínseca del modelo.
-
-VEREDICTO: PHISHING (confianza 93.2%)
+VEREDICTO: PHISHING (confianza 95.6%)
 Técnica de explicabilidad: los pesos de atención intrínseca del modelo
 
-[Contenido textual (semántica del mensaje)] — contribución agregada: 99.0%
-  · una cifra &quot;33484&quot;: 28.1%
-  · la palabra &quot;username&quot;: 21.4%
-  · un signo de puntuación &quot;,&quot;: 17.3%
-  · la palabra &quot;educationadvance&quot;: 16.3%
-  · la palabra &quot;theuseful&quot;: 15.9%
+[Contenido textual (semántica del mensaje)] — contribución agregada: 99.6%
+  · un signo de puntuación &quot;*&quot;: 23.3%
+  · la palabra &quot;expires&quot;: 20.5%
+  · la palabra &quot;account&quot;: 20.3%
+  · la palabra &quot;helpdesk&quot;: 18.1%
+  · la palabra &quot;the&quot;: 17.5%
 
-[Estructura HTML/DOM] — contribución agregada: 0.6%
-  · la cantidad de imágenes: 0.4%
-  · el grado de anidamiento de la estructura HTML: 0.2%
+[Estructura HTML/DOM] — sin peso en esta decisión
 
 [Metadatos de red y autenticación] — contribución agregada: 0.4%
   · la cantidad de subdominios en las URLs: 0.2%
-  · el uso del símbolo &#x27;@&#x27; en una URL (técnica de ofuscación): 0.1%
   · la cantidad de URLs reportadas: 0.1%
 
-SÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (99.0% del peso total de la decisión).</pre>
-<h3>Correo 3 resaltado</h3><img src='resaltado_phishing_2.png' style='width:100%'>
-<div class='q'><p><b>C6. Según el reporte, ¿cuál de estas características de la estructura HTML o de la red influyó en la decisión sobre este correo?</b></p><ul><li>&#9711; la cantidad de enlaces</li><li>&#9711; el uso de un acortador de enlaces</li><li>&#9711; la longitud del mensaje</li><li>&#9711; la cantidad de imágenes</li></ul></div>
-<div class='q'><p><b>C7. Según el reporte, en el bloque de texto «username» tuvo más peso que «33484».</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
+SÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (99.6% del peso total de la decisión).</pre>
+<div class='q'><p><b>C6. Según el reporte, ¿cuál de estas características de la estructura HTML o de la red influyó en la decisión sobre este correo?</b></p><ul><li>&#9711; la cantidad de enlaces</li><li>&#9711; el uso de un acortador de enlaces</li><li>&#9711; la longitud del mensaje</li><li>&#9711; la cantidad de subdominios en las URLs</li></ul></div>
+<div class='q'><p><b>C7. Según el reporte, en el bloque de texto «helpdesk» tuvo más peso que «expires».</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <h2>Sección C. Comprensión: correo 4 de 4</h2>
-<h3>Correo 4</h3><pre>Asunto: Mysterious autostart behaviour
-Remitente: [remitente oculto]
-
-I have a number of things listed in KDE&#x27;s Autostart menu. These all
-work correctly.
-
-One thing that isn&#x27;t listed is Ktorrent, yet it starts on every session
-and has to be manually killed. I only ever use qBittorrent now though
-I&#x27;ve occasionally used Ktorrent in the distant past, so some cruft may
-have been left lying around.
-
-It isn&#x27;t listed anywhere in /etc/xdg/autostart, nor in any of the usual
-.profile, .bashrc etc. places.
-
-Is there anywhere else I should look?
-
-poc</pre>
-<h3>Reporte del sistema para el correo 4</h3><pre>Este correo fue clasificado como legítimo con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra &quot;kde&quot; (peso 1.9%), la palabra &quot;qbittorrent&quot; (peso 1.7%), la palabra &quot;poc&quot; (peso 1.5%). Explicación generada mediante los pesos de atención intrínseca del modelo.
+<h3>Correo 4</h3><p class='desc'>Asunto: Mysterious autostart behaviour</p><img src='resaltado_legitimo_2.png' style='width:100%'>
+<h3>Reporte del sistema: correo 4</h3><pre>Este correo fue clasificado como legítimo con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra &quot;kde&quot; (peso 1.9%), la palabra &quot;qbittorrent&quot; (peso 1.7%), la palabra &quot;poc&quot; (peso 1.5%). Explicación generada mediante los pesos de atención intrínseca del modelo.
 
 VEREDICTO: LEGÍTIMO (confianza 100.0%)
 Técnica de explicabilidad: los pesos de atención intrínseca del modelo
@@ -271,18 +115,11 @@ Técnica de explicabilidad: los pesos de atención intrínseca del modelo
   · la palabra &quot;autostart&quot;: 17.8%
   · la palabra &quot;ktorrent&quot;: 17.4%
 
-[Estructura HTML/DOM] — contribución agregada: 0.0%
-  · la presencia de código HTML: 0.0%
-  · la cantidad de enlaces: 0.0%
-  · la cantidad de imágenes: 0.0%
-  · la longitud del mensaje: 0.0%
-  · la complejidad estructural del mensaje (cantidad de elementos HTML): 0.0%
+[Estructura HTML/DOM] — sin peso en esta decisión
 
-[Metadatos de red y autenticación] — contribución agregada: 0.0%
-  · Sin evidencia atribuida a esta modalidad en esta predicción.
+[Metadatos de red y autenticación] — sin peso en esta decisión
 
 SÍNTESIS: La clasificación como legítimo se apoya principalmente en la modalidad &#x27;Contenido textual (semántica del mensaje)&#x27; (100.0% del peso total de la decisión).</pre>
-<h3>Correo 4 resaltado</h3><img src='resaltado_legitimo_2.png' style='width:100%'>
 <div class='q'><p><b>C8. Según el reporte, ¿qué decidió el sistema sobre este correo?</b></p><ul><li>&#9711; Legítimo, con entre 60% y 90% de confianza</li><li>&#9711; Phishing, con más del 99% de confianza</li><li>&#9711; Legítimo, con más del 99% de confianza</li><li>&#9711; Phishing, con entre 60% y 90% de confianza</li></ul></div>
 <div class='q'><p><b>C9. ¿Cuál de estas palabras está entre las tres que, según el reporte, más influyeron en la decisión?</b></p><ul><li>&#9711; around</li><li>&#9711; listed</li><li>&#9711; qbittorrent</li><li>&#9711; anywhere</li></ul></div>
 <div class='q'><p><b>C10. Según el reporte, la estructura HTML del correo no aportó peso a esta decisión.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>

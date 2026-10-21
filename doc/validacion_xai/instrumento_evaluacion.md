@@ -2,7 +2,7 @@
 
 **Proyecto:** Detección de phishing multimodal con IA Explicable — Tesis PUCP
 **Fase del plan:** E0 (preparación del panel), resultado de tesis **R3.3**
-**Duración estimada:** unos 25 minutos por evaluador, en un formulario autoadministrado de Google Forms
+**Duración estimada:** unos 20 minutos por evaluador, en un formulario autoadministrado de Google Forms
 **Aplicable a:** cualquier técnica XAI candidata (SHAP, LIME o atención intrínseca). Este instrumento **no depende de cuál gane la matriz de decisión de R3.1** — las preguntas se refieren al *reporte de explicación* que ve el evaluador, no a la técnica interna que lo generó. No se debe revelar al evaluador qué técnica generó el reporte (evita sesgo de expectativa); si se evalúan varias técnicas en paralelo, aplicar este mismo instrumento una vez por técnica, con evaluadores o ejemplos distintos para evitar efecto de aprendizaje.
 
 ---
@@ -28,13 +28,13 @@ El instrumento se aplica como formulario en línea, autoadministrado, que genera
 | Paso | Contenido | Tiempo estimado |
 |---|---|---|
 | 1 | Presentación, consentimiento y tres preguntas de perfil | 2 min |
-| 2 | Inducción escrita: cómo leer el reporte, con un ejemplo guiado que no se usa en las preguntas | 3–4 min |
-| 3 | Sección C — Comprensión (10 preguntas sobre 4 correos reales) | 10–12 min |
+| 2 | Inducción escrita: cómo leer el reporte, con un ejemplo guiado que no se usa en las preguntas | 2–3 min |
+| 3 | Sección C — Comprensión (10 preguntas sobre 4 correos reales, cada uno mostrado una sola vez) | 8–10 min |
 | 4 | Sección A — SUS adaptado (10 ítems) | 3–4 min |
 | 5 | Sección B — PSSUQ adaptado (16 ítems) | 4–5 min |
 | 6 | Cierre y comentario opcional | 1 min |
 
-**Total:** unos 25 minutos.
+**Total:** unos 20 minutos.
 
 **Por qué la comprensión va antes que las escalas de opinión.** El SUS y el PSSUQ se diseñaron para responderse después de usar el sistema; aquí, usarlo es leer los reportes. Si se respondieran tras el ejemplo guiado, medirían la opinión sobre un único reporte. La numeración de las secciones (A, B, C) se conserva para que coincida con el scoring.
 
@@ -133,7 +133,9 @@ Esta sección es la que responde directamente al resultado **R3.3** de la tesis:
 
 La sección usa **cuatro correos reales** del conjunto de prueba, todos correctamente clasificados por el modelo reportado: dos de phishing y dos legítimos, presentados en orden alterno. Un quinto correo de phishing se usa solo en la inducción. Los selecciona `scripts/experimentos/e9_ejemplos_del_panel.py` con criterios fijos y registrados en su informe (`medios_de_verificacion/experimentos/e9/ejemplos_del_panel.json`): idioma inglés o español, cuerpo legible, palabras decisivas legibles y visibles en el correo mostrado, ninguna repetida y, en los legítimos, ninguna que sea un nombre propio. Los enlaces se desactivan y se ocultan los teléfonos. En los correos de phishing, el dominio de cada dirección se muestra desactivado, porque es evidencia, y solo se oculta la parte local; en los legítimos, las direcciones se ocultan enteras. Los factores del reporte que no son palabras legibles (signos, cifras, fragmentos codificados) se nombran por su tipo.
 
-Excepción declarada: el correo 3 se impone fuera de esos criterios. Ningún correo que los cumpla tiene peso de estructura o de red en su reporte, y sin uno así las preguntas sobre esos bloques no tendrían contenido. Se eligió el de mayor peso no textual entre los legibles en inglés: estructura 0.6% y red 0.4%. Su factor principal es una cifra (un código postal). Sobre él, C6 pregunta qué característica de estructura o de red influyó.
+Excepción declarada: el correo 3 se impone fuera de esos criterios. Ningún correo que los cumpla tiene peso de estructura o de red en su reporte, y sin uno así las preguntas sobre esos bloques no tendrían contenido. Entre los 62 correos bien clasificados cuyo reporte da algún peso no textual (`candidatos_no_textuales.json`), casi todos son publicidad, contenido adulto o están en otro idioma. Se eligió el que mejor se entiende: un phishing de credenciales («tu contraseña expira en 24 horas») cuyo reporte cita «expires», «account» y «helpdesk» y atribuye a la red un 0.4%. Incumple dos filtros previos: su confianza (95.6%) es menor que 99% y la detección de idioma por tramos no lo clasifica. Su primer factor es un signo. Sobre él, C6 pregunta qué característica de estructura o de red influyó.
+
+Para no alargar el formulario, cada correo se muestra una sola vez, como imagen con sus palabras sombreadas y el asunto encima. Los bloques del reporte sin peso se resumen en una línea: «sin peso en esta decisión».
 
 Cada reporte va acompañado del propio correo con sus palabras sombreadas según su peso en la decisión (`src/phishing_model/xai/resaltado.py`), con recuadro en las que cita el reporte; el sombreado usa el mismo vector de atención que el reporte, y en los cinco correos sus cinco palabras de más peso coinciden con las citadas.
 

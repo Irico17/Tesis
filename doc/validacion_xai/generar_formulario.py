@@ -110,15 +110,25 @@ def _distractores(ejemplo: dict, n: int = 2) -> list[str]:
     return candidatas[:n]
 
 
-def _segunda_legible(palabras: list[str]) -> str:
-    """La palabra legible de más peso después de la primera, para comparar con ella.
+def _par_para_comparar(ejemplo: dict, diferencia_minima: float = 2.0) -> tuple[str, str]:
+    """Dos palabras citadas, (la de más peso, otra de peso claramente menor).
 
-    Comparar con un signo de puntuación («,») haría la pregunta confusa sin medir
-    mejor la lectura del orden.
+    Solo palabras legibles y con contenido: comparar con un signo («,») confunde
+    sin medir mejor la lectura del orden. Y la diferencia en el bloque ha de ser
+    de al menos `diferencia_minima` puntos, porque dos palabras con 20.5% y 20.3%
+    no permiten una respuesta inequívoca.
     """
     sys.path.insert(0, str(BASE / "src"))
     from phishing_model.xai.narrative import es_palabra_legible
-    return next((w for w in palabras[1:] if es_palabra_legible(w)), palabras[2])
+    fs = [f for f in _bloques(ejemplo)["texto"]["factors"]
+          if es_palabra_legible(f["name"]) and f["name"].isalpha()
+          and f["name"].lower() not in VACIAS]
+    for i, mayor in enumerate(fs):
+        menores = [f for f in fs[i + 1:] if mayor["pct"] - f["pct"] >= diferencia_minima]
+        if menores:
+            return mayor["name"], menores[-1]["name"]
+    p = _palabras(ejemplo)
+    return p[0], p[2]
 
 
 def _no_textuales(ejemplo: dict) -> list[str]:
@@ -237,8 +247,8 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
           "opciones": _barajar(p3[:3] + [no_citada], "C6", no_citada),
           "correcta": no_citada}),
         {"id": "C7", "ejemplo": 3, "tipo": "vf",
-         "titulo": (f"C7. Según el reporte, en el bloque de texto «{_segunda_legible(p3)}» "
-                    f"tuvo más peso que «{p3[0]}»."),
+         "titulo": ("C7. Según el reporte, en el bloque de texto «{1}» tuvo más peso "
+                    "que «{0}».".format(*_par_para_comparar(e3))),
          "opciones": vf, "correcta": "Falso"},
         {"id": "C8", "ejemplo": 4, "tipo": "opcion",
          "titulo": "C8. Según el reporte, ¿qué decidió el sistema sobre este correo?",
@@ -265,7 +275,7 @@ PRESENTACION = (
     "artificial explicable. El sistema clasifica cada correo como phishing o legítimo "
     "y genera un reporte que explica qué factores pesaron en esa decisión. Queremos "
     "saber si ese reporte se entiende.\n\n"
-    "Tomará unos 25 minutos. Verás un ejemplo guiado, leerás cuatro correos reales con "
+    "Tomará unos 20 minutos. Verás un ejemplo guiado, leerás cuatro correos reales con "
     "su reporte y contestarás diez preguntas sobre lo que el reporte dice y, al final, "
     "responderás dos cuestionarios breves de opinión. Las preguntas de comprensión "
     "tienen respuestas correctas, pero no te evalúan a ti: miden si el reporte "
@@ -286,26 +296,17 @@ CONSENTIMIENTO = ("Confirmo que participo de forma voluntaria, que puedo retirar
                   "agregada con fines de investigación.")
 
 COMO_LEER = (
-    "Antes de empezar, este es un ejemplo de cómo leer el reporte. No forma parte de "
-    "las preguntas.\n\n"
-    "1. La primera línea indica la decisión del sistema (phishing o legítimo) y su "
-    "confianza, entre 0% y 100%.\n"
-    "2. Después, el reporte se divide en tres bloques, uno por cada tipo de "
-    "información del correo: su contenido textual, su estructura HTML y sus "
-    "metadatos de red y autenticación. Cada bloque indica qué parte del peso total "
-    "de la decisión le corresponde.\n"
-    "3. Dentro de cada bloque, los factores aparecen ordenados de mayor a menor peso. "
-    "En el bloque de texto, los factores son palabras del correo; un porcentaje mayor "
-    "significa que esa palabra influyó más. A veces el sistema se fija en algo que no "
-    "es una palabra; entonces el reporte lo nombra por su tipo (un signo de "
-    "puntuación, una cifra, una abreviatura o un fragmento codificado) seguido del "
-    "texto exacto. Se lee igual: es algo del correo que el sistema tuvo en cuenta.\n"
-    "4. La síntesis final resume qué tipo de información sustentó la decisión.\n"
-    "5. Debajo del reporte verás el mismo correo con sus palabras sombreadas: cuanto "
-    "más intenso el color, más pesó esa palabra en la decisión. Las palabras que cita "
-    "el reporte llevan un recuadro.\n\n"
-    "El párrafo inicial (narrativa) dice lo mismo en una frase: la decisión, la "
-    "confianza y las tres palabras más influyentes."
+    "Abajo hay un ejemplo resuelto; no forma parte de las preguntas.\n\n"
+    "• El correo aparece con sus palabras sombreadas: más intenso, más pesó en la "
+    "decisión. Las que cita el reporte llevan recuadro.\n"
+    "• El reporte empieza con una frase que resume la decisión (phishing o "
+    "legítimo), la confianza y las tres palabras que más influyeron.\n"
+    "• Luego divide el peso en tres bloques: texto, estructura HTML y red y "
+    "autenticación. Cada bloque muestra su porcentaje y sus factores, de mayor a "
+    "menor; si no pesó, dice «sin peso en esta decisión».\n"
+    "• Si el sistema se fijó en algo que no es una palabra, lo nombra por su tipo "
+    "(un signo, una cifra, una abreviatura) junto al texto exacto.\n"
+    "• La síntesis final dice qué bloque sustentó la decisión."
 )
 
 INSTRUCCION_A = ("Piensa en los reportes de explicación que leíste. Para cada "
@@ -419,26 +420,30 @@ def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict
                     "en un centro de operaciones de seguridad, competencias tipo CTF)?"),
          "opciones": ["Sí", "No"]},
         {"tipo": "pagina", "titulo": "Cómo leer el reporte", "texto": COMO_LEER},
-        {"tipo": "texto", "titulo": "Ejemplo guiado: el correo", "texto": _ejemplo_texto(ind)},
-        {"tipo": "texto", "titulo": "Ejemplo guiado: el reporte del sistema",
-         "texto": _reporte_texto(ind)},
     ]
     imagenes = imagenes or {}
-    if "induccion" in imagenes:
-        el.append({"tipo": "imagen", "titulo": "Ejemplo guiado: el correo resaltado",
-                   "archivo": imagenes["induccion"]})
-    for n, correo in enumerate(correos, 1):
-        el += [
-            {"tipo": "pagina", "titulo": f"Sección C. Comprensión: correo {n} de 4",
-             "texto": INSTRUCCION_C if n == 1 else ""},
-            {"tipo": "texto", "titulo": f"Correo {n}", "texto": _ejemplo_texto(correo)},
-            {"tipo": "texto", "titulo": f"Reporte del sistema para el correo {n}",
-             "texto": _reporte_texto(correo)},
-        ]
-        clave = ("phishing_1", "legitimo_1", "phishing_2", "legitimo_2")[n - 1]
+
+    def correo_y_reporte(ej: dict, clave: str, titulo: str) -> list[dict]:
+        """El correo se muestra una sola vez: su imagen resaltada, con el asunto.
+
+        Mostrarlo como texto y además en la imagen duplicaba la lectura (unas mil
+        palabras en todo el formulario) sin añadir información: la imagen ya
+        contiene el cuerpo que el modelo leyó.
+        """
         if clave in imagenes:
-            el.append({"tipo": "imagen", "titulo": f"Correo {n} resaltado",
-                       "archivo": imagenes[clave]})
+            correo = {"tipo": "imagen", "titulo": titulo, "archivo": imagenes[clave],
+                      "texto": f"Asunto: {ej['asunto']}"}
+        else:
+            correo = {"tipo": "texto", "titulo": titulo, "texto": _ejemplo_texto(ej)}
+        return [correo, {"tipo": "texto", "titulo": f"Reporte del sistema: {titulo.lower()}",
+                         "texto": _reporte_texto(ej)}]
+
+    el += correo_y_reporte(ind, "induccion", "Ejemplo guiado")
+    for n, correo in enumerate(correos, 1):
+        el.append({"tipo": "pagina", "titulo": f"Sección C. Comprensión: correo {n} de 4",
+                   "texto": INSTRUCCION_C if n == 1 else ""})
+        clave = ("phishing_1", "legitimo_1", "phishing_2", "legitimo_2")[n - 1]
+        el += correo_y_reporte(correo, clave, f"Correo {n}")
         el += [dict(q, tipo="pregunta") for q in preguntas if q["ejemplo"] == n]
     el += [
         {"tipo": "pagina", "titulo": "Sección A. Opinión sobre los reportes (1 de 2)",
@@ -511,7 +516,8 @@ def apps_script(el: list[dict]) -> str:
             l.append(f"  form.addParagraphTextItem().setTitle({_js(e['titulo'])});")
         elif t == "imagen":
             l.append(f"  form.addImageItem().setTitle({_js(e['titulo'])})"
-                     f".setImage(UrlFetchApp.fetch({_js(URL_IMAGENES + e['archivo'])}));")
+                     + (f".setHelpText({_js(e['texto'])})" if e.get("texto") else "")
+                     + f".setImage(UrlFetchApp.fetch({_js(URL_IMAGENES + e['archivo'])}));")
     l += [
         "  Logger.log('Enlace para responder: ' + form.getPublishedUrl());",
         "  Logger.log('Enlace para editar: ' + form.getEditUrl());",
@@ -548,7 +554,8 @@ def vista_previa(el: list[dict]) -> str:
                           "<div class='caja'></div></div>")
         elif t == "imagen":
             partes.append(f"<h3>{h(e['titulo'])}</h3>"
-                          f"<img src='{e['archivo']}' style='width:100%'>")
+                          + (f"<p class='desc'>{h(e['texto'])}</p>" if e.get("texto") else "")
+                          + f"<img src='{e['archivo']}' style='width:100%'>")
     estilo = """
     body{font-family:Georgia,serif;max-width:820px;margin:32px auto;padding:0 16px;color:#111}
     h1{font-size:24px} h2{font-size:19px;margin-top:36px;border-top:1px solid #999;padding-top:16px}

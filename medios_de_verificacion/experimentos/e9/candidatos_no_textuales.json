@@ -1,0 +1,3559 @@
+[
+ {
+  "email_id": "09825249-3113-4b99-9e8b-4056909ee824",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 3570,
+  "confianza": 0.90623,
+  "asunto": "",
+  "cuerpo": "##################################################\n#                                                #\n#                 Adult ClubÂ™                    #\n#           Offers FREE Membership               #\n#                                                #\n##################################################15 of the Best Adult Sites on the Internet for FREE!\n>>>  INSTANT ACCESS TO ALL SITES NOW\n>>>  Your User Name And Password is.\n>>>  User Name: [usuario]@minder[.]net\n>>>  Password: d0949w4z---------------------------------------NEWS 07/01/02\nWith just over 2.2 Million Members that signed up for FREE, Last month there were 429,947 New \nMembers. Are you one of them yet???---------------------------------------Our Membership FAQ\nQ. Why are you offering free access to 15 adult membership sites for free?\nA. I have advertisers that pay me for ad space so you don't have to pay for membership.Q. Is it true my membership is for life?\nA. Absolutely you'll never have to pay a cent the advertisers do.Q. Can I give my account to my friends and family? \nA. Yes, as long they are over the age of 18.Q. Do I have to sign up for all 15 membership sites?\nA. No just one to get access to all of them. Q. How do I get started? \nA. Click on one of the following links below to become a member.---------------------------------------# 15. > NEW! > Celebs TV \nClick Here > hxxp://[teléfono oculto]/celebst/?aid=818932\n \n# 14. > NEW! > Naughty Live Cam\nClick Here > hxxp://[teléfono oculto]/cams/?aid=818932# 13. > Adults Farm\nClick Here > hxxp://[teléfono oculto]/farm/?aid=818932\n \n# 12. > Fetish Door\nClick Here > [...]",
+  "factores": [
+   {
+    "name": "cluba™",
+    "human_name": "la palabra \"cluba™\"",
+    "pct": 29.7,
+    "visible": false
+   },
+   {
+    "name": "d0949w4z",
+    "human_name": "un fragmento codificado \"d0949w4z\"",
+    "pct": 21.4,
+    "visible": true
+   },
+   {
+    "name": "advertisers",
+    "human_name": "la palabra \"advertisers\"",
+    "pct": 17.2,
+    "visible": true
+   },
+   {
+    "name": "advertisers",
+    "human_name": "la palabra \"advertisers\"",
+    "pct": 16.6,
+    "visible": true
+   },
+   {
+    "name": "celebs",
+    "human_name": "la palabra \"celebs\"",
+    "pct": 14.4,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.4
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la longitud de las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.7
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 90.6%. Los factores que más influyeron en la decisión fueron: la palabra \"cluba™\" (peso 1.0%), un fragmento codificado \"d0949w4z\" (peso 0.7%), la palabra \"advertisers\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "0e059c82-c2ae-4d26-94d4-2f304b953bcb",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 5123,
+  "confianza": 0.995324,
+  "asunto": "Your Amazon.com Inquiry",
+  "cuerpo": "Thank you for writing to Amazon.com to bring this to our attention.\n\nThe message you received was not sent to you by Amazon.com.  We are \ninvestigating the situation and working to get that webpage removed. \nYou did the right thing by contacting us.\n\nFor your protection, we suggest that you never respond to requests \nfor personal information that may be contained in the forged e-\nmail.  I've provided some tips below my signature to help you \nidentify spoof messages.\n\nI want to assure you that Amazon.com is not in the business of \nselling customer information.  Many spammers and spoofers use \nprograms that randomly generate e-mail addresses, in the hope that \nsome percentage of these randomly-generated addresses will actually \nexist.\n\nImportant Note: If you submitted your credit card number to the \nfaked \"Amazon.com\" web site, we advise that you take steps to \nprotect your information by notifying your credit card company.  \nAdditionally, you should delete that credit card from your \nAmazon.com account to prevent anyone from improperly regaining \naccess to your account.  To do so, click the link in your Seller \nAccount to \"Change your Amazon.com store-wide settings such as e-\nmail, address book, and 1-Click.\"  Then click \"Edit or delete a \ncredit card\" under Payment Settings in Your Account.\n\nAmazon.com has recently taken steps to combat e-mail forgeries such \nas this in the U.S. and Canada; you can read more about our efforts \nhere:\n\nhxxp://www[.]amazon[.]com/stopspoofing \n\nI have included more information below my signature to assist you in \nidentifying e-mail forgeries. If [...]",
+  "factores": [
+   {
+    "name": "the",
+    "human_name": "la palabra \"the\"",
+    "pct": 32.3,
+    "visible": true
+   },
+   {
+    "name": "thank",
+    "human_name": "la palabra \"thank\"",
+    "pct": 17.9,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 17.0,
+    "visible": true
+   },
+   {
+    "name": "stopspoofing",
+    "human_name": "la palabra \"stopspoofing\"",
+    "pct": 16.7,
+    "visible": true
+   },
+   {
+    "name": "spammers",
+    "human_name": "la palabra \"spammers\"",
+    "pct": 16.0,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.5%. Los factores que más influyeron en la decisión fueron: la palabra \"the\" (peso 0.8%), la palabra \"thank\" (peso 0.4%), un signo de puntuación \".\" (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "103bce4d-37a2-499f-956d-2a9a6dd44e2a",
+  "coleccion": "kernel_lists",
+  "clase": "legitimo",
+  "idioma": null,
+  "largo": 10076,
+  "confianza": 0.997253,
+  "asunto": "Re: [PATCH v3] docs/zh_CN: Add snp-tdx-threat-model index Chinese\n translation",
+  "cuerpo": "在 2025/1/22 16:02, Yanteng Si 写道:\n>\n>\n>\n> 在 2025/1/21 17:54, Yuxian Mao 写道:\n>> Translate .../security/snp-tdx-threat-model.rst into Chinese.\n>>\n>> Update the translation through commit \"cdae7e8a69c3\"\n>> (\"docs/MAINTAINERS: Update my email address\")\n>>\n>> Signed-off-by: Yuxian Mao <[correo oculto]>\n>> ---\n>>\n>> v3:\n>>\n>> Message header fixes\n>>\n>> v2:\n>>\n>> fix remove the unnecessary blank lines\n>>\n>>   .../translations/zh_CN/security/index.rst     |   2 +-\n>>   .../zh_CN/security/snp-tdx-threat-model.rst   | 209 ++++++++++++++++++\n>>   2 files changed, 210 insertions(+), 1 deletion(-)\n>>   create mode 100644 \n>> Documentation/translations/zh_CN/security/snp-tdx-threat-model.rst\n>>\n>> diff --git a/Documentation/translations/zh_CN/security/index.rst \n>> b/Documentation/translations/zh_CN/security/index.rst\n>> index 9a6345dd90b8..78d9d4b36dca 100644\n>> --- a/Documentation/translations/zh_CN/security/index.rst\n>> +++ b/Documentation/translations/zh_CN/security/index.rst\n>> @@ -16,6 +16,7 @@\n>>      :maxdepth: 1\n>>        credentials\n>> +   snp-tdx-threat-model\n>>      lsm\n>>      sak\n>>      self-protection\n>> @@ -25,7 +26,6 @@\n>>      landlock\n>>     TODOLIST:\n>> -* snp-tdx-threat-model\n>>   * IMA-templates\n>>   * keys/index\n>>   * lsm-development\n>> diff --git \n>> a/Documentation/translations/zh_CN/security/snp-tdx-threat-model.rst \n>> b/Documentation/translations/zh_CN/security/snp-tdx-threat-model.rst\n>> new file mode 100644\n>> index [teléfono oculto]..17ab5e4277c4\n>> --- /dev/null\n>> +++ b/Documentation/translations/zh_CN/security/snp-tdx-threat-model.rst\n>> @@ [...]",
+  "factores": [
+   {
+    "name": "cdae7e8a69c3",
+    "human_name": "un fragmento codificado \"cdae7e8a69c3\"",
+    "pct": 26.7,
+    "visible": true
+   },
+   {
+    "name": "78d9d4b36dca",
+    "human_name": "un fragmento codificado \"78d9d4b36dca\"",
+    "pct": 19.8,
+    "visible": true
+   },
+   {
+    "name": "yanteng",
+    "human_name": "la palabra \"yanteng\"",
+    "pct": 18.9,
+    "visible": true
+   },
+   {
+    "name": "9a6345dd90b8",
+    "human_name": "un fragmento codificado \"9a6345dd90b8\"",
+    "pct": 17.4,
+    "visible": true
+   },
+   {
+    "name": "the",
+    "human_name": "la palabra \"the\"",
+    "pct": 17.2,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como legítimo con una confianza del 99.7%. Los factores que más influyeron en la decisión fueron: un fragmento codificado \"cdae7e8a69c3\" (peso 1.0%), un fragmento codificado \"78d9d4b36dca\" (peso 0.8%), la palabra \"yanteng\" (peso 0.7%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "16ea430b-df21-4b28-a513-7ee62fea6e7a",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 687,
+  "confianza": 0.973583,
+  "asunto": "",
+  "cuerpo": "Hello I am your hot lil horny toy.\n    I am the one you dream About,\n    I am a very open minded person,\n    Love to talk about and any subject.\n    Fantasy is my way of life, \n    Ultimate in sex play.     Ummmmmmmmmmmmmm\n     I am Wet and ready for you.     It is not your looks but your imagination that matters most,\n     With My sexy voice I can make your dream come true...\n  \n     Hurry Up! call me let me Cummmmm for you..........................\nTOLL-FREE:             [teléfono oculto]-TEEN ([teléfono oculto])For phone billing:     [teléfono oculto]\n-- \n_______________________________________________\nSign-up for your own FREE Personalized E-mail at Mail.com\nhxxp://www[.]mail[.]com/?sr=signup",
+  "factores": [
+   {
+    "name": "ummmmmmmmmmmmmm",
+    "human_name": "la palabra \"ummmmmmmmmmmmmm\"",
+    "pct": 36.9,
+    "visible": true
+   },
+   {
+    "name": "horny",
+    "human_name": "la palabra \"horny\"",
+    "pct": 16.5,
+    "visible": true
+   },
+   {
+    "name": "signup",
+    "human_name": "la palabra \"signup\"",
+    "pct": 16.3,
+    "visible": true
+   },
+   {
+    "name": "the",
+    "human_name": "la palabra \"the\"",
+    "pct": 15.7,
+    "visible": true
+   },
+   {
+    "name": "cummmmm",
+    "human_name": "la palabra \"cummmmm\"",
+    "pct": 14.4,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.4%. Los factores que más influyeron en la decisión fueron: la palabra \"ummmmmmmmmmmmmm\" (peso 1.8%), la palabra \"horny\" (peso 0.8%), la palabra \"signup\" (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "1a208b08-b1d0-440a-bb9b-4276d93eef6d",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 426,
+  "confianza": 0.967127,
+  "asunto": "Re:Re: Parcel from DHL EXPRESS",
+  "cuerpo": "DHL Capability Tool\n      \n  Dear [usuario]@monkey[.]org\n  Your Parcel(s) listed below is  scheduled for delivery tomorrow.\n You have a DHL Parcel addressed to you.\n You need to obtain your Tracking Number so as to check the status of the delivery.\n Kindly complete the tracking process on our webpage link www[.]dhl[.]com/dl/tracking \n and also confirm your delivery address .\n DHL WorldWide Delivery\n \n  (c) [teléfono oculto] DHL International",
+  "factores": [
+   {
+    "name": "dhl",
+    "human_name": "una abreviatura \"dhl\"",
+    "pct": 21.5,
+    "visible": true
+   },
+   {
+    "name": "-",
+    "human_name": "un signo de puntuación \"-\"",
+    "pct": 20.3,
+    "visible": false
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 19.5,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 19.4,
+    "visible": true
+   },
+   {
+    "name": "international",
+    "human_name": "la palabra \"international\"",
+    "pct": 19.0,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.2,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 96.7%. Los factores que más influyeron en la decisión fueron: una abreviatura \"dhl\" (peso 1.4%), un signo de puntuación \"-\" (peso 1.3%), un signo de puntuación \".\" (peso 1.2%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "1cc13a87-75bc-4848-a584-51a8ac80c8b3",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "pt",
+  "largo": 502,
+  "confianza": 0.978485,
+  "asunto": "RE: Aviso importante do IT-Helpdesk To All PT Email users",
+  "cuerpo": "Para Employee \\ Staff,\n\nTome nota desta informação importante,\no servidor do construtor de sites estiver cheio e uma manutenção de rotina\nimediatamente para revisar as contas de email existentes e para\nexcluir contas inativas. Recomendamos que você verifique sua conta de e-mail imediatamente.\nSiga o link abaixo para preencher seu formulário de verificação de usuário de e-mail imediatamente.Obrigado.\n\nClique em hxxps://covid-19it-helpticket[.]godaddysites[.]com  para atualizar imediatamente.\n\nSaudações",
+  "factores": [
+   {
+    "name": "saudacoes",
+    "human_name": "la palabra \"saudacoes\"",
+    "pct": 27.9,
+    "visible": false
+   },
+   {
+    "name": "\\",
+    "human_name": "un signo de puntuación \"\\\"",
+    "pct": 20.5,
+    "visible": true
+   },
+   {
+    "name": "imediatamente",
+    "human_name": "la palabra \"imediatamente\"",
+    "pct": 17.9,
+    "visible": true
+   },
+   {
+    "name": "construtor",
+    "human_name": "la palabra \"construtor\"",
+    "pct": 17.5,
+    "visible": true
+   },
+   {
+    "name": "imediatamente",
+    "human_name": "la palabra \"imediatamente\"",
+    "pct": 16.0,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.8%. Los factores que más influyeron en la decisión fueron: la palabra \"saudacoes\" (peso 2.3%), un signo de puntuación \"\\\" (peso 1.7%), la palabra \"imediatamente\" (peso 1.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "32d1c574-c220-49a7-b065-2bc02802fbfe",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 450,
+  "confianza": 0.938305,
+  "asunto": "",
+  "cuerpo": "My FREE Media Sofware linkenjoy, Jim--->hxxp://www[.]freeoptmail3[.]com/jimmy/plugin[.]htmlClick here to go to the site \nPersonal Quote: All for one and one for all. This is not a spam email. This email was sent to\nyou because your email was entered in on a website requesting to be a registered subscriber.\nclick here to cancel your account and you will \nnever receive another email from us! Please add remove in the subject line.tgwwcvwledqaerisufctgsfkf",
+  "factores": [
+   {
+    "name": "tgwwcvwledqaerisufctgsfkf",
+    "human_name": "un fragmento codificado \"tgwwcvwled…\"",
+    "pct": 47.8,
+    "visible": true
+   },
+   {
+    "name": "freeoptmail3",
+    "human_name": "la palabra \"freeoptmail3\"",
+    "pct": 14.8,
+    "visible": true
+   },
+   {
+    "name": "linkenjoy",
+    "human_name": "la palabra \"linkenjoy\"",
+    "pct": 13.7,
+    "visible": true
+   },
+   {
+    "name": "sofware",
+    "human_name": "la palabra \"sofware\"",
+    "pct": 13.2,
+    "visible": true
+   },
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 10.4,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 93.8%. Los factores que más influyeron en la decisión fueron: un fragmento codificado \"tgwwcvwled…\" (peso 6.0%), la palabra \"freeoptmail3\" (peso 1.9%), la palabra \"linkenjoy\" (peso 1.7%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "3ad1bfdf-ca79-4e3d-8ae7-2682eed660e8",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 1552,
+  "confianza": 0.991646,
+  "asunto": "",
+  "cuerpo": "Protect Yourself.Purchase An Extended Warranty For Your Car Before\nYour Existing Warranty Expires And Save Hundreds.Even if your warranty has expired, you will save\n40-60 percent over the warranties offered by\ndealerships and it's the SAME warranty.All quotes are 100 percent free.All quotes are obligation free.Dear Friend,Car troubles always seem to happen at the worst\npossible time. Protect yourself and your family\nwith a quality Extended Warranty for your car,\ntruck, or SUV, so that a large expense cannot hit\nyou all at once. We cover most vehicles with less\nthan 150,000 miles.Do not buy from a dealer. Their prices are often\n40-60 percent MORE!We offer fair prices and prompt, toll-free claims\nservice. Get an Extended Warranty on your car\ntoday. YOU WILL BE SURPRISED BY HOW INEXPENSIVE\nTHIS PROTECTION CAN BE!Warranty plans also include, for free:1. 24-Hour Roadside Assistance\n2. Rental Benefit\n3. Trip Interruption Intervention\n4. Extended Towing BenefitTake advantage of our special offer, before it\nexpires, by going to:Click_Herehxxp://redirect[.]metropol[.]dk/cgi-bin/redirect[.]pl?molid=rel&url=[teléfono oculto]/auto/Sincerely,S.C. Valentine\nEWFC, Inc.mrcztbxlwuukwxoqgwyaszncexlqcdpeljuytjzytmeuaivyfpvcranyqyygjyaiajphjoimfahyolykergzuvbpadgopxivbdvonbalwnjrmpfhtxumhztfv__________________________________________________________________\nThe NEW Netscape 7.0 browser is now available. Upgrade now! hxxp://channels[.]netscape[.]com/ns/browsers/download[.]jsp Get your own FREE, personal Netscape Mail account today at hxxp://webmail[.]netscape[.]com/",
+  "factores": [
+   {
+    "name": "/",
+    "human_name": "un signo de puntuación \"/\"",
+    "pct": 27.2,
+    "visible": true
+   },
+   {
+    "name": "expires",
+    "human_name": "la palabra \"expires\"",
+    "pct": 22.2,
+    "visible": true
+   },
+   {
+    "name": "your",
+    "human_name": "la palabra \"your\"",
+    "pct": 17.1,
+    "visible": true
+   },
+   {
+    "name": "yourself",
+    "human_name": "la palabra \"yourself\"",
+    "pct": 16.9,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 16.4,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.2%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \"/\" (peso 0.8%), la palabra \"expires\" (peso 0.7%), la palabra \"your\" (peso 0.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "4250755f-b235-4558-bd7f-118665a0cde1",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 668,
+  "confianza": 0.981024,
+  "asunto": "",
+  "cuerpo": "Welcome to Viagra Express!hxxp://www[.]universalmeds[.]com/main2[.]php?rx=16863Our objective at Viagra Express is simple! We want to provide only \ngenuine FDA approved VIAGRA to you at the lowest possible prices.Some important factors that set us apart from our competition:* CONFIDENTIAL ONLINE DR. CONSULTATION\n* GLOBAL PHYSICIAN NETWORK OF 200+ LICENSED PHYSICIANS\n* WORLDWIDE 24 HOUR DELIVERY UPON ORDER APPROVAL\n* SIMPLY THE LOWEST PRICES\n* NO-CHARGE FOR ANY ORDER NOT APPROVED FOR ANY REASON\n* DISCRETION ASSURED, SATISFACTION GUARANTEED\n hxxp://www[.]universalmeds[.]com/main2[.]php?rx=16863\n \n \n We also carry 4 other products from weight loss to hair loss products. iyrys",
+  "factores": [
+   {
+    "name": "iyrys",
+    "human_name": "la palabra \"iyrys\"",
+    "pct": 25.6,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 20.4,
+    "visible": true
+   },
+   {
+    "name": "16863our",
+    "human_name": "un fragmento codificado \"16863our\"",
+    "pct": 19.2,
+    "visible": true
+   },
+   {
+    "name": "universalmeds",
+    "human_name": "la palabra \"universalmeds\"",
+    "pct": 18.9,
+    "visible": true
+   },
+   {
+    "name": "viagra",
+    "human_name": "la palabra \"viagra\"",
+    "pct": 15.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 98.1%. Los factores que más influyeron en la decisión fueron: la palabra \"iyrys\" (peso 1.7%), un signo de puntuación \".\" (peso 1.3%), un fragmento codificado \"16863our\" (peso 1.3%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "48207bad-ff20-4c7a-8db0-1bd22831c8fc",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 3154,
+  "confianza": 0.975432,
+  "asunto": "",
+  "cuerpo": "##################################################\n#                                                #\n#                 Adult Club                     #\n#           Offers FREE Membership               #\n#                                                #\n##################################################>>>>>  INSTANT ACCESS TO ALL SITES NOW\n>>>>>  Your User Name And Password is.\n>>>>>  User Name: [usuario]@spamassassin[.]taint[.]org\n>>>>>  Password: 15343 of the Best Adult Sites on the Internet for FREE!---------------------------------------NEWS 08/15/02\nWith just over 2.9 Million Members that signed up for FREE, Last month\nthere were 721,184 New\nMembers. Are you one of them yet???---------------------------------------Our Membership FAQQ. Why are you offering free access to 3 adult membership sites for\nfree?\nA. I have advertisers that pay me for ad space so you don't have to pay\nfor membership.Q. Is it true my membership is for life?\nA. Absolutely you'll never have to pay a cent the advertisers do.Q. Can I give my account to my friends and family?\nA. Yes, as long they are over the age of 18.Q. Do I have to sign up for all 3 membership sites?\nA. No just one to get access to all of them.Q. How do I get started?\nA. Click on one of the following links below to become a member.- These are multi million dollar operations with policies and rules.\n- Fill in the required info and they won't charge you for the Free pass!\n- If you don't believe us, just read their terms and conditions.---------------------------new! > Tilthy Teen Sluts (added 08-15-02)\nThe Ultimate XXX TEEN Site... ItÂ’s [...]",
+  "factores": [
+   {
+    "name": "spamassassin",
+    "human_name": "la palabra \"spamassassin\"",
+    "pct": 22.9,
+    "visible": true
+   },
+   {
+    "name": "advertisers",
+    "human_name": "la palabra \"advertisers\"",
+    "pct": 20.2,
+    "visible": true
+   },
+   {
+    "name": "-",
+    "human_name": "un signo de puntuación \"-\"",
+    "pct": 19.4,
+    "visible": true
+   },
+   {
+    "name": "zzzz",
+    "human_name": "una abreviatura \"zzzz\"",
+    "pct": 19.1,
+    "visible": false
+   },
+   {
+    "name": "advertisers",
+    "human_name": "la palabra \"advertisers\"",
+    "pct": 18.1,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.5%. Los factores que más influyeron en la decisión fueron: la palabra \"spamassassin\" (peso 0.7%), la palabra \"advertisers\" (peso 0.6%), un signo de puntuación \"-\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "4ca447d3-48b0-4e72-bbda-a90727b61dd0",
+  "coleccion": "phishing_pot",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 68,
+  "confianza": 0.972888,
+  "asunto": "I just broke up with my boyfriend before Valentine's Day",
+  "cuerpo": "I just broke up with my boyfriend before Valentine's Day UNSUBSCRIBE",
+  "factores": [
+   {
+    "name": "unsubscribe",
+    "human_name": "la palabra \"unsubscribe\"",
+    "pct": 48.1,
+    "visible": true
+   },
+   {
+    "name": "with",
+    "human_name": "la palabra \"with\"",
+    "pct": 14.1,
+    "visible": true
+   },
+   {
+    "name": "i",
+    "human_name": "una abreviatura \"i\"",
+    "pct": 13.7,
+    "visible": true
+   },
+   {
+    "name": "before",
+    "human_name": "la palabra \"before\"",
+    "pct": 12.1,
+    "visible": true
+   },
+   {
+    "name": "my",
+    "human_name": "una abreviatura \"my\"",
+    "pct": 11.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "un dominio con apariencia generada aleatoriamente",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.3%. Los factores que más influyeron en la decisión fueron: la palabra \"unsubscribe\" (peso 10.5%), la palabra \"with\" (peso 3.1%), una abreviatura \"i\" (peso 3.0%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "4df2079c-4b8e-4fb2-82c0-947f95b47277",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 1603,
+  "confianza": 0.930316,
+  "asunto": "",
+  "cuerpo": "IMPORTANT NOTICE:  Regarding your domain name* If you own a .com/.net/.org, you are advised to register \n  your .ws \"web site\" domain before someone else takes it forever.\n \n* Major corporations such as Yahoo, ATT & Intel, have all\n  registered their .ws \"web site\" domains for their company names \n  as well as all their trademarks, to protect them forever.\n \n* .ws \"web site\" domains are in 180+ countries worldwide\n \n* Availability for .ws is ~88% compared to ~24% for .comWe thought you'd find the article on .ws below interesting. \nIf you want more information on where to register .ws \"web site\"\ndomains, and how to get a discount on multiple registrations, \ncontact us at  hxxp://www[.]netleads[.]ws/morganAlso, if you would like to increase traffic to your web site, \nby submitting your URL to 500+ search engines and directories\nat once, then call us today.Sincerely,\nJoe & Stacy Morgan\n[teléfono oculto]\nInternet Names, LLC.\n \n#########################\n \nNEWS RELEASE:\n.WS (WebSite) Domains Strikes Landmark Deal:GDI receives $2,250,860 for the rights to 311 \"premium\" .ws domain\nnames.\n \n---\nLast week, GDI (Global Domains International, Inc.), the registry for.ws\n\"web site\" domains, closed a deal with a large publicly traded company,\none of the biggest players in the .com arena, and received payment in\nfull of $2,250,860 for the rights to a select group of \"premium\" .ws\ndomain names. The 311 domain names will be resold to the highest\nbidders and ultimately developed into substantial .ws web sites, giving\n.ws even more publicity down the road.To be be removed [...]",
+  "factores": [
+   {
+    "name": "remove",
+    "human_name": "la palabra \"remove\"",
+    "pct": 33.0,
+    "visible": true
+   },
+   {
+    "name": "trademarks",
+    "human_name": "la palabra \"trademarks\"",
+    "pct": 18.3,
+    "visible": true
+   },
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 16.9,
+    "visible": true
+   },
+   {
+    "name": "notice",
+    "human_name": "la palabra \"notice\"",
+    "pct": 16.4,
+    "visible": true
+   },
+   {
+    "name": "registrations",
+    "human_name": "la palabra \"registrations\"",
+    "pct": 14.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.4
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.5
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 93.0%. Los factores que más influyeron en la decisión fueron: la palabra \"remove\" (peso 0.9%), la palabra \"trademarks\" (peso 0.5%), un signo de puntuación \",\" (peso 0.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "59a9e241-8860-4916-a5d4-e042f8e6db68",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 1705,
+  "confianza": 0.97129,
+  "asunto": "0fficiaI Information For Wells Fargo CIients [Fri, 4 Aug 2006 07:51:38 -0540]",
+  "cuerpo": "mom lewd, sod kale I`ve, soak wand snob pituse jug dew mean wick \ndaleyour hoy rush cardhonk duly keenpeer bout kerf boot chat chopwad \ncharpipe flygenemow yondcurd tonydeal toss pipy aye halt molt soil hazy \nbowcast bay cage yoopitcrag tyre much middle hag artsinkdad iffy aahsuch \nholtbalegulp xraycosy lawn zingsit joint core jerk nunblub bang rope \nsub- mew gun zymotic by eatsgaga zed pipe flue denediet bard ding snow \nkern ice purl trek besock rig bump hick  idem waitwide fair yarn ana \ncon- stem jerk tyre hemcash limy chap vole con- whoa or tug bell kefgel \ncarp, hung ray Jew, pig half cock gildlike rose me lamb ur blotlily zing \nbard flankygum die mienten seal wilt rid Arab theytoad hoopmeld \nkickmitethin webacre PApace plea cur ABC Urdu pun char wad ironjump swam \nrap fusstermburn loan ace bin- gist lurematnilly cop bearrush \nladbonemorn snubgone away gibecud vamp snafu path sootflax luce ugly \nrife sole have raw em lastTurk cosy hold what pawnbone din Ursa gang \nglee hap pet sole moodsap yoga same flag  vow anteonly owl boo hot hope \nnote leer lisp nubvang aha rush wark flat road gill jape hell chapbar \nsand, dray mink lira, toss miss lane waindour mora flax mist coo tubat \ndaze gosh schmaltzcorn fly gazelimb ash ace bunk coin winkrun capetrap \nfoedatemis- woofbass curlaloe done blow fake gosh slog rood pry \nvocalvacuum jinn ho bowljudocod wide no thanks tiro kook cantslewburr \nbean ewecap kilowarNazi dorydim born raggawk goat hint isn't tampflop \nhist soak me woe Lapp jig void flagyak moan drab knap gaingout tall long \nfuse zing hide away airy denename jail oxen [...]",
+  "factores": [
+   {
+    "name": "luremat",
+    "human_name": "la palabra \"luremat\"",
+    "pct": 21.7,
+    "visible": true
+   },
+   {
+    "name": "xraycosy",
+    "human_name": "la palabra \"xraycosy\"",
+    "pct": 20.1,
+    "visible": true
+   },
+   {
+    "name": "lewd",
+    "human_name": "la palabra \"lewd\"",
+    "pct": 20.1,
+    "visible": true
+   },
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 19.1,
+    "visible": true
+   },
+   {
+    "name": "schmaltz",
+    "human_name": "la palabra \"schmaltz\"",
+    "pct": 18.3,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "la presencia de código HTML",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.5,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.1%. Los factores que más influyeron en la decisión fueron: la palabra \"luremat\" (peso 0.6%), la palabra \"xraycosy\" (peso 0.6%), la palabra \"lewd\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "5b185f16-d443-454d-80fe-3654b720a3da",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "lv",
+  "largo": 11,
+  "confianza": 0.968764,
+  "asunto": "�������� ���� ���������� 3800���� ������. rfracl bipe tdld r",
+  "cuerpo": "gubvjamv ir",
+  "factores": [
+   {
+    "name": "gubvjamv",
+    "human_name": "la palabra \"gubvjamv\"",
+    "pct": 78.5,
+    "visible": true
+   },
+   {
+    "name": "ir",
+    "human_name": "la palabra \"ir\"",
+    "pct": 21.4,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.0
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 96.9%. Los factores que más influyeron en la decisión fueron: la palabra \"gubvjamv\" (peso 19.8%), la palabra \"ir\" (peso 5.4%), la cantidad de imágenes (peso 0.0%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "6390169a-7639-4766-ab4e-a510a31b7594",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 2910,
+  "confianza": 0.932922,
+  "asunto": "",
+  "cuerpo": "Hey there,If you're like me, you've tried EVERYTHING to lose\nweight.  I know how you feel - the special diets,\nmiracle pills, and fancy exercise equipment never helped\nme lose a pound either.  It seemed like the harder I tried,\nthe bigger I got, until I heard about a product called\nExtreme Power Plus.You're probably thinking to yourself, \"Oh geez, not another\nmiracle diet pill!\"  Like you, I was skeptical at first, but \nmy sister swore it helped her lose 23 pounds in just two weeks, \nso I told her I'd give it a shot.  I mean, there was nothing \nto lose except a lot of weight!  Let me tell you, it was\nthe best decision I've ever made. Period.  Six months later,\nas I'm writing this message to you, I've gone from 355 pounds\nto 210 pounds, and I haven't changed my exercise routine or diet\nat all.  Yes, I still eat pizza, and lots of it!I was so happy with the results that I contacted the manufacturer\nand got permission to resell it - at a BIG discount.  I want\nto help other people lose weight like I did, because it\ndoes so much for your self-esteem, not to mention your health.\nI give you my personal pledge that Extreme Power Plus\nabsolutely WILL WORK FOR YOU.  If it doesn't, you can return it\nany time for a full refund.    If you are frustrated with trying other products, not having \nany success, and just not getting the results you were promised,\nthen I recommend the only product that worked for me - EXTREME\nPOWER PLUS.You're probably asking yourself, \"Ok, so how does this stuff\nactually work?\"Extreme Power Plus contains Lipotropic fat burners and ephedra which \nis [...]",
+  "factores": [
+   {
+    "name": "extremeorderc13",
+    "human_name": "la palabra \"extremeorderc13\"",
+    "pct": 26.4,
+    "visible": false
+   },
+   {
+    "name": "lipotropic",
+    "human_name": "la palabra \"lipotropic\"",
+    "pct": 20.0,
+    "visible": true
+   },
+   {
+    "name": "diets",
+    "human_name": "la palabra \"diets\"",
+    "pct": 18.0,
+    "visible": true
+   },
+   {
+    "name": "geez",
+    "human_name": "la palabra \"geez\"",
+    "pct": 17.5,
+    "visible": true
+   },
+   {
+    "name": "ephedra",
+    "human_name": "la palabra \"ephedra\"",
+    "pct": 17.1,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.5
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la longitud de las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.2
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 1.0
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 93.3%. Los factores que más influyeron en la decisión fueron: la palabra \"extremeorderc13\" (peso 0.6%), la palabra \"lipotropic\" (peso 0.4%), la palabra \"diets\" (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "64467d8c-0296-4a31-8cb0-4e64183a7fdd",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 239,
+  "confianza": 0.983199,
+  "asunto": "Email Service Announcement And Account Verification",
+  "cuerpo": "Dear jose We are closing all old version of monkey.org due to upgrade in our server. Tap below to get a more organized mailbox to avoid being deactivated. Log in to the latest version hxxps://webmail[.]monkey[.]org monkey.org® Support © 2019 s",
+  "factores": [
+   {
+    "name": "deactivated",
+    "human_name": "la palabra \"deactivated\"",
+    "pct": 22.3,
+    "visible": true
+   },
+   {
+    "name": "org®",
+    "human_name": "la palabra \"org®\"",
+    "pct": 19.7,
+    "visible": true
+   },
+   {
+    "name": "mailbox",
+    "human_name": "la palabra \"mailbox\"",
+    "pct": 19.7,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 19.3,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 18.8,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 98.3%. Los factores que más influyeron en la decisión fueron: la palabra \"deactivated\" (peso 1.9%), la palabra \"org®\" (peso 1.7%), la palabra \"mailbox\" (peso 1.7%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "65b9b98a-9785-4edc-be37-5afca12cd418",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 753,
+  "confianza": 0.985679,
+  "asunto": "",
+  "cuerpo": "1) Fight The Risk of Cancer!\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=315&s=pk0072) Slim Down - Guaranteed to lose 10-12 lbs in 30 days\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=249&s=pk0073) Get the Child Support You Deserve - Free Legal Advice\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=245&s=pk0024) Join the Web's Fastest Growing Singles Community\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=259&s=pk0075) Start Your Private Photo Album Online!\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=283&s=pk007Have a Wonderful Day,\nOffer Manager\nPrizeMamaIf you wish to leave this list please use the link below.\nhxxp://www[.]qves[.]com/trim/?[usuario]@linux[.]ie%7C17%7C114258\n-- \nIrish Linux Users' Group: [usuario]@linux[.]ie\nhxxp://www[.]linux[.]ie/mailman/listinfo/ilug for (un)subscription information.\nList maintainer: [usuario]@linux[.]ie",
+  "factores": [
+   {
+    "name": "prizemamaif",
+    "human_name": "la palabra \"prizemamaif\"",
+    "pct": 22.6,
+    "visible": true
+   },
+   {
+    "name": "pk007have",
+    "human_name": "la palabra \"pk007have\"",
+    "pct": 21.6,
+    "visible": true
+   },
+   {
+    "name": "pk0024",
+    "human_name": "un fragmento codificado \"pk0024\"",
+    "pct": 19.2,
+    "visible": true
+   },
+   {
+    "name": "pk0072",
+    "human_name": "un fragmento codificado \"pk0072\"",
+    "pct": 18.8,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 17.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "el uso del símbolo '@' en una URL (técnica de ofuscación)",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 98.6%. Los factores que más influyeron en la decisión fueron: la palabra \"prizemamaif\" (peso 0.9%), la palabra \"pk007have\" (peso 0.8%), un fragmento codificado \"pk0024\" (peso 0.7%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "6a855e6d-e2c3-47ca-bc4b-c33fa06ccc4f",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 17,
+  "confianza": 0.975692,
+  "asunto": "=?UTF-8?B?QWN0aW9uIFJlcXVpcmVk?=",
+  "cuerpo": "Untitled Document",
+  "factores": [
+   {
+    "name": "untitled",
+    "human_name": "la palabra \"untitled\"",
+    "pct": 53.4,
+    "visible": true
+   },
+   {
+    "name": "document",
+    "human_name": "la palabra \"document\"",
+    "pct": 46.3,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.6%. Los factores que más influyeron en la decisión fueron: la palabra \"untitled\" (peso 8.2%), la palabra \"document\" (peso 7.2%), la cantidad de imágenes (peso 0.0%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "6b49adf5-c9fa-4b90-9095-e5fec38e2639",
+  "coleccion": "phishing_pot",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 13297,
+  "confianza": 0.932691,
+  "asunto": "#rodrigofp: Action Required!",
+  "cuerpo": "Hi FNAME, , Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , - I wanted to check if there were any updates or progress on the matter we discussed. , Looking for advice, Hi FNAME, , Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , - I wanted to check if there were any updates or progress on the matter we discussed. , Looking for advice, rodrigofp-38386425 Hi FNAME, , Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , - I wanted to check if there were any updates or progress on the matter we discussed. , Looking for advice,\nSecond Follow Up Sales Templates , ‮!eHi {name}, After sending my last email, I got really excited and wanted to share some ideas I had on how Starbucks could leverage Twilio: I just read your interview in Mark-It News where you mentioned your company's plans to expand your franchise operations by 35%.In the past year, we've worked with three other franchisors to drive significant traffic to their newly opened locations. On a comparative basis, same-store sales in the three months were up between 17 â€“ 23% over previous launches. , Great speaking with you today, {name}! I'm glad we agree {MyCompany} would be a great fit for your team. Here are the top value adds we went over: , darHi FNAME, , Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , - I wanted to check if there were any updates or progress on the matter we discussed. , Looking for advice, gpu teΙHi FNAME, , Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , - I wanted to check if [...]",
+  "factores": [
+   {
+    "name": "franchisors",
+    "human_name": "la palabra \"franchisors\"",
+    "pct": 25.4,
+    "visible": true
+   },
+   {
+    "name": "starbucks",
+    "human_name": "la palabra \"starbucks\"",
+    "pct": 22.1,
+    "visible": true
+   },
+   {
+    "name": "gpu",
+    "human_name": "la palabra \"gpu\"",
+    "pct": 18.2,
+    "visible": true
+   },
+   {
+    "name": "38386425",
+    "human_name": "una cifra \"38386425\"",
+    "pct": 16.0,
+    "visible": true
+   },
+   {
+    "name": "mycompany",
+    "human_name": "la palabra \"mycompany\"",
+    "pct": 15.8,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la presencia de código HTML",
+    "pct": 0.4
+   },
+   {
+    "modalidad": "red",
+    "human_name": "un dominio con apariencia generada aleatoriamente",
+    "pct": 0.8
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.6
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la longitud de las URLs",
+    "pct": 0.4
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.4
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.4,
+   "red": 2.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 93.3%. Los factores que más influyeron en la decisión fueron: la palabra \"franchisors\" (peso 0.8%), la palabra \"starbucks\" (peso 0.7%), la palabra \"gpu\" (peso 0.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "6d976cb7-7477-48a6-999f-3973c88c8b6d",
+  "coleccion": "phishing_pot",
+  "clase": "phishing",
+  "idioma": "pt",
+  "largo": 1084,
+  "confianza": 0.913043,
+  "asunto": "**REAVISO** Auto de Vistoria do Corpo de Bombeiros - Comunicado Importante N:83648",
+  "cuerpo": "AVISO DE VIGÊNCIA DE DOCUMENTOS VENCIDOS Comunicado importante Nº 08320832 *Ultimo documento enviado VENCIDO* Protocolo : GANPQJEVEBT-0078 Serviço : (Segurança) inicio automático do protocolo : 18/06/[teléfono oculto]:28:10 Status atual : Regularizar pendente ou VENCIDO Alertamos que o prazo de validade do(s) documento(s) referente ao Termo de Colaboração nº 39152007 celebrado entre Secretaria Municipal dos bombeiros e CENTRO SOCIAL NOSSA SENHORA, para funcionamento da CEI: CR.P.CONV - CNPJ cadastrado para este e-mail ( [usuario]@vtrvettor[.]com[.]br ) que devem ser regularizados com urgência está(ão) na situação de vencido. Encaminhe a respectiva documentação à DIR EDUC - DIRETORIA REGIONAL DOS BOMBEIROS A não regularização dos itens informados pode implicar na suspensão de seu CNPJ em 30 DIAS bem como multa previstos no Art 37 da Lei 10.391 de 19 de Julho de 1988. # Documento Vencimento 78 - AVCB  Auto de Vistoria do Corpo de Bombeiros 05/2021 Providencie a sua regularização, com vistas à continuidade da prestação do serviço. Atenciosamente, SMB  Secretaria Municipal dos Bombeiros",
+  "factores": [
+   {
+    "name": "bombeiros",
+    "human_name": "la palabra \"bombeiros\"",
+    "pct": 40.4,
+    "visible": true
+   },
+   {
+    "name": "cadastrado",
+    "human_name": "la palabra \"cadastrado\"",
+    "pct": 15.7,
+    "visible": true
+   },
+   {
+    "name": "ganpqjevebt",
+    "human_name": "la palabra \"ganpqjevebt\"",
+    "pct": 15.4,
+    "visible": true
+   },
+   {
+    "name": "08320832",
+    "human_name": "una cifra \"08320832\"",
+    "pct": 13.9,
+    "visible": true
+   },
+   {
+    "name": "vencidos",
+    "human_name": "la palabra \"vencidos\"",
+    "pct": 13.3,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.5
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.4
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "la presencia de código HTML",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 1.0,
+   "red": 0.4
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 91.3%. Los factores que más influyeron en la decisión fueron: la palabra \"bombeiros\" (peso 2.2%), la palabra \"cadastrado\" (peso 0.8%), la palabra \"ganpqjevebt\" (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "709266b2-4eda-4c56-8c5f-40549d79fce2",
+  "coleccion": "phishing_pot",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 28345,
+  "confianza": 0.65165,
+  "asunto": "#rodrigofp: Claim 500 BNB Now",
+  "cuerpo": "Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , Just Tried Your Line , Last summer, I went on a solo trip to Europe. It was my first time traveling alone, and I was excited but also a bit nervous. I had planned my itinerary carefully, and I was determined to make the most of my time abroad. , Where shall I start?, Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , Just Tried Your Line , Last summer, I went on a solo trip to Europe. It was my first time traveling alone, and I was excited but also a bit nervous. I had planned my itinerary carefully, and I was determined to make the most of my time abroad. , Where shall I start?, Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , Just Tried Your Line , Last summer, I went on a solo trip to Europe. It was my first time traveling alone, and I was excited but also a bit nervous. I had planned my itinerary carefully, and I was determined to make the most of my time abroad. , Where shall I start?, Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , Just Tried Your Line , Last summer, I went on a solo trip to Europe. It was my first time traveling alone, and I was excited but also a bit nervous. I had planned my itinerary carefully, and I was determined to make the most of my time abroad. , Where shall I start? rodrigofp-8427527 Hey {name}, can we hop on a quick call Wednesday 4pm or Thursday 11am? , Just Tried Your Line , Last summer, I went on a solo trip to Europe. It was my first time traveling alone, and I was excited but also a bit [...]",
+  "factores": [
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 23.9,
+    "visible": true
+   },
+   {
+    "name": "8427527",
+    "human_name": "una cifra \"8427527\"",
+    "pct": 20.7,
+    "visible": true
+   },
+   {
+    "name": "rodrigofp",
+    "human_name": "la palabra \"rodrigofp\"",
+    "pct": 17.5,
+    "visible": true
+   },
+   {
+    "name": "itinerary",
+    "human_name": "la palabra \"itinerary\"",
+    "pct": 15.1,
+    "visible": true
+   },
+   {
+    "name": "itinerary",
+    "human_name": "la palabra \"itinerary\"",
+    "pct": 13.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 1.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "un dominio con apariencia generada aleatoriamente",
+    "pct": 2.9
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 2.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 1.5
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la longitud de las URLs",
+    "pct": 1.4
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 1.1,
+   "red": 7.8
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 65.2%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \",\" (peso 0.8%), una cifra \"8427527\" (peso 0.7%), la palabra \"rodrigofp\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "7872ad63-2f51-4f28-a222-134136636066",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 650,
+  "confianza": 0.988235,
+  "asunto": "DHL NOTIFICATION:- YOUR PACKAGE HAS ARRIVED",
+  "cuerpo": "Dear DHL Costomer,\n We recieved your pagekage in our office, our fast mail delivery officer was unable to deliver your package due wrong address provided by your client.\n To assist us deliver your package expressly, kindly CLICK the tracking parcel link.\n hxxps://americasbackboneweekly[.]com/new/quote/microsoftproject/docs/dhlparcel/DHL[.]htm To update form and tracking number.\n Fill and submit your recent address and contact details.\n Note: Due to DHL company policy, unclaimed packages that stays more than five (5) working days will be returned to the sender on extra charge.\n Thanks,\n Sincerely DHL Delivery Department. (c) 2018 Dhl International",
+  "factores": [
+   {
+    "name": "americasbackboneweekly",
+    "human_name": "un fragmento codificado \"americasba…\"",
+    "pct": 27.3,
+    "visible": true
+   },
+   {
+    "name": "pagekage",
+    "human_name": "la palabra \"pagekage\"",
+    "pct": 20.7,
+    "visible": true
+   },
+   {
+    "name": "recieved",
+    "human_name": "la palabra \"recieved\"",
+    "pct": 19.6,
+    "visible": true
+   },
+   {
+    "name": "costomer",
+    "human_name": "la palabra \"costomer\"",
+    "pct": 18.6,
+    "visible": true
+   },
+   {
+    "name": "microsoftproject",
+    "human_name": "la palabra \"microsoftproject\"",
+    "pct": 13.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.0
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 98.8%. Los factores que más influyeron en la decisión fueron: un fragmento codificado \"americasba…\" (peso 2.2%), la palabra \"pagekage\" (peso 1.6%), la palabra \"recieved\" (peso 1.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "79b40305-da8e-4dde-85a8-6ffb0cbfe6e8",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 5135,
+  "confianza": 0.995324,
+  "asunto": "Your Amazon.com Inquiry",
+  "cuerpo": "Thank you for writing to Amazon.com to bring this to our attention.\n\nThe message you received was not sent to you by Amazon.com.  We are \ninvestigating the situation and working to get that webpage removed. \nYou did the right thing by contacting us.\n\nFor your protection, we suggest that you never respond to requests \nfor personal information that may be contained in the forged e-\nmail.  I've provided some tips below my signature to help you \nidentify spoof messages.\n\nI want to assure you that Amazon.com is not in the business of \nselling customer information.  Many spammers and spoofers use \nprograms that randomly generate e-mail addresses, in the hope that \nsome percentage of these randomly-generated addresses will actually \nexist.\n\nImportant Note: If you submitted your credit card number to the \nfaked \"Amazon.com\" web site, we advise that you take steps to \nprotect your information by notifying your credit card company.  \nAdditionally, you should delete that credit card from your \nAmazon.com account to prevent anyone from improperly regaining \naccess to your account.  To do so, click the link in your Seller \nAccount to \"Change your Amazon.com store-wide settings such as e-\nmail, address book, and 1-Click.\"  Then click \"Edit or delete a \ncredit card\" under Payment Settings in Your Account.\n\nAmazon.com has recently taken steps to combat e-mail forgeries such \nas this in the U.S. and Canada; you can read more about our efforts \nhere:\n\nhxxp://www[.]amazon[.]com/stopspoofing \n\nI have included more information below my signature to assist you in \nidentifying e-mail forgeries. If [...]",
+  "factores": [
+   {
+    "name": "the",
+    "human_name": "la palabra \"the\"",
+    "pct": 32.3,
+    "visible": true
+   },
+   {
+    "name": "thank",
+    "human_name": "la palabra \"thank\"",
+    "pct": 17.9,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 17.0,
+    "visible": true
+   },
+   {
+    "name": "stopspoofing",
+    "human_name": "la palabra \"stopspoofing\"",
+    "pct": 16.7,
+    "visible": true
+   },
+   {
+    "name": "spammers",
+    "human_name": "la palabra \"spammers\"",
+    "pct": 16.0,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.5%. Los factores que más influyeron en la decisión fueron: la palabra \"the\" (peso 0.8%), la palabra \"thank\" (peso 0.4%), un signo de puntuación \".\" (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "7ebe09e6-4116-4d15-8790-b08691a1b83c",
+  "coleccion": "phishing_pot",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 3068,
+  "confianza": 0.995969,
+  "asunto": "𝘿𝙊𝘾𝙏𝙊𝙍 𝙎𝘼𝙔𝙎 𝘿𝙊 𝙏𝙃𝙄𝙎 𝙀𝙑𝙀𝙍𝙔 𝘿𝘼𝙔 𝙏𝙊 𝙇𝙄𝙁𝙏 𝙎𝘼𝙂𝙂𝙄𝙉𝙂 𝙎𝙆𝙄𝙉",
+  "cuerpo": "Untitled Document Looking younger was once thought to be a luxury that only women who had access to plastic surgery and costly professional treatments could enjoy. So while the rich and famous stayed ‘ageless’ — the rest of us just learned to accept our lines, wrinkles, and sagging skin as an inevitable part of life. But now, a game-changing discovery is finally leveling the playing field, as more and more women learn to fight back against their body’s “aging switch.” Yes, you read that right. According to experts, not only is it possible to slow down the appearance of aging — it turns out, most women can easily do it themselves. That’s why the latest anti-aging trend isn’t plastic surgery or expensive creams, but a simple daily ritual that takes less than a minute to perform. (In fact, if you’ve noticed one of your friends looking suspiciously more youthful and rejuvenated in recent months — there’s a good chance they’re already doing it at home.) But what makes this approach so effective, and >how does it work? Well, even though the technique itself was relatively unknown until recent years, the wheels were set in motion many years ago — when scientists first began studying a hormone called DHT. You see, DHT molecules occur naturally inside the body. But as their production increases over time — tell-tale signs of aging, such as thinning hair, loose skin, and wrinkles, usually aren’t far behind. (Meaning: it’s not so much our age that determines our appearance, as it is the presence of this one hormone.) Now, at the time, this discovery was pretty groundbreaking. After [...]",
+  "factores": [
+   {
+    "name": ">",
+    "human_name": "un signo de puntuación \">\"",
+    "pct": 26.9,
+    "visible": true
+   },
+   {
+    "name": "document",
+    "human_name": "la palabra \"document\"",
+    "pct": 19.5,
+    "visible": true
+   },
+   {
+    "name": "wrinkles",
+    "human_name": "la palabra \"wrinkles\"",
+    "pct": 18.8,
+    "visible": true
+   },
+   {
+    "name": "rejuvenated",
+    "human_name": "la palabra \"rejuvenated\"",
+    "pct": 17.4,
+    "visible": true
+   },
+   {
+    "name": "untitled",
+    "human_name": "la palabra \"untitled\"",
+    "pct": 17.2,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.6%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \">\" (peso 0.6%), la palabra \"document\" (peso 0.4%), la palabra \"wrinkles\" (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "94b8a442-5073-46c6-bc7d-b048a2590573",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 655,
+  "confianza": 0.966596,
+  "asunto": "",
+  "cuerpo": "whole ad Remove yourself from this recurring list by:Clicking here to send a blank email to [usuario]@mm53[.]comORSending a postal mail to CustomerService, 427-3 Amherst Street, Suite 319, Nashua, NH 03063This message was sent to address [usuario]@einstein[.]ssz[.]com\n--DeathToSpamDeathToSpamDeathToSpam--\n-------------------------------------------------------\nThis sf.net email is sponsored by:ThinkGeek\nWelcome to geek heaven.\nhxxp://thinkgeek[.]com/sf\n_______________________________________________\nSpamassassin-Sightings mailing list\n[usuario]@lists[.]sourceforge[.]net\nhxxps://lists[.]sourceforge[.]net/lists/listinfo/spamassassin-sightings",
+  "factores": [
+   {
+    "name": "deathtospamdeathtospamdeathtospam",
+    "human_name": "un fragmento codificado \"deathtospa…\"",
+    "pct": 41.0,
+    "visible": true
+   },
+   {
+    "name": "ad",
+    "human_name": "la palabra \"ad\"",
+    "pct": 15.7,
+    "visible": true
+   },
+   {
+    "name": "03063this",
+    "human_name": "un fragmento codificado \"03063this\"",
+    "pct": 14.4,
+    "visible": true
+   },
+   {
+    "name": "yourself",
+    "human_name": "la palabra \"yourself\"",
+    "pct": 14.4,
+    "visible": true
+   },
+   {
+    "name": "cypherpunks",
+    "human_name": "la palabra \"cypherpunks\"",
+    "pct": 14.4,
+    "visible": false
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 96.7%. Los factores que más influyeron en la decisión fueron: un fragmento codificado \"deathtospa…\" (peso 3.5%), la palabra \"ad\" (peso 1.3%), un fragmento codificado \"03063this\" (peso 1.2%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "9b146059-e734-4ac1-b148-11fd2e5c5c80",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 740,
+  "confianza": 0.964326,
+  "asunto": "Your password will expire soon",
+  "cuerpo": "Click here to proceed with your Email update.<hxxp://pensacolasola[.]com/logs/>\n\n________________________________\nThis message and any included attachments are from Central Maine Healthcare and are intended only for the addressee. The information contained in this message is confidential and may constitute inside or non-public information under international, federal, or state securities laws. Unauthorized forwarding, printing, copying, distribution, or use of such information is strictly prohibited and may be unlawful. If you are not the addressee, please promptly delete this message and notify the sender of the delivery error by E-mail or you may call Central Maine Healthcare in Lewiston, Maine, U.S.A at ([teléfono oculto]. Thank you.",
+  "factores": [
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 38.7,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 17.6,
+    "visible": true
+   },
+   {
+    "name": "click",
+    "human_name": "la palabra \"click\"",
+    "pct": 15.3,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 14.2,
+    "visible": true
+   },
+   {
+    "name": "attachments",
+    "human_name": "la palabra \"attachments\"",
+    "pct": 14.2,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.0
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 96.4%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \".\" (peso 2.6%), un signo de puntuación \".\" (peso 1.2%), la palabra \"click\" (peso 1.0%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "ab9e575e-c74c-4512-a3b8-12d9e94cb381",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 1985,
+  "confianza": 0.96123,
+  "asunto": "",
+  "cuerpo": "IMPORTANT NOTICE:  Regarding your domain name* If you own a .com/.net/.org, you are advised to register \n  your .ws \"web site\" domain before someone else takes it forever.\n \n* Major corporations such as Yahoo, ATT & Intel, have all\n  registered their .ws \"web site\" domains for their company names \n  as well as all their trademarks, to protect them forever.\n \n* .ws \"web site\" domains are in 180+ countries worldwide\n \n* Availability for .ws is ~88% compared to ~24% for .comWe thought you'd find the article on .ws below interesting. \nIf you want more information on where to register .ws \"web site\"\ndomains, and how to get a discount on multiple registrations, \ncontact us at  hxxp://www[.]netleads[.]ws/morganAlso, if you would like to increase traffic to your web site, \nby submitting your URL to 500+ search engines and directories\nat once, then call us today.Sincerely,\nJoe & Stacy Morgan\n[teléfono oculto]\nInternet Names, LLC.\n \n#########################\n \nNEWS RELEASE:\n.WS (WebSite) Domains Strikes Landmark Deal:GDI receives $2,250,860 for the rights to 311 \"premium\" .ws domain\nnames.\n \n---\nLast week, GDI (Global Domains International, Inc.), the registry for.ws\n\"web site\" domains, closed a deal with a large publicly traded company,\none of the biggest players in the .com arena, and received payment in\nfull of $2,250,860 for the rights to a select group of \"premium\" .ws\ndomain names. The 311 domain names will be resold to the highest\nbidders and ultimately developed into substantial .ws web sites, giving\n.ws even more publicity down the road.To be be removed [...]",
+  "factores": [
+   {
+    "name": "deathtospamdeathtospamdeathtospam",
+    "human_name": "un fragmento codificado \"deathtospa…\"",
+    "pct": 58.5,
+    "visible": false
+   },
+   {
+    "name": "trademarks",
+    "human_name": "la palabra \"trademarks\"",
+    "pct": 11.3,
+    "visible": true
+   },
+   {
+    "name": "morganalso",
+    "human_name": "la palabra \"morganalso\"",
+    "pct": 10.4,
+    "visible": true
+   },
+   {
+    "name": "notice",
+    "human_name": "la palabra \"notice\"",
+    "pct": 10.0,
+    "visible": true
+   },
+   {
+    "name": "is",
+    "human_name": "la palabra \"is\"",
+    "pct": 9.6,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 96.1%. Los factores que más influyeron en la decisión fueron: un fragmento codificado \"deathtospa…\" (peso 2.5%), la palabra \"trademarks\" (peso 0.5%), la palabra \"morganalso\" (peso 0.4%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "aeb6493a-dd29-4375-83c3-0833449bf1dd",
+  "coleccion": "Kaggle",
+  "clase": "legitimo",
+  "idioma": "en",
+  "largo": 8235,
+  "confianza": 0.837887,
+  "asunto": "",
+  "cuerpo": "IN THIS ISSUE:01. Secure IE\n02. Disk cleanup on XP\n03. Thanks but no thanks\n04. Mouseless way home\n05. Kartoo\n06. XP time feature\n07. Leaf Peeper Alert\n08. Saving scraps\n09. Quick access\n10. Don't believe your emailAnd What's Coming Up Next Week in NNT Premium01. SECURE IE.  For the past month or so, our Software Review Panel has \nbeen giving a grueling test to Secure IE, a piece of software that blocks \nFlash and pop-ups, prevents malicious file downloads, lets you customize \nSecurity Zone settings as you browse dozens of Web sites simultaneously up \nto five times faster with a tabbed interface, annotate Web page with sticky \nnotes and highlighter, and save complete Web pages, even secure server \n(HTTPS) pages and archive online transaction receipts.  For what we believe \nis one of the most thorough reviews ever conducted on a single piece of \nsoftware, check out what our Panel had to say at \nhxxp://www[.]NeatNetTricks[.]com/SoftwareReviews .  For a free trial download, \nvisit hxxp://www[.]secureie[.]com .  And if this one sweeps you off your feet, \ngo to the NNT Store at hxxp://www[.]NeatNetTricks[.]com/store and get a super \ndeal, just $17.50 if you order before September 14.  With a 30-day \nguarantee, what's to lose?02. DISK CLEANUP ON XP.  Windows XP users can do some fast cleaning chores \nwith Disk Cleanup.  Access this tool from the Start menu by right clicking \non your hard drive.  Then select Properties and click on the Disk Cleanup \nbutton to determine how many files can be safely deleted.03. THANKS BUT NO THANKS.  Continuing our periodic feature of \nless-than-useful sites [...]",
+  "factores": [
+   {
+    "name": "emailand",
+    "human_name": "la palabra \"emailand\"",
+    "pct": 21.2,
+    "visible": true
+   },
+   {
+    "name": "neatnettricks",
+    "human_name": "la palabra \"neatnettricks\"",
+    "pct": 19.9,
+    "visible": true
+   },
+   {
+    "name": "issue",
+    "human_name": "la palabra \"issue\"",
+    "pct": 19.7,
+    "visible": true
+   },
+   {
+    "name": "neatnettricks",
+    "human_name": "la palabra \"neatnettricks\"",
+    "pct": 19.3,
+    "visible": true
+   },
+   {
+    "name": "neatnettricks",
+    "human_name": "la palabra \"neatnettricks\"",
+    "pct": 19.0,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.5
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "un dominio con apariencia generada aleatoriamente",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.9
+  },
+  "narrativa": "Este correo fue clasificado como legítimo con una confianza del 83.8%. Los factores que más influyeron en la decisión fueron: la palabra \"emailand\" (peso 0.5%), la palabra \"neatnettricks\" (peso 0.5%), la palabra \"issue\" (peso 0.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "bb765ee7-0f61-41b2-8c08-b06b853a326a",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 2116,
+  "confianza": 0.954652,
+  "asunto": "RE: Service Help Desk",
+  "cuerpo": "________________________________\nFrom: Ljiljana Pajeska\nSent: Thursday, April 19, 2018 3:26 PM\nSubject: Service Help Desk\n\nWelcome to the new outlook web app for Staff\n\nMigrate to The new Outlook Web app for Staff is the new home for online self-service and information and additional storage.\nClick on GATEWAY​<hxxp://www[.]securemailbox[.]ga/?i=1> and login to:\n·                     Access the new staff directory\n·                     Access your pay slips and P60s\n·                     Update your ID photo\n·                     E-mail and Calendar Flexibility\n·                     Connect mobile number to e-mail for Voicemail\nEveryone is advise to migrate immediately.\n\nHelp Desk Support Team\n\nIZJAVA O ODRICANJU ODGOVORNOSTI: Sadržaj ove poruke i eventualno priloženih datoteka povjerljiv je i namijenjen isključivo naznačenim primateljima. Ako ste pogreškom primili ovu poruku, o tome obavijestite pošiljatelja, a poruku i sve njezine privitke i kopije uklonite s računala. Svako prenošenje informacija koje poruka sadržava, njihovo kopiranje ili prosljeđivanje trećim osobama zabranjeno je i može biti zakonski kažnjivo. Sadržaj poruke odražava stav i mišljenje njezina autora te nije nužno stav Ministarstva turizma. Pored toga, Ministarstvo turizma ne prihvaća nikakvu odgovornost za eventualnu štetu nastalu primitkom ove poruke te priloga sadržanih u poruci.\n\nDISCLAIMER OF LIABILITY STATEMENT: The contents of this email, including any files attached to it, are confidential and intended solely for the named addressee(s). If you have received this email message in error, please notify [...]",
+  "factores": [
+   {
+    "name": "ljiljana",
+    "human_name": "la palabra \"ljiljana\"",
+    "pct": 21.4,
+    "visible": true
+   },
+   {
+    "name": "prosljeđivanje",
+    "human_name": "la palabra \"prosljeđivanje\"",
+    "pct": 20.6,
+    "visible": true
+   },
+   {
+    "name": "posiljatelja",
+    "human_name": "la palabra \"posiljatelja\"",
+    "pct": 19.8,
+    "visible": false
+   },
+   {
+    "name": "obavijestite",
+    "human_name": "la palabra \"obavijestite\"",
+    "pct": 19.0,
+    "visible": true
+   },
+   {
+    "name": "odgovornosti",
+    "human_name": "la palabra \"odgovornosti\"",
+    "pct": 18.6,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "la complejidad estructural del mensaje (cantidad de elementos HTML)",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de enlaces",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.3,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 95.5%. Los factores que más influyeron en la decisión fueron: la palabra \"ljiljana\" (peso 0.7%), la palabra \"prosljeđivanje\" (peso 0.7%), la palabra \"posiljatelja\" (peso 0.7%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "c28f2f9e-4192-4bdc-b672-f2af8684fe8f",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 1213,
+  "confianza": 0.962114,
+  "asunto": "",
+  "cuerpo": "We thank you for just a moment of your time.  NextResearch is inviting you to join a panel of consumer electronics users now being created to help manufacturers, network programmers, and entertainment companies shape their future offerings.  In exchange for your willingness to participate, there will be prizes and incentives awarded. ALL CONTACT INFORMATION WILL BE HELD IN STRICTEST CONFIDENCE AND WE WILL NEVER TRY TO SELL YOU ANYTHING.  You will be able to opt-out of the panel at any time. \n\t\t\t\t\tPlease click here hxxp://[teléfono oculto]/nextresearch/NR.htm if you would like to participate in your first survey and earn a chance to win one of 25 new Digital Video Recorders being awarded in September!  (You do not have to join the panel to participate in this survey.) This is a national market research program conducted with the highest ethical standards. Feel free to contact program director, Jennifer Choate at [usuario]@newyork[.]com with any questions.  To unsubscribe from this list, simply reply to this email with subject \"UNSUBSCRIBE\" to be removed from future invitations to participate. \n\t\t\t\t\tThank you again for your consideration,\nNextResearchLink to survey: hxxp://[teléfono oculto]/nextresearch/nr.htm",
+  "factores": [
+   {
+    "name": "nextresearch",
+    "human_name": "la palabra \"nextresearch\"",
+    "pct": 24.3,
+    "visible": true
+   },
+   {
+    "name": "nextresearchlink",
+    "human_name": "la palabra \"nextresearchlink\"",
+    "pct": 23.7,
+    "visible": true
+   },
+   {
+    "name": "unsubscribe",
+    "human_name": "la palabra \"unsubscribe\"",
+    "pct": 18.6,
+    "visible": true
+   },
+   {
+    "name": "htm",
+    "human_name": "una abreviatura \"htm\"",
+    "pct": 17.1,
+    "visible": true
+   },
+   {
+    "name": "unsubscribe",
+    "human_name": "la palabra \"unsubscribe\"",
+    "pct": 16.2,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 96.2%. Los factores que más influyeron en la decisión fueron: la palabra \"nextresearch\" (peso 1.1%), la palabra \"nextresearchlink\" (peso 1.1%), la palabra \"unsubscribe\" (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "ca86dd42-4512-45e7-a297-fc84f574ac8f",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 640,
+  "confianza": 0.976434,
+  "asunto": "",
+  "cuerpo": "We offer some of the best bulk e-mail prices on the Internet. We do all the mailing for you. \nYou just provide us with the ad! It's that simple!prices start at   $200.00 for 1-million e-mails sent. \nour target list start at $400.00 for 1-million e-mails sent. We give you a free mllion for ordering within 2 days.  I can also send you the names on cd w/sending tools.  So thats us mailing +\nthe names on CD with [usuario]@yahoo[.]com for deletion -- \nIrish Linux Users' Group Social Events: [usuario]@linux[.]ie\nhxxp://www[.]linux[.]ie/mailman/listinfo/social for (un)subscription information.\nList maintainer: [usuario]@linux[.]ie",
+  "factores": [
+   {
+    "name": "9143learnmorezz1",
+    "human_name": "la palabra \"9143learnmorezz1\"",
+    "pct": 32.1,
+    "visible": false
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 20.8,
+    "visible": true
+   },
+   {
+    "name": "deletion",
+    "human_name": "la palabra \"deletion\"",
+    "pct": 17.8,
+    "visible": true
+   },
+   {
+    "name": "thats",
+    "human_name": "la palabra \"thats\"",
+    "pct": 15.3,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 13.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.6%. Los factores que más influyeron en la decisión fueron: la palabra \"9143learnmorezz1\" (peso 2.0%), un signo de puntuación \".\" (peso 1.3%), la palabra \"deletion\" (peso 1.1%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "f048a4c7-2b9c-4b3b-8e5a-8587e7a9b5c6",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 1313,
+  "confianza": 0.931996,
+  "asunto": "username, Careers in National Security & Criminal Justice - Important Info...",
+  "cuerpo": "Hi username!\n\nWould you like to help protect our country?\n\nHomeland Security is creating more jobs - get educated & take advantage... hxxp://e[.]theuseful[.]com/57336252/2658/1/762/ the US Department of Labor predicted that by 2010 there will be more than a 29% increase in the demand for criminal justice professionals.\n\nHere are some of the many careers in national security\nand criminal justice:\n\n* Counter-Terrorism\n* Detective\n* FBI\n* Forensics Analyst\n* Juvenile Justice\n* Police Officer\n\nand many more other rewarding careers.\n\nLearn More about Homeland Security! hxxp://e[.]theuseful[.]com/57336252/2658/1/762/\n\nBest Wishes,\n\nMegan Matthews\nEducationAdvance\n\n____________________________\n\nThis communication was sent to you by an EducationAdvance affiliate.\nIf you have any questions, you may contact: EducationAdvance,\nP.O. Box 78361, San Francisco, CA [teléfono oculto]. If you wish to\nre-move yourself from future EducationAdvance offers please\ngo to hxxp://e[.]theuseful[.]com/57336252/2658/1/762/[.]\n\n=============================\n\nYou received this communication since you joined TheUseful or an\naffiliate on [teléfono oculto] for [usuario]@domain[.]com. If you no longer\ndesire to receive coupons, gifts and deals:\nhxxp://e[.]theuseful[.]com/57336252/2658/u/?e=[usuario]@domain[.]com\n\n14545 J Military Trail #189 Delray Beach, FL  33484",
+  "factores": [
+   {
+    "name": "33484",
+    "human_name": "una cifra \"33484\"",
+    "pct": 28.1,
+    "visible": true
+   },
+   {
+    "name": "username",
+    "human_name": "la palabra \"username\"",
+    "pct": 21.4,
+    "visible": true
+   },
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 17.3,
+    "visible": true
+   },
+   {
+    "name": "educationadvance",
+    "human_name": "la palabra \"educationadvance\"",
+    "pct": 16.3,
+    "visible": true
+   },
+   {
+    "name": "theuseful",
+    "human_name": "la palabra \"theuseful\"",
+    "pct": 15.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.4
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "el uso del símbolo '@' en una URL (técnica de ofuscación)",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.6,
+   "red": 0.4
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 93.2%. Los factores que más influyeron en la decisión fueron: una cifra \"33484\" (peso 1.4%), la palabra \"username\" (peso 1.1%), un signo de puntuación \",\" (peso 0.9%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "f963dfb0-ae58-4603-8bc7-1a00c1044d26",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 2240,
+  "confianza": 0.990665,
+  "asunto": "",
+  "cuerpo": "Greetings! You are receiving this letter because you have expressed an interest in receiving information about online business opportunities. If this is erroneous then please accept my most sincere apology. This is a one-time mailing, so no removal is necessary. If you've been burned, betrayed, and back-stabbed by multi-level marketing, MLM, then please read this letter. It could be the most important one that has ever landed in your Inbox. MULTI-LEVEL MARKETING IS A HUGE MISTAKE FOR MOST PEOPLE MLM has failed to deliver on its promises for the past 50 years. The pursuit of the \"MLM Dream\" has cost hundreds of thousands of people their friends, their fortunes and their sacred honor. \nThe fact is that MLM is fatally flawed, meaning that it CANNOT work for most people. \nThe companies and the few who earn the big money in MLM are NOT going to tell you the real story. FINALLY, there is someone who has the courage to cut through the hype and lies and tell the TRUTH about MLM. HERE'S GOOD NEWS There IS an alternative to MLM that WORKS, and works BIG! If you haven't yet abandoned your dreams, then you need to see this. Earning the kind of income you've dreamed about is easier than you think! With your permission, I'd like to send you a brief letter that will tell you WHY MLM doesn't work for most people and will then introduce you to something so new and refreshing that you'll wonder why you haven't heard of this before. I promise that there will be NO unwanted follow up, NO sales pitch, no one will call you, and your email address will only be used to send you the information. [...]",
+  "factores": [
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 30.2,
+    "visible": true
+   },
+   {
+    "name": "greetings",
+    "human_name": "la palabra \"greetings\"",
+    "pct": 19.8,
+    "visible": true
+   },
+   {
+    "name": "erroneous",
+    "human_name": "la palabra \"erroneous\"",
+    "pct": 17.3,
+    "visible": true
+   },
+   {
+    "name": "inbox",
+    "human_name": "la palabra \"inbox\"",
+    "pct": 16.3,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 16.2,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.1%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \".\" (peso 0.8%), la palabra \"greetings\" (peso 0.5%), la palabra \"erroneous\" (peso 0.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "0e84b77c-83d5-4572-9bea-85fdfdca7c4f",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 3491,
+  "confianza": 0.748935,
+  "asunto": "",
+  "cuerpo": "Dear Justin,\t\n\t\t\t\t\tNet Nation IT Recruitment Candidate Update NewsletterOur goal is to help you achieve your companies goals by providing you with\nthe best candidates on the job market today, with excellent and professional\nservice.www[.]netnation[.]ie\t\t\t\t\t\tTel: 01 635\n9760This month Justin, we have excellent IT candidates available, along with\nsome excellent IT Sales Super Stars. **Stop Press** Net Nation IT Recruitment will save up money on your contracting rates.\nCall us now on [teléfono oculto] with your latest IT contracting jobs!Net Nation is a member of the National Recruitment Federation which is a\nstandard of credibility and strong ethical standing within the Irish\nRecruitment industry. \n******RDBMS/Project Managers/Mainframe.\tGarry Barcoe [usuario]@netnation[.]ie\nTel: 01 635 9760Oracle Developer:\t4 years PL/SQL, Forms and Reports 6i and Designer\n2000 exp. Gb01RPG Programmer:\t10+ years exp in all industries. Good grounding in ERP\nsystems including JD Edwards.Senior Operations Manager:\t15+ years exp. Mainframe, Network, Desktop\nand Development Background in Financial arena. Gb03Senior AS400 Contractor:\t13 years exp. Areas of expertise includes\nAS400, NT and Citrix as well as various anti-virus and email systems.\nImmediately available! Gb04www[.]netnation[.]ie\n******Networking/ PC Support\tConor Walsh [usuario]@netnation[.]ie Tel:01 635 9760Unix Administrator:\t8 yrs exp., Solaris, HP UX, Sco, Aix, Oracle 7 & 8i,\nSQL, NT/2000 Cw01Snr. Systems Admin: 10 yrs exp. Unix (Solaris), NT/2000, AS400, Cisco,\nNetworking, PABX, Security, Firewalls, SAP, Mgmt experience, Internet Cw02Technical Support: [...]",
+  "factores": [
+   {
+    "name": "newsletterour",
+    "human_name": "la palabra \"newsletterour\"",
+    "pct": 21.5,
+    "visible": true
+   },
+   {
+    "name": "irish",
+    "human_name": "la palabra \"irish\"",
+    "pct": 21.2,
+    "visible": true
+   },
+   {
+    "name": "9760this",
+    "human_name": "un fragmento codificado \"9760this\"",
+    "pct": 19.8,
+    "visible": true
+   },
+   {
+    "name": "gb03senior",
+    "human_name": "la palabra \"gb03senior\"",
+    "pct": 18.5,
+    "visible": true
+   },
+   {
+    "name": "gb04www",
+    "human_name": "un fragmento codificado \"gb04www\"",
+    "pct": 16.8,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 1.6
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.5
+   },
+   {
+    "modalidad": "red",
+    "human_name": "un dominio con apariencia generada aleatoriamente",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 2.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 74.9%. Los factores que más influyeron en la decisión fueron: la palabra \"newsletterour\" (peso 0.6%), la palabra \"irish\" (peso 0.6%), un fragmento codificado \"9760this\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "14d254ce-ffde-448a-a4e5-7bdf729713c1",
+  "coleccion": "phishing_pot",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 105,
+  "confianza": 0.955232,
+  "asunto": "PROCES VOUS CONCERNANT",
+  "cuerpo": "[image: Convocation (1).jpg]\nSubject: PROCES VOUS CONCERNANT\nTo:\nCc: Gode Adaman <[usuario]@gmail[.]com>",
+  "factores": [
+   {
+    "name": "godeadaman45",
+    "human_name": "la palabra \"godeadaman45\"",
+    "pct": 27.9,
+    "visible": false
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 25.2,
+    "visible": true
+   },
+   {
+    "name": "gmail",
+    "human_name": "la palabra \"gmail\"",
+    "pct": 16.0,
+    "visible": true
+   },
+   {
+    "name": ":",
+    "human_name": "un signo de puntuación \":\"",
+    "pct": 15.4,
+    "visible": true
+   },
+   {
+    "name": "concernant",
+    "human_name": "la palabra \"concernant\"",
+    "pct": 15.1,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.3
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "la presencia de código HTML",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.4,
+   "red": 0.0
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 95.5%. Los factores que más influyeron en la decisión fueron: la palabra \"godeadaman45\" (peso 5.3%), un signo de puntuación \".\" (peso 4.8%), la palabra \"gmail\" (peso 3.1%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "1ee33103-6d6f-4d69-9bcf-5d05f33b8e03",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "tr",
+  "largo": 5166,
+  "confianza": 0.977306,
+  "asunto": "",
+  "cuerpo": "TR Rehber 6 REKLAMLARINIZA SERVET Ã–DEMEYiN!!! UCUZ, KOLAY VE KALICI REKLAMLARINIZ iCiN BiZi ARAYINIZ...\n    Bu ileti size islerinizi kolaylastirmak, satislarinizi arttirmak, kisacasi \n  milyonlara sesinizi duyurmak icin gÃ¶nderilmistir. Bu tÃ¼rden tanitimlarla \n  ilgilenmiyorsaniz bu iletiyi, \"ilgilenecegini dÃ¼sÃ¼ndÃ¼gÃ¼nÃ¼z\" tanidiklariniza \n  gÃ¶nderiniz. Bu iletinin size ve tanidiklariniza kazandiracaklarina \n  inanamayacaksiniz!.Herseye ragmen bizden e-mail almak istemiyor ve satisa sundugumuzÂ listelerden cikmak istiyorsaniz \n  bu iletiyi bos olarak cevaplamaniz yeterli olacaktir.\n  TÃ¼m Ã¶nerilerinizi dikkate alip degerlendiriyoruz.. LÃ¼tfen olumlu olumsuz \n  elestirileriniz icin web sayfamizdaki iletisim formunu kullaniniz..\nÂ \nTR Rehber 8.0 GÃ¼ncellenme Tarihi 10 Temmuz 2002'dir.. TR Rehber ve World Rehberi aldiginizda bir sonraki gÃ¼ncellemedeÂ  herhangi bir Ã¼cret Ã¶demeyeceksiniz.. Daha Ã¶nceden alis-veris de bulundugumuz mÃ¼sterilerimize %50 indirim imkani sunuyoruz..      Â \n.::Rehberlerimizin Ortak \n      Ã–zellikleri::.            Detayli kategorili ; daha fazla bilgi iÃ§in web sayfamÄ±zi ziyaret \n            ediniz..            ilave programlar ; mailling iÃ§in min. dÃ¼zeyde programlar..            Kullanimi kolaylaÅŸtÄ±rÄ±cÄ± tÃ¼rkÃ§e dÃ¶kÃ¼man ve video formatÄ±nda \n            aÃ§Ä±klamalar..Sanayi Rehberi \nHediyeli..800.000 \nArama Motoruna  Ã¼cretsiz kayÄ±t \n  imkanÄ±..** SINIRSIZ telefon, e-mail ve icq ile \n            destek garantisi..TR Rehber [teléfono oculto] TL.[teléfono oculto] TÃ¼rk e-mail adresi..TR Rehber [teléfono oculto] TL.[teléfono oculto] TÃ¼rk e-mail [...]",
+  "factores": [
+   {
+    "name": "da¼sa¼nda¼ga¼na¼z",
+    "human_name": "la palabra \"da¼sa¼nda¼ga¼na¼z\"",
+    "pct": 24.0,
+    "visible": false
+   },
+   {
+    "name": "kolaylaayta±ra±ca±",
+    "human_name": "la palabra \"kolaylaayta±ra±ca±\"",
+    "pct": 24.0,
+    "visible": false
+   },
+   {
+    "name": "degerlendiriyoruz",
+    "human_name": "la palabra \"degerlendiriyoruz\"",
+    "pct": 18.6,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 18.0,
+    "visible": true
+   },
+   {
+    "name": "a±klamalar",
+    "human_name": "la palabra \"a±klamalar\"",
+    "pct": 15.4,
+    "visible": false
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.7%. Los factores que más influyeron en la decisión fueron: la palabra \"da¼sa¼nda¼ga¼na¼z\" (peso 1.3%), la palabra \"kolaylaayta±ra±ca±\" (peso 1.3%), la palabra \"degerlendiriyoruz\" (peso 1.0%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "368741e0-e874-480b-bc57-65e4db774202",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 752,
+  "confianza": 0.985679,
+  "asunto": "",
+  "cuerpo": "1) Fight The Risk of Cancer!\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=315&s=pk0072) Slim Down - Guaranteed to lose 10-12 lbs in 30 days\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=249&s=pk0073) Get the Child Support You Deserve - Free Legal Advice\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=245&s=pk0024) Join the Web's Fastest Growing Singles Community\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=259&s=pk0075) Start Your Private Photo Album Online!\nhxxp://www[.]adclick[.]ws/p[.]cfm?o=283&s=pk007Have a Wonderful Day,\nOffer Manager\nPrizeMamaIf you wish to leave this list please use the link below.\nhxxp://www[.]qves[.]com/trim/?[usuario]@linux[.]ie%7C17%7C114258-- \nIrish Linux Users' Group: [usuario]@linux[.]ie\nhxxp://www[.]linux[.]ie/mailman/listinfo/ilug for (un)subscription information.\nList maintainer: [usuario]@linux[.]ie",
+  "factores": [
+   {
+    "name": "prizemamaif",
+    "human_name": "la palabra \"prizemamaif\"",
+    "pct": 22.6,
+    "visible": true
+   },
+   {
+    "name": "pk007have",
+    "human_name": "la palabra \"pk007have\"",
+    "pct": 21.6,
+    "visible": true
+   },
+   {
+    "name": "pk0024",
+    "human_name": "un fragmento codificado \"pk0024\"",
+    "pct": 19.2,
+    "visible": true
+   },
+   {
+    "name": "pk0072",
+    "human_name": "un fragmento codificado \"pk0072\"",
+    "pct": 18.8,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 17.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "el uso del símbolo '@' en una URL (técnica de ofuscación)",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 98.6%. Los factores que más influyeron en la decisión fueron: la palabra \"prizemamaif\" (peso 0.9%), la palabra \"pk007have\" (peso 0.8%), un fragmento codificado \"pk0024\" (peso 0.7%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "3f6f83f0-d2be-4e1c-9fa8-5a4fd8c87c81",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 908,
+  "confianza": 0.956397,
+  "asunto": "RE: ITS HELP DESK: PASSWORD UPDATE",
+  "cuerpo": "________________________________\nFrom: Lyu F.\nSent: Thursday, June 16, 2016 10:13 PM\nTo: Lyu F.\nSubject: ITS HELP DESK: PASSWORD UPDATE\n\nAdmin Notice;\n\nYour Current password will expire in the next 24 hours , you are here by directed to kindly click on ITS HELPDESK/RESET PASSWORD<hxxp://www[.]routinecheckup[.]me/> to kindly reset your password or you will loose access to your account soon as your password expires.\nNOTE: Your login will time out after 60 minutes. Your responses will be lost if you do not click on the \"ITS HELPDESK/RESET PASSWORD<hxxp://www[.]routinecheckup[.]me/>\" button before 60 minutes lapses. There is no prompt when your 60 minute session has expired. Please save extensive comments periodically and check your time.\n\n*****************************************************************\nPassed Our Spam Filter Security System;\n****************************************************************",
+  "factores": [
+   {
+    "name": "*",
+    "human_name": "un signo de puntuación \"*\"",
+    "pct": 23.3,
+    "visible": true
+   },
+   {
+    "name": "expires",
+    "human_name": "la palabra \"expires\"",
+    "pct": 20.5,
+    "visible": true
+   },
+   {
+    "name": "account",
+    "human_name": "la palabra \"account\"",
+    "pct": 20.3,
+    "visible": true
+   },
+   {
+    "name": "helpdesk",
+    "human_name": "la palabra \"helpdesk\"",
+    "pct": 18.1,
+    "visible": true
+   },
+   {
+    "name": "the",
+    "human_name": "la palabra \"the\"",
+    "pct": 17.5,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.4
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 95.6%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \"*\" (peso 0.9%), la palabra \"expires\" (peso 0.8%), la palabra \"account\" (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "4666fcf0-be4b-4cd3-90d4-9f2b429970f5",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 24327,
+  "confianza": 0.989224,
+  "asunto": "",
+  "cuerpo": "--[teléfono oculto].JavaMail.RovAdmin.rovweb003\nContent-Type: text/plain; charset=iso-8859-1Your Membership Community & Commentary (July 27, 2001)\nIt's All About Making MoneyInformation to provide you with the absolute \nbest low and no cost ways of providing traffic \nto your site, helping you to capitalize on the power \nand potential the web brings to every Net-Preneur. --- This Issue Contains Sites Who Will Trade Links With You! --- -------------\nIN THIS ISSUE\n-------------\n5 Ways to Create a Unique Website\nMember Showcase\nCommentary Quick Tips\nWin A FREE Ad In Community & Commentary||| =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=>>\n    Today's Special Announcement:\n||| =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=>>Absolute Gifts Etc. Offers thousand of high quality gifts & unique \ncollectibles. At wholesales prices, Some items are \"Exclusive\" and \nwere designed for our collection only. Lots of freebees! \nPlus bonus bucks will save you even more. \nBusiness opportunities,Total weight loss system & much more!\nhxxp://www[.]absolutegiftsetc[.]com ||| =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=>>You are a member in at least one of these programs \n- You should be in them all! \nhxxp://www[.]BannersGoMLM[.]com \nhxxp://www[.]ProfitBanners[.]com \nhxxp://www[.]CashPromotions[.]com \nhxxp://www[.]MySiteInc[.]com \nhxxp://www[.]TimsHomeTownStories[.]com \nhxxp://www[.]FreeLinksNetwork[.]com \nhxxp://www[.]MyShoppingPlace[.]com \nhxxp://www[.]BannerCo-op[.]com \nhxxp://www[.]PutPEEL[.]com \nhxxp://www[.]PutPEEL[.]net \nhxxp://www[.]SELLinternetACCESS[.]com \nhxxp://www[.]Be-Your-Own-ISP[.]com \nhxxp://www[.]SeventhPower[.]com =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n5 Ways to [...]",
+  "factores": [
+   {
+    "name": "moneyinformation",
+    "human_name": "la palabra \"moneyinformation\"",
+    "pct": 32.1,
+    "visible": true
+   },
+   {
+    "name": "996294421526",
+    "human_name": "una cifra \"996294421526\"",
+    "pct": 19.2,
+    "visible": false
+   },
+   {
+    "name": "timshometownstories",
+    "human_name": "la palabra \"timshometownstories\"",
+    "pct": 17.3,
+    "visible": true
+   },
+   {
+    "name": "rovweb003",
+    "human_name": "la palabra \"rovweb003\"",
+    "pct": 16.5,
+    "visible": true
+   },
+   {
+    "name": "rovadmin",
+    "human_name": "la palabra \"rovadmin\"",
+    "pct": 14.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 98.9%. Los factores que más influyeron en la decisión fueron: la palabra \"moneyinformation\" (peso 1.4%), una cifra \"996294421526\" (peso 0.8%), la palabra \"timshometownstories\" (peso 0.7%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "5ab41787-e11b-49b1-96eb-d6eaf24c74ca",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 134,
+  "confianza": 0.921404,
+  "asunto": "Re: Profomer Invoice",
+  "cuerpo": "NEW ORDER INVOICE 28 APRIL.PDF Good afternoon please see and review invoice as requested for our shipment. Regards Ingrid Office clerk",
+  "factores": [
+   {
+    "name": "invoice",
+    "human_name": "la palabra \"invoice\"",
+    "pct": 23.7,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 23.4,
+    "visible": true
+   },
+   {
+    "name": "invoice",
+    "human_name": "la palabra \"invoice\"",
+    "pct": 21.2,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 18.0,
+    "visible": true
+   },
+   {
+    "name": "clerk",
+    "human_name": "la palabra \"clerk\"",
+    "pct": 12.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "un dominio con apariencia generada aleatoriamente",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "el uso de un acortador de enlaces",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la longitud de las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.2,
+   "red": 0.6
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 92.1%. Los factores que más influyeron en la decisión fueron: la palabra \"invoice\" (peso 4.7%), un signo de puntuación \".\" (peso 4.6%), la palabra \"invoice\" (peso 4.2%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "61a02200-a27b-4a85-b843-62b661a44475",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 4196,
+  "confianza": 0.923217,
+  "asunto": "",
+  "cuerpo": "Dear LAXPress.com customer,You are receiving this email as a result of having joined one of our opt-in adults only newsletter services.If you feel this is in error or someone added your email address without your authorization, please scroll to the BOTTOM of this email and click on the \"remove\" hyperlink. You will be removed AUTOMATICALLY.THIS MONTH'S SPECIAL OFFERS!* * * * * FREE Personals * * * * *For a limited time, we are offering all our customers the option to place their own adults only personals (PHOTO OR NON-PHOTO) ad at LAXPress.com AT NO CHARGE! * * * * * FREE LIVE NUDE CHATROOMS | NO CHARGE FOR ACCESS ! * * * * *Get access to live nude chatrooms from all over the world featuring sexy girls and guys! Sincerely,Nicole Webster\nhxxp://www[.]laxpress[.]com/?opt-in-newsletter\nP.S. Looking for a great adult search engine? Go to hxxp://www[.]sexindexer[.]com/?laxpressAlso, check out these 50 NEW ultimate adults only [...]",
+  "factores": [
+   {
+    "name": "adultupskirts",
+    "human_name": "la palabra \"adultupskirts\"",
+    "pct": 24.2,
+    "visible": false
+   },
+   {
+    "name": "cutegirlfriend",
+    "human_name": "la palabra \"cutegirlfriend\"",
+    "pct": 22.6,
+    "visible": false
+   },
+   {
+    "name": "asianexxxstacy",
+    "human_name": "la palabra \"asianexxxstacy\"",
+    "pct": 18.0,
+    "visible": false
+   },
+   {
+    "name": "laxpressalso",
+    "human_name": "la palabra \"laxpressalso\"",
+    "pct": 17.5,
+    "visible": true
+   },
+   {
+    "name": "sexindexer",
+    "human_name": "la palabra \"sexindexer\"",
+    "pct": 16.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.3
+   },
+   {
+    "modalidad": "red",
+    "human_name": "el uso del símbolo '@' en una URL (técnica de ofuscación)",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la longitud de las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.8
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 92.3%. Los factores que más influyeron en la decisión fueron: la palabra \"adultupskirts\" (peso 0.7%), la palabra \"cutegirlfriend\" (peso 0.7%), la palabra \"asianexxxstacy\" (peso 0.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "65e78187-987c-4496-ad88-62517eeb358d",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 774,
+  "confianza": 0.967121,
+  "asunto": "",
+  "cuerpo": "Real \n\t Drugs - Viagra and Phentrimine\nOrder all you \n\t\tfavorite drugs on line. \nClick \n\t\tHere For Viagra, Phentrimine and more!  \nRemove yourself from this list by either:\n  Entering your email address below and clicking REMOVE:\nOR\n  Reply to this message with the word \"remove\" in the subject line.\n  \n  This message was sent to address [usuario]@einstein[.]ssz[.]com\n  \npmguid:1dx.2pdp.fsi52--DeathToSpamDeathToSpamDeathToSpam--\n-------------------------------------------------------\nThis sf.net email is sponsored by:ThinkGeek\nWelcome to geek heaven.\nhxxp://thinkgeek[.]com/sf\n_______________________________________________\nSpamassassin-Sightings mailing list\n[usuario]@lists[.]sourceforge[.]net\nhxxps://lists[.]sourceforge[.]net/lists/listinfo/spamassassin-sightings",
+  "factores": [
+   {
+    "name": "deathtospamdeathtospamdeathtospam",
+    "human_name": "un fragmento codificado \"deathtospa…\"",
+    "pct": 43.3,
+    "visible": true
+   },
+   {
+    "name": "cypherpunks",
+    "human_name": "la palabra \"cypherpunks\"",
+    "pct": 14.8,
+    "visible": false
+   },
+   {
+    "name": "sightings",
+    "human_name": "la palabra \"sightings\"",
+    "pct": 14.8,
+    "visible": true
+   },
+   {
+    "name": "phentrimine",
+    "human_name": "la palabra \"phentrimine\"",
+    "pct": 14.1,
+    "visible": true
+   },
+   {
+    "name": "phentrimine",
+    "human_name": "la palabra \"phentrimine\"",
+    "pct": 13.0,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 96.7%. Los factores que más influyeron en la decisión fueron: un fragmento codificado \"deathtospa…\" (peso 3.4%), la palabra \"cypherpunks\" (peso 1.2%), la palabra \"sightings\" (peso 1.2%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "6dfd2a26-7966-468c-8d9b-d32f04fff2a3",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 1117,
+  "confianza": 0.957658,
+  "asunto": "",
+  "cuerpo": "*** FREE BONUS OFFER - SEE BELOW ***We can supply TOP QUALITY, VIRTUALLY IDENTICAL REPLICAS of just about anything - from watches to wallets, from lighters to lingerie, clothing, accessories, even electrical goods. All your favorite designer labels reproduced at a fraction of the price.All major Credit Cards accepted. Worldwide certified shipping. Quality guaranteed.We are currently building our catalog so let us know that you want to receive notification when our on-line catalog is published later this month to qualify for a GREAT FREE BONUS OFFER.*** FREE BONUS: Register NOW for our catalog and receive one pair of designer REPLICA sunglasses (our regular price $15) & check out the quality of our goods FREE OF CHARGE ***For more information email: [usuario]@fastnetspain[.]netRegister NOW to be sure you don't miss out !!!\nTo remove from future mailings email: [usuario]@fastnetspain[.]netRegister NOW to be sure you don't miss out !!!\n-- \nIrish Linux Users' Group Social Events: [usuario]@linux[.]ie\nhxxp://www[.]linux[.]ie/mailman/listinfo/social for (un)subscription information.\nList maintainer: [usuario]@linux[.]ie",
+  "factores": [
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 29.0,
+    "visible": true
+   },
+   {
+    "name": "fastnetspain",
+    "human_name": "la palabra \"fastnetspain\"",
+    "pct": 18.1,
+    "visible": true
+   },
+   {
+    "name": "netregister",
+    "human_name": "la palabra \"netregister\"",
+    "pct": 17.7,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 17.6,
+    "visible": true
+   },
+   {
+    "name": "noreplicas",
+    "human_name": "la palabra \"noreplicas\"",
+    "pct": 17.4,
+    "visible": false
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 95.8%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \".\" (peso 1.1%), la palabra \"fastnetspain\" (peso 0.7%), la palabra \"netregister\" (peso 0.7%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "760a20dc-27e7-4a61-9146-27af3f5e26dc",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 1086,
+  "confianza": 0.953314,
+  "asunto": "",
+  "cuerpo": "Below is the result of your feedback form.  It was submitted by\nLizzy young ([usuario]@hkg[.]net) on Thursday, August 2, 2001 at 08:13:36\n---------------------------------------------------------------------------message: Here is the information you requested:If you are interested in learning how to get $10,000\nto over $500,000 in free money, for Business, Education, \nor personal needs, Please visit our website at: \nhxxp://1chn[.]com/ch7/\n \nWe strongly oppose the use of SPAM email and do not want anyone who does not\nwish to receive our mailings to receive them. As a result, we have retained\nthe services of an independent 3rd party to administer our list management\nand remove list(www[.]removeyou[.]com)[.] This is not SPAM. If you do not wish to\nreceive further mailings, please click below and enter your\nemail at the bottom of the page. You may then rest-assured that you will\nnever receive another email from us again. hxxp://www[.]removeyou[.]com  The\n21st Century Solution.\nI.D. # 030500\n \nRegards'\nP. K.  Marketing---------------------------------------------------------------------------",
+  "factores": [
+   {
+    "name": "-",
+    "human_name": "un signo de puntuación \"-\"",
+    "pct": 25.5,
+    "visible": true
+   },
+   {
+    "name": "form",
+    "human_name": "la palabra \"form\"",
+    "pct": 22.8,
+    "visible": true
+   },
+   {
+    "name": "your",
+    "human_name": "la palabra \"your\"",
+    "pct": 22.3,
+    "visible": true
+   },
+   {
+    "name": "feedback",
+    "human_name": "la palabra \"feedback\"",
+    "pct": 15.4,
+    "visible": true
+   },
+   {
+    "name": "lizzy",
+    "human_name": "la palabra \"lizzy\"",
+    "pct": 13.6,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de URLs reportadas",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.3
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 95.3%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \"-\" (peso 1.3%), la palabra \"form\" (peso 1.2%), la palabra \"your\" (peso 1.2%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "947af34e-3145-4f17-9e8d-fe2a8c1c22fd",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 652,
+  "confianza": 0.991995,
+  "asunto": "// Notice - Annual Vacation Approval (Memo) - 2023 //",
+  "cuerpo": "Requested by : HR Department Position : Director of Human Resources Dear Staff, Kindly find below link for our annual leave: inter/staff.monkey.org/ news/folderaccounts/annual-open-vacation-ticket2023/ Referring to the above subject from HR approval announcement for our annual vacation plan. Note that all names highlighted in red are the ones approved. Termination employees, marked in yellow color, indicates staff status. Please check to verify the date of your leave before end of the month. Kindly let me know, should you have further questions. Thanks & Regards, Director of Human Resources Email :- [usuario]@monkey[.]org Web :- hxxp://monkey[.]org/",
+  "factores": [
+   {
+    "name": "folderaccounts",
+    "human_name": "la palabra \"folderaccounts\"",
+    "pct": 28.3,
+    "visible": true
+   },
+   {
+    "name": "/",
+    "human_name": "un signo de puntuación \"/\"",
+    "pct": 25.4,
+    "visible": true
+   },
+   {
+    "name": "ticket2023",
+    "human_name": "la palabra \"ticket2023\"",
+    "pct": 16.9,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 15.2,
+    "visible": true
+   },
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 14.0,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.2%. Los factores que más influyeron en la decisión fueron: la palabra \"folderaccounts\" (peso 1.8%), un signo de puntuación \"/\" (peso 1.6%), la palabra \"ticket2023\" (peso 1.1%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "9846b15c-c054-4331-a5b0-a59d4769b384",
+  "coleccion": "Fedora",
+  "clase": "legitimo",
+  "idioma": "en",
+  "largo": 2196,
+  "confianza": 0.504551,
+  "asunto": "[Fedora-packaging] Call for Participation: PackagingCon, October\n 26-28, Berlin & Virtual",
+  "cuerpo": "PackagingCon 2023 <hxxps://packaging-con[.]org/>\n\n26-28th October\n\nBerlin and online\n\n*Submission deadline: 31st July*\n\nEarly registration ends: 8th September\n\nPackagingCon 2023 <hxxps://packaging-con[.]org/> will bring together\ndifferent software packaging ecosystems to share best practices and discuss\ncommon challenges in software packaging. From Python’s pip to Rust’s cargo\nto Julia’s Pkg, from DNF to Nix to conda and mamba, and from vcpkg to\nSpack. The 2021 conference drew 350+ participants and featured over 60\npresentations <hxxps://www[.]youtube[.]com/@packagingcon9302/videos>[.]\n\nCall for Submissions\n\nThis conference is for developers of software package management tools, as\nwell as software packagers and communities. Package management helps tame\nsoftware complexity and establish and maintain software supply chain\nsecurity. This is a challenging domain that embraces a diverse set of\nsolutions. If you work in software package management then please share\nyour work <hxxps://cfp[.]packaging-con[.]org/2023/cfp> at PackagingCon! The\ncall for submissions closes 31st July. Topics from the most focused\ntechnical questions to community engagement isare welcome.\n\nRegister Now\n\nEarly registration <hxxps://ti[.]to/packagingcon/packagingcon-2023> starts at\n€37.50 for virtual, and €150 for in person. Significant discounts are\navailable for early registration, students, and those paying out of their\nown funds. Early registration ends 8th September.\n\nSeeking Conference Sponsors\n\nPackagingCon 2023 <hxxps://packaging-con[.]org/> is a rare opportunity for\nyour organization to support and reach the [...]",
+  "factores": [
+   {
+    "name": "packagingcon",
+    "human_name": "la palabra \"packagingcon\"",
+    "pct": 20.6,
+    "visible": true
+   },
+   {
+    "name": "committee",
+    "human_name": "la palabra \"committee\"",
+    "pct": 20.3,
+    "visible": false
+   },
+   {
+    "name": "€37",
+    "human_name": "un fragmento codificado \"€37\"",
+    "pct": 18.9,
+    "visible": true
+   },
+   {
+    "name": "2023",
+    "human_name": "una cifra \"2023\"",
+    "pct": 18.6,
+    "visible": true
+   },
+   {
+    "name": "vcpkg",
+    "human_name": "una abreviatura \"vcpkg\"",
+    "pct": 16.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 1.3
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "la presencia de código HTML",
+    "pct": 0.8
+   },
+   {
+    "modalidad": "red",
+    "human_name": "el uso del símbolo '@' en una URL (técnica de ofuscación)",
+    "pct": 1.3
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 1.0
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.5
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 2.1,
+   "red": 2.8
+  },
+  "narrativa": "Este correo fue clasificado como legítimo con una confianza del 50.5%. Los factores que más influyeron en la decisión fueron: la palabra \"packagingcon\" (peso 0.6%), la palabra \"committee\" (peso 0.6%), un fragmento codificado \"€37\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "9fc6085c-f60c-4a6c-a875-53d930982004",
+  "coleccion": "Fedora",
+  "clase": "legitimo",
+  "idioma": "en",
+  "largo": 1804,
+  "confianza": 0.98471,
+  "asunto": "[diversity] LibrePlanet'2018 Conference",
+  "cuerpo": "The Free Software Foundation's LibrePlanet 2018 conference, coming up at\nMIT in\nCambridge, MA on March 24-25.\n\n_____________________FWD__________\n\nLibrePlanet is an annual conference for free software enthusiasts,\nbringing together software developers, policy experts, activists and\ncomputer users to learn skills, share accomplishments, and face\nchallenges to software freedom. Newcomers are always welcome, and\nLibrePlanet 2018 will feature programming for all ages and experience\nlevels. FSF members and students attend gratis. Learn more at\nhxxps://libreplanet[.]org/2018; register at\nhxxps://my[.]fsf[.]org/civicrm/event/info?reset=1&id=71[.]\n\nLibrePlanet's 10th anniversary theme is \"Freedom. Embedded.\" Consider:\nembedded systems are everywhere, in cars, digital watches, traffic\nlights, and even within our bodies. Right now, proprietary software is\neverywhere, its sinister aspects embedded in software, digital devices,\nand our lives. We've come to expect that our phones monitor our activity\nand share that data with big companies, governments enforce digital\nrestrictions management (DRM), and even our activity on social Web sites\nis out of our control.\n\nIn a society reliant on embedded systems, how do we defend computer user\nfreedom? How do we insist on copylefted code, protect ourselves against\ngovernment and corporate surveillance, and move toward a freer world?\nFor many people, digital freedom seems like a pipe dream. Can we change\nthe narrative and make free software the norm, instead of walled\ngardens, denial of the right to repair, and DRM?\n\nLet's envision freedom embedded [...]",
+  "factores": [
+   {
+    "name": "girlprofessor",
+    "human_name": "la palabra \"girlprofessor\"",
+    "pct": 22.9,
+    "visible": false
+   },
+   {
+    "name": "libreplanet",
+    "human_name": "la palabra \"libreplanet\"",
+    "pct": 21.7,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 19.1,
+    "visible": true
+   },
+   {
+    "name": "net",
+    "human_name": "la palabra \"net\"",
+    "pct": 18.4,
+    "visible": true
+   },
+   {
+    "name": "the",
+    "human_name": "la palabra \"the\"",
+    "pct": 17.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como legítimo con una confianza del 98.5%. Los factores que más influyeron en la decisión fueron: la palabra \"girlprofessor\" (peso 0.8%), la palabra \"libreplanet\" (peso 0.7%), un signo de puntuación \".\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "ac6b475c-9907-44f1-9500-7725e0f03e6e",
+  "coleccion": "Kaggle",
+  "clase": "legitimo",
+  "idioma": "en",
+  "largo": 549,
+  "confianza": 0.990414,
+  "asunto": "",
+  "cuerpo": "So whats the eariliest  for hitting 7k?hxxp://money[.]cnn[.]com/2002/07/19/markets/markets_newyork/index[.]htm\"According to preliminary reports, the Dow fell 390.23 to 8,019.26, to its\nlowest level since January 1998. The Nasdaq composite index lost 37.94 to\n1,319.01. The Standard & Poor's 500 index lost 34.03 to 847.53.The index has fallen more than 1,000 points in the past two weeks and\nclosed down nine of the last 10 sessions. Both the Nasdaq and S&P are near\ntheir lowest levels since the first half of 1997.\n\"hxxp://xent[.]com/mailman/listinfo/fork",
+  "factores": [
+   {
+    "name": "eariliest",
+    "human_name": "la palabra \"eariliest\"",
+    "pct": 24.9,
+    "visible": true
+   },
+   {
+    "name": "nasdaq",
+    "human_name": "la palabra \"nasdaq\"",
+    "pct": 22.2,
+    "visible": true
+   },
+   {
+    "name": "nasdaq",
+    "human_name": "la palabra \"nasdaq\"",
+    "pct": 19.6,
+    "visible": true
+   },
+   {
+    "name": "whats",
+    "human_name": "la palabra \"whats\"",
+    "pct": 17.5,
+    "visible": true
+   },
+   {
+    "name": "newyork",
+    "human_name": "la palabra \"newyork\"",
+    "pct": 15.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la longitud de las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como legítimo con una confianza del 99.0%. Los factores que más influyeron en la decisión fueron: la palabra \"eariliest\" (peso 1.6%), la palabra \"nasdaq\" (peso 1.4%), la palabra \"nasdaq\" (peso 1.2%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "af731c58-a393-4e45-82b0-7eb7a08412d4",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 2863,
+  "confianza": 0.973219,
+  "asunto": "",
+  "cuerpo": "##################################################\n#                                                #\n#                 Adult Club                     #\n#           Offers FREE Membership               #\n#                                                #\n##################################################>>>>>  INSTANT ACCESS TO ALL SITES NOW\n>>>>>  Your User Name And Password is.\n>>>>>  User Name: [usuario]@spamassassin[.]taint[.]org\n>>>>>  Password: 7603825 of the Best Adult Sites on the Internet for FREE!\n---------------------------------------\nNEWS 08/18/02\nWith just over 2.9 Million Members that signed up for FREE, Last month there were 721,184 New\nMembers. Are you one of them yet???\n---------------------------------------\nOur Membership FAQQ. Why are you offering free access to 5 adult membership sites for free?\nA. I have advertisers that pay me for ad space so you don't have to pay for membership.Q. Is it true my membership is for life?\nA. Absolutely you'll never have to pay a cent the advertisers do.Q. Can I give my account to my friends and family?\nA. Yes, as long they are over the age of 18.Q. Do I have to sign up for all 5 membership sites?\nA. No just one to get access to all of them.Q. How do I get started?\nA. Click on one of the following links below to become a member.- These are multi million dollar operations with policies and rules.\n- Fill in the required info and they won't charge you for the Free pass!\n- If you don't believe us, just read their terms and conditions.---------------------------# 5. > Adults Farm\nhxxp://[teléfono oculto]/farm/?aid=760382\nGirls and Animals [...]",
+  "factores": [
+   {
+    "name": "spamassassin",
+    "human_name": "la palabra \"spamassassin\"",
+    "pct": 23.0,
+    "visible": true
+   },
+   {
+    "name": "advertisers",
+    "human_name": "la palabra \"advertisers\"",
+    "pct": 20.8,
+    "visible": true
+   },
+   {
+    "name": "-",
+    "human_name": "un signo de puntuación \"-\"",
+    "pct": 19.5,
+    "visible": true
+   },
+   {
+    "name": "zzzz",
+    "human_name": "una abreviatura \"zzzz\"",
+    "pct": 18.6,
+    "visible": false
+   },
+   {
+    "name": "advertisers",
+    "human_name": "la palabra \"advertisers\"",
+    "pct": 18.1,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.3%. Los factores que más influyeron en la decisión fueron: la palabra \"spamassassin\" (peso 0.7%), la palabra \"advertisers\" (peso 0.6%), un signo de puntuación \"-\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "b49c4dba-60ee-4aab-8ec5-77720c9d9805",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 1369,
+  "confianza": 0.98954,
+  "asunto": "Your Checking/Savings Account Special Notice",
+  "cuerpo": "To ensure delivery to your inbox, please add [usuario]@customermail[.]usaa[.]com to your address book. Documents Online View Accounts | Privacy Promise | Contact Us Online Security Guarantee Dear Member, We are completing our upgrade and some members are still experiencing issues Including challenges with logon restrictions, viewing checking balances, making transfers, paying bills, receiving payments and notification about recent deposits. Member service is a top priority and we are working int ensively to minimize th ese errors. To avoid having such problems now or in future please click here to login and complete your upgrade. Sign on Just verify the information you entered is correct. ! Thank you, USAA Some unpleasant mail providers put our messages into spam cause of swindlers phishing activity. Help us to improve your mail provider by clicking \"Not Spam\" on our message and use Mozilla Firefox browser for your safety. Please do not reply to this e-mail. To send a secure message to USAA, please contact us . Privacy Promise USAA, 9800 Fredericksburg Road, San Antonio, Texas 78288 USAA means United Services Automobile Association and its insurance, banking, investment and other companies . Banks Member FDIC. Investments provided by USAA Investment Management Company and USAA Financial Advisors Inc., both registered broker dealers. [teléfono oculto]",
+  "factores": [
+   {
+    "name": "inbox",
+    "human_name": "la palabra \"inbox\"",
+    "pct": 31.7,
+    "visible": true
+   },
+   {
+    "name": "1010",
+    "human_name": "una cifra \"1010\"",
+    "pct": 21.5,
+    "visible": false
+   },
+   {
+    "name": "ensively",
+    "human_name": "la palabra \"ensively\"",
+    "pct": 17.9,
+    "visible": true
+   },
+   {
+    "name": "your",
+    "human_name": "la palabra \"your\"",
+    "pct": 15.5,
+    "visible": true
+   },
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 13.3,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.0%. Los factores que más influyeron en la decisión fueron: la palabra \"inbox\" (peso 1.3%), una cifra \"1010\" (peso 0.9%), la palabra \"ensively\" (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "bbe9c98d-f3ac-4c8d-8ccd-36ef1b815324",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 290,
+  "confianza": 0.940118,
+  "asunto": "",
+  "cuerpo": "ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!!!\nhxxp://dengi[.]150m[.]com/Golden%20Stream[.]htmhttp://dengi[.]150m[.]com/NEW[.]htm\n-- \nIrish Linux Users' Group: [usuario]@linux[.]ie\nhxxp://www[.]linux[.]ie/mailman/listinfo/ilug for (un)subscription information.\nList maintainer: [usuario]@linux[.]ie",
+  "factores": [
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 34.1,
+    "visible": true
+   },
+   {
+    "name": "htmhttp",
+    "human_name": "un fragmento codificado \"htmhttp\"",
+    "pct": 17.3,
+    "visible": true
+   },
+   {
+    "name": "½i",
+    "human_name": "un fragmento codificado \"½i\"",
+    "pct": 16.3,
+    "visible": false
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 16.3,
+    "visible": true
+   },
+   {
+    "name": "ie",
+    "human_name": "la palabra \"ie\"",
+    "pct": 15.6,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.4
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 94.0%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \".\" (peso 2.2%), un fragmento codificado \"htmhttp\" (peso 1.1%), un fragmento codificado \"½i\" (peso 1.1%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "beeaee44-f7ff-4e53-aed4-13a9046292f6",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 227,
+  "confianza": 0.958577,
+  "asunto": "Re: tyvowVjiagra",
+  "cuerpo": "Hi,\n \nAmbjien\nCjialis from 3, 75 $\nVjiagra from 3, 35 $\nValjium from 1, 25 $\n \nhxxp://www[.]bukeradesaxin[.]com\n \n,\n,\n,\n,\n,\nHow do we find it? Floyd asked.\nI havent the slightest idea. I just said that to get Tremearne off\nmy neck.",
+  "factores": [
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 24.6,
+    "visible": true
+   },
+   {
+    "name": "bukeradesaxin",
+    "human_name": "la palabra \"bukeradesaxin\"",
+    "pct": 20.2,
+    "visible": true
+   },
+   {
+    "name": "ambjien",
+    "human_name": "la palabra \"ambjien\"",
+    "pct": 19.7,
+    "visible": true
+   },
+   {
+    "name": "tremearne",
+    "human_name": "la palabra \"tremearne\"",
+    "pct": 18.6,
+    "visible": true
+   },
+   {
+    "name": "cjialis",
+    "human_name": "la palabra \"cjialis\"",
+    "pct": 16.7,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 95.9%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \".\" (peso 3.2%), la palabra \"bukeradesaxin\" (peso 2.6%), la palabra \"ambjien\" (peso 2.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "c4e1393b-b01d-4c1e-b40b-c7df2a4bb49f",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 143,
+  "confianza": 0.926679,
+  "asunto": "=?utf-8?q?Maryden_Cruz_sent_you_=22PO-095070=2Epdf=22?=",
+  "cuerpo": "Maryden Cruz ([usuario]@aol[.]com) just used Dropbox Transfer to send you PO-095070.pdf.\n\nThis transfer will expire in 5 days on August 20, 2020.",
+  "factores": [
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 26.0,
+    "visible": true
+   },
+   {
+    "name": "mcruzltgc",
+    "human_name": "la palabra \"mcruzltgc\"",
+    "pct": 23.8,
+    "visible": false
+   },
+   {
+    "name": "expires",
+    "human_name": "la palabra \"expires\"",
+    "pct": 21.3,
+    "visible": false
+   },
+   {
+    "name": "095070",
+    "human_name": "una cifra \"095070\"",
+    "pct": 15.3,
+    "visible": true
+   },
+   {
+    "name": "095070",
+    "human_name": "una cifra \"095070\"",
+    "pct": 13.2,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.3,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 92.7%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \".\" (peso 3.4%), la palabra \"mcruzltgc\" (peso 3.1%), la palabra \"expires\" (peso 2.8%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "ce57ef0c-6f1f-47fa-8526-bba4dc833419",
+  "coleccion": "SpamAssassin",
+  "clase": "legitimo",
+  "idioma": "en",
+  "largo": 304,
+  "confianza": 0.865307,
+  "asunto": "[ILUG] Can I be added to your email distribution lists?",
+  "cuerpo": "Dell Quinn\nAccount Executive\nFleishman-Hillard Saunders\n15 Fitzwilliam Quay\nDublin 4\nIreland\nTel: [teléfono oculto]\nFax: [teléfono oculto]\nMobile: [teléfono oculto]\n \n\n-- \nIrish Linux Users' Group: [correo oculto]\nhxxp://www[.]linux[.]ie/mailman/listinfo/ilug for (un)subscription information.\nList maintainer: [correo oculto]",
+  "factores": [
+   {
+    "name": "fitzwilliam",
+    "human_name": "la palabra \"fitzwilliam\"",
+    "pct": 25.7,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 22.2,
+    "visible": true
+   },
+   {
+    "name": "fleishman",
+    "human_name": "la palabra \"fleishman\"",
+    "pct": 19.3,
+    "visible": true
+   },
+   {
+    "name": "6188428",
+    "human_name": "una cifra \"6188428\"",
+    "pct": 18.2,
+    "visible": false
+   },
+   {
+    "name": "6048101",
+    "human_name": "una cifra \"6048101\"",
+    "pct": 14.3,
+    "visible": false
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.3
+  },
+  "narrativa": "Este correo fue clasificado como legítimo con una confianza del 86.5%. Los factores que más influyeron en la decisión fueron: la palabra \"fitzwilliam\" (peso 2.6%), un signo de puntuación \".\" (peso 2.3%), la palabra \"fleishman\" (peso 2.0%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "cf133640-3a7a-4d64-9f95-aaf4c8cd738b",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 2764,
+  "confianza": 0.996146,
+  "asunto": "Extend your account for free",
+  "cuerpo": "Extend your account for free\n\nhxxp://medicinalgardenkit[.]za[.]com/SDeT6EMGH-IwKsUFAeOWbjrEI-cebUkPoIOPBrLNg-abcc8\n\nhxxp://medicinalgardenkit[.]za[.]com/P7h2aH3tN8CkPbhOi5kFbYbTjsyTSuv7J6ajApcHFv1eVZo\n\nfitted trains, the brake van has several purposes, and hence jobs for the guard: Operating the brake, train supervision, and illumination & communication.\n\nFirstly, and most importantly, the guard would use the brake van's brakes to assist with keeping the train under control on downwards gradients, and whenever they could see that the locomotive's crew was attempting to slow the train. Route knowledge would allow the guard to initiate the braking before the driver. To aid in this, signalling regulations mandated that signals be left at clear until the entirety of a train (including guard's van) had passed, as the guard would immediately apply brakes upon seeing a signal at danger.\n\nSecondly, they minimized the risk of snapped broken couplings by application of handbrake wheel, which would keep otherwise-loose screw couplings taut between unfitted wagons. This helped mitigate the risk of a coupling failure from uneven acceleration (\"snatching\" or jerking). This was particularly a problem as locomotives became more powerful. Because coupling failures were a fairly common occurrence when starting an unfitted train, train crews were given specific instruction upon starting a freight train that the footplate crew look back towards the brake van for a signal from the guard (by flag or lamp) that the entire train was moving and all couplings were taut, before accelerating to higher [...]",
+  "factores": [
+   {
+    "name": "accelerati",
+    "human_name": "la palabra \"accelerati\"",
+    "pct": 22.7,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 20.9,
+    "visible": true
+   },
+   {
+    "name": "your",
+    "human_name": "la palabra \"your\"",
+    "pct": 20.4,
+    "visible": true
+   },
+   {
+    "name": "newsletter",
+    "human_name": "la palabra \"newsletter\"",
+    "pct": 18.2,
+    "visible": false
+   },
+   {
+    "name": "button",
+    "human_name": "la palabra \"button\"",
+    "pct": 17.5,
+    "visible": false
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "un dominio con apariencia generada aleatoriamente",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.1,
+   "red": 0.2
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.6%. Los factores que más influyeron en la decisión fueron: la palabra \"accelerati\" (peso 0.6%), un signo de puntuación \".\" (peso 0.5%), la palabra \"your\" (peso 0.5%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "d144759a-8924-4c5c-80d8-066da4d248db",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 569,
+  "confianza": 0.943195,
+  "asunto": "",
+  "cuerpo": "Hi Sweetie,Come See the most beautiful, sweet...-->18 Year Old Girls Bare it ALL!<--\nhxxp://freexmovies[.]net/mypic/*******************************************************\nRemove Instructions:\nThis e-mail message is not spam or unsolicited.  This e-mail address has joined or requested information in the past.  If this is a mistake or \nyou would prefer not to receive a free once a week adult web site announcement,  then... please visit the web page below, at anytime to be permanently removed from the list:hxxp://remove[.]pwxx3[.]com\nhxxp://xent[.]com/mailman/listinfo/fork",
+  "factores": [
+   {
+    "name": "freexmovies",
+    "human_name": "la palabra \"freexmovies\"",
+    "pct": 29.1,
+    "visible": true
+   },
+   {
+    "name": "unsolicited",
+    "human_name": "la palabra \"unsolicited\"",
+    "pct": 20.7,
+    "visible": true
+   },
+   {
+    "name": "listinfo",
+    "human_name": "la palabra \"listinfo\"",
+    "pct": 17.8,
+    "visible": true
+   },
+   {
+    "name": "fork",
+    "human_name": "la palabra \"fork\"",
+    "pct": 16.2,
+    "visible": true
+   },
+   {
+    "name": "pwxx3",
+    "human_name": "un fragmento codificado \"pwxx3\"",
+    "pct": 15.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la longitud de las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.3
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 94.3%. Los factores que más influyeron en la decisión fueron: la palabra \"freexmovies\" (peso 1.5%), la palabra \"unsolicited\" (peso 1.0%), la palabra \"listinfo\" (peso 0.9%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "df6b1765-00ab-4a2b-b4cf-583e3d5ef5cb",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 3059,
+  "confianza": 0.995939,
+  "asunto": "",
+  "cuerpo": "ATTN:I am Edward Mulete JR. the son of Mr. STEVE MBEKI MULETE from Zimbabwe. I am sorry this mail\nWill surprise you, though we do not know, my mother Mrs. Clara \nGot your contact through her private search.\nDue to the current war against white farmers in\nZimbabwe and the support of President Robert Mugabe to\nClaim all white owned farms in our country to gain\nFavor for re-election.All white farmers were asked to\nSurrender their farms to the government for\nRe-distribution and infact to his political party\nMembers and my father though black was the treasury\nof the farmers association and a strong member of an\nOpposition party that did not support the president\nIdea. He then ordered his party members and the police\nUnder his pay row to invade my father's farm and burn\nDown everything in the farm. They killed my\nFather and took away a lot of items from his farm.\nAfter the death of my father, our local pastor and a\nClose friend of my father handed us over will\nDocuments with instructions from my father that we\nShould leave Zimbabwe incase anything happen to him. The will \nDocuments has a certificate of deposit, confirming a deposit\nKept in custody for us in a security company unknown\nTo the company that the content is money hence it was deposited as \nPersonal belongings and ensure that we do not remain here as we could\nEasily be found by his enemies. The total amount is\nUS$21.5M.We are therefore soliciting for\nYour assistance to help us move the fund out of\nZimbabwe, as our fate and future is far from\nreality, hence this mail to you. The president's present ban of\nInternational [...]",
+  "factores": [
+   {
+    "name": "attn",
+    "human_name": "la palabra \"attn\"",
+    "pct": 25.5,
+    "visible": true
+   },
+   {
+    "name": "mugabe",
+    "human_name": "la palabra \"mugabe\"",
+    "pct": 21.8,
+    "visible": true
+   },
+   {
+    "name": "in",
+    "human_name": "la palabra \"in\"",
+    "pct": 20.6,
+    "visible": true
+   },
+   {
+    "name": "mbeki",
+    "human_name": "la palabra \"mbeki\"",
+    "pct": 16.4,
+    "visible": true
+   },
+   {
+    "name": "unthinkable",
+    "human_name": "la palabra \"unthinkable\"",
+    "pct": 15.6,
+    "visible": false
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.6%. Los factores que más influyeron en la decisión fueron: la palabra \"attn\" (peso 0.7%), la palabra \"mugabe\" (peso 0.6%), la palabra \"in\" (peso 0.6%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "e3d88fc0-7100-49f7-939a-ecaa339a07bd",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 665,
+  "confianza": 0.98094,
+  "asunto": "",
+  "cuerpo": "Welcome to Viagra Express!hxxp://www[.]universalmeds[.]com/main2[.]php?rx=16863Our objective at Viagra Express is simple! We want to provide only \ngenuine FDA approved VIAGRA to you at the lowest possible prices.Some important factors that set us apart from our competition:* CONFIDENTIAL ONLINE DR. CONSULTATION\n* GLOBAL PHYSICIAN NETWORK OF 200+ LICENSED PHYSICIANS\n* WORLDWIDE 24 HOUR DELIVERY UPON ORDER APPROVAL\n* SIMPLY THE LOWEST PRICES\n* NO-CHARGE FOR ANY ORDER NOT APPROVED FOR ANY REASON\n* DISCRETION ASSURED, SATISFACTION GUARANTEED\n hxxp://www[.]universalmeds[.]com/main2[.]php?rx=16863\n \n \n We also carry 4 other products from weight loss to hair loss products. ht",
+  "factores": [
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 22.0,
+    "visible": true
+   },
+   {
+    "name": "ht",
+    "human_name": "una abreviatura \"ht\"",
+    "pct": 21.2,
+    "visible": true
+   },
+   {
+    "name": "16863our",
+    "human_name": "un fragmento codificado \"16863our\"",
+    "pct": 20.3,
+    "visible": true
+   },
+   {
+    "name": "universalmeds",
+    "human_name": "la palabra \"universalmeds\"",
+    "pct": 19.6,
+    "visible": true
+   },
+   {
+    "name": "viagra",
+    "human_name": "la palabra \"viagra\"",
+    "pct": 16.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 98.1%. Los factores que más influyeron en la decisión fueron: un signo de puntuación \".\" (peso 1.4%), una abreviatura \"ht\" (peso 1.3%), un fragmento codificado \"16863our\" (peso 1.3%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "eb165f28-93ed-4c54-b9b0-0fe9be4bbe2f",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": "tr",
+  "largo": 5102,
+  "confianza": 0.977306,
+  "asunto": "",
+  "cuerpo": "TR Rehber 6 REKLAMLARINIZA SERVET Ã–DEMEYiN!!! UCUZ, KOLAY VE KALICI REKLAMLARINIZ iCiN BiZi ARAYINIZ...\n    Bu ileti size islerinizi kolaylastirmak, satislarinizi arttirmak, kisacasi \n  milyonlara sesinizi duyurmak icin gÃ¶nderilmistir. Bu tÃ¼rden tanitimlarla \n  ilgilenmiyorsaniz bu iletiyi, \"ilgilenecegini dÃ¼sÃ¼ndÃ¼gÃ¼nÃ¼z\" tanidiklariniza \n  gÃ¶nderiniz. Bu iletinin size ve tanidiklariniza kazandiracaklarina \n  inanamayacaksiniz!.Herseye ragmen bizden e-mail almak istemiyor ve satisa sundugumuzÂ listelerden cikmak istiyorsaniz \n  bu iletiyi bos olarak cevaplamaniz yeterli olacaktir.\n  TÃ¼m Ã¶nerilerinizi dikkate alip degerlendiriyoruz.. LÃ¼tfen olumlu olumsuz \n  elestirileriniz icin web sayfamizdaki iletisim formunu kullaniniz..\nÂ \nTR Rehber 8.0 GÃ¼ncellenme Tarihi 10 Temmuz 2002'dir.. TR Rehber ve World Rehberi aldiginizda bir sonraki gÃ¼ncellemedeÂ  herhangi bir Ã¼cret Ã¶demeyeceksiniz.. Daha Ã¶nceden alis-veris de bulundugumuz mÃ¼sterilerimize %50 indirim imkani sunuyoruz..      Â \n.::Rehberlerimizin Ortak \n      Ã–zellikleri::.            Detayli kategorili ; daha fazla bilgi iÃ§in web sayfamÄ±zi ziyaret \n            ediniz..            ilave programlar ; mailling iÃ§in min. dÃ¼zeyde programlar..            Kullanimi kolaylaÅŸtÄ±rÄ±cÄ± tÃ¼rkÃ§e dÃ¶kÃ¼man ve video formatÄ±nda \n            aÃ§Ä±klamalar..Sanayi Rehberi \nHediyeli..800.000 \nArama Motoruna  Ã¼cretsiz kayÄ±t \n  imkanÄ±..** SINIRSIZ telefon, e-mail ve icq ile \n            destek garantisi..TR Rehber [teléfono oculto] TL.[teléfono oculto] TÃ¼rk e-mail adresi..TR Rehber [teléfono oculto] TL.[teléfono oculto] TÃ¼rk e-mail [...]",
+  "factores": [
+   {
+    "name": "da¼sa¼nda¼ga¼na¼z",
+    "human_name": "la palabra \"da¼sa¼nda¼ga¼na¼z\"",
+    "pct": 24.0,
+    "visible": false
+   },
+   {
+    "name": "kolaylaayta±ra±ca±",
+    "human_name": "la palabra \"kolaylaayta±ra±ca±\"",
+    "pct": 24.0,
+    "visible": false
+   },
+   {
+    "name": "degerlendiriyoruz",
+    "human_name": "la palabra \"degerlendiriyoruz\"",
+    "pct": 18.6,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 18.0,
+    "visible": true
+   },
+   {
+    "name": "a±klamalar",
+    "human_name": "la palabra \"a±klamalar\"",
+    "pct": 15.4,
+    "visible": false
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.7%. Los factores que más influyeron en la decisión fueron: la palabra \"da¼sa¼nda¼ga¼na¼z\" (peso 1.3%), la palabra \"kolaylaayta±ra±ca±\" (peso 1.3%), la palabra \"degerlendiriyoruz\" (peso 1.0%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "ef3882eb-e81e-41bb-b163-e5ac3f73c026",
+  "coleccion": "Kaggle",
+  "clase": "phishing",
+  "idioma": null,
+  "largo": 232,
+  "confianza": 0.897122,
+  "asunto": "",
+  "cuerpo": "Hallo,\nI found yours Email ID in Directoric.\nI have been from Russian and for a man like you have I been lookink.\nhxxp://www[.]easygoingcompanion[.]com/?oc=6120[.]If you no want to hear from me again just reply and i no bother you again**",
+  "factores": [
+   {
+    "name": "easygoingcompanion",
+    "human_name": "la palabra \"easygoingcompanion\"",
+    "pct": 31.1,
+    "visible": true
+   },
+   {
+    "name": "hallo",
+    "human_name": "la palabra \"hallo\"",
+    "pct": 18.0,
+    "visible": true
+   },
+   {
+    "name": "directoric",
+    "human_name": "la palabra \"directoric\"",
+    "pct": 17.9,
+    "visible": true
+   },
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 16.9,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 15.9,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la proporción de dígitos en las URLs",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.0,
+   "red": 0.3
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 89.7%. Los factores que más influyeron en la decisión fueron: la palabra \"easygoingcompanion\" (peso 3.2%), la palabra \"hallo\" (peso 1.9%), la palabra \"directoric\" (peso 1.8%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "faf88354-bd6c-46c8-8deb-b952e061b234",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 995,
+  "confianza": 0.969988,
+  "asunto": "UPS Update: Package Scheduled for Delivery",
+  "cuerpo": "UPS My Choice® \n\n \n    \n    \n   Hi, you have a package coming. \n   \n    \n    \n   Shipped Date: \t Friday, 05/03/2019\n \n   \t \n   \n    \n   \n    \n   Change Delivery \n \n   Manage Preferences \n \n   View Delivery Planner \n   \n    \n    \n \n   \n    \n\n \n   Tracking Number:\t 1Z728389245276325\n \n   UPS Service:\t UPS Ground\n \n   \t \n\n   \n    \n    \n  \n   \n    \n   \n \n   \n   \n    \n    \n   \t Facebook\n \n   \t Twitter\n \n    \n   \t LinkedIn\n \n   \t YouTube\n \n    \n    © 2019 United Parcel Service of America, Inc. UPS, the UPS brandmark, and the color brown are trademarks of United Parcel Service of America, Inc. All rights reserved.\n\nAll trademarks, trade names, or service marks that appear in connection with UPS's services are the property of their respective owners.\n\nPlease do not reply directly to this e-mail. \n\nTo manage your UPS My Choice® delivery alerts, select \"UPS My Choice Preferences\" below. \n \n\n  UPS My Choice Preferences \nUPS Privacy Notice \nUPS My Choice Service Terms \nHelp and Support Center",
+  "factores": [
+   {
+    "name": "1z728389245276325",
+    "human_name": "un fragmento codificado \"1z72838924…\"",
+    "pct": 39.8,
+    "visible": true
+   },
+   {
+    "name": "center",
+    "human_name": "la palabra \"center\"",
+    "pct": 18.3,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 15.1,
+    "visible": true
+   },
+   {
+    "name": "trademarks",
+    "human_name": "la palabra \"trademarks\"",
+    "pct": 13.4,
+    "visible": true
+   },
+   {
+    "name": ".",
+    "human_name": "un signo de puntuación \".\"",
+    "pct": 13.1,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.1
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.1
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.2,
+   "red": 0.1
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 97.0%. Los factores que más influyeron en la decisión fueron: un fragmento codificado \"1z72838924…\" (peso 2.5%), la palabra \"center\" (peso 1.1%), un signo de puntuación \".\" (peso 0.9%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ },
+ {
+  "email_id": "fb19452e-64fe-43de-a9ae-27a993949f0b",
+  "coleccion": "Nazario",
+  "clase": "phishing",
+  "idioma": "en",
+  "largo": 73,
+  "confianza": 0.665833,
+  "asunto": "eBay - please validate your account [Sat, 17 Dec 2005 04:54:05 -0700]",
+  "cuerpo": "Fancy that! That's lovely, Nicholas Kristof Penelope Cruz Australian Open",
+  "factores": [
+   {
+    "name": "kristof",
+    "human_name": "la palabra \"kristof\"",
+    "pct": 26.5,
+    "visible": true
+   },
+   {
+    "name": ",",
+    "human_name": "un signo de puntuación \",\"",
+    "pct": 23.8,
+    "visible": true
+   },
+   {
+    "name": "open",
+    "human_name": "la palabra \"open\"",
+    "pct": 19.0,
+    "visible": true
+   },
+   {
+    "name": "!",
+    "human_name": "un signo de puntuación \"!\"",
+    "pct": 15.3,
+    "visible": true
+   },
+   {
+    "name": "that",
+    "human_name": "la palabra \"that\"",
+    "pct": 14.3,
+    "visible": true
+   }
+  ],
+  "no_textuales": [
+   {
+    "modalidad": "estructura",
+    "human_name": "la cantidad de imágenes",
+    "pct": 0.6
+   },
+   {
+    "modalidad": "estructura",
+    "human_name": "el grado de anidamiento de la estructura HTML",
+    "pct": 0.2
+   },
+   {
+    "modalidad": "red",
+    "human_name": "la cantidad de subdominios en las URLs",
+    "pct": 0.2
+   }
+  ],
+  "no_textual_pct": {
+   "estructura": 0.7,
+   "red": 0.3
+  },
+  "narrativa": "Este correo fue clasificado como phishing con una confianza del 66.6%. Los factores que más influyeron en la decisión fueron: la palabra \"kristof\" (peso 5.6%), un signo de puntuación \",\" (peso 5.0%), la palabra \"open\" (peso 4.0%). Explicación generada mediante los pesos de atención intrínseca del modelo."
+ }
+]

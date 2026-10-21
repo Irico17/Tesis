@@ -61,14 +61,18 @@ LARGO_MIN, LARGO_MAX = 250, 1600       # caracteres del cuerpo mostrado
 # Ningún correo bien clasificado que cumpla todos los criterios atribuye peso a la
 # estructura o a la red en su reporte (ver modalidades_del_reporte.json), y el
 # panel necesita uno en que esos bloques no estén vacíos para que las preguntas
-# sobre ellos tengan contenido. Se elige el de mayor peso no textual entre los
-# legibles en inglés: estructura 0.6% y red 0.4%. Incumple el criterio de
-# palabras legibles (su factor principal es un código postal), y así se declara.
+# sobre ellos tengan contenido. Entre los 62 correos bien clasificados cuyo
+# reporte da algún peso no textual (candidatos_no_textuales.json), casi todos
+# son publicidad, contenido adulto o están en otro idioma. Se elige el que mejor
+# se entiende: phishing de credenciales («tu contraseña expira en 24 horas»),
+# cuyas palabras citadas son «expires», «account» y «helpdesk», con red 0.4%.
+# Incumple dos filtros previos: su confianza (0.956) es menor que 0.99 y la
+# detección de idioma por tramos no lo clasifica; y su primer factor es un signo.
 CORREOS_IMPUESTOS = {
-    "phishing_2": ("f048a4c7-2b9c-4b3b-8e5a-8587e7a9b5c6",
-                   "mayor peso no textual en el reporte entre los correos legibles "
-                   "(estructura 0.6%, red 0.4%); incumple el criterio de palabras "
-                   "decisivas legibles"),
+    "phishing_2": ("3f6f83f0-d2be-4e1c-9fa8-5a4fd8c87c81",
+                   "phishing de credenciales con peso de red en el reporte (0.4%) y "
+                   "palabras citadas reconocibles; incumple los filtros de confianza "
+                   "mínima 0.99 y de idioma detectado, y su primer factor es un signo"),
 }
 CANDIDATOS_POR_GRUPO = 300             # cuántos se explican antes de elegir
 VACIAS = set("""

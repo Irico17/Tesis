@@ -3,7 +3,7 @@
   "ejemplos": {
     "1": "79f02a89-933a-47fc-a1bf-f9947cc9686b",
     "2": "f36407aa-5ea4-4c8a-ab86-9f18dc3661ec",
-    "3": "f048a4c7-2b9c-4b3b-8e5a-8587e7a9b5c6",
+    "3": "3f6f83f0-d2be-4e1c-9fa8-5a4fd8c87c81",
     "4": "5cb90d93-86fc-4eb6-a9ea-d410b5b977eb"
   },
   "preguntas": {
@@ -55,16 +55,16 @@
     },
     "C6": {
       "titulo": "C6. Según el reporte, ¿cuál de estas características de la estructura HTML o de la red influyó en la decisión sobre este correo?",
-      "correcta": "la cantidad de imágenes",
+      "correcta": "la cantidad de subdominios en las URLs",
       "opciones": [
         "la cantidad de enlaces",
         "el uso de un acortador de enlaces",
         "la longitud del mensaje",
-        "la cantidad de imágenes"
+        "la cantidad de subdominios en las URLs"
       ]
     },
     "C7": {
-      "titulo": "C7. Según el reporte, en el bloque de texto «username» tuvo más peso que «33484».",
+      "titulo": "C7. Según el reporte, en el bloque de texto «helpdesk» tuvo más peso que «expires».",
       "correcta": "Falso",
       "opciones": [
         "Verdadero",
