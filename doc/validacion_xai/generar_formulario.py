@@ -51,6 +51,31 @@ CONTACTO = "a20210577@pucp.edu.pe"
 # Desde aquí el Apps Script descarga las imágenes de resaltado.
 URL_IMAGENES = ("https://raw.githubusercontent.com/Irico17/Tesis/master/"
                 "doc/validacion_xai/formulario/")
+# Las posiciones de los cuatro correos en el informe de selección.
+CLAVES = ("phishing_1", "legitimo_1", "phishing_2", "legitimo_2")
+
+# Dos versiones del panel. La principal equilibra las clases e incluye un correo
+# con peso no textual; la de claridad toma, sin atender a la clase, los correos
+# cuya explicación se entiende mejor e incluye entre ellos el del ejemplo guiado
+# (ver scripts/experimentos/e9_ejemplos_por_claridad.py).
+VERSIONES = {
+    "principal": {"ejemplos": "ejemplos_del_panel.json", "salida": "formulario",
+                  "claves": CLAVES},
+    "claridad": {"ejemplos": "ejemplos_del_panel_claridad.json",
+                 "salida": "formulario_claridad",
+                 "claves": ("correo_1", "correo_2", "correo_3", "correo_4")},
+}
+
+
+def _usar_version(nombre: str) -> None:
+    """Fija los rutas y las posiciones de la versión que se genera."""
+    global EJEMPLOS, SALIDA, URL_IMAGENES, CLAVES
+    v = VERSIONES[nombre]
+    EJEMPLOS = BASE / "medios_de_verificacion" / "experimentos" / "e9" / v["ejemplos"]
+    SALIDA = AQUI / v["salida"]
+    URL_IMAGENES = ("https://raw.githubusercontent.com/Irico17/Tesis/master/"
+                    f"doc/validacion_xai/{v['salida']}/")
+    CLAVES = v["claves"]
 ESCALA = ["1 (totalmente en desacuerdo)", "2", "3", "4", "5 (totalmente de acuerdo)"]
 
 VACIAS = set("""
@@ -395,7 +420,7 @@ def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict
     sobre un único reporte.
     """
     ej = datos["ejemplos"]
-    correos = [ej["phishing_1"], ej["legitimo_1"], ej["phishing_2"], ej["legitimo_2"]]
+    correos = [ej[k] for k in CLAVES]
     ind = ej["induccion"]
     sus = _items("## 2. Sección A", "## 3. Sección B")
     pssuq = _items("## 3. Sección B", "## 4. Sección C")
@@ -442,7 +467,7 @@ def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict
     for n, correo in enumerate(correos, 1):
         el.append({"tipo": "pagina", "titulo": f"Sección C. Comprensión: correo {n} de 4",
                    "texto": INSTRUCCION_C if n == 1 else ""})
-        clave = ("phishing_1", "legitimo_1", "phishing_2", "legitimo_2")[n - 1]
+        clave = CLAVES[n - 1]
         el += correo_y_reporte(correo, clave, f"Correo {n}")
         el += [dict(q, tipo="pregunta") for q in preguntas if q["ejemplo"] == n]
     el += [
@@ -571,15 +596,19 @@ def vista_previa(el: list[dict]) -> str:
 
 
 def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser(description="Genera el formulario del panel de R3.3.")
+    ap.add_argument("--version", choices=sorted(VERSIONES), default="principal")
+    _usar_version(ap.parse_args().version)
     datos = json.loads(EJEMPLOS.read_text(encoding="utf-8"))
     SALIDA.mkdir(exist_ok=True)
     el = estructura(datos, generar_imagenes(datos))
     (SALIDA / "crear_formulario.gs").write_text(apps_script(el), encoding="utf-8")
     (SALIDA / "vista_previa.html").write_text(vista_previa(el), encoding="utf-8")
     clave = {
-        "origen": "medios_de_verificacion/experimentos/e9/ejemplos_del_panel.json",
-        "ejemplos": {str(n): datos["ejemplos"][k]["email_id"] for n, k in enumerate(
-            ("phishing_1", "legitimo_1", "phishing_2", "legitimo_2"), 1)},
+        "origen": str(EJEMPLOS.relative_to(BASE)).replace("\\", "/"),
+        "ejemplos": {str(n): datos["ejemplos"][k]["email_id"]
+                     for n, k in enumerate(CLAVES, 1)},
         "preguntas": {e["id"]: {"titulo": e["titulo"], "correcta": e["correcta"],
                                 "opciones": e["opciones"]}
                       for e in el if e["tipo"] == "pregunta"},

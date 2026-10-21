@@ -1,0 +1,103 @@
+{
+  "origen": "medios_de_verificacion/experimentos/e9/ejemplos_del_panel_claridad.json",
+  "ejemplos": {
+    "1": "79f02a89-933a-47fc-a1bf-f9947cc9686b",
+    "2": "f36407aa-5ea4-4c8a-ab86-9f18dc3661ec",
+    "3": "f9d6beca-3ff8-4388-ac2d-60d84c020c0b",
+    "4": "a68f6ab2-d2d5-4570-9914-ea410c4f788e"
+  },
+  "preguntas": {
+    "C1": {
+      "titulo": "C1. Según el reporte, ¿qué palabra tuvo mayor peso en la clasificación de este correo como phishing?",
+      "correcta": "inbox",
+      "opciones": [
+        "account",
+        "transffered",
+        "inbox",
+        "payment"
+      ]
+    },
+    "C2": {
+      "titulo": "C2. Según el reporte, la estructura HTML del correo pesó más que su contenido textual en esta decisión.",
+      "correcta": "Falso",
+      "opciones": [
+        "Verdadero",
+        "Falso"
+      ]
+    },
+    "C3": {
+      "titulo": "C3. Según el reporte, ¿con qué nivel de confianza clasificó el sistema este correo?",
+      "correcta": "Más del 99%",
+      "opciones": [
+        "Menos del 60%",
+        "Entre 60% y 90%",
+        "Entre 90% y 99%",
+        "Más del 99%"
+      ]
+    },
+    "C4": {
+      "titulo": "C4. Según el reporte, ¿qué palabra contribuyó más a que el sistema considerara legítimo este correo?",
+      "correcta": "fedora",
+      "opciones": [
+        "socket",
+        "fedora",
+        "daemon",
+        "invocations"
+      ]
+    },
+    "C5": {
+      "titulo": "C5. Según el reporte, la decisión sobre este correo se apoyó principalmente en su contenido textual.",
+      "correcta": "Verdadero",
+      "opciones": [
+        "Verdadero",
+        "Falso"
+      ]
+    },
+    "C6": {
+      "titulo": "C6. ¿Cuál de estas palabras NO figura entre las que el reporte señala como influyentes?",
+      "correcta": "password",
+      "opciones": [
+        "myaccount",
+        "password",
+        "expires",
+        "notifications"
+      ]
+    },
+    "C7": {
+      "titulo": "C7. Según el reporte, en el bloque de texto «myaccount» tuvo más peso que «notifications».",
+      "correcta": "Falso",
+      "opciones": [
+        "Verdadero",
+        "Falso"
+      ]
+    },
+    "C8": {
+      "titulo": "C8. Según el reporte, ¿qué decidió el sistema sobre este correo?",
+      "correcta": "Phishing, con más del 99% de confianza",
+      "opciones": [
+        "Legítimo, con entre 60% y 90% de confianza",
+        "Phishing, con más del 99% de confianza",
+        "Legítimo, con más del 99% de confianza",
+        "Phishing, con entre 60% y 90% de confianza"
+      ]
+    },
+    "C9": {
+      "titulo": "C9. ¿Cuál de estas palabras está entre las tres que, según el reporte, más influyeron en la decisión?",
+      "correcta": "tdcanadatrust",
+      "opciones": [
+        "access",
+        "tdcanadatrust",
+        "agreement",
+        "account"
+      ]
+    },
+    "C10": {
+      "titulo": "C10. Según el reporte, la estructura HTML del correo no aportó peso a esta decisión.",
+      "correcta": "Verdadero",
+      "opciones": [
+        "Verdadero",
+        "Falso"
+      ]
+    }
+  }
+}
