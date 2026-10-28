@@ -158,8 +158,8 @@ def dibujar_resaltado(texto: str, resultado: dict, destino: Path,
     if actual:
         lineas.append(actual)
 
-    leyenda = ["Sombreado: las palabras con más peso en la decisión (más intenso, más peso).",
-               "Recuadro: las palabras que cita el reporte."]
+    leyenda = ["Sombreado: cuanto más intenso, más pesó esa palabra en la decisión.",
+               "Recuadro: las palabras que aparecen en la explicación."]
     extra = 3 + (1 if resultado.get("truncado") else 0)
     alto_px = int(margen * 2 + alto_linea * (len(lineas) + extra))
     fig.set_size_inches(ancho_px / dpi, alto_px / dpi)

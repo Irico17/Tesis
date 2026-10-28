@@ -299,6 +299,50 @@ def generate_modality_report(explanation: ExplanationInput, max_factors_per_moda
     return MODALITY_REPORT_TEMPLATE.render(**data)
 
 
+# --- Reporte en lenguaje sencillo, para quien lee la alerta ---
+#
+# El reporte técnico de arriba nombra la técnica, usa términos como «contribución
+# agregada» y convive con una narrativa que expresa los pesos en otra escala (el
+# peso crudo de atención, 1.4%, frente a su parte dentro del bloque, 29.9%). Las
+# primeras pruebas del panel mostraron que eso confunde. Esta versión presenta lo
+# mismo, los tres bloques y sus factores, con una sola escala y sin jerga. No
+# cambia ninguna cifra: se construye a partir del mismo `build_modality_report`.
+
+NOMBRES_SENCILLOS: dict[str, str] = {
+    MODALITY_TEXT: "Texto del correo",
+    MODALITY_STRUCTURE: "Diseño del correo (HTML)",
+    MODALITY_NETWORK: "Enlaces y verificación del remitente",
+}
+
+
+def _factor_sencillo(human_name: str) -> str:
+    """'la palabra "inbox"' pasa a «inbox»; 'una cifra "0514"' a 'la cifra «0514»'."""
+    import re as _re
+    m = _re.match(r'^la palabra "(.*)"$', human_name)
+    if m:
+        return f"«{m.group(1)}»"
+    texto = _re.sub(r'"(.*)"', r"«\1»", human_name)
+    return _re.sub(r"^un[a]? ", lambda x: "el " if x.group(0) == "un " else "la ", texto)
+
+
+def reporte_sencillo(estructurado: dict) -> str:
+    """El reporte por modalidad en lenguaje sencillo, a partir de su estructura."""
+    clase = ("PHISHING (intento de fraude)" if estructurado["label"] == 1
+             else "LEGÍTIMO (correo normal)")
+    lineas = [f"Decisión del sistema: {clase}, con {estructurado['confidence_pct']}% de confianza.",
+              "", "¿En qué se basó?"]
+    for b in estructurado["modality_blocks"]:
+        nombre = NOMBRES_SENCILLOS[b["modality"]]
+        factores = [f for f in b["factors"] if f["pct"] > 0]
+        if b["total_pct"] <= 0 or not factores:
+            lineas.append(f"• {nombre}: no influyó en esta decisión.")
+            continue
+        lineas.append(f"• {nombre}: {b['total_pct']}% del peso. Lo que más pesó:")
+        lineas += [f"    {i}. {_factor_sencillo(f['human_name'])}: {f['pct']}%"
+                   for i, f in enumerate(factores, 1)]
+    return "\n".join(lineas)
+
+
 # --- Adaptadores: convierten la salida cruda de cada candidato de R3.1 a ExplanationInput ---
 
 

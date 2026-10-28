@@ -8,7 +8,7 @@
   },
   "preguntas": {
     "C1": {
-      "titulo": "C1. Según el reporte, ¿qué palabra tuvo mayor peso en la clasificación de este correo como phishing?",
+      "titulo": "C1. Según la explicación, ¿qué palabra pesó más para decidir que este correo es phishing?",
       "correcta": "inbox",
       "opciones": [
         "account",
@@ -18,7 +18,7 @@
       ]
     },
     "C2": {
-      "titulo": "C2. Según el reporte, la estructura HTML del correo pesó más que su contenido textual en esta decisión.",
+      "titulo": "C2. Según la explicación, el diseño del correo (HTML) pesó más que su texto.",
       "correcta": "Falso",
       "opciones": [
         "Verdadero",
@@ -26,7 +26,7 @@
       ]
     },
     "C3": {
-      "titulo": "C3. Según el reporte, ¿con qué nivel de confianza clasificó el sistema este correo?",
+      "titulo": "C3. Según la explicación, ¿qué tan seguro está el sistema de su decisión?",
       "correcta": "Más del 99%",
       "opciones": [
         "Menos del 60%",
@@ -36,7 +36,7 @@
       ]
     },
     "C4": {
-      "titulo": "C4. Según el reporte, ¿qué palabra contribuyó más a que el sistema considerara legítimo este correo?",
+      "titulo": "C4. Según la explicación, ¿qué palabra pesó más para decidir que este correo es legítimo?",
       "correcta": "fedora",
       "opciones": [
         "socket",
@@ -46,7 +46,7 @@
       ]
     },
     "C5": {
-      "titulo": "C5. Según el reporte, la decisión sobre este correo se apoyó principalmente en su contenido textual.",
+      "titulo": "C5. Según la explicación, la decisión se basó sobre todo en el texto del correo.",
       "correcta": "Verdadero",
       "opciones": [
         "Verdadero",
@@ -54,7 +54,7 @@
       ]
     },
     "C6": {
-      "titulo": "C6. ¿Cuál de estas palabras NO figura entre las que el reporte señala como influyentes?",
+      "titulo": "C6. ¿Cuál de estas palabras NO aparece en la lista de la explicación?",
       "correcta": "password",
       "opciones": [
         "myaccount",
@@ -64,7 +64,7 @@
       ]
     },
     "C7": {
-      "titulo": "C7. Según el reporte, en el bloque de texto «myaccount» tuvo más peso que «notifications».",
+      "titulo": "C7. Según la explicación, la palabra «myaccount» pesó más que «notifications».",
       "correcta": "Falso",
       "opciones": [
         "Verdadero",
@@ -72,7 +72,7 @@
       ]
     },
     "C8": {
-      "titulo": "C8. Según el reporte, ¿qué decidió el sistema sobre este correo?",
+      "titulo": "C8. Según la explicación, ¿qué decidió el sistema sobre este correo?",
       "correcta": "Phishing, con más del 99% de confianza",
       "opciones": [
         "Legítimo, con entre 60% y 90% de confianza",
@@ -82,7 +82,7 @@
       ]
     },
     "C9": {
-      "titulo": "C9. ¿Cuál de estas palabras está entre las tres que, según el reporte, más influyeron en la decisión?",
+      "titulo": "C9. ¿Cuál de estas palabras está entre las tres que más pesaron, según la explicación?",
       "correcta": "tdcanadatrust",
       "opciones": [
         "access",
@@ -92,7 +92,7 @@
       ]
     },
     "C10": {
-      "titulo": "C10. Según el reporte, la estructura HTML del correo no aportó peso a esta decisión.",
+      "titulo": "C10. Según la explicación, el diseño del correo (HTML) no influyó en esta decisión.",
       "correcta": "Verdadero",
       "opciones": [
         "Verdadero",

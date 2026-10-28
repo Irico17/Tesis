@@ -156,6 +156,10 @@ def _par_para_comparar(ejemplo: dict, diferencia_minima: float = 2.0) -> tuple[s
     return p[0], p[2]
 
 
+def _clase(ejemplo: dict) -> str:
+    return "phishing" if ejemplo["explicacion"]["clase_predicha"] == 1 else "legítimo"
+
+
 def _no_textuales(ejemplo: dict) -> list[str]:
     """Características de estructura y red que el reporte cita con peso, en orden."""
     b = _bloques(ejemplo)
@@ -236,56 +240,51 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
 
     return [
         {"id": "C1", "ejemplo": 1, "tipo": "opcion",
-         "titulo": ("C1. Según el reporte, ¿qué palabra tuvo mayor peso en la "
-                    "clasificación de este correo como phishing?"),
+         "titulo": (f"C1. Según la explicación, ¿qué palabra pesó más para decidir que "
+                    f"este correo es {_clase(e1)}?"),
          "opciones": _barajar([p1[0], p1[1]] + _distractores(e1), "C1", p1[0]),
          "correcta": p1[0]},
         {"id": "C2", "ejemplo": 1, "tipo": "vf",
-         "titulo": ("C2. Según el reporte, la estructura HTML del correo pesó más que "
-                    "su contenido textual en esta decisión."),
+         "titulo": ("C2. Según la explicación, el diseño del correo (HTML) pesó más que "
+                    "su texto."),
          "opciones": vf, "correcta": "Verdadero" if estructura_pesa_mas else "Falso"},
         {"id": "C3", "ejemplo": 1, "tipo": "opcion",
-         "titulo": ("C3. Según el reporte, ¿con qué nivel de confianza clasificó el "
-                    "sistema este correo?"),
+         "titulo": "C3. Según la explicación, ¿qué tan seguro está el sistema de su decisión?",
          "opciones": ["Menos del 60%", "Entre 60% y 90%", "Entre 90% y 99%", "Más del 99%"],
          "correcta": _banda_de_confianza(conf1)},
         {"id": "C4", "ejemplo": 2, "tipo": "opcion",
-         "titulo": ("C4. Según el reporte, ¿qué palabra contribuyó más a que el sistema "
-                    "considerara legítimo este correo?"),
+         "titulo": (f"C4. Según la explicación, ¿qué palabra pesó más para decidir que "
+                    f"este correo es {_clase(e2)}?"),
          "opciones": _barajar([p2[0], p2[1]] + _distractores(e2), "C4", p2[0]),
          "correcta": p2[0]},
         {"id": "C5", "ejemplo": 2, "tipo": "vf",
-         "titulo": ("C5. Según el reporte, la decisión sobre este correo se apoyó "
-                    "principalmente en su contenido textual."),
+         "titulo": "C5. Según la explicación, la decisión se basó sobre todo en el texto del correo.",
          "opciones": vf, "correcta": "Verdadero" if texto_domina else "Falso"},
         ({"id": "C6", "ejemplo": 3, "tipo": "opcion",
-          "titulo": ("C6. Según el reporte, ¿cuál de estas características de la "
-                     "estructura HTML o de la red influyó en la decisión sobre este "
-                     "correo?"),
+          "titulo": ("C6. Además del texto, ¿qué otra cosa influyó en esta decisión, "
+                     "según la explicación?"),
           "opciones": _barajar([no_textuales[0]] + _caracteristicas_no_citadas(e3, 3),
                                "C6", no_textuales[0]),
           "correcta": no_textuales[0]}
          if no_textuales else
          {"id": "C6", "ejemplo": 3, "tipo": "opcion",
-          "titulo": ("C6. ¿Cuál de estas palabras NO figura entre las que el reporte "
-                     "señala como influyentes?"),
+          "titulo": "C6. ¿Cuál de estas palabras NO aparece en la lista de la explicación?",
           "opciones": _barajar(p3[:3] + [no_citada], "C6", no_citada),
           "correcta": no_citada}),
         {"id": "C7", "ejemplo": 3, "tipo": "vf",
-         "titulo": ("C7. Según el reporte, en el bloque de texto «{1}» tuvo más peso "
-                    "que «{0}».".format(*_par_para_comparar(e3))),
+         "titulo": ("C7. Según la explicación, la palabra «{1}» pesó más que «{0}»."
+                    .format(*_par_para_comparar(e3))),
          "opciones": vf, "correcta": "Falso"},
         {"id": "C8", "ejemplo": 4, "tipo": "opcion",
-         "titulo": "C8. Según el reporte, ¿qué decidió el sistema sobre este correo?",
+         "titulo": "C8. Según la explicación, ¿qué decidió el sistema sobre este correo?",
          "opciones": _barajar(c8_ops, "C8", c8_correcta), "correcta": c8_correcta},
         {"id": "C9", "ejemplo": 4, "tipo": "opcion",
-         "titulo": ("C9. ¿Cuál de estas palabras está entre las tres que, según el "
-                    "reporte, más influyeron en la decisión?"),
+         "titulo": ("C9. ¿Cuál de estas palabras está entre las tres que más pesaron, "
+                    "según la explicación?"),
          "opciones": _barajar([p4[1]] + _distractores(e4, 3), "C9", p4[1]),
          "correcta": p4[1]},
         {"id": "C10", "ejemplo": 4, "tipo": "vf",
-         "titulo": ("C10. Según el reporte, la estructura HTML del correo no aportó "
-                    "peso a esta decisión."),
+         "titulo": "C10. Según la explicación, el diseño del correo (HTML) no influyó en esta decisión.",
          "opciones": vf, "correcta": "Verdadero" if sin_estructura else "Falso"},
     ]
 
@@ -295,54 +294,58 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
 # --------------------------------------------------------------------------
 
 PRESENTACION = (
-    "Este formulario forma parte de la tesis de Ingeniería Informática de {autor} "
-    "(PUCP), sobre detección de phishing en correo electrónico con inteligencia "
-    "artificial explicable. El sistema clasifica cada correo como phishing o legítimo "
-    "y genera un reporte que explica qué factores pesaron en esa decisión. Queremos "
-    "saber si ese reporte se entiende.\n\n"
-    "Tomará unos 20 minutos. Verás un ejemplo guiado, leerás cuatro correos reales con "
-    "su reporte y contestarás diez preguntas sobre lo que el reporte dice y, al final, "
-    "responderás dos cuestionarios breves de opinión. Las preguntas de comprensión "
-    "tienen respuestas correctas, pero no te evalúan a ti: miden si el reporte "
-    "comunica bien. Las de opinión no tienen respuestas correctas.\n\n"
-    "La participación es voluntaria y anónima. No se registra tu nombre ni tu correo, "
-    "y las respuestas se analizan de forma agregada. Puedes retirarte en cualquier "
-    "momento cerrando el formulario.\n\n"
-    "Seguridad: los correos son ejemplos reales, de phishing y legítimos. Sus enlaces "
-    "están desactivados (hxxp, [.]) y se han ocultado los teléfonos. En los de "
-    "phishing se muestra el dominio de cada dirección, también desactivado, porque "
-    "es parte de la evidencia; en los legítimos, las direcciones se ocultan. No "
-    "intentes abrir ningún enlace.\n\n"
+    "Este formulario es parte de una tesis de Ingeniería Informática ({autor}, PUCP). "
+    "Construimos un sistema que detecta correos de phishing (correos que intentan "
+    "engañarte) y que explica por qué tomó cada decisión. Queremos saber si esas "
+    "explicaciones se entienden.\n\n"
+    "Verás un ejemplo resuelto y luego 4 correos, cada uno con su explicación. Por "
+    "cada correo responderás 2 o 3 preguntas cortas; al final, dos cuestionarios de "
+    "opinión. Toma unos 15 a 20 minutos.\n\n"
+    "No necesitas saber de seguridad ni entender todo el inglés de los correos: las "
+    "preguntas se responden mirando la explicación. No te evaluamos a ti, sino a la "
+    "explicación.\n\n"
+    "Es voluntario y anónimo. Los enlaces de los correos están desactivados; no "
+    "intentes abrirlos.\n\n"
     "Consultas: {contacto}"
 )
 
-CONSENTIMIENTO = ("Confirmo que participo de forma voluntaria, que puedo retirarme en "
-                  "cualquier momento y que mis respuestas se usarán de forma anónima y "
-                  "agregada con fines de investigación.")
+CONSENTIMIENTO = ("Acepto participar de forma voluntaria y anónima, y sé que puedo "
+                  "dejar el formulario cuando quiera.")
 
 COMO_LEER = (
-    "Abajo hay un ejemplo resuelto; no forma parte de las preguntas.\n\n"
-    "• El correo aparece con sus palabras sombreadas: más intenso, más pesó en la "
-    "decisión. Las que cita el reporte llevan recuadro.\n"
-    "• El reporte empieza con una frase que resume la decisión (phishing o "
-    "legítimo), la confianza y las tres palabras que más influyeron.\n"
-    "• Luego divide el peso en tres bloques: texto, estructura HTML y red y "
-    "autenticación. Cada bloque muestra su porcentaje y sus factores, de mayor a "
-    "menor; si no pesó, dice «sin peso en esta decisión».\n"
-    "• Si el sistema se fijó en algo que no es una palabra, lo nombra por su tipo "
-    "(un signo, una cifra, una abreviatura) junto al texto exacto.\n"
-    "• La síntesis final dice qué bloque sustentó la decisión."
+    "Cada explicación tiene tres partes:\n"
+    "1. La decisión: si el correo es phishing o legítimo, y qué tan seguro está el "
+    "sistema (en %).\n"
+    "2. En qué se basó: qué partes del correo pesaron más, en orden. Casi siempre es "
+    "el texto; a veces también el diseño del correo o sus enlaces.\n"
+    "3. La imagen del correo: las palabras más sombreadas son las que más pesaron.\n\n"
+    "Abajo tienes un ejemplo ya explicado. No se evalúa."
 )
 
-INSTRUCCION_A = ("Piensa en los reportes de explicación que leíste. Para cada "
-                 "afirmación, indica tu grado de acuerdo: 1 = totalmente en desacuerdo, "
-                 "5 = totalmente de acuerdo. No hay respuestas correctas o incorrectas.")
-INSTRUCCION_B = ("Las siguientes afirmaciones tratan sobre la utilidad del reporte, la "
-                 "claridad de su información y su presentación. Usa la misma escala de "
-                 "1 a 5.")
-INSTRUCCION_C = ("Ahora verás cuatro correos reales ya clasificados por el sistema, cada uno "
-                 "con su reporte. Léelos con calma y responde basándote únicamente en lo "
-                 "que dice el reporte.")
+INSTRUCCION_A = ("¿Qué te parecieron las explicaciones? Marca de 1 (totalmente en "
+                 "desacuerdo) a 5 (totalmente de acuerdo). No hay respuestas correctas.")
+INSTRUCCION_B = "Unas preguntas más de opinión, con la misma escala de 1 a 5."
+INSTRUCCION_C = ("Ahora, 4 correos reales. Responde según lo que dice la explicación, "
+                 "no según lo que tú opinas del correo.")
+
+
+def _ejemplo_resuelto(ej: dict) -> str:
+    """El ejemplo guiado contado en palabras, a partir de su propio reporte."""
+    est = ej["explicacion"]["estructurado"]
+    clase = "phishing" if est["label"] == 1 else "legítimo"
+    texto = next(b for b in est["modality_blocks"] if b["modality"] == "texto")
+    palabras = [f"«{f['name']}»" for f in texto["factors"][:3]]
+    otros = [b for b in est["modality_blocks"] if b["modality"] != "texto" and b["total_pct"] > 0]
+    sys.path.insert(0, str(BASE / "src"))
+    from phishing_model.xai.narrative import NOMBRES_SENCILLOS
+    cierre = ("El diseño del correo y sus enlaces no influyeron." if not otros else
+              "También influyó, aunque poco: " + ", ".join(
+                  f"{NOMBRES_SENCILLOS[b['modality']].lower()} ({b['total_pct']}%)"
+                  for b in otros) + ".")
+    return (f"En este ejemplo, el sistema decidió que el correo es {clase}, con "
+            f"{est['confidence_pct']}% de confianza. Se basó casi solo en el texto: las "
+            f"palabras que más pesaron fueron {', '.join(palabras[:-1])} y {palabras[-1]}, "
+            f"que en la imagen aparecen con recuadro. {cierre}")
 
 
 def _ejemplo_texto(ej: dict) -> str:
@@ -403,8 +406,15 @@ def generar_imagenes(datos: dict) -> dict[str, str]:
 
 
 def _reporte_texto(ej: dict) -> str:
-    exp = ej["explicacion"]
-    return f"{exp['narrativa']}\n\n{exp['reporte_por_modalidad'].strip()}"
+    """La explicación que ve el evaluador: el reporte en lenguaje sencillo del módulo.
+
+    El reporte técnico y su narrativa expresan los pesos en dos escalas distintas
+    y usan términos que las primeras pruebas mostraron confusos; esta versión dice
+    lo mismo con una sola escala (ver `narrative.reporte_sencillo`).
+    """
+    sys.path.insert(0, str(BASE / "src"))
+    from phishing_model.xai.narrative import reporte_sencillo
+    return reporte_sencillo(ej["explicacion"]["estructurado"])
 
 
 # --------------------------------------------------------------------------
@@ -444,7 +454,7 @@ def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict
          "titulo": ("P3. ¿Tienes formación o experiencia en ciberseguridad (cursos, trabajo "
                     "en un centro de operaciones de seguridad, competencias tipo CTF)?"),
          "opciones": ["Sí", "No"]},
-        {"tipo": "pagina", "titulo": "Cómo leer el reporte", "texto": COMO_LEER},
+        {"tipo": "pagina", "titulo": "Cómo leer la explicación", "texto": COMO_LEER},
     ]
     imagenes = imagenes or {}
 
@@ -460,22 +470,24 @@ def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict
                       "texto": f"Asunto: {ej['asunto']}"}
         else:
             correo = {"tipo": "texto", "titulo": titulo, "texto": _ejemplo_texto(ej)}
-        return [correo, {"tipo": "texto", "titulo": f"Reporte del sistema: {titulo.lower()}",
+        return [correo, {"tipo": "texto", "titulo": f"Explicación del sistema: {titulo.lower()}",
                          "texto": _reporte_texto(ej)}]
 
-    el += correo_y_reporte(ind, "induccion", "Ejemplo guiado")
+    el += correo_y_reporte(ind, "induccion", "Ejemplo resuelto")
+    el.append({"tipo": "texto", "titulo": "Cómo se lee este ejemplo",
+               "texto": _ejemplo_resuelto(ind)})
     for n, correo in enumerate(correos, 1):
-        el.append({"tipo": "pagina", "titulo": f"Sección C. Comprensión: correo {n} de 4",
+        el.append({"tipo": "pagina", "titulo": f"Correo {n} de 4",
                    "texto": INSTRUCCION_C if n == 1 else ""})
         clave = CLAVES[n - 1]
         el += correo_y_reporte(correo, clave, f"Correo {n}")
         el += [dict(q, tipo="pregunta") for q in preguntas if q["ejemplo"] == n]
     el += [
-        {"tipo": "pagina", "titulo": "Sección A. Opinión sobre los reportes (1 de 2)",
+        {"tipo": "pagina", "titulo": "Tu opinión (1 de 2)",
          "texto": INSTRUCCION_A},
         {"tipo": "rejilla", "id": "A", "titulo": "Grado de acuerdo (1 a 5)",
          "filas": [f"A{i}. {t}" for i, t in enumerate(sus, 1)]},
-        {"tipo": "pagina", "titulo": "Sección B. Opinión sobre los reportes (2 de 2)",
+        {"tipo": "pagina", "titulo": "Tu opinión (2 de 2)",
          "texto": INSTRUCCION_B},
         {"tipo": "rejilla", "id": "B", "titulo": "Grado de acuerdo (1 a 5)",
          "filas": [f"B{i}. {t}" for i, t in enumerate(pssuq, 1)]},

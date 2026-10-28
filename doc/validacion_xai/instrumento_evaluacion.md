@@ -48,16 +48,16 @@ Instrucciones para el evaluador: *"A continuación hay 10 afirmaciones sobre el 
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
-| 1 | Creo que usaría este reporte de explicación con frecuencia si tuviera que revisar correos sospechosos regularmente. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 2 | Encontré que este reporte de explicación es innecesariamente complejo. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 3 | Pensé que este reporte de explicación era fácil de entender. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 4 | Creo que necesitaría el apoyo de una persona técnica para poder interpretar este reporte de explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 5 | Encontré que los distintos elementos de este reporte de explicación (factores, pesos, justificación) estaban bien integrados entre sí. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 6 | Pensé que había demasiada inconsistencia en cómo se presenta este reporte de explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 7 | Me imagino que la mayoría de las personas aprendería a interpretar este reporte de explicación muy rápidamente. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 8 | Encontré este reporte de explicación muy engorroso/incómodo de leer. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 9 | Sentí mucha confianza al interpretar este reporte de explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 10 | Necesité aprender muchas cosas antes de poder entender este reporte de explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 1 | Creo que usaría esta explicación con frecuencia si tuviera que revisar correos sospechosos regularmente. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 2 | Encontré que esta explicación es innecesariamente compleja. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 3 | Pensé que esta explicación era fácil de entender. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 4 | Creo que necesitaría el apoyo de una persona técnica para poder interpretar esta explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 5 | Encontré que las partes de esta explicación encajaban bien entre sí. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 6 | Pensé que había demasiada inconsistencia en cómo se presenta esta explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 7 | Me imagino que la mayoría de las personas aprendería a interpretar esta explicación muy rápidamente. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 8 | Encontré esta explicación muy engorrosa o incómoda de leer. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 9 | Sentí mucha confianza al interpretar esta explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 10 | Necesité aprender muchas cosas antes de poder entender esta explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 ### Scoring SUS (estándar, adaptado a escala 1–5 que ya usa el original de Brooke)
 
@@ -80,37 +80,37 @@ Instrucciones para el evaluador: *"Las siguientes 16 afirmaciones son sobre dist
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
-| 1 | En general, la facilidad de uso de este reporte de explicación me resulta satisfactoria. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 2 | Fue sencillo entender por qué el sistema clasificó el correo como lo hizo, usando este reporte. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 3 | Pude identificar rápidamente los factores clave que llevaron a la clasificación. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 4 | Pude interpretar el reporte de forma eficiente, sin pasos innecesarios. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 5 | Usar este reporte de explicación me resultó cómodo. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 6 | Fue fácil aprender a interpretar este tipo de reporte. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 1 | En general, la facilidad de uso de esta explicación me resulta satisfactoria. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 2 | Fue sencillo entender por qué el sistema clasificó el correo como lo hizo, usando la explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 3 | Pude identificar rápidamente qué llevó al sistema a su decisión. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 4 | Pude interpretar la explicación de forma eficiente, sin pasos innecesarios. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 5 | Usar esta explicación me resultó cómodo. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 6 | Fue fácil aprender a interpretar este tipo de explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 #### B.2 — Subescala "Calidad de la Información" (InfoQual) — ítems 7 a 12
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
-| 7 | La información presentada en el reporte (factores, pesos, justificación textual) fue clara. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 8 | Fue fácil encontrar la información que necesitaba dentro del reporte para entender la decisión. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 9 | La información del reporte fue fácil de entender. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 7 | La información de la explicación fue clara. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 8 | Fue fácil encontrar la información que necesitaba dentro de la explicación para entender la decisión. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 9 | La información de la explicación fue fácil de entender. | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 10 | La información fue efectiva para ayudarme a entender por qué el correo fue clasificado así. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 11 | La organización de la información dentro del reporte (orden de los factores, jerarquía de pesos) fue clara. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 12 | Confío en que la información del reporte refleja razones reales de la clasificación, no una justificación genérica. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 11 | El orden de la información (de lo que más pesó a lo que menos) fue claro. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 12 | Confío en que la información de la explicación refleja razones reales de la clasificación, no una justificación genérica. | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 #### B.3 — Subescala "Calidad de la Interfaz" (IntQual) — ítems 13 a 15
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
-| 13 | La forma en que se presenta visualmente el reporte (formato, íconos, resaltado de factores) fue agradable. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 14 | Me gustó la manera en que el reporte comunica los factores y sus pesos. | ☐ | ☐ | ☐ | ☐ | ☐ |
-| 15 | El reporte tiene toda la información que esperaría encontrar en una explicación de este tipo. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 13 | La forma en que se ve la explicación (formato y palabras sombreadas) fue agradable. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 14 | Me gustó la manera en que la explicación muestra lo que más pesó. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 15 | La explicación tiene toda la información que esperaría encontrar en una explicación de este tipo. | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 #### B.4 — Ítem de satisfacción general — ítem 16
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
-| 16 | En general, este reporte de explicación me resulta satisfactorio. | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 16 | En general, esta explicación me resulta satisfactoria. | ☐ | ☐ | ☐ | ☐ | ☐ |
 
 ### Scoring PSSUQ
 
@@ -134,6 +134,8 @@ Esta sección es la que responde directamente al resultado **R3.3** de la tesis:
 La sección usa **cuatro correos reales** del conjunto de prueba, todos correctamente clasificados por el modelo reportado: dos de phishing y dos legítimos, presentados en orden alterno. Un quinto correo de phishing se usa solo en la inducción. Los selecciona `scripts/experimentos/e9_ejemplos_del_panel.py` con criterios fijos y registrados en su informe (`medios_de_verificacion/experimentos/e9/ejemplos_del_panel.json`): idioma inglés o español, cuerpo legible, palabras decisivas legibles y visibles en el correo mostrado, ninguna repetida y, en los legítimos, ninguna que sea un nombre propio. Los enlaces se desactivan y se ocultan los teléfonos. En los correos de phishing, el dominio de cada dirección se muestra desactivado, porque es evidencia, y solo se oculta la parte local; en los legítimos, las direcciones se ocultan enteras. Los factores del reporte que no son palabras legibles (signos, cifras, fragmentos codificados) se nombran por su tipo.
 
 Excepción declarada: el correo 3 se impone fuera de esos criterios. Ningún correo que los cumpla tiene peso de estructura o de red en su reporte, y sin uno así las preguntas sobre esos bloques no tendrían contenido. Entre los 62 correos bien clasificados cuyo reporte da algún peso no textual (`candidatos_no_textuales.json`), casi todos son publicidad, contenido adulto o están en otro idioma. Se eligió el que mejor se entiende: un phishing de credenciales («tu contraseña expira en 24 horas») cuyo reporte cita «expires», «account» y «helpdesk» y atribuye a la red un 0.4%. Incumple dos filtros previos: su confianza (95.6%) es menor que 99% y la detección de idioma por tramos no lo clasifica. Su primer factor es un signo. Sobre él, C6 pregunta qué característica de estructura o de red influyó.
+
+Lenguaje sencillo (ajuste tras una prueba piloto, 27 de octubre de 2026): dos personas a las que se envió el formulario lo encontraron denso y técnico. El evaluador ve ahora el reporte en lenguaje sencillo que produce el módulo (`narrative.reporte_sencillo`). Dice lo mismo que el reporte técnico, los tres bloques con sus factores y las mismas cifras, pero con una sola escala de porcentajes y sin términos como «contribución agregada» o «atención intrínseca». La presentación, la guía, el ejemplo resuelto (ahora explicado en palabras) y las preguntas usan ese mismo lenguaje, y los ítems del SUS y del PSSUQ se adaptaron a él. Las preguntas miden lo mismo y tienen las mismas respuestas correctas.
 
 Para no alargar el formulario, cada correo se muestra una sola vez, como imagen con sus palabras sombreadas y el asunto encima. Los bloques del reporte sin peso se resumen en una línea: «sin peso en esta decisión».
 
