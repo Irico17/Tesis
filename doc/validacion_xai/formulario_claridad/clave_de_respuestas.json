@@ -18,11 +18,13 @@
       ]
     },
     "C2": {
-      "titulo": "C2. Según la explicación, el diseño del correo (HTML) pesó más que su texto.",
-      "correcta": "Falso",
+      "titulo": "C2. Según la explicación, ¿qué parte del correo pesó más en esta decisión?",
+      "correcta": "Texto del correo",
       "opciones": [
-        "Verdadero",
-        "Falso"
+        "Enlaces y verificación del remitente",
+        "Las tres pesaron lo mismo",
+        "Texto del correo",
+        "Diseño del correo (HTML)"
       ]
     },
     "C3": {
@@ -46,8 +48,8 @@
       ]
     },
     "C5": {
-      "titulo": "C5. Según la explicación, la decisión se basó sobre todo en el texto del correo.",
-      "correcta": "Verdadero",
+      "titulo": "C5. Este correo contiene enlaces. Según la explicación, los enlaces y la verificación del remitente influyeron en esta decisión.",
+      "correcta": "Falso",
       "opciones": [
         "Verdadero",
         "Falso"
@@ -92,7 +94,7 @@
       ]
     },
     "C10": {
-      "titulo": "C10. Según la explicación, el diseño del correo (HTML) no influyó en esta decisión.",
+      "titulo": "C10. El correo original tiene formato HTML. Según la explicación, su diseño no influyó en esta decisión.",
       "correcta": "Verdadero",
       "opciones": [
         "Verdadero",

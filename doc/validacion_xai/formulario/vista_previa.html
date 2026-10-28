@@ -7,7 +7,7 @@
     td:not(:first-child),th{text-align:center;width:36px} ul{list-style:none;padding-left:8px}
     .q{margin:14px 0} .caja{border:1px solid #999;height:80px}
     @media print{h2{page-break-before:always}}</style></head><body><h1>Evaluación de explicaciones de un detector de phishing</h1>
-<p class='desc'>Este formulario es parte de una tesis de Ingeniería Informática (Cristhofer Alegre, PUCP). Construimos un sistema que detecta correos de phishing (correos que intentan engañarte) y que explica por qué tomó cada decisión. Queremos saber si esas explicaciones se entienden.<br><br>Verás un ejemplo resuelto y luego 4 correos, cada uno con su explicación. Por cada correo responderás 2 o 3 preguntas cortas; al final, dos cuestionarios de opinión. Toma unos 15 a 20 minutos.<br><br>No necesitas saber de seguridad ni entender todo el inglés de los correos: las preguntas se responden mirando la explicación. No te evaluamos a ti, sino a la explicación.<br><br>Es voluntario y anónimo. Los enlaces de los correos están desactivados; no intentes abrirlos.<br><br>Consultas: a20210577@pucp.edu.pe</p>
+<p class='desc'>Este formulario es parte de una tesis de Ingeniería Informática (Cristhofer Alegre, PUCP). Construimos un sistema que detecta correos de phishing (correos que intentan engañarte) y que explica por qué tomó cada decisión. Queremos saber si esas explicaciones se entienden.<br><br>Verás un ejemplo resuelto y luego 4 correos, cada uno con su explicación. Por cada correo responderás 2 o 3 preguntas cortas; al final, dos cuestionarios de opinión. Toma unos 15 minutos.<br><br>No necesitas saber de seguridad ni entender todo el inglés de los correos: las preguntas se responden mirando la explicación. No te evaluamos a ti, sino a la explicación.<br><br>Es voluntario y anónimo. Los enlaces de los correos están desactivados; no intentes abrirlos.<br><br>Consultas: a20210577@pucp.edu.pe</p>
 <div class='q'><p><b>Acepto participar de forma voluntaria y anónima, y sé que puedo dejar el formulario cuando quiera.</b></p><ul><li>&#9711; Acepto participar</li><li>&#9711; No acepto</li></ul></div>
 <h2>Sobre ti</h2>
 <p class='desc'>Estas preguntas solo sirven para describir al grupo de participantes.</p>
@@ -16,7 +16,7 @@
 <div class='q'><p><b>P3. ¿Tienes formación o experiencia en ciberseguridad (cursos, trabajo en un centro de operaciones de seguridad, competencias tipo CTF)?</b></p><ul><li>&#9711; Sí</li><li>&#9711; No</li></ul></div>
 <h2>Cómo leer la explicación</h2>
 <p class='desc'>Cada explicación tiene tres partes:<br>1. La decisión: si el correo es phishing o legítimo, y qué tan seguro está el sistema (en %).<br>2. En qué se basó: qué partes del correo pesaron más, en orden. Casi siempre es el texto; a veces también el diseño del correo o sus enlaces.<br>3. La imagen del correo: las palabras más sombreadas son las que más pesaron.<br><br>Abajo tienes un ejemplo ya explicado. No se evalúa.</p>
-<h3>Ejemplo resuelto</h3><p class='desc'>Asunto: monkey.org Password update</p><img src='resaltado_induccion.png' style='width:100%'>
+<h3>Ejemplo resuelto</h3><p class='desc'>Asunto: monkey.org Password update<br>El correo original tiene formato HTML (diseño), con 2 enlaces; aquí se muestra solo su texto.</p><img src='resaltado_induccion.png' style='width:100%'>
 <h3>Explicación del sistema: ejemplo resuelto</h3><pre>Decisión del sistema: PHISHING (intento de fraude), con 100.0% de confianza.
 
 ¿En qué se basó?
@@ -31,7 +31,7 @@
 <h3>Cómo se lee este ejemplo</h3><pre>En este ejemplo, el sistema decidió que el correo es phishing, con 100.0% de confianza. Se basó casi solo en el texto: las palabras que más pesaron fueron «notifications», «expires» y «myaccount», que en la imagen aparecen con recuadro. El diseño del correo y sus enlaces no influyeron.</pre>
 <h2>Correo 1 de 4</h2>
 <p class='desc'>Ahora, 4 correos reales. Responde según lo que dice la explicación, no según lo que tú opinas del correo.</p>
-<h3>Correo 1</h3><p class='desc'>Asunto: USAA REQUEST YOUR APPROVAL FOR AN INCOMING ACCOUNT DEPOSIT</p><img src='resaltado_phishing_1.png' style='width:100%'>
+<h3>Correo 1</h3><p class='desc'>Asunto: USAA REQUEST YOUR APPROVAL FOR AN INCOMING ACCOUNT DEPOSIT<br>El correo original tiene formato HTML (diseño), con 12 imágenes y 11 enlaces; aquí se muestra solo su texto.</p><img src='resaltado_phishing_1.png' style='width:100%'>
 <h3>Explicación del sistema: correo 1</h3><pre>Decisión del sistema: PHISHING (intento de fraude), con 99.6% de confianza.
 
 ¿En qué se basó?
@@ -44,7 +44,7 @@
 • Diseño del correo (HTML): no influyó en esta decisión.
 • Enlaces y verificación del remitente: no influyó en esta decisión.</pre>
 <div class='q'><p><b>C1. Según la explicación, ¿qué palabra pesó más para decidir que este correo es phishing?</b></p><ul><li>&#9711; account</li><li>&#9711; transffered</li><li>&#9711; inbox</li><li>&#9711; payment</li></ul></div>
-<div class='q'><p><b>C2. Según la explicación, el diseño del correo (HTML) pesó más que su texto.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
+<div class='q'><p><b>C2. Según la explicación, ¿qué parte del correo pesó más en esta decisión?</b></p><ul><li>&#9711; Enlaces y verificación del remitente</li><li>&#9711; Las tres pesaron lo mismo</li><li>&#9711; Texto del correo</li><li>&#9711; Diseño del correo (HTML)</li></ul></div>
 <div class='q'><p><b>C3. Según la explicación, ¿qué tan seguro está el sistema de su decisión?</b></p><ul><li>&#9711; Menos del 60%</li><li>&#9711; Entre 60% y 90%</li><li>&#9711; Entre 90% y 99%</li><li>&#9711; Más del 99%</li></ul></div>
 <h2>Correo 2 de 4</h2>
 <h3>Correo 2</h3><p class='desc'>Asunto: Re: how to enable/start &quot;git@.service&quot; via systemd?</p><img src='resaltado_legitimo_1.png' style='width:100%'>
@@ -60,7 +60,7 @@
 • Diseño del correo (HTML): no influyó en esta decisión.
 • Enlaces y verificación del remitente: no influyó en esta decisión.</pre>
 <div class='q'><p><b>C4. Según la explicación, ¿qué palabra pesó más para decidir que este correo es legítimo?</b></p><ul><li>&#9711; socket</li><li>&#9711; fedora</li><li>&#9711; daemon</li><li>&#9711; invocations</li></ul></div>
-<div class='q'><p><b>C5. Según la explicación, la decisión se basó sobre todo en el texto del correo.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
+<div class='q'><p><b>C5. Este correo contiene enlaces. Según la explicación, los enlaces y la verificación del remitente influyeron en esta decisión.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <h2>Correo 3 de 4</h2>
 <h3>Correo 3</h3><p class='desc'>Asunto: RE: ITS HELP DESK: PASSWORD UPDATE</p><img src='resaltado_phishing_2.png' style='width:100%'>
 <h3>Explicación del sistema: correo 3</h3><pre>Decisión del sistema: PHISHING (intento de fraude), con 95.6% de confianza.
@@ -76,7 +76,7 @@
 • Enlaces y verificación del remitente: 0.4% del peso. Lo que más pesó:
     1. la cantidad de subdominios en las URLs: 0.2%
     2. la cantidad de URLs reportadas: 0.1%</pre>
-<div class='q'><p><b>C6. Además del texto, ¿qué otra cosa influyó en esta decisión, según la explicación?</b></p><ul><li>&#9711; la cantidad de enlaces</li><li>&#9711; el uso de un acortador de enlaces</li><li>&#9711; la longitud del mensaje</li><li>&#9711; la cantidad de subdominios en las URLs</li></ul></div>
+<div class='q'><p><b>C6. Además del texto, ¿qué otra cosa influyó en esta decisión, según la explicación?</b></p><ul><li>&#9711; el uso de un acortador de enlaces</li><li>&#9711; la longitud del mensaje</li><li>&#9711; la presencia de código HTML</li><li>&#9711; la cantidad de subdominios en las URLs</li></ul></div>
 <div class='q'><p><b>C7. Según la explicación, la palabra «helpdesk» pesó más que «expires».</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <h2>Correo 4 de 4</h2>
 <h3>Correo 4</h3><p class='desc'>Asunto: Mysterious autostart behaviour</p><img src='resaltado_legitimo_2.png' style='width:100%'>
@@ -93,7 +93,7 @@
 • Enlaces y verificación del remitente: no influyó en esta decisión.</pre>
 <div class='q'><p><b>C8. Según la explicación, ¿qué decidió el sistema sobre este correo?</b></p><ul><li>&#9711; Legítimo, con entre 60% y 90% de confianza</li><li>&#9711; Phishing, con más del 99% de confianza</li><li>&#9711; Legítimo, con más del 99% de confianza</li><li>&#9711; Phishing, con entre 60% y 90% de confianza</li></ul></div>
 <div class='q'><p><b>C9. ¿Cuál de estas palabras está entre las tres que más pesaron, según la explicación?</b></p><ul><li>&#9711; around</li><li>&#9711; listed</li><li>&#9711; qbittorrent</li><li>&#9711; anywhere</li></ul></div>
-<div class='q'><p><b>C10. Según la explicación, el diseño del correo (HTML) no influyó en esta decisión.</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
+<div class='q'><p><b>C10. Según la explicación, la palabra «kde» pesó más que «ktorrent».</b></p><ul><li>&#9711; Verdadero</li><li>&#9711; Falso</li></ul></div>
 <h2>Tu opinión (1 de 2)</h2>
 <p class='desc'>¿Qué te parecieron las explicaciones? Marca de 1 (totalmente en desacuerdo) a 5 (totalmente de acuerdo). No hay respuestas correctas.</p>
 <p class='desc'>1 = totalmente en desacuerdo; 5 = totalmente de acuerdo.</p><table><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><td>A1. Creo que usaría esta explicación con frecuencia si tuviera que revisar correos sospechosos regularmente.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A2. Encontré que esta explicación es innecesariamente compleja.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A3. Pensé que esta explicación era fácil de entender.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A4. Creo que necesitaría el apoyo de una persona técnica para poder interpretar esta explicación.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A5. Encontré que las partes de esta explicación encajaban bien entre sí.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A6. Pensé que había demasiada inconsistencia en cómo se presenta esta explicación.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A7. Me imagino que la mayoría de las personas aprendería a interpretar esta explicación muy rápidamente.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A8. Encontré esta explicación muy engorrosa o incómoda de leer.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A9. Sentí mucha confianza al interpretar esta explicación.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr><tr><td>A10. Necesité aprender muchas cosas antes de poder entender esta explicación.</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td><td>&#9711;</td></tr></table>

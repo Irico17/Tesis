@@ -18,11 +18,13 @@
       ]
     },
     "C2": {
-      "titulo": "C2. Según la explicación, el diseño del correo (HTML) pesó más que su texto.",
-      "correcta": "Falso",
+      "titulo": "C2. Según la explicación, ¿qué parte del correo pesó más en esta decisión?",
+      "correcta": "Texto del correo",
       "opciones": [
-        "Verdadero",
-        "Falso"
+        "Enlaces y verificación del remitente",
+        "Las tres pesaron lo mismo",
+        "Texto del correo",
+        "Diseño del correo (HTML)"
       ]
     },
     "C3": {
@@ -46,8 +48,8 @@
       ]
     },
     "C5": {
-      "titulo": "C5. Según la explicación, la decisión se basó sobre todo en el texto del correo.",
-      "correcta": "Verdadero",
+      "titulo": "C5. Este correo contiene enlaces. Según la explicación, los enlaces y la verificación del remitente influyeron en esta decisión.",
+      "correcta": "Falso",
       "opciones": [
         "Verdadero",
         "Falso"
@@ -57,9 +59,9 @@
       "titulo": "C6. Además del texto, ¿qué otra cosa influyó en esta decisión, según la explicación?",
       "correcta": "la cantidad de subdominios en las URLs",
       "opciones": [
-        "la cantidad de enlaces",
         "el uso de un acortador de enlaces",
         "la longitud del mensaje",
+        "la presencia de código HTML",
         "la cantidad de subdominios en las URLs"
       ]
     },
@@ -92,7 +94,7 @@
       ]
     },
     "C10": {
-      "titulo": "C10. Según la explicación, el diseño del correo (HTML) no influyó en esta decisión.",
+      "titulo": "C10. Según la explicación, la palabra «kde» pesó más que «ktorrent».",
       "correcta": "Verdadero",
       "opciones": [
         "Verdadero",

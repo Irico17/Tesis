@@ -168,6 +168,95 @@ def _no_textuales(ejemplo: dict) -> list[str]:
     return [f["human_name"] for f in sorted(factores, key=lambda f: -f["pct"])]
 
 
+_RASGOS: dict[str, dict] | None = None
+
+
+def _partes(ejemplo: dict) -> dict:
+    """Qué tiene el correo además del texto: formato HTML, imágenes y enlaces.
+
+    Las preguntas sobre el diseño o los enlaces solo tienen sentido si el correo
+    los tiene. Los rasgos se leen del corpus, que es lo que recibió el modelo; el
+    correo mostrado es el texto que leyó, sin el HTML. En un correo sin HTML los
+    enlaces se cuentan en ese texto, porque es lo que el evaluador ve.
+    """
+    global _RASGOS
+    if _RASGOS is None:
+        import pandas as pd
+        ruta = BASE / "data" / "Datasets_Procesados" / "Dataset_Real.parquet"
+        df = pd.read_parquet(ruta, columns=["email_id", "has_html", "num_images", "num_links"])
+        _RASGOS = df.set_index("email_id").to_dict("index")
+    r = _RASGOS[ejemplo["email_id"]]
+    html_ = bool(r["has_html"])
+    enlaces = (int(r["num_links"]) if html_
+               else len(re.findall(r"hxxps?://\S+", ejemplo["cuerpo"])))
+    return {"html": html_, "imagenes": int(r["num_images"]) if html_ else 0,
+            "enlaces": enlaces}
+
+
+def _nota_html(ejemplo: dict) -> str:
+    """Aviso de que el original es HTML y la imagen muestra solo su texto."""
+    p = _partes(ejemplo)
+    if not p["html"]:
+        return ""
+    cosas = [f"{n} {nombre if n == 1 else plural}" for n, nombre, plural in
+             ((p["imagenes"], "imagen", "imágenes"), (p["enlaces"], "enlace", "enlaces")) if n]
+    detalle = f", con {' y '.join(cosas)}" if cosas else ""
+    return (f"El correo original tiene formato HTML (diseño){detalle}; aquí se muestra "
+            "solo su texto.")
+
+
+def _peso(ejemplo: dict, modalidad: str) -> float:
+    return _bloques(ejemplo)[modalidad]["total_pct"]
+
+
+def _pregunta_de_modalidad(ide: str, n: int, ejemplo: dict, respuesta: str) -> dict:
+    """Verdadero o falso sobre el diseño o los enlaces, según lo que tenga el correo.
+
+    Si el correo no tiene HTML ni enlaces, preguntar si influyeron no mide la
+    lectura del reporte; se pregunta entonces por el orden de dos palabras. El
+    enunciado se redacta de modo que la respuesta correcta sea `respuesta`, para
+    repartir las verdaderas y las falsas.
+    """
+    p = _partes(ejemplo)
+    queremos_v = respuesta == "Verdadero"
+    if p["html"] or p["enlaces"]:
+        if p["html"]:
+            influye = _peso(ejemplo, "estructura") > 0
+            sujeto = ("El correo original tiene formato HTML. Según la explicación, su "
+                      "diseño {}influyó en esta decisión.")
+        else:
+            influye = _peso(ejemplo, "red") > 0
+            sujeto = ("Este correo contiene enlaces. Según la explicación, los enlaces y "
+                      "la verificación del remitente {}influyeron en esta decisión.")
+        titulo = sujeto.format("" if influye == queremos_v else "no ")
+    else:
+        mayor, menor = _par_para_comparar(ejemplo)
+        a, b = (mayor, menor) if queremos_v else (menor, mayor)
+        titulo = f"Según la explicación, la palabra «{a}» pesó más que «{b}»."
+    return {"id": ide, "ejemplo": n, "tipo": "vf", "titulo": f"{ide}. {titulo}",
+            "opciones": ["Verdadero", "Falso"], "correcta": respuesta}
+
+
+def _pregunta_de_parte_dominante(ide: str, n: int, ejemplo: dict) -> dict:
+    """Qué parte del correo pesó más, con las tres partes del reporte como opciones.
+
+    Lee el reporte por modalidad, que es lo que pide el indicador. Solo se hace
+    si el correo tiene diseño o enlaces; si no, la pregunta se responde sin leer.
+    """
+    p = _partes(ejemplo)
+    if not (p["html"] or p["enlaces"]):
+        return _pregunta_de_modalidad(ide, n, ejemplo, "Verdadero")
+    sys.path.insert(0, str(BASE / "src"))
+    from phishing_model.xai.narrative import NOMBRES_SENCILLOS
+    dominante = max(("texto", "estructura", "red"), key=lambda m: _peso(ejemplo, m))
+    opciones = [NOMBRES_SENCILLOS[m] for m in ("texto", "estructura", "red")]
+    opciones.append("Las tres pesaron lo mismo")
+    correcta = NOMBRES_SENCILLOS[dominante]
+    return {"id": ide, "ejemplo": n, "tipo": "opcion",
+            "titulo": f"{ide}. Según la explicación, ¿qué parte del correo pesó más en esta decisión?",
+            "opciones": _barajar(opciones, ide, correcta), "correcta": correcta}
+
+
 def _caracteristicas_no_citadas(ejemplo: dict, n: int) -> list[str]:
     """Características continuas que el reporte de este correo no cita.
 
@@ -178,6 +267,11 @@ def _caracteristicas_no_citadas(ejemplo: dict, n: int) -> list[str]:
     from phishing_model.xai.narrative import FEATURE_DISPLAY_NAMES
     citadas = {f["name"] for m in ("estructura", "red") for f in _bloques(ejemplo)[m]["factors"]
                if f["pct"] > 0}
+    # Pares que un lector toma por la misma cosa: si el reporte cita uno, el otro
+    # no puede ser una opción incorrecta.
+    for grupo in ({"num_links", "num_urls_metadata"},):
+        if citadas & grupo:
+            citadas |= grupo
     candidatas = [v for k, v in FEATURE_DISPLAY_NAMES.items()
                   if k not in citadas and not k.endswith("_result")]
     return sorted(candidatas, key=lambda v: hashlib.sha256(f"C6{v}".encode()).hexdigest())[:n]
@@ -214,8 +308,10 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
 
     Cubren lo que un analista necesita leer en el reporte: qué palabras pesaron y
     en qué orden, qué decidió el sistema y con qué confianza, y qué tipo de
-    información sustentó la decisión. Las de verdadero o falso se reparten dos y
-    dos, porque quien marcara siempre la misma opción acertaría sin leer.
+    información sustentó la decisión. Las de verdadero o falso no tienen todas la
+    misma respuesta, porque quien marcara siempre la misma opción acertaría sin
+    leer. Las que preguntan por el diseño o los enlaces dependen de que el correo
+    los tenga (ver `_pregunta_de_modalidad`).
 
     No hay un correo de confianza intermedia: ninguno bien clasificado tiene una
     explicación legible (ver el informe de E9). La pregunta que el instrumento
@@ -223,16 +319,11 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
     responderse con este reporte, porque la atención no tiene signo.
     """
     p1, p2, p3, p4 = (_palabras(e) for e in (e1, e2, e3, e4))
-    b1, b2, b4 = _bloques(e1), _bloques(e2), _bloques(e4)
     conf1 = e1["explicacion"]["estructurado"]["confidence_pct"]
     conf4 = e4["explicacion"]["estructurado"]["confidence_pct"]
     clase4 = "Legítimo" if e4["explicacion"]["clase_predicha"] == 0 else "Phishing"
     vf = ["Verdadero", "Falso"]
 
-    estructura_pesa_mas = b1["estructura"]["total_pct"] > b1["texto"]["total_pct"]
-    texto_domina = b2["texto"]["total_pct"] >= max(b2["estructura"]["total_pct"],
-                                                   b2["red"]["total_pct"])
-    sin_estructura = b4["estructura"]["total_pct"] < 1
     no_citada = _distractores(e3, 1)[0]
     no_textuales = _no_textuales(e3)
     c8_correcta = f"{clase4}, con {_banda_de_confianza(conf4).lower()} de confianza"
@@ -245,10 +336,7 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
                     f"este correo es {_clase(e1)}?"),
          "opciones": _barajar([p1[0], p1[1]] + _distractores(e1), "C1", p1[0]),
          "correcta": p1[0]},
-        {"id": "C2", "ejemplo": 1, "tipo": "vf",
-         "titulo": ("C2. Según la explicación, el diseño del correo (HTML) pesó más que "
-                    "su texto."),
-         "opciones": vf, "correcta": "Verdadero" if estructura_pesa_mas else "Falso"},
+        _pregunta_de_parte_dominante("C2", 1, e1),
         {"id": "C3", "ejemplo": 1, "tipo": "opcion",
          "titulo": "C3. Según la explicación, ¿qué tan seguro está el sistema de su decisión?",
          "opciones": ["Menos del 60%", "Entre 60% y 90%", "Entre 90% y 99%", "Más del 99%"],
@@ -258,9 +346,7 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
                     f"este correo es {_clase(e2)}?"),
          "opciones": _barajar([p2[0], p2[1]] + _distractores(e2), "C4", p2[0]),
          "correcta": p2[0]},
-        {"id": "C5", "ejemplo": 2, "tipo": "vf",
-         "titulo": "C5. Según la explicación, la decisión se basó sobre todo en el texto del correo.",
-         "opciones": vf, "correcta": "Verdadero" if texto_domina else "Falso"},
+        _pregunta_de_modalidad("C5", 2, e2, "Falso"),
         ({"id": "C6", "ejemplo": 3, "tipo": "opcion",
           "titulo": ("C6. Además del texto, ¿qué otra cosa influyó en esta decisión, "
                      "según la explicación?"),
@@ -284,9 +370,7 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
                     "según la explicación?"),
          "opciones": _barajar([p4[1]] + _distractores(e4, 3), "C9", p4[1]),
          "correcta": p4[1]},
-        {"id": "C10", "ejemplo": 4, "tipo": "vf",
-         "titulo": "C10. Según la explicación, el diseño del correo (HTML) no influyó en esta decisión.",
-         "opciones": vf, "correcta": "Verdadero" if sin_estructura else "Falso"},
+        _pregunta_de_modalidad("C10", 4, e4, "Verdadero"),
     ]
 
 
@@ -301,7 +385,7 @@ PRESENTACION = (
     "explicaciones se entienden.\n\n"
     "Verás un ejemplo resuelto y luego 4 correos, cada uno con su explicación. Por "
     "cada correo responderás 2 o 3 preguntas cortas; al final, dos cuestionarios de "
-    "opinión. Toma unos 15 a 20 minutos.\n\n"
+    "opinión. Toma unos 15 minutos.\n\n"
     "No necesitas saber de seguridad ni entender todo el inglés de los correos: las "
     "preguntas se responden mirando la explicación. No te evaluamos a ti, sino a la "
     "explicación.\n\n"
@@ -493,8 +577,9 @@ def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict
         contiene el cuerpo que el modelo leyó.
         """
         if clave in imagenes:
+            nota = _nota_html(ej)
             correo = {"tipo": "imagen", "titulo": titulo, "archivo": imagenes[clave],
-                      "texto": f"Asunto: {ej['asunto']}"}
+                      "texto": f"Asunto: {ej['asunto']}" + (f"\n{nota}" if nota else "")}
         else:
             correo = {"tipo": "texto", "titulo": titulo, "texto": _ejemplo_texto(ej)}
         return [correo, {"tipo": "texto", "titulo": f"Explicación del sistema: {titulo.lower()}",

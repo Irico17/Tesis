@@ -149,12 +149,14 @@ Las diez preguntas, y su respuesta correcta, se derivan del propio reporte que e
 
 | Correo | Preguntas | Qué miden |
 |---|---|---|
-| 1 (phishing) | C1, C2, C3 | Palabra de mayor peso; peso del texto frente a la estructura; nivel de confianza |
-| 2 (legítimo) | C4, C5 | Palabra de mayor peso; modalidad que sustenta la decisión |
-| 3 (phishing) | C6, C7 | Qué palabra no cita el reporte; orden de dos palabras citadas |
-| 4 (legítimo) | C8, C9, C10 | Decisión y confianza; palabra entre las tres más influyentes; aporte de la estructura |
+| 1 (phishing) | C1, C2, C3 | Palabra de mayor peso; qué parte del correo (texto, diseño o enlaces) pesó más; nivel de confianza |
+| 2 (legítimo) | C4, C5 | Palabra de mayor peso; si los enlaces influyeron |
+| 3 (phishing) | C6, C7 | Qué otra característica influyó, o qué palabra no cita el reporte; orden de dos palabras citadas |
+| 4 (legítimo) | C8, C9, C10 | Decisión y confianza; palabra entre las tres más influyentes; si el diseño influyó, o el orden de dos palabras |
 
-Las opciones incorrectas son palabras que aparecen en el correo pero que el reporte no cita, de modo que no se acierta adivinando qué palabra «suena» a phishing; la correcta nunca va en primer lugar, y las cuatro preguntas de verdadero o falso se reparten dos y dos.
+Las opciones incorrectas son palabras que aparecen en el correo pero que el reporte no cita, de modo que no se acierta adivinando qué palabra «suena» a phishing; la correcta nunca va en primer lugar, y las preguntas de verdadero o falso no tienen todas la misma respuesta.
+
+Las preguntas sobre el diseño o los enlaces (C2, C5 y C10) solo se hacen si el correo los tiene. Así no se pregunta si influyó el HTML de un correo que no tiene HTML. Si el correo no tiene ni lo uno ni lo otro, se pregunta por el orden de dos palabras citadas. Como la imagen muestra solo el texto que el modelo leyó, en los correos con formato HTML una nota bajo el asunto indica que el original tiene diseño, imágenes y enlaces. Este ajuste se hizo el 27 de octubre de 2026, antes de aplicar el instrumento, junto con el de la prueba piloto.
 
 ### Cómo se calcula el % de comprensión y cómo se agrega al umbral de R3.3
 
