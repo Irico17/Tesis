@@ -61,7 +61,7 @@ CLAVES = ("phishing_1", "legitimo_1", "phishing_2", "legitimo_2")
 VERSIONES = {
     "principal": {"ejemplos": "ejemplos_del_panel.json", "salida": "formulario",
                   "claves": CLAVES},
-    "claridad": {"ejemplos": "ejemplos_del_panel_claridad.json",
+    "claridad": {"ejemplos": "ejemplos_del_panel_claridad.json", "recortar_guia": True,
                  "salida": "formulario_claridad",
                  "claves": ("correo_1", "correo_2", "correo_3", "correo_4")},
 }
@@ -69,13 +69,14 @@ VERSIONES = {
 
 def _usar_version(nombre: str) -> None:
     """Fija los rutas y las posiciones de la versión que se genera."""
-    global EJEMPLOS, SALIDA, URL_IMAGENES, CLAVES
+    global EJEMPLOS, SALIDA, URL_IMAGENES, CLAVES, RECORTAR_GUIA
     v = VERSIONES[nombre]
     EJEMPLOS = BASE / "medios_de_verificacion" / "experimentos" / "e9" / v["ejemplos"]
     SALIDA = AQUI / v["salida"]
     URL_IMAGENES = ("https://raw.githubusercontent.com/Irico17/Tesis/master/"
                     f"doc/validacion_xai/{v['salida']}/")
     CLAVES = v["claves"]
+    RECORTAR_GUIA = v.get("recortar_guia", False)
 ESCALA = ["1 (totalmente en desacuerdo)", "2", "3", "4", "5 (totalmente de acuerdo)"]
 
 VACIAS = set("""
@@ -389,6 +390,25 @@ def ocultar_para(phishing: bool) -> list:
     ]
 
 
+RECORTAR_GUIA = False
+
+
+def _tramo_repetido(texto: str) -> tuple[int, int, str] | None:
+    """El bloque que un correo repite tal cual, para no mostrarlo dos veces.
+
+    Se busca la segunda aparición del comienzo del correo; el tramo omitido va
+    de ahí hasta el último enlace, que se conserva porque puede contener
+    palabras que cita la explicación.
+    """
+    inicio = texto[:20]
+    j = texto.find(inicio, 20)
+    if j < 0:
+        return None
+    k = texto.rfind("http")
+    fin = k if k > j else len(texto)
+    return j, fin, "[… aquí el correo repite el mismo aviso …]"
+
+
 def generar_imagenes(datos: dict) -> dict[str, str]:
     """Dibuja cada correo resaltado y devuelve el nombre de fichero de cada uno."""
     sys.path.insert(0, str(BASE / "src"))
@@ -398,8 +418,12 @@ def generar_imagenes(datos: dict) -> dict[str, str]:
     for clave, ej in datos["ejemplos"].items():
         citadas = [f["name"] for f in _bloques(ej)["texto"]["factors"]]
         nombre = f"resaltado_{clave}.png"
+        # En la guía de la versión de claridad el correo repite su aviso; mostrarlo
+        # entero alargaba la primera página sin enseñar nada nuevo.
+        omitir = (_tramo_repetido(ej["texto_leido"][:ej["resaltado"]["leido_hasta"]])
+                  if RECORTAR_GUIA and clave == "induccion" else None)
         dibujar_resaltado(ej["texto_leido"], ej["resaltado"], SALIDA / nombre,
-                          citadas=citadas,
+                          citadas=citadas, omitir=omitir,
                           ocultar=ocultar_para(ej["etiqueta_real"].lower().startswith("phish")))
         nombres[clave] = nombre
     return nombres
@@ -433,9 +457,12 @@ def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict
     correos = [ej[k] for k in CLAVES]
     ind = ej["induccion"]
     sus = _items("## 2. Sección A", "## 3. Sección B")
-    pssuq = _items("## 3. Sección B", "## 4. Sección C")
-    if len(sus) != 10 or len(pssuq) != 16:
-        raise SystemExit(f"Se esperaban 10 ítems SUS y 16 PSSUQ; hay {len(sus)} y {len(pssuq)}.")
+    # Del PSSUQ solo se aplica la subescala de Calidad de la Información (sus
+    # ítems 7 a 12): tras la prueba piloto se acortó el formulario y se conservó
+    # la subescala más pertinente para evaluar explicaciones.
+    pssuq = _items("#### B.2", "#### B.3")
+    if len(sus) != 10 or len(pssuq) != 6:
+        raise SystemExit(f"Se esperaban 10 ítems SUS y 6 PSSUQ; hay {len(sus)} y {len(pssuq)}.")
     preguntas = preguntas_de_comprension(*correos)
 
     el = [
@@ -519,6 +546,10 @@ def apps_script(el: list[dict]) -> str:
         f"  var form = FormApp.create({_js(TITULO)});",
         f"  form.setDescription({_js(PRESENTACION.format(autor=AUTOR, contacto=CONTACTO))});",
         "  form.setCollectEmail(false);",
+        # El panel incluye evaluadores de fuera de la universidad. En algunas
+        # cuentas institucionales la llamada falla; entonces se abre a mano desde
+        # «Publicado», «Vista de encuestado», «Cualquier persona con el enlace».
+        "  try { form.setRequireLogin(false); } catch (e) { Logger.log('Abrir a mano: ' + e); }",
         "  form.setProgressBar(true);",
         "  form.setShowLinkToRespondAgain(false);",
         "  form.setPublishingSummary(false);",

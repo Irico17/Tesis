@@ -8,8 +8,8 @@ Este script procesa las respuestas del panel de 10 evaluadores recolectadas con
 `instrumento_evaluacion.md` (SUS adaptado + PSSUQ adaptado + sección de
 comprensión narrativa) y calcula:
   1. El score SUS (0-100) por evaluador y el promedio del panel.
-  2. Las 3 subescalas PSSUQ (SysUse, InfoQual, IntQual) + el score "Overall"
-     por evaluador y el promedio del panel.
+  2. La subescala de Calidad de la Información del PSSUQ (InfoQual, Lewis 2002),
+     la única que se aplica, por evaluador y el promedio del panel.
   3. El % de comprensión narrativa por evaluador y el promedio del panel,
      comparado explícitamente contra el umbral del 80% exigido por R3.3.
 
@@ -28,17 +28,16 @@ Columnas requeridas:
                               son negativas — igual que el SUS original de
                               Brooke (1996); el scoring ya tiene esto en cuenta.
 
-  pssuq_q1 ... pssuq_q16   : int, 1-5. Respuesta a cada ítem del PSSUQ
-                              adaptado (Sección B de instrumento_evaluacion.md).
-                              Subescalas (versión de 16 ítems, Lewis 2002,
-                              adaptada a escala 1-5 con mismo sentido que SUS,
-                              mayor = mejor):
-                                - SysUse   (Utilidad del Sistema)   : q1-q6
-                                - InfoQual (Calidad de la Información): q7-q12
-                                - IntQual  (Calidad de la Interfaz) : q13-q15
-                                - Overall  (satisfacción general)  : q1-q16
-                                  (q16 es además el ítem individual de
-                                  satisfacción general del instrumento)
+  pssuq_q7 ... pssuq_q12   : int, 1-5. Respuesta a cada ítem de la subescala
+                              Calidad de la Información (InfoQual) del PSSUQ
+                              (versión de 16 ítems, Lewis 2002), adaptada a
+                              escala 1-5, mayor = mejor. Se conserva la
+                              numeración original de los ítems (7 a 12); en el
+                              formulario aparecen como B1 a B6. Las subescalas
+                              SysUse e IntQual no se aplican: tras la prueba
+                              piloto se acortó el formulario y se conservó la
+                              subescala más pertinente para evaluar
+                              explicaciones.
 
   comprension_q1 ... comprension_q10     : str/opcional. La respuesta cruda
                               que dio el evaluador en la Sección C (letra de
@@ -81,11 +80,8 @@ SUS_N_ITEMS = 10
 SUS_ODD_ITEMS = [1, 3, 5, 7, 9]     # afirmaciones positivas
 SUS_EVEN_ITEMS = [2, 4, 6, 8, 10]   # afirmaciones negativas
 
-PSSUQ_N_ITEMS = 16
-PSSUQ_SYSUSE_ITEMS = list(range(1, 7))     # q1-q6
+# Solo la subescala de Calidad de la Información (ítems 7 a 12 del PSSUQ).
 PSSUQ_INFOQUAL_ITEMS = list(range(7, 13))  # q7-q12
-PSSUQ_INTQUAL_ITEMS = list(range(13, 16))  # q13-q15
-PSSUQ_OVERALL_ITEMS = list(range(1, 17))   # q1-q16
 
 COMPRENSION_N_ITEMS = 10  # sección C: cuatro correos, diez preguntas
 COMPRENSION_UMBRAL_R3_3 = 80.0  # % mínimo comprometido en la Tabla 2 (IOV de R3.3)
@@ -107,7 +103,7 @@ LIKERT_MIN, LIKERT_MAX = 1, 5
 def _expected_columns() -> list[str]:
     cols = ["evaluador_id"]
     cols += [f"sus_q{i}" for i in range(1, SUS_N_ITEMS + 1)]
-    cols += [f"pssuq_q{i}" for i in range(1, PSSUQ_N_ITEMS + 1)]
+    cols += [f"pssuq_q{i}" for i in PSSUQ_INFOQUAL_ITEMS]
     cols += [f"comprension_correcta_q{i}" for i in range(1, COMPRENSION_N_ITEMS + 1)]
     return cols
 
@@ -123,7 +119,7 @@ def validate_dataframe(df: pd.DataFrame) -> None:
         raise ValueError("El CSV de respuestas está vacío.")
 
     sus_cols = [f"sus_q{i}" for i in range(1, SUS_N_ITEMS + 1)]
-    pssuq_cols = [f"pssuq_q{i}" for i in range(1, PSSUQ_N_ITEMS + 1)]
+    pssuq_cols = [f"pssuq_q{i}" for i in PSSUQ_INFOQUAL_ITEMS]
     for col in sus_cols + pssuq_cols:
         out_of_range = ~df[col].between(LIKERT_MIN, LIKERT_MAX)
         if out_of_range.any():
@@ -159,17 +155,9 @@ def compute_sus_score(row: pd.Series) -> float:
 
 
 def compute_pssuq_subscales(row: pd.Series) -> dict[str, float]:
-    """Subescalas PSSUQ (Lewis, 2002; versión 16 ítems adaptada). Rango: 1-5, mayor = mejor."""
-    def _mean(items: list[int]) -> float:
-        vals = [row[f"pssuq_q{i}"] for i in items]
-        return sum(vals) / len(vals)
-
-    return {
-        "sysuse": _mean(PSSUQ_SYSUSE_ITEMS),
-        "infoqual": _mean(PSSUQ_INFOQUAL_ITEMS),
-        "intqual": _mean(PSSUQ_INTQUAL_ITEMS),
-        "overall": _mean(PSSUQ_OVERALL_ITEMS),
-    }
+    """Subescala InfoQual del PSSUQ (Lewis, 2002), adaptada. Rango: 1-5, mayor = mejor."""
+    vals = [row[f"pssuq_q{i}"] for i in PSSUQ_INFOQUAL_ITEMS]
+    return {"infoqual": sum(vals) / len(vals)}
 
 
 def compute_comprehension_pct(row: pd.Series) -> float:
@@ -235,10 +223,7 @@ def score_panel(df: pd.DataFrame) -> dict:
             {
                 "evaluador_id": row["evaluador_id"],
                 "sus_score": round(sus, 2),
-                "pssuq_sysuse": round(pssuq["sysuse"], 2),
                 "pssuq_infoqual": round(pssuq["infoqual"], 2),
-                "pssuq_intqual": round(pssuq["intqual"], 2),
-                "pssuq_overall": round(pssuq["overall"], 2),
                 "comprension_pct": round(comprension, 2),
             }
         )
@@ -250,10 +235,7 @@ def score_panel(df: pd.DataFrame) -> dict:
         "sus_score_promedio": round(per_df["sus_score"].mean(), 2),
         "sus_score_referencia_promedio_literatura": 68.0,
         "sus_por_encima_del_promedio": bool(per_df["sus_score"].mean() > 68.0),
-        "pssuq_sysuse_promedio": round(per_df["pssuq_sysuse"].mean(), 2),
         "pssuq_infoqual_promedio": round(per_df["pssuq_infoqual"].mean(), 2),
-        "pssuq_intqual_promedio": round(per_df["pssuq_intqual"].mean(), 2),
-        "pssuq_overall_promedio": round(per_df["pssuq_overall"].mean(), 2),
         "comprension_pct_promedio": round(per_df["comprension_pct"].mean(), 2),
         "umbral_r3_3": COMPRENSION_UMBRAL_R3_3,
         "umbral_r3_3_alcanzado": bool(
@@ -287,8 +269,7 @@ def print_summary(results: dict) -> None:
     print(f"\nEvaluadores procesados: {panel['n_evaluadores']}\n")
 
     header = (
-        f"{'evaluador_id':<14}{'SUS':>8}{'SysUse':>10}{'InfoQual':>10}"
-        f"{'IntQual':>10}{'Overall':>10}{'Compr.%':>10}"
+        f"{'evaluador_id':<14}{'SUS':>8}{'InfoQual':>10}{'Compr.%':>10}"
     )
     print(header)
     print("-" * len(header))
@@ -296,10 +277,7 @@ def print_summary(results: dict) -> None:
         print(
             f"{row['evaluador_id']:<14}"
             f"{row['sus_score']:>8.1f}"
-            f"{row['pssuq_sysuse']:>10.2f}"
             f"{row['pssuq_infoqual']:>10.2f}"
-            f"{row['pssuq_intqual']:>10.2f}"
-            f"{row['pssuq_overall']:>10.2f}"
             f"{row['comprension_pct']:>10.1f}"
         )
 
@@ -309,10 +287,7 @@ def print_summary(results: dict) -> None:
     print(f"SUS promedio            : {panel['sus_score_promedio']:.2f} / 100"
           f"  ({'por encima' if panel['sus_por_encima_del_promedio'] else 'por debajo'}"
           f" del punto de referencia habitual de 68)")
-    print(f"PSSUQ SysUse promedio    : {panel['pssuq_sysuse_promedio']:.2f} / 5")
     print(f"PSSUQ InfoQual promedio  : {panel['pssuq_infoqual_promedio']:.2f} / 5")
-    print(f"PSSUQ IntQual promedio   : {panel['pssuq_intqual_promedio']:.2f} / 5")
-    print(f"PSSUQ Overall promedio   : {panel['pssuq_overall_promedio']:.2f} / 5")
 
     print("\n" + "-" * 72)
     print("CRITERIO PRIMARIO R3.3 — COMPRENSIÓN NARRATIVA")
@@ -355,7 +330,7 @@ def build_synthetic_panel(n: int = 5) -> pd.DataFrame:
         [4, 1, 5, 2, 4, 1, 4, 2, 5, 1],  # evaluador positivo con matices
         [2, 4, 2, 4, 3, 3, 2, 4, 2, 4],  # evaluador crítico -> SUS bajo
     ]
-    pssuq_base = [5, 4, 4, 3, 4, 4, 4, 3, 4, 4, 3, 4, 4, 4, 3, 4]
+    pssuq_base = [4, 3, 4, 4, 3, 4]
     comprension_correcta_patterns = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # 100%
         [1, 1, 1, 1, 0, 1, 1, 1, 1, 0],  # 80%
@@ -373,7 +348,7 @@ def build_synthetic_panel(n: int = 5) -> pd.DataFrame:
 
         row = {"evaluador_id": evaluador_id}
         row.update({f"sus_q{i + 1}": sus_vals[i] for i in range(SUS_N_ITEMS)})
-        row.update({f"pssuq_q{i + 1}": pssuq_vals[i] for i in range(PSSUQ_N_ITEMS)})
+        row.update({f"pssuq_q{q}": v for q, v in zip(PSSUQ_INFOQUAL_ITEMS, pssuq_vals)})
         row.update(
             {f"comprension_q{i + 1}": "A" for i in range(COMPRENSION_N_ITEMS)}
         )

@@ -73,6 +73,12 @@ CORREOS_IMPUESTOS = {
                    "phishing de credenciales con peso de red en el reporte (0.4%) y "
                    "palabras citadas reconocibles; incumple los filtros de confianza "
                    "mínima 0.99 y de idioma detectado, y su primer factor es un signo"),
+    # La guía del formulario: la prueba piloto mostró que el primer ejemplo, un
+    # correo largo que además repite su aviso, hacía densa la primera página. Se
+    # usa el correo de explicación más clara del ranking de claridad (palabras
+    # citadas «notifications», «expires», «myaccount»), que tiene 59 palabras.
+    "induccion": ("f9d6beca-3ff8-4388-ac2d-60d84c020c0b",
+                  "guía corta y clara tras la prueba piloto; cumple todos los criterios"),
 }
 CANDIDATOS_POR_GRUPO = 300             # cuántos se explican antes de elegir
 VACIAS = set("""

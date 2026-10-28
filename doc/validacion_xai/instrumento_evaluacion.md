@@ -2,7 +2,7 @@
 
 **Proyecto:** Detección de phishing multimodal con IA Explicable — Tesis PUCP
 **Fase del plan:** E0 (preparación del panel), resultado de tesis **R3.3**
-**Duración estimada:** unos 20 minutos por evaluador, en un formulario autoadministrado de Google Forms
+**Duración estimada:** unos 15 minutos por evaluador, en un formulario autoadministrado de Google Forms
 **Aplicable a:** cualquier técnica XAI candidata (SHAP, LIME o atención intrínseca). Este instrumento **no depende de cuál gane la matriz de decisión de R3.1** — las preguntas se refieren al *reporte de explicación* que ve el evaluador, no a la técnica interna que lo generó. No se debe revelar al evaluador qué técnica generó el reporte (evita sesgo de expectativa); si se evalúan varias técnicas en paralelo, aplicar este mismo instrumento una vez por técnica, con evaluadores o ejemplos distintos para evitar efecto de aprendizaje.
 
 ---
@@ -31,10 +31,10 @@ El instrumento se aplica como formulario en línea, autoadministrado, que genera
 | 2 | Inducción escrita: cómo leer el reporte, con un ejemplo guiado que no se usa en las preguntas | 2–3 min |
 | 3 | Sección C — Comprensión (10 preguntas sobre 4 correos reales, cada uno mostrado una sola vez) | 8–10 min |
 | 4 | Sección A — SUS adaptado (10 ítems) | 3–4 min |
-| 5 | Sección B — PSSUQ adaptado (16 ítems) | 4–5 min |
+| 5 | Sección B — PSSUQ adaptado, subescala de Calidad de la Información (6 ítems) | 1–2 min |
 | 6 | Cierre y comentario opcional | 1 min |
 
-**Total:** unos 20 minutos.
+**Total:** unos 15 minutos.
 
 **Por qué la comprensión va antes que las escalas de opinión.** El SUS y el PSSUQ se diseñaron para responderse después de usar el sistema; aquí, usarlo es leer los reportes. Si se respondieran tras el ejemplo guiado, medirían la opinión sobre un único reporte. La numeración de las secciones (A, B, C) se conserva para que coincida con el scoring.
 
@@ -70,13 +70,15 @@ Resultado en el rango 0–100. **Punto de referencia habitual en la literatura (
 
 ---
 
-## 3. Sección B — PSSUQ adaptado (Post-Study System Usability Questionnaire, basado en Lewis 1992/2002)
+## 3. Sección B — PSSUQ adaptado, subescala de Calidad de la Información (Lewis, 2002)
 
 Instrucciones para el evaluador: *"Las siguientes 16 afirmaciones son sobre distintos aspectos del reporte de explicación: qué tan útil es, qué tan clara es la información que contiene, y qué tan agradable es de leer. Usa la misma escala de 1 a 5."*
 
+**Qué se aplica:** solo la subescala de Calidad de la Información (InfoQual, ítems 7 a 12), que en el formulario aparece como B1 a B6. Tras la prueba piloto del 27 de octubre de 2026 se acortó el formulario de 40 a 30 respuestas, y se conservó del PSSUQ la subescala más pertinente para evaluar explicaciones, que Lewis (2002) define y reporta por separado. Las demás subescalas quedan documentadas abajo, pero no se aplican.
+
 **Nota de adaptación:** las 16 preguntas siguientes son una traducción y adaptación al español, en el contexto de "explicaciones de clasificación de phishing", de la estructura estándar del PSSUQ (versión de 16 ítems, Lewis 2002), agrupada en sus 3 subescalas clásicas: Utilidad del Sistema (SysUse), Calidad de la Información (InfoQual) y Calidad de la Interfaz (IntQual).
 
-#### B.1 — Subescala "Utilidad del Sistema" (SysUse) — ítems 1 a 6
+#### B.1 — Subescala "Utilidad del Sistema" (SysUse) — ítems 1 a 6 (no se aplica)
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
@@ -87,7 +89,7 @@ Instrucciones para el evaluador: *"Las siguientes 16 afirmaciones son sobre dist
 | 5 | Usar esta explicación me resultó cómodo. | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 6 | Fue fácil aprender a interpretar este tipo de explicación. | ☐ | ☐ | ☐ | ☐ | ☐ |
 
-#### B.2 — Subescala "Calidad de la Información" (InfoQual) — ítems 7 a 12
+#### B.2 — Subescala "Calidad de la Información" (InfoQual) — ítems 7 a 12 (SE APLICA, como B1 a B6)
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
@@ -98,7 +100,7 @@ Instrucciones para el evaluador: *"Las siguientes 16 afirmaciones son sobre dist
 | 11 | El orden de la información (de lo que más pesó a lo que menos) fue claro. | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 12 | Confío en que la información de la explicación refleja razones reales de la clasificación, no una justificación genérica. | ☐ | ☐ | ☐ | ☐ | ☐ |
 
-#### B.3 — Subescala "Calidad de la Interfaz" (IntQual) — ítems 13 a 15
+#### B.3 — Subescala "Calidad de la Interfaz" (IntQual) — ítems 13 a 15 (no se aplica)
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|
@@ -106,7 +108,7 @@ Instrucciones para el evaluador: *"Las siguientes 16 afirmaciones son sobre dist
 | 14 | Me gustó la manera en que la explicación muestra lo que más pesó. | ☐ | ☐ | ☐ | ☐ | ☐ |
 | 15 | La explicación tiene toda la información que esperaría encontrar en una explicación de este tipo. | ☐ | ☐ | ☐ | ☐ | ☐ |
 
-#### B.4 — Ítem de satisfacción general — ítem 16
+#### B.4 — Ítem de satisfacción general — ítem 16 (no se aplica)
 
 | # | Afirmación | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|---|

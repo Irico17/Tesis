@@ -302,7 +302,8 @@ RESULTADOS.update({
              "cuántos candidatos superó cada filtro"),
             (BASE / "doc" / "validacion_xai" / "formulario" / "vista_previa.html", "formulario_del_panel.html",
              "Formulario de evaluación tal como lo ve el evaluador: consentimiento, "
-             "perfil, inducción, diez preguntas de comprensión, SUS y PSSUQ"),
+             "perfil, inducción, diez preguntas de comprensión, SUS y la subescala de "
+             "calidad de la información del PSSUQ"),
             (BASE / "doc" / "validacion_xai" / "formulario" / "crear_formulario.gs", "crear_formulario.gs",
              "Apps Script que crea ese mismo formulario en Google Forms"),
             (BASE / "doc" / "validacion_xai" / "formulario" / "clave_de_respuestas.json",

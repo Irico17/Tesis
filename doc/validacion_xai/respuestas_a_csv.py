@@ -4,7 +4,7 @@ Convierte la exportación de Google Forms al CSV que espera `script_scoring.py`.
 Google Forms exporta una fila por respuesta y una columna por pregunta, con el
 título de la pregunta como cabecera; en las rejillas, la cabecera es el título
 seguido de la fila entre corchetes. Este guion localiza cada ítem por su código
-(A1 a A10, B1 a B16, C1 a C10, P1 a P3), califica la sección C con
+(A1 a A10, B1 a B6, C1 a C10, P1 a P3), califica la sección C con
 `formulario/clave_de_respuestas.json` y asigna a cada respuesta un identificador
 anónimo (EVAL_01, EVAL_02...). Las respuestas de quien no aceptó participar se
 descartan.
@@ -48,8 +48,10 @@ def convertir(df: pd.DataFrame, clave: dict) -> pd.DataFrame:
     salida = pd.DataFrame({"evaluador_id": [f"EVAL_{i:02d}" for i in range(1, len(df) + 1)]})
     for i in range(1, 11):
         salida[f"sus_q{i}"] = df[_columna(cab, rf"\[A{i}\. ")].map(_escala)
-    for i in range(1, 17):
-        salida[f"pssuq_q{i}"] = df[_columna(cab, rf"\[B{i}\. ")].map(_escala)
+    # B1 a B6 son los ítems 7 a 12 del PSSUQ (subescala de Calidad de la
+    # Información); se guardan con su numeración original.
+    for i in range(1, 7):
+        salida[f"pssuq_q{i + 6}"] = df[_columna(cab, rf"\[B{i}\. ")].map(_escala)
     for i in range(1, len(clave["preguntas"]) + 1):
         pregunta = clave["preguntas"][f"C{i}"]
         respuesta = df[_columna(cab, rf"^C{i}\. ")].astype(str).str.strip()

@@ -92,13 +92,19 @@ def ranking(candidatos: list[dict], remitentes: dict[str, str]) -> list[dict]:
     return salida
 
 
+# El ejemplo guiado de esta versión es el de TD Canada Trust, que además figura
+# entre los cuatro correos. Se fija aquí porque la versión principal cambió de
+# guía tras la prueba piloto.
+GUIADO = "a68f6ab2-d2d5-4570-9914-ea410c4f788e"
+
+
 def main() -> int:
     candidatos = json.loads((SALIDA / "e9" / "candidatos_del_panel.json").read_text(encoding="utf-8"))
     principal = json.loads((SALIDA / "e9" / "ejemplos_del_panel.json").read_text(encoding="utf-8"))
     corpus = cargar_corpus()
     remitentes = dict(zip(corpus["email_id"], corpus["sender"].astype(str)))
     orden = ranking(candidatos, remitentes)
-    guiado = principal["ejemplos"]["induccion"]["email_id"]
+    guiado = GUIADO
     elegidos_ids = [r["email_id"] for r in orden if r["email_id"] != guiado][:3]
     print("  ranking de claridad (diez primeros):")
     for i, r in enumerate(orden[:10], 1):
@@ -124,11 +130,8 @@ def main() -> int:
     tecnica = e9._tecnica_seleccionada()
     corpus = corpus.set_index("email_id", drop=False)
     claves = ["correo_1", "correo_2", "correo_3", "correo_4"]
-    ejemplos = {"induccion": principal["ejemplos"]["induccion"]}
-    for clave, eid in zip(claves, secuencia):
-        if eid == guiado:
-            ejemplos[clave] = principal["ejemplos"]["induccion"]
-            continue
+    ejemplos = {}
+    for clave, eid in zip(["induccion"] + claves, [guiado] + secuencia):
         fila = corpus.loc[eid].copy()
         fila["cuerpo"] = P._cuerpo_visible(fila)
         fila["idioma"] = P._idioma(fila["cuerpo"])

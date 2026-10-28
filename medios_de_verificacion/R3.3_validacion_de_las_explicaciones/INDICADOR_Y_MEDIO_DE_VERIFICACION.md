@@ -14,7 +14,7 @@
 | --- | --- |
 | `e9_validacion_y_panel.json` | Verificación numérica de las narrativas frente a su vector de atribución (100 de 100 correctas) |
 | `ejemplos_del_panel.json` | Correos del panel y su explicación, con los criterios de selección y cuántos candidatos superó cada filtro |
-| `formulario_del_panel.html` | Formulario de evaluación tal como lo ve el evaluador: consentimiento, perfil, inducción, diez preguntas de comprensión, SUS y PSSUQ |
+| `formulario_del_panel.html` | Formulario de evaluación tal como lo ve el evaluador: consentimiento, perfil, inducción, diez preguntas de comprensión, SUS y la subescala de calidad de la información del PSSUQ |
 | `crear_formulario.gs` | Apps Script que crea ese mismo formulario en Google Forms |
 | `clave_de_respuestas.json` | Respuesta correcta de cada pregunta de comprensión, derivada del reporte |
 | `resaltado_induccion.png` | Correo del panel resaltado según el peso de cada palabra, como aparece en el formulario |

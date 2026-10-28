@@ -106,13 +106,18 @@ def _segmentos(texto: str, spans: list, ocultar: list[tuple[str, Callable]]):
 def dibujar_resaltado(texto: str, resultado: dict, destino: Path,
                       citadas: list[str] | None = None,
                       ocultar: list[tuple[str, Callable]] | None = None,
-                      ancho_px: int = 1100, dpi: int = 150) -> Path:
+                      ancho_px: int = 1100, dpi: int = 150,
+                      omitir: tuple[int, int, str] | None = None) -> Path:
     """Dibuja el texto con cada palabra sombreada según su peso y lo guarda en PNG.
 
     Se sombrea el quinto de palabras con más peso, con intensidad lineal entre el
     percentil 80 (sin sombra) y el peso máximo (sombra plena): sombrear todo lo que
     supera la mediana teñía medio correo y escondía lo decisivo. Las palabras que
     cita el reporte (`citadas`) llevan además recuadro.
+
+    `omitir` = (inicio, fin, nota) sustituye por la nota el tramo de texto entre
+    esas posiciones; sirve para no mostrar dos veces un bloque que el correo
+    repite. Los pesos de lo que se muestra no cambian.
     """
     import matplotlib
     matplotlib.use("Agg")
@@ -123,14 +128,21 @@ def dibujar_resaltado(texto: str, resultado: dict, destino: Path,
     leido = texto[:resultado["leido_hasta"]]
     segs = _segmentos(leido, resultado["spans"], ocultar or [])
     pesos = sorted(p for _, p, _, _ in segs)
+    nota_k = None
+    if omitir:
+        ini, fin, nota = omitir
+        antes = [g for g in segs if g[2] < ini]
+        despues = [g for g in segs if g[2] >= fin]
+        nota_k = len(antes)
+        segs = antes + [(nota, 0.0, ini, fin)] + despues
     mediana = pesos[int(len(pesos) * 0.8)] if pesos else 0.0
     maximo = pesos[-1] if pesos else 1.0
     citadas = [c.lower() for c in (citadas or [])]
     # Cada palabra citada se recuadra una sola vez: en su aparición de más peso.
     recuadro = set()
     for c in citadas:
-        candidatos = [k for k, (s, p, _, _) in enumerate(segs)
-                      if c in re.split(r"[^\w]+", s.lower()) or s.lower() == c]
+        candidatos = [k for k, (s, p, _, _) in enumerate(segs) if k != nota_k
+                      and (c in re.split(r"[^\w]+", s.lower()) or s.lower() == c)]
         if candidatos:
             recuadro.add(max(candidatos, key=lambda k: segs[k][1]))
 
@@ -149,7 +161,7 @@ def dibujar_resaltado(texto: str, resultado: dict, destino: Path,
 
     lineas, actual, x = [], [], margen
     for k, (s, p, _, _) in enumerate(segs):
-        w = ancho(s)
+        w = ancho(s, fuente_nota if k == nota_k else fuente)
         if actual and x + w > ancho_px - margen:
             lineas.append(actual)
             actual, x = [], margen
@@ -172,6 +184,9 @@ def dibujar_resaltado(texto: str, resultado: dict, destino: Path,
     y -= alto_linea * 0.6
     for linea in lineas:
         for k, s, p, x, w in linea:
+            if k == nota_k:
+                fig.text(x, y, s, transform=T, fontproperties=fuente_nota, color="#666666")
+                continue
             nivel = 0.0 if maximo <= mediana else max(0.0, (p - mediana) / (maximo - mediana))
             caja = dict(boxstyle="square,pad=0.18", linewidth=1.4 if k in recuadro else 0,
                         facecolor=(0.86, 0.24, 0.12, 0.12 + 0.68 * nivel) if nivel > 0

@@ -48,6 +48,11 @@
       "sustituye_a": "e1aeef24-31fe-4ab8-ac02-c1fb84efdc06",
       "email_id": "3f6f83f0-d2be-4e1c-9fa8-5a4fd8c87c81",
       "motivo": "phishing de credenciales con peso de red en el reporte (0.4%) y palabras citadas reconocibles; incumple los filtros de confianza mínima 0.99 y de idioma detectado, y su primer factor es un signo"
+    },
+    "induccion": {
+      "sustituye_a": "a68f6ab2-d2d5-4570-9914-ea410c4f788e",
+      "email_id": "f9d6beca-3ff8-4388-ac2d-60d84c020c0b",
+      "motivo": "guía corta y clara tras la prueba piloto; cumple todos los criterios"
     }
   },
   "ejemplos": {
@@ -1318,22 +1323,22 @@
       "resaltado_coincide_con_el_reporte": true
     },
     "induccion": {
-      "email_id": "a68f6ab2-d2d5-4570-9914-ea410c4f788e",
+      "email_id": "f9d6beca-3ff8-4388-ac2d-60d84c020c0b",
       "coleccion": "Nazario",
       "etiqueta_real": "phishing",
       "idioma": "en",
-      "asunto": "Protect Your Account",
+      "asunto": "monkey.org Password update",
       "remitente": "[remitente oculto]",
-      "cuerpo": "PROTECTING YOUR ACCOUNT Due to concerns, for the safety and integrity of the TD Canada Trust Bank Online Service we have issued this warning message. As a result of too many incorrect attempts to access and Login failures, Please note that Your TD Canada Trust EasyWeb Account has been terminated. In order for it to remain active, Please use the link below to proceed and restore access to Your Account: hxxps://easyweb[.]tdcanadatrust[.]com/ Thank You. Accounts Management As outlined in our User Agreement, TD Canada Trust Bank will periodically send you information about site changes and enhancements. Visit our Privacy Policy and User Agreement if you have any questions. Privacy Policy PROTECTING YOUR ACCOUNT Due to concerns, for the safety and integrity of the Commonwealth Bank of Australia Online Service we have issued this warning message. As a result of too many incorrect attempts to access and Login failures, Please note that Your Commonwealth NetBank Online Account has been terminated. In order for it to remain active, Please use the link below to proceed and restore access to Your Account: hxxps://www3[.]netbank[.]commbank[.]com[.]au/netbank/bankmain Thank You. Accounts Management As outlined in our User Agreement, Commonwealth Bank of Australia will periodically send you information about site changes and enhancements. Visit our Privacy Policy and User Agreement if you have any questions. hxxp://www[.]commbank[.]com[.]au/SecurityandPrivacy/default[.]asp",
+      "cuerpo": "Dear jose, The password for your email account ([usuario]@monkey[.]org) expires today 10/11/2022 3:37:27 a.m. . Keep and continue with the same password using the below portal. Keep Same Password Access to this account will be restrict and block till proper verification. You can also see security activity at: hxxps://myaccount[.]monkey[.]org/notifications",
       "explicacion": {
         "clase_predicha": 1,
-        "confianza": 0.998437,
-        "narrativa": "Este correo fue clasificado como phishing con una confianza del 99.8%. Los factores que más influyeron en la decisión fueron: la palabra \"asp\" (peso 1.1%), la palabra \"tdcanadatrust\" (peso 0.9%), la palabra \"securityandprivacy\" (peso 0.8%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
-        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 99.8%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"asp\": 26.5%\n  · la palabra \"tdcanadatrust\": 22.0%\n  · la palabra \"securityandprivacy\": 19.4%\n  · un signo de puntuación \".\": 16.3%\n  · la palabra \"your\": 15.7%\n\n[Estructura HTML/DOM] — sin peso en esta decisión\n\n[Metadatos de red y autenticación] — sin peso en esta decisión\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
+        "confianza": 0.99981,
+        "narrativa": "Este correo fue clasificado como phishing con una confianza del 100.0%. Los factores que más influyeron en la decisión fueron: la palabra \"notifications\" (peso 2.2%), la palabra \"expires\" (peso 2.1%), la palabra \"myaccount\" (peso 1.7%). Explicación generada mediante los pesos de atención intrínseca del modelo.",
+        "reporte_por_modalidad": "VEREDICTO: PHISHING (confianza 100.0%)\nTécnica de explicabilidad: los pesos de atención intrínseca del modelo\n\n[Contenido textual (semántica del mensaje)] — contribución agregada: 100.0%\n  · la palabra \"notifications\": 24.5%\n  · la palabra \"expires\": 23.5%\n  · la palabra \"myaccount\": 19.0%\n  · un signo de puntuación \",\": 17.3%\n  · una cifra \"2022\": 15.8%\n\n[Estructura HTML/DOM] — sin peso en esta decisión\n\n[Metadatos de red y autenticación] — sin peso en esta decisión\n\nSÍNTESIS: La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión).",
         "estructurado": {
           "label": 1,
           "label_text": "phishing",
-          "confidence_pct": 99.8,
+          "confidence_pct": 100.0,
           "xai_method": "attention",
           "xai_method_display": "los pesos de atención intrínseca del modelo",
           "modality_blocks": [
@@ -1343,34 +1348,34 @@
               "total_pct": 100.0,
               "factors": [
                 {
-                  "name": "asp",
-                  "human_name": "la palabra \"asp\"",
-                  "pct": 26.5,
-                  "raw_weight": 0.01087303925305605
+                  "name": "notifications",
+                  "human_name": "la palabra \"notifications\"",
+                  "pct": 24.5,
+                  "raw_weight": 0.02214695466682315
                 },
                 {
-                  "name": "tdcanadatrust",
-                  "human_name": "la palabra \"tdcanadatrust\"",
-                  "pct": 22.0,
-                  "raw_weight": 0.009033889975398779
+                  "name": "expires",
+                  "human_name": "la palabra \"expires\"",
+                  "pct": 23.5,
+                  "raw_weight": 0.02122189663350582
                 },
                 {
-                  "name": "securityandprivacy",
-                  "human_name": "la palabra \"securityandprivacy\"",
-                  "pct": 19.4,
-                  "raw_weight": 0.007972735562361777
+                  "name": "myaccount",
+                  "human_name": "la palabra \"myaccount\"",
+                  "pct": 19.0,
+                  "raw_weight": 0.017150335013866425
                 },
                 {
-                  "name": ".",
-                  "human_name": "un signo de puntuación \".\"",
-                  "pct": 16.3,
-                  "raw_weight": 0.006701238453388214
+                  "name": ",",
+                  "human_name": "un signo de puntuación \",\"",
+                  "pct": 17.3,
+                  "raw_weight": 0.015642352402210236
                 },
                 {
-                  "name": "your",
-                  "human_name": "la palabra \"your\"",
-                  "pct": 15.7,
-                  "raw_weight": 0.006461527198553085
+                  "name": "2022",
+                  "human_name": "una cifra \"2022\"",
+                  "pct": 15.8,
+                  "raw_weight": 0.014315362088382244
                 }
               ],
               "n_factors_total": 5
@@ -1381,19 +1386,13 @@
               "total_pct": 0.0,
               "factors": [
                 {
-                  "name": "num_images",
-                  "human_name": "la cantidad de imágenes",
+                  "name": "has_html",
+                  "human_name": "la presencia de código HTML",
                   "pct": 0.0,
-                  "raw_weight": 3.2186508178710938e-06
-                },
-                {
-                  "name": "profundidad_dom",
-                  "human_name": "el grado de anidamiento de la estructura HTML",
-                  "pct": 0.0,
-                  "raw_weight": -9.5367431640625e-07
+                  "raw_weight": 0.0
                 }
               ],
-              "n_factors_total": 2
+              "n_factors_total": 1
             },
             {
               "modality": "red",
@@ -1401,41 +1400,47 @@
               "total_pct": 0.0,
               "factors": [
                 {
-                  "name": "url_max_subdomain_count",
-                  "human_name": "la cantidad de subdominios en las URLs",
-                  "pct": 0.0,
-                  "raw_weight": -2.1457672119140625e-06
-                },
-                {
                   "name": "num_urls_metadata",
                   "human_name": "la cantidad de URLs reportadas",
                   "pct": 0.0,
-                  "raw_weight": 1.1920928955078125e-06
+                  "raw_weight": 1.1920928955078125e-07
                 },
                 {
-                  "name": "url_max_length",
-                  "human_name": "la longitud de las URLs",
+                  "name": "url_max_digit_ratio",
+                  "human_name": "la proporción de dígitos en las URLs",
                   "pct": 0.0,
-                  "raw_weight": 7.152557373046875e-07
+                  "raw_weight": 1.1920928955078125e-07
+                },
+                {
+                  "name": "url_max_subdomain_count",
+                  "human_name": "la cantidad de subdominios en las URLs",
+                  "pct": 0.0,
+                  "raw_weight": -1.1920928955078125e-07
+                },
+                {
+                  "name": "url_domain_max_entropy",
+                  "human_name": "un dominio con apariencia generada aleatoriamente",
+                  "pct": 0.0,
+                  "raw_weight": 1.1920928955078125e-07
                 }
               ],
-              "n_factors_total": 3
+              "n_factors_total": 4
             }
           ],
           "dominant_modality": "texto",
           "synthesis": "La clasificación como phishing se apoya principalmente en la modalidad 'Contenido textual (semántica del mensaje)' (100.0% del peso total de la decisión)."
         },
         "atribucion_en_porcentaje": {
-          "asp": 1.1,
-          "tdcanadatrust": 0.9,
-          "securityandprivacy": 0.8,
-          ".": 0.7,
-          "your": 0.6,
-          "num_images": 0.0,
-          "profundidad_dom": 0.0,
-          "url_max_subdomain_count": 0.0,
+          "notifications": 2.2,
+          "expires": 2.1,
+          "myaccount": 1.7,
+          ",": 1.6,
+          "2022": 1.4,
+          "has_html": 0.0,
           "num_urls_metadata": 0.0,
-          "url_max_length": 0.0
+          "url_max_digit_ratio": 0.0,
+          "url_max_subdomain_count": 0.0,
+          "url_domain_max_entropy": 0.0
         },
         "legibilidad": {
           "factores_citados": 3,
@@ -1444,1399 +1449,416 @@
           "ilegibles": []
         }
       },
-      "texto_leido": "PROTECTING YOUR ACCOUNT Due to concerns, for the safety and integrity of the TD Canada Trust Bank Online Service we have issued this warning message. As a result of too many incorrect attempts to access and Login failures, Please note that Your TD Canada Trust EasyWeb Account has been terminated. In order for it to remain active, Please use the link below to proceed and restore access to Your Account: https://easyweb.tdcanadatrust.com/ Thank You. Accounts Management As outlined in our User Agreement, TD Canada Trust Bank will periodically send you information about site changes and enhancements. Visit our Privacy Policy and User Agreement if you have any questions. Privacy Policy PROTECTING YOUR ACCOUNT Due to concerns, for the safety and integrity of the Commonwealth Bank of Australia Online Service we have issued this warning message. As a result of too many incorrect attempts to access and Login failures, Please note that Your Commonwealth NetBank Online Account has been terminated. In order for it to remain active, Please use the link below to proceed and restore access to Your Account: https://www3.netbank.commbank.com.au/netbank/bankmain Thank You. Accounts Management As outlined in our User Agreement, Commonwealth Bank of Australia will periodically send you information about site changes and enhancements. Visit our Privacy Policy and User Agreement if you have any questions. http://www.commbank.com.au/SecurityandPrivacy/default.asp",
+      "texto_leido": "Dear jose, The password for your email account (jose@monkey.org) expires today 10/11/2022 3:37:27 a.m. . Keep and continue with the same password using the below portal. Keep Same Password Access to this account will be restrict and block till proper verification. You can also see security activity at: https://myaccount.monkey.org/notifications",
       "resaltado": {
         "spans": [
           [
             0,
+            4,
+            0.01038382
+          ],
+          [
+            5,
+            9,
+            0.01145257
+          ],
+          [
+            9,
             10,
-            0.00466518
+            0.01564235
           ],
           [
             11,
-            15,
-            0.00646153
+            14,
+            0.01114607
           ],
           [
-            16,
+            15,
             23,
-            0.00531415
+            0.01032874
           ],
           [
             24,
             27,
-            0.00308394
+            0.00836324
           ],
           [
             28,
-            30,
-            0.00256537
+            32,
+            0.012549
           ],
           [
-            31,
+            33,
+            38,
+            0.01143783
+          ],
+          [
             39,
-            0.00267901
+            46,
+            0.00991561
           ],
           [
-            39,
-            40,
-            0.00427719
-          ],
-          [
-            41,
-            44,
-            0.00254746
-          ],
-          [
-            45,
+            47,
             48,
-            0.00361231
+            0.00971673
           ],
           [
-            49,
-            55,
-            0.00245588
+            48,
+            52,
+            0.00930666
           ],
           [
-            56,
+            52,
+            53,
+            0.00737999
+          ],
+          [
+            53,
             59,
-            0.00227068
+            0.00596277
+          ],
+          [
+            59,
+            60,
+            0.00910523
           ],
           [
             60,
-            69,
-            0.00273157
+            63,
+            0.00773024
           ],
           [
-            70,
+            63,
+            64,
+            0.00727586
+          ],
+          [
+            65,
             72,
-            0.00237175
+            0.0212219
           ],
           [
             73,
-            76,
-            0.00398748
+            78,
+            0.00750921
           ],
           [
-            77,
             79,
-            0.002371
+            81,
+            0.00443878
           ],
           [
-            80,
-            86,
-            0.00241227
+            81,
+            82,
+            0.00455984
           ],
           [
-            87,
+            82,
+            84,
+            0.00446715
+          ],
+          [
+            84,
+            85,
+            0.00497327
+          ],
+          [
+            85,
+            89,
+            0.01431536
+          ],
+          [
+            90,
+            91,
+            0.00366197
+          ],
+          [
+            91,
             92,
-            0.00230571
+            0.00617992
           ],
           [
-            93,
+            92,
+            94,
+            0.00440378
+          ],
+          [
+            94,
+            95,
+            0.00623932
+          ],
+          [
+            95,
             97,
-            0.00282674
+            0.00413083
           ],
           [
             98,
+            99,
+            0.00651977
+          ],
+          [
+            99,
+            100,
+            0.0066415
+          ],
+          [
+            100,
+            101,
+            0.00412339
+          ],
+          [
+            101,
+            102,
+            0.00735778
+          ],
+          [
+            103,
             104,
-            0.00307243
+            0.00816193
           ],
           [
             105,
-            112,
-            0.0024555
+            109,
+            0.00625933
           ],
           [
+            110,
             113,
-            115,
-            0.00335232
+            0.00672864
           ],
           [
-            116,
-            120,
-            0.00213425
+            114,
+            122,
+            0.00568736
           ],
           [
-            121,
+            123,
             127,
-            0.00260595
+            0.00555956
           ],
           [
             128,
+            131,
+            0.00795408
+          ],
+          [
             132,
-            0.00269932
+            136,
+            0.00567981
           ],
           [
-            133,
-            140,
-            0.00279812
+            137,
+            145,
+            0.0068674
           ],
           [
-            141,
-            148,
-            0.00286007
+            146,
+            151,
+            0.00501408
           ],
           [
-            148,
-            149,
-            0.00449135
-          ],
-          [
-            150,
             152,
-            0.00195295
-          ],
-          [
-            153,
-            154,
-            0.00285388
-          ],
-          [
             155,
+            0.00880106
+          ],
+          [
+            156,
             161,
-            0.00214742
+            0.00592881
           ],
           [
             162,
-            164,
-            0.00202077
-          ],
-          [
-            165,
             168,
-            0.00205992
+            0.00718689
           ],
           [
+            168,
             169,
-            173,
-            0.00178008
+            0.01053606
           ],
           [
+            170,
             174,
-            183,
-            0.00241078
+            0.00608698
           ],
           [
-            184,
-            192,
-            0.00214031
+            175,
+            179,
+            0.00557746
           ],
           [
-            193,
+            180,
+            188,
+            0.00668225
+          ],
+          [
+            189,
             195,
-            0.00194584
+            0.00537584
           ],
           [
             196,
-            202,
-            0.00188462
+            198,
+            0.00601251
           ],
           [
+            199,
             203,
-            206,
-            0.00214267
+            0.00635897
           ],
           [
-            207,
+            204,
+            211,
+            0.00713683
+          ],
+          [
             212,
-            0.00327369
+            216,
+            0.00594111
           ],
           [
-            213,
-            221,
-            0.00213264
+            217,
+            219,
+            0.00457725
           ],
           [
-            221,
-            222,
-            0.00379307
+            220,
+            228,
+            0.00547924
           ],
           [
-            223,
             229,
-            0.00281238
+            232,
+            0.00624058
           ],
           [
-            230,
-            234,
-            0.00258449
+            233,
+            238,
+            0.00432958
           ],
           [
-            235,
             239,
-            0.00251659
+            243,
+            0.00666367
           ],
           [
-            240,
             244,
-            0.00372214
+            250,
+            0.00496568
           ],
           [
-            245,
-            247,
-            0.00228291
+            251,
+            263,
+            0.00556266
           ],
           [
-            248,
-            254,
-            0.00220031
+            263,
+            264,
+            0.01223972
           ],
           [
-            255,
-            260,
-            0.00234506
-          ],
-          [
-            261,
+            265,
             268,
-            0.00505623
+            0.0080797
           ],
           [
             269,
-            276,
-            0.00292786
+            272,
+            0.00602873
           ],
           [
+            273,
             277,
-            280,
-            0.00203469
+            0.00648465
           ],
           [
+            278,
             281,
-            285,
-            0.00166012
+            0.00607113
           ],
           [
-            286,
-            296,
-            0.00257786
+            282,
+            290,
+            0.00523267
           ],
           [
-            296,
-            297,
-            0.00352501
+            291,
+            299,
+            0.00533152
           ],
           [
-            298,
             300,
-            0.00207073
+            302,
+            0.00615904
           ],
           [
-            301,
-            306,
-            0.00164955
+            302,
+            303,
+            0.00738565
           ],
           [
-            307,
+            304,
+            309,
+            0.00771313
+          ],
+          [
+            309,
             310,
-            0.00182552
+            0.00713934
+          ],
+          [
+            310,
+            311,
+            0.00457207
           ],
           [
             311,
-            313,
-            0.00193098
+            312,
+            0.00438561
           ],
           [
-            314,
-            316,
-            0.00191723
+            312,
+            321,
+            0.01715034
           ],
           [
-            317,
-            323,
-            0.00181945
+            321,
+            322,
+            0.01251038
           ],
           [
-            324,
-            330,
-            0.00155514
+            322,
+            328,
+            0.00541979
           ],
           [
-            330,
-            331,
-            0.00330891
+            328,
+            329,
+            0.01378708
+          ],
+          [
+            329,
+            332,
+            0.00677144
           ],
           [
             332,
-            338,
-            0.00278004
+            333,
+            0.00537906
           ],
           [
-            339,
-            342,
-            0.00186786
-          ],
-          [
-            343,
+            333,
             346,
-            0.00320709
-          ],
-          [
-            347,
-            351,
-            0.00195979
-          ],
-          [
-            352,
-            357,
-            0.00211166
-          ],
-          [
-            358,
-            360,
-            0.00211285
-          ],
-          [
-            361,
-            368,
-            0.00239138
-          ],
-          [
-            369,
-            372,
-            0.00206561
-          ],
-          [
-            373,
-            380,
-            0.0024414
-          ],
-          [
-            381,
-            387,
-            0.00216556
-          ],
-          [
-            388,
-            390,
-            0.0023236
-          ],
-          [
-            391,
-            395,
-            0.00364331
-          ],
-          [
-            396,
-            403,
-            0.00408435
-          ],
-          [
-            403,
-            404,
-            0.00284589
-          ],
-          [
-            405,
-            410,
-            0.00265113
-          ],
-          [
-            410,
-            411,
-            0.0019637
-          ],
-          [
-            411,
-            412,
-            0.0013318
-          ],
-          [
-            412,
-            413,
-            0.00133909
-          ],
-          [
-            413,
-            420,
-            0.00444647
-          ],
-          [
-            420,
-            421,
-            0.00315512
-          ],
-          [
-            421,
-            434,
-            0.00903389
-          ],
-          [
-            434,
-            435,
-            0.00321428
-          ],
-          [
-            435,
-            438,
-            0.00207623
-          ],
-          [
-            438,
-            439,
-            0.00242889
-          ],
-          [
-            440,
-            445,
-            0.00268614
-          ],
-          [
-            446,
-            449,
-            0.00269854
-          ],
-          [
-            449,
-            450,
-            0.00411827
-          ],
-          [
-            451,
-            459,
-            0.00272073
-          ],
-          [
-            460,
-            470,
-            0.0020477
-          ],
-          [
-            471,
-            473,
-            0.00160336
-          ],
-          [
-            474,
-            482,
-            0.00231088
-          ],
-          [
-            483,
-            485,
-            0.00243363
-          ],
-          [
-            486,
-            489,
-            0.0018159
-          ],
-          [
-            490,
-            494,
-            0.00212944
-          ],
-          [
-            495,
-            504,
-            0.00204647
-          ],
-          [
-            504,
-            505,
-            0.003496
-          ],
-          [
-            506,
-            508,
-            0.00215302
-          ],
-          [
-            509,
-            515,
-            0.00200164
-          ],
-          [
-            516,
-            521,
-            0.00207487
-          ],
-          [
-            522,
-            526,
-            0.00255134
-          ],
-          [
-            527,
-            531,
-            0.00211128
-          ],
-          [
-            532,
-            544,
-            0.00262396
-          ],
-          [
-            545,
-            549,
-            0.00212221
-          ],
-          [
-            550,
-            553,
-            0.00264094
-          ],
-          [
-            554,
-            565,
-            0.00228775
-          ],
-          [
-            566,
-            571,
-            0.00153821
-          ],
-          [
-            572,
-            576,
-            0.00191141
-          ],
-          [
-            577,
-            584,
-            0.00183616
-          ],
-          [
-            585,
-            588,
-            0.00215748
-          ],
-          [
-            589,
-            601,
-            0.00563142
-          ],
-          [
-            601,
-            602,
-            0.00425473
-          ],
-          [
-            603,
-            608,
-            0.00247156
-          ],
-          [
-            609,
-            612,
-            0.00216947
-          ],
-          [
-            613,
-            620,
-            0.00248994
-          ],
-          [
-            621,
-            627,
-            0.00215019
-          ],
-          [
-            628,
-            631,
-            0.00212738
-          ],
-          [
-            632,
-            636,
-            0.0018993
-          ],
-          [
-            637,
-            646,
-            0.00183805
-          ],
-          [
-            647,
-            649,
-            0.00186778
-          ],
-          [
-            650,
-            653,
-            0.00184887
-          ],
-          [
-            654,
-            658,
-            0.0015204
-          ],
-          [
-            659,
-            662,
-            0.0017997
-          ],
-          [
-            663,
-            672,
-            0.00201469
-          ],
-          [
-            672,
-            673,
-            0.00321077
-          ],
-          [
-            674,
-            681,
-            0.0025908
-          ],
-          [
-            682,
-            688,
-            0.00183957
-          ],
-          [
-            689,
-            699,
-            0.00269156
-          ],
-          [
-            700,
-            704,
-            0.00329869
-          ],
-          [
-            705,
-            712,
-            0.00323218
-          ],
-          [
-            713,
-            716,
-            0.00213204
-          ],
-          [
-            717,
-            719,
-            0.00184691
-          ],
-          [
-            720,
-            728,
-            0.00181405
-          ],
-          [
-            728,
-            729,
-            0.00325322
-          ],
-          [
-            730,
-            733,
-            0.00170843
-          ],
-          [
-            734,
-            737,
-            0.00322132
-          ],
-          [
-            738,
-            744,
-            0.00188834
-          ],
-          [
-            745,
-            748,
-            0.00158728
-          ],
-          [
-            749,
-            758,
-            0.00198139
-          ],
-          [
-            759,
-            761,
-            0.00186857
-          ],
-          [
-            762,
-            765,
-            0.00350004
-          ],
-          [
-            766,
-            778,
-            0.0025906
-          ],
-          [
-            779,
-            783,
-            0.00288258
-          ],
-          [
-            784,
-            786,
-            0.00204146
-          ],
-          [
-            787,
-            796,
-            0.00233397
-          ],
-          [
-            797,
-            803,
-            0.00235196
-          ],
-          [
-            804,
-            811,
-            0.00185931
-          ],
-          [
-            812,
-            814,
-            0.00218089
-          ],
-          [
-            815,
-            819,
-            0.00167558
-          ],
-          [
-            820,
-            826,
-            0.00214065
-          ],
-          [
-            827,
-            831,
-            0.00190753
-          ],
-          [
-            832,
-            839,
-            0.00217009
-          ],
-          [
-            840,
-            847,
-            0.00214619
-          ],
-          [
-            847,
-            848,
-            0.003432
-          ],
-          [
-            849,
-            851,
-            0.00155245
-          ],
-          [
-            852,
-            853,
-            0.00197376
-          ],
-          [
-            854,
-            860,
-            0.0017546
-          ],
-          [
-            861,
-            863,
-            0.00167687
-          ],
-          [
-            864,
-            867,
-            0.00172274
-          ],
-          [
-            868,
-            872,
-            0.00146587
-          ],
-          [
-            873,
-            882,
-            0.00214227
-          ],
-          [
-            883,
-            891,
-            0.00181667
-          ],
-          [
-            892,
-            894,
-            0.00181538
-          ],
-          [
-            895,
-            901,
-            0.00163431
-          ],
-          [
-            902,
-            905,
-            0.00165774
-          ],
-          [
-            906,
-            911,
-            0.00260202
-          ],
-          [
-            912,
-            920,
-            0.00180156
-          ],
-          [
-            920,
-            921,
-            0.00329226
-          ],
-          [
-            922,
-            928,
-            0.00240454
-          ],
-          [
-            929,
-            933,
-            0.00232002
-          ],
-          [
-            934,
-            938,
-            0.00221166
-          ],
-          [
-            939,
-            943,
-            0.00295617
-          ],
-          [
-            944,
-            956,
-            0.00237189
-          ],
-          [
-            957,
-            964,
-            0.00389496
-          ],
-          [
-            965,
-            971,
-            0.00236787
-          ],
-          [
-            972,
-            979,
-            0.00239771
-          ],
-          [
-            980,
-            983,
-            0.00176852
-          ],
-          [
-            984,
-            988,
-            0.00146612
-          ],
-          [
-            989,
-            999,
-            0.00240954
-          ],
-          [
-            999,
-            1000,
-            0.00418214
-          ],
-          [
-            1001,
-            1003,
-            0.00220971
-          ],
-          [
-            1004,
-            1009,
-            0.00150838
-          ],
-          [
-            1010,
-            1013,
-            0.00154275
-          ],
-          [
-            1014,
-            1016,
-            0.00157452
-          ],
-          [
-            1017,
-            1019,
-            0.00186958
-          ],
-          [
-            1020,
-            1026,
-            0.00144785
-          ],
-          [
-            1027,
-            1033,
-            0.00142525
-          ],
-          [
-            1033,
-            1034,
-            0.00281473
-          ],
-          [
-            1035,
-            1041,
-            0.00226971
-          ],
-          [
-            1042,
-            1045,
-            0.0016302
-          ],
-          [
-            1046,
-            1049,
-            0.00253813
-          ],
-          [
-            1050,
-            1054,
-            0.00158627
-          ],
-          [
-            1055,
-            1060,
-            0.00169844
-          ],
-          [
-            1061,
-            1063,
-            0.0019372
-          ],
-          [
-            1064,
-            1071,
-            0.00191042
-          ],
-          [
-            1072,
-            1075,
-            0.00156678
-          ],
-          [
-            1076,
-            1083,
-            0.00214028
-          ],
-          [
-            1084,
-            1090,
-            0.00184833
-          ],
-          [
-            1091,
-            1093,
-            0.00215338
-          ],
-          [
-            1094,
-            1098,
-            0.0026756
-          ],
-          [
-            1099,
-            1106,
-            0.00294842
-          ],
-          [
-            1106,
-            1107,
-            0.00243296
-          ],
-          [
-            1108,
-            1113,
-            0.002002
-          ],
-          [
-            1113,
-            1114,
-            0.00198486
-          ],
-          [
-            1114,
-            1115,
-            0.00108443
-          ],
-          [
-            1115,
-            1116,
-            0.00104661
-          ],
-          [
-            1116,
-            1120,
-            0.00295448
-          ],
-          [
-            1120,
-            1121,
-            0.00269871
-          ],
-          [
-            1121,
-            1128,
-            0.00301997
-          ],
-          [
-            1128,
-            1129,
-            0.00243586
-          ],
-          [
-            1129,
-            1137,
-            0.00432471
-          ],
-          [
-            1137,
-            1138,
-            0.00273802
-          ],
-          [
-            1138,
-            1141,
-            0.00136753
-          ],
-          [
-            1141,
-            1142,
-            0.00239051
-          ],
-          [
-            1142,
-            1144,
-            0.00171574
-          ],
-          [
-            1144,
-            1145,
-            0.00134394
-          ],
-          [
-            1145,
-            1152,
-            0.0030605
-          ],
-          [
-            1152,
-            1153,
-            0.00181652
-          ],
-          [
-            1153,
-            1161,
-            0.00440068
-          ],
-          [
-            1162,
-            1167,
-            0.00258895
-          ],
-          [
-            1168,
-            1171,
-            0.00156223
-          ],
-          [
-            1171,
-            1172,
-            0.00281343
-          ],
-          [
-            1173,
-            1181,
-            0.00223595
-          ],
-          [
-            1182,
-            1192,
-            0.00167111
-          ],
-          [
-            1193,
-            1195,
-            0.00129375
-          ],
-          [
-            1196,
-            1204,
-            0.00189203
-          ],
-          [
-            1205,
-            1207,
-            0.00264855
-          ],
-          [
-            1208,
-            1211,
-            0.00165151
-          ],
-          [
-            1212,
-            1216,
-            0.00200594
-          ],
-          [
-            1217,
-            1226,
-            0.00177888
-          ],
-          [
-            1226,
-            1227,
-            0.00316396
-          ],
-          [
-            1228,
-            1240,
-            0.00258035
-          ],
-          [
-            1241,
-            1245,
-            0.00297562
-          ],
-          [
-            1246,
-            1248,
-            0.00210919
-          ],
-          [
-            1249,
-            1258,
-            0.00248213
-          ],
-          [
-            1259,
-            1263,
-            0.00186162
-          ],
-          [
-            1264,
-            1276,
-            0.00232199
-          ],
-          [
-            1277,
-            1281,
-            0.00208876
-          ],
-          [
-            1282,
-            1285,
-            0.0023365
-          ],
-          [
-            1286,
-            1297,
-            0.00218659
-          ],
-          [
-            1298,
-            1303,
-            0.00148109
-          ],
-          [
-            1304,
-            1308,
-            0.00180798
-          ],
-          [
-            1309,
-            1316,
-            0.00159548
-          ],
-          [
-            1317,
-            1320,
-            0.00160911
-          ],
-          [
-            1321,
-            1333,
-            0.0034202
-          ],
-          [
-            1333,
-            1334,
-            0.00670124
-          ],
-          [
-            1335,
-            1340,
-            0.00180575
-          ],
-          [
-            1341,
-            1344,
-            0.00151348
-          ],
-          [
-            1345,
-            1352,
-            0.00231223
-          ],
-          [
-            1353,
-            1359,
-            0.00162736
-          ],
-          [
-            1360,
-            1363,
-            0.00166649
-          ],
-          [
-            1364,
-            1368,
-            0.00174981
-          ],
-          [
-            1369,
-            1378,
-            0.00154865
-          ],
-          [
-            1379,
-            1381,
-            0.00175467
-          ],
-          [
-            1382,
-            1385,
-            0.00164095
-          ],
-          [
-            1386,
-            1390,
-            0.00132736
-          ],
-          [
-            1391,
-            1394,
-            0.00158527
-          ],
-          [
-            1395,
-            1404,
-            0.00191869
-          ],
-          [
-            1404,
-            1405,
-            0.00346507
-          ],
-          [
-            1406,
-            1410,
-            0.00239296
-          ],
-          [
-            1410,
-            1411,
-            0.00224649
-          ],
-          [
-            1411,
-            1412,
-            0.00210365
-          ],
-          [
-            1412,
-            1413,
-            0.00140423
-          ],
-          [
-            1413,
-            1416,
-            0.00228642
-          ],
-          [
-            1416,
-            1417,
-            0.00350026
-          ],
-          [
-            1417,
-            1425,
-            0.00566949
-          ],
-          [
-            1425,
-            1426,
-            0.004375
-          ],
-          [
-            1426,
-            1429,
-            0.00141423
-          ],
-          [
-            1429,
-            1430,
-            0.00378242
-          ],
-          [
-            1430,
-            1432,
-            0.00157649
-          ],
-          [
-            1432,
-            1433,
-            0.00129338
-          ],
-          [
-            1433,
-            1451,
-            0.00797274
-          ],
-          [
-            1451,
-            1452,
-            0.00135109
-          ],
-          [
-            1452,
-            1459,
-            0.00180268
-          ],
-          [
-            1459,
-            1460,
-            0.00395712
-          ],
-          [
-            1460,
-            1463,
-            0.01087304
+            0.02214695
           ]
         ],
-        "leido_hasta": 1463,
+        "leido_hasta": 346,
         "truncado": false
       },
-      "resaltado_coincide_con_el_reporte": true
+      "resaltado_coincide_con_el_reporte": true,
+      "seleccion": "impuesto",
+      "motivo": "guía corta y clara tras la prueba piloto; cumple todos los criterios"
     },
     "phishing_2": {
       "email_id": "3f6f83f0-d2be-4e1c-9fa8-5a4fd8c87c81",
