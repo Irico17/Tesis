@@ -28,27 +28,27 @@
       ]
     },
     "C3": {
-      "titulo": "C3. Según la explicación, ¿qué tan seguro está el sistema de su decisión?",
-      "correcta": "Más del 99%",
-      "opciones": [
-        "Menos del 60%",
-        "Entre 60% y 90%",
-        "Entre 90% y 99%",
-        "Más del 99%"
-      ]
-    },
-    "C4": {
-      "titulo": "C4. Según la explicación, ¿qué palabra pesó más para decidir que este correo es legítimo?",
+      "titulo": "C3. Según la explicación, ¿qué palabra pesó más para decidir que este correo es legítimo?",
       "correcta": "fedora",
       "opciones": [
         "socket",
+        "invocations",
         "fedora",
-        "daemon",
-        "invocations"
+        "daemon"
+      ]
+    },
+    "C4": {
+      "titulo": "C4. ¿Cuál de estas palabras NO aparece en la lista de la explicación?",
+      "correcta": "password",
+      "opciones": [
+        "expires",
+        "myaccount",
+        "password",
+        "notifications"
       ]
     },
     "C5": {
-      "titulo": "C5. Este correo contiene enlaces. Según la explicación, los enlaces y la verificación del remitente influyeron en esta decisión.",
+      "titulo": "C5. Según la explicación, la palabra «myaccount» pesó más que «notifications».",
       "correcta": "Falso",
       "opciones": [
         "Verdadero",
@@ -56,50 +56,24 @@
       ]
     },
     "C6": {
-      "titulo": "C6. ¿Cuál de estas palabras NO aparece en la lista de la explicación?",
-      "correcta": "password",
-      "opciones": [
-        "myaccount",
-        "password",
-        "expires",
-        "notifications"
-      ]
-    },
-    "C7": {
-      "titulo": "C7. Según la explicación, la palabra «myaccount» pesó más que «notifications».",
-      "correcta": "Falso",
-      "opciones": [
-        "Verdadero",
-        "Falso"
-      ]
-    },
-    "C8": {
-      "titulo": "C8. Según la explicación, ¿qué decidió el sistema sobre este correo?",
+      "titulo": "C6. Según la explicación, ¿qué decidió el sistema sobre este correo?",
       "correcta": "Phishing, con más del 99% de confianza",
       "opciones": [
+        "Legítimo, con más del 99% de confianza",
         "Legítimo, con entre 60% y 90% de confianza",
         "Phishing, con más del 99% de confianza",
-        "Legítimo, con más del 99% de confianza",
         "Phishing, con entre 60% y 90% de confianza"
       ]
-    },
-    "C9": {
-      "titulo": "C9. ¿Cuál de estas palabras está entre las tres que más pesaron, según la explicación?",
-      "correcta": "tdcanadatrust",
-      "opciones": [
-        "access",
-        "tdcanadatrust",
-        "agreement",
-        "account"
-      ]
-    },
-    "C10": {
-      "titulo": "C10. El correo original tiene formato HTML. Según la explicación, su diseño no influyó en esta decisión.",
-      "correcta": "Verdadero",
-      "opciones": [
-        "Verdadero",
-        "Falso"
-      ]
     }
+  },
+  "valoracion": {
+    "E1": "Entendí por qué el sistema tomó esta decisión.",
+    "E2": "Esta explicación me ayudaría a decidir si confiar en la decisión del sistema.",
+    "E3": "Entendí por qué el sistema tomó esta decisión.",
+    "E4": "Esta explicación me ayudaría a decidir si confiar en la decisión del sistema.",
+    "E5": "Entendí por qué el sistema tomó esta decisión.",
+    "E6": "Esta explicación me ayudaría a decidir si confiar en la decisión del sistema.",
+    "E7": "Entendí por qué el sistema tomó esta decisión.",
+    "E8": "Esta explicación me ayudaría a decidir si confiar en la decisión del sistema."
   }
 }

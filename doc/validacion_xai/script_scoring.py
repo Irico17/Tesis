@@ -4,54 +4,32 @@ del módulo XAI (Fase E0/E2, resultado de tesis R3.3).
 
 Contexto
 --------
-Este script procesa las respuestas del panel de 10 evaluadores recolectadas con
-`instrumento_evaluacion.md` (SUS adaptado + PSSUQ adaptado + sección de
-comprensión narrativa) y calcula:
-  1. El score SUS (0-100) por evaluador y el promedio del panel.
-  2. La subescala de Calidad de la Información del PSSUQ (InfoQual, Lewis 2002),
-     la única que se aplica, por evaluador y el promedio del panel.
-  3. El % de comprensión narrativa por evaluador y el promedio del panel,
-     comparado explícitamente contra el umbral del 80% exigido por R3.3.
+Este script procesa las respuestas del panel recolectadas con el formulario de
+`instrumento_evaluacion.md` y calcula:
+  1. El índice de claridad y utilidad de las explicaciones, criterio primario de
+     R3.3: el % de valoraciones de 4 o 5 en los ítems E1 a E8, que acompañan a
+     cada correo (E impares: «entendí por qué el sistema tomó esta decisión»;
+     E pares: «esta explicación me ayudaría a decidir si confiar en la decisión
+     del sistema»). Se contrasta con la meta del 90% y el mínimo del 80%, como
+     fijaba el plan («índices de claridad y confianza» obtenidos con formularios).
+  2. El % de comprensión objetiva (preguntas C con respuesta correcta), como
+     evidencia complementaria: muestra si lo que el evaluador dice entender
+     coincide con lo que efectivamente lee en la explicación.
+  3. El score SUS (0-100) y la subescala de Calidad de la Información del PSSUQ
+     (InfoQual, Lewis 2002), como evidencia complementaria de usabilidad.
 
-Formato de CSV esperado (una fila por evaluador)
--------------------------------------------------
-Columnas requeridas:
-
-  evaluador_id            : str, identificador anónimo (ej. "EVAL_01")
-
-  sus_q1 ... sus_q10       : int, 1-5. Respuesta a cada ítem del SUS adaptado
-                              (Sección A de instrumento_evaluacion.md), en el
-                              mismo orden/numeración que el instrumento
-                              (1=totalmente en desacuerdo, 5=totalmente de
-                              acuerdo). Los ítems impares (1,3,5,7,9) son
-                              afirmaciones positivas; los pares (2,4,6,8,10)
-                              son negativas — igual que el SUS original de
-                              Brooke (1996); el scoring ya tiene esto en cuenta.
-
-  pssuq_q7 ... pssuq_q12   : int, 1-5. Respuesta a cada ítem de la subescala
-                              Calidad de la Información (InfoQual) del PSSUQ
-                              (versión de 16 ítems, Lewis 2002), adaptada a
-                              escala 1-5, mayor = mejor. Se conserva la
-                              numeración original de los ítems (7 a 12); en el
-                              formulario aparecen como B1 a B6. Las subescalas
-                              SysUse e IntQual no se aplican: tras la prueba
-                              piloto se acortó el formulario y se conservó la
-                              subescala más pertinente para evaluar
-                              explicaciones.
-
-  comprension_q1 ... comprension_q10     : str/opcional. La respuesta cruda
-                              que dio el evaluador en la Sección C (letra de
-                              opción elegida, o "V"/"F"). Se conserva para
-                              trazabilidad/auditoría, pero NO se usa para el
-                              cálculo de comprensión — ver siguiente columna.
-
-  comprension_correcta_q1 ... comprension_correcta_q10 : int, 0 o 1. Ya
-                              codifica si esa respuesta fue correcta (1) o
-                              incorrecta (0), comparándola contra la clave de
-                              respuestas de instrumento_evaluacion.md en el
-                              momento de transcribir el cuestionario. Esta es
-                              la columna que efectivamente usa el script para
-                              calcular el % de comprensión.
+Formato de CSV esperado (una fila por evaluador; lo produce respuestas_a_csv.py)
+-------------------------------------------------------------------------------
+  evaluador_id                 : str, identificador anónimo (ej. "EVAL_01")
+  valoracion_q1 ... q8         : int, 1-5. E1 a E8, dos por correo, en orden.
+  comprension_correcta_q1 ...  : int, 0 o 1. Si la respuesta a C1, C2... fue la
+                                 correcta según la clave de respuestas. El número
+                                 de preguntas se toma de las columnas presentes.
+  sus_q1 ... sus_q10           : int, 1-5. SUS adaptado (Sección A); los ítems
+                                 impares son positivos y los pares negativos,
+                                 como en Brooke (1996).
+  pssuq_q7 ... pssuq_q12       : int, 1-5. Subescala InfoQual del PSSUQ, con la
+                                 numeración original (en el formulario, B1 a B6).
 
 Uso
 ---
@@ -59,9 +37,8 @@ Uso
   py script_scoring.py --input ruta/a/respuestas.csv --output data/reports/xai_validation_results.json
   py script_scoring.py --input ruta/a/respuestas.csv --no-save
 
-Si se ejecuta sin argumentos (`py script_scoring.py`), corre sobre un panel
-sintético de 5 evaluadores de ejemplo, solo para verificar que el script
-funciona correctamente antes de tener datos reales del panel.
+Sin argumentos corre sobre un panel sintético de 5 evaluadores, solo para
+verificar que el script funciona antes de tener datos reales.
 """
 
 from __future__ import annotations
@@ -83,17 +60,24 @@ SUS_EVEN_ITEMS = [2, 4, 6, 8, 10]   # afirmaciones negativas
 # Solo la subescala de Calidad de la Información (ítems 7 a 12 del PSSUQ).
 PSSUQ_INFOQUAL_ITEMS = list(range(7, 13))  # q7-q12
 
-COMPRENSION_N_ITEMS = 10  # sección C: cuatro correos, diez preguntas
-COMPRENSION_UMBRAL_R3_3 = 80.0  # % mínimo comprometido en la Tabla 2 (IOV de R3.3)
+VALORACION_N_ITEMS = 8   # dos por cada uno de los cuatro correos
+VALORACION_FAVORABLE = 4  # una valoración cuenta como favorable desde 4 (de acuerdo)
+
+UMBRAL_R3_3 = 80.0  # % mínimo comprometido en la Tabla 2 (IOV de R3.3)
 # Meta objetivo sugerida por el Jurado 1 en la revisión del E3 ("se puede iniciar
 # con 90 e ir bajando", pág. 12 del PDF).
 # Se reporta contra AMBAS referencias: partir de una meta exigente sin renegociar
 # el compromiso formal del IOV, y clasificar el resultado real en tres bandas.
-COMPRENSION_META_OBJETIVO = 90.0
+META_OBJETIVO = 90.0
 
 DEFAULT_OUTPUT_PATH = Path("data/reports/xai_validation_results.json")
 
 LIKERT_MIN, LIKERT_MAX = 1, 5
+
+
+def _columnas_comprension(df: pd.DataFrame) -> list[str]:
+    cols = [c for c in df.columns if c.startswith("comprension_correcta_q")]
+    return sorted(cols, key=lambda c: int(c.rsplit("q", 1)[1]))
 
 
 # ---------------------------------------------------------------------------
@@ -102,9 +86,9 @@ LIKERT_MIN, LIKERT_MAX = 1, 5
 
 def _expected_columns() -> list[str]:
     cols = ["evaluador_id"]
+    cols += [f"valoracion_q{i}" for i in range(1, VALORACION_N_ITEMS + 1)]
     cols += [f"sus_q{i}" for i in range(1, SUS_N_ITEMS + 1)]
     cols += [f"pssuq_q{i}" for i in PSSUQ_INFOQUAL_ITEMS]
-    cols += [f"comprension_correcta_q{i}" for i in range(1, COMPRENSION_N_ITEMS + 1)]
     return cols
 
 
@@ -117,10 +101,13 @@ def validate_dataframe(df: pd.DataFrame) -> None:
         )
     if df.empty:
         raise ValueError("El CSV de respuestas está vacío.")
+    if not _columnas_comprension(df):
+        raise ValueError("No hay columnas comprension_correcta_q* en el CSV.")
 
-    sus_cols = [f"sus_q{i}" for i in range(1, SUS_N_ITEMS + 1)]
-    pssuq_cols = [f"pssuq_q{i}" for i in PSSUQ_INFOQUAL_ITEMS]
-    for col in sus_cols + pssuq_cols:
+    likert = ([f"valoracion_q{i}" for i in range(1, VALORACION_N_ITEMS + 1)]
+              + [f"sus_q{i}" for i in range(1, SUS_N_ITEMS + 1)]
+              + [f"pssuq_q{i}" for i in PSSUQ_INFOQUAL_ITEMS])
+    for col in likert:
         out_of_range = ~df[col].between(LIKERT_MIN, LIKERT_MAX)
         if out_of_range.any():
             bad_rows = df.loc[out_of_range, "evaluador_id"].tolist()
@@ -129,8 +116,7 @@ def validate_dataframe(df: pd.DataFrame) -> None:
                 f"para evaluador(es): {bad_rows}"
             )
 
-    correcta_cols = [f"comprension_correcta_q{i}" for i in range(1, COMPRENSION_N_ITEMS + 1)]
-    for col in correcta_cols:
+    for col in _columnas_comprension(df):
         invalid = ~df[col].isin([0, 1])
         if invalid.any():
             bad_rows = df.loc[invalid, "evaluador_id"].tolist()
@@ -143,6 +129,18 @@ def validate_dataframe(df: pd.DataFrame) -> None:
 # ---------------------------------------------------------------------------
 # Scoring por evaluador
 # ---------------------------------------------------------------------------
+
+def compute_valoracion(row: pd.Series) -> dict[str, float]:
+    """% de valoraciones favorables (4 o 5): total, claridad (E impares) y utilidad (E pares)."""
+    def pct(items: list[int]) -> float:
+        favorables = sum(row[f"valoracion_q{i}"] >= VALORACION_FAVORABLE for i in items)
+        return favorables / len(items) * 100.0
+
+    todos = list(range(1, VALORACION_N_ITEMS + 1))
+    return {"indice": pct(todos),
+            "claridad": pct([i for i in todos if i % 2 == 1]),
+            "utilidad": pct([i for i in todos if i % 2 == 0])}
+
 
 def compute_sus_score(row: pd.Series) -> float:
     """SUS estándar (Brooke, 1996), adaptado a escala 1-5. Rango resultado: 0-100."""
@@ -160,19 +158,16 @@ def compute_pssuq_subscales(row: pd.Series) -> dict[str, float]:
     return {"infoqual": sum(vals) / len(vals)}
 
 
-def compute_comprehension_pct(row: pd.Series) -> float:
-    """% de respuestas correctas en la Sección C (comprensión narrativa), 0-100."""
-    correctas = sum(
-        int(row[f"comprension_correcta_q{i}"]) for i in range(1, COMPRENSION_N_ITEMS + 1)
-    )
-    return (correctas / COMPRENSION_N_ITEMS) * 100.0
+def compute_comprehension_pct(row: pd.Series, columnas: list[str]) -> float:
+    """% de respuestas correctas en la Sección C (comprensión objetiva), 0-100."""
+    return sum(int(row[c]) for c in columnas) / len(columnas) * 100.0
 
 
 # ---------------------------------------------------------------------------
 # Scoring del panel completo
 # ---------------------------------------------------------------------------
 
-def _clasificar_banda(comprension_promedio: float) -> dict:
+def _clasificar_banda(indice_promedio: float) -> dict:
     """
     Clasifica el resultado del panel en tres bandas, contra la meta objetivo
     (90%, sugerida por el Jurado 1) y el mínimo comprometido (80%, IOV de R3.3).
@@ -182,70 +177,77 @@ def _clasificar_banda(comprension_promedio: float) -> dict:
     alcance la meta más exigente, y eso debe poder decirse con precisión en
     vez de presentarlo como éxito o fracaso absoluto.
     """
-    if comprension_promedio >= COMPRENSION_META_OBJETIVO:
+    if indice_promedio >= META_OBJETIVO:
         return {
             "banda": "meta_alcanzada",
             "interpretacion": (
-                f"El panel alcanzó {comprension_promedio:.1f}% de comprensión, superando la meta "
-                f"objetivo de {COMPRENSION_META_OBJETIVO:.0f}% y, por tanto, también el mínimo "
-                f"de {COMPRENSION_UMBRAL_R3_3:.0f}% comprometido en el IOV de R3.3."
+                f"El {indice_promedio:.1f}% de las valoraciones del panel considera las "
+                f"explicaciones claras y útiles, por encima de la meta objetivo de "
+                f"{META_OBJETIVO:.0f}% y, por tanto, del mínimo de {UMBRAL_R3_3:.0f}% "
+                "comprometido en el IOV de R3.3."
             ),
         }
-    if comprension_promedio >= COMPRENSION_UMBRAL_R3_3:
+    if indice_promedio >= UMBRAL_R3_3:
         return {
             "banda": "minimo_cumplido",
             "interpretacion": (
-                f"El panel alcanzó {comprension_promedio:.1f}% de comprensión: cumple el mínimo de "
-                f"{COMPRENSION_UMBRAL_R3_3:.0f}% comprometido en el IOV de R3.3, sin llegar a la "
-                f"meta objetivo de {COMPRENSION_META_OBJETIVO:.0f}%. El resultado es válido para "
-                "acreditar R3.3 y debe reportarse con esta precisión."
+                f"El {indice_promedio:.1f}% de las valoraciones del panel considera las "
+                f"explicaciones claras y útiles: cumple el mínimo de {UMBRAL_R3_3:.0f}% "
+                f"comprometido en el IOV de R3.3, sin llegar a la meta objetivo de "
+                f"{META_OBJETIVO:.0f}%. El resultado es válido para acreditar R3.3 y debe "
+                "reportarse con esta precisión."
             ),
         }
     return {
         "banda": "no_cumple",
         "interpretacion": (
-            f"El panel alcanzó {comprension_promedio:.1f}% de comprensión, por debajo del mínimo de "
-            f"{COMPRENSION_UMBRAL_R3_3:.0f}% exigido por el IOV de R3.3. Debe reportarse como no "
-            "cumplido y analizarse qué elementos de la explicación no resultaron comprensibles."
+            f"Solo el {indice_promedio:.1f}% de las valoraciones del panel considera las "
+            f"explicaciones claras y útiles, por debajo del mínimo de {UMBRAL_R3_3:.0f}% "
+            "exigido por el IOV de R3.3. Debe reportarse como no cumplido y analizarse qué "
+            "elementos de la explicación no resultaron comprensibles."
         ),
     }
 
 
 def score_panel(df: pd.DataFrame) -> dict:
     validate_dataframe(df)
+    comprension_cols = _columnas_comprension(df)
 
     per_evaluator = []
     for _, row in df.iterrows():
-        sus = compute_sus_score(row)
-        pssuq = compute_pssuq_subscales(row)
-        comprension = compute_comprehension_pct(row)
+        val = compute_valoracion(row)
         per_evaluator.append(
             {
                 "evaluador_id": row["evaluador_id"],
-                "sus_score": round(sus, 2),
-                "pssuq_infoqual": round(pssuq["infoqual"], 2),
-                "comprension_pct": round(comprension, 2),
+                "indice_claridad_utilidad_pct": round(val["indice"], 2),
+                "claridad_pct": round(val["claridad"], 2),
+                "utilidad_pct": round(val["utilidad"], 2),
+                "comprension_objetiva_pct": round(
+                    compute_comprehension_pct(row, comprension_cols), 2),
+                "sus_score": round(compute_sus_score(row), 2),
+                "pssuq_infoqual": round(compute_pssuq_subscales(row)["infoqual"], 2),
             }
         )
 
     per_df = pd.DataFrame(per_evaluator)
+    indice = per_df["indice_claridad_utilidad_pct"].mean()
 
     panel_summary = {
         "n_evaluadores": int(len(per_df)),
+        "indice_claridad_utilidad_pct_promedio": round(indice, 2),
+        "claridad_pct_promedio": round(per_df["claridad_pct"].mean(), 2),
+        "utilidad_pct_promedio": round(per_df["utilidad_pct"].mean(), 2),
+        "umbral_r3_3": UMBRAL_R3_3,
+        "umbral_r3_3_alcanzado": bool(indice >= UMBRAL_R3_3),
+        "meta_objetivo": META_OBJETIVO,
+        "meta_objetivo_alcanzada": bool(indice >= META_OBJETIVO),
+        "banda_resultado": _clasificar_banda(indice),
+        "comprension_objetiva_pct_promedio": round(per_df["comprension_objetiva_pct"].mean(), 2),
+        "n_preguntas_de_comprension": len(comprension_cols),
         "sus_score_promedio": round(per_df["sus_score"].mean(), 2),
         "sus_score_referencia_promedio_literatura": 68.0,
         "sus_por_encima_del_promedio": bool(per_df["sus_score"].mean() > 68.0),
         "pssuq_infoqual_promedio": round(per_df["pssuq_infoqual"].mean(), 2),
-        "comprension_pct_promedio": round(per_df["comprension_pct"].mean(), 2),
-        "umbral_r3_3": COMPRENSION_UMBRAL_R3_3,
-        "umbral_r3_3_alcanzado": bool(
-            per_df["comprension_pct"].mean() >= COMPRENSION_UMBRAL_R3_3
-        ),
-        "meta_objetivo": COMPRENSION_META_OBJETIVO,
-        "meta_objetivo_alcanzada": bool(
-            per_df["comprension_pct"].mean() >= COMPRENSION_META_OBJETIVO
-        ),
-        "banda_resultado": _clasificar_banda(per_df["comprension_pct"].mean()),
     }
 
     return {
@@ -263,45 +265,48 @@ def print_summary(results: dict) -> None:
     panel = results["resumen_panel"]
 
     print("=" * 72)
-    print("VALIDACIÓN DE USABILIDAD/COMPRENSIBILIDAD DEL MÓDULO XAI — R3.3")
+    print("VALIDACIÓN DE LA COMPRENSIBILIDAD DE LAS EXPLICACIONES — R3.3")
     print("=" * 72)
 
     print(f"\nEvaluadores procesados: {panel['n_evaluadores']}\n")
 
-    header = (
-        f"{'evaluador_id':<14}{'SUS':>8}{'InfoQual':>10}{'Compr.%':>10}"
-    )
+    header = (f"{'evaluador_id':<14}{'Índice%':>9}{'Clar.%':>8}{'Útil%':>8}"
+              f"{'Compr.%':>9}{'SUS':>7}{'InfoQ':>7}")
     print(header)
     print("-" * len(header))
     for row in per_evaluator:
         print(
             f"{row['evaluador_id']:<14}"
-            f"{row['sus_score']:>8.1f}"
-            f"{row['pssuq_infoqual']:>10.2f}"
-            f"{row['comprension_pct']:>10.1f}"
+            f"{row['indice_claridad_utilidad_pct']:>9.1f}"
+            f"{row['claridad_pct']:>8.1f}"
+            f"{row['utilidad_pct']:>8.1f}"
+            f"{row['comprension_objetiva_pct']:>9.1f}"
+            f"{row['sus_score']:>7.1f}"
+            f"{row['pssuq_infoqual']:>7.2f}"
         )
 
     print("\n" + "-" * 72)
-    print("PROMEDIOS DEL PANEL")
+    print("CRITERIO PRIMARIO R3.3 — ÍNDICE DE CLARIDAD Y UTILIDAD")
     print("-" * 72)
-    print(f"SUS promedio            : {panel['sus_score_promedio']:.2f} / 100"
-          f"  ({'por encima' if panel['sus_por_encima_del_promedio'] else 'por debajo'}"
-          f" del punto de referencia habitual de 68)")
-    print(f"PSSUQ InfoQual promedio  : {panel['pssuq_infoqual_promedio']:.2f} / 5")
-
-    print("\n" + "-" * 72)
-    print("CRITERIO PRIMARIO R3.3 — COMPRENSIÓN NARRATIVA")
-    print("-" * 72)
-    print(f"Comprensión promedio del panel : {panel['comprension_pct_promedio']:.2f}%")
-    print(f"Meta objetivo (Jurado 1)       : {panel['meta_objetivo']:.1f}%"
+    print(f"Valoraciones favorables (4 o 5) : {panel['indice_claridad_utilidad_pct_promedio']:.2f}%"
+          f"  (claridad {panel['claridad_pct_promedio']:.1f}%,"
+          f" utilidad {panel['utilidad_pct_promedio']:.1f}%)")
+    print(f"Meta objetivo (Jurado 1)        : {panel['meta_objetivo']:.1f}%"
           f"  [{'ALCANZADA' if panel['meta_objetivo_alcanzada'] else 'no alcanzada'}]")
-    print(f"Mínimo comprometido (IOV R3.3) : {panel['umbral_r3_3']:.1f}%"
+    print(f"Mínimo comprometido (IOV R3.3)  : {panel['umbral_r3_3']:.1f}%"
           f"  [{'CUMPLE' if panel['umbral_r3_3_alcanzado'] else 'NO CUMPLE'}]")
     print()
     print(f">>> {panel['banda_resultado']['interpretacion']} <<<")
-    if not panel["umbral_r3_3_alcanzado"]:
-        print("\nAcción sugerida: iterar sobre el módulo de narrativa (R3.2) antes de "
-              "una nueva ronda de validación.")
+
+    print("\n" + "-" * 72)
+    print("EVIDENCIA COMPLEMENTARIA")
+    print("-" * 72)
+    print(f"Comprensión objetiva promedio   : {panel['comprension_objetiva_pct_promedio']:.2f}%"
+          f"  ({panel['n_preguntas_de_comprension']} preguntas)")
+    print(f"SUS promedio                    : {panel['sus_score_promedio']:.2f} / 100"
+          f"  ({'por encima' if panel['sus_por_encima_del_promedio'] else 'por debajo'}"
+          f" del punto de referencia habitual de 68)")
+    print(f"PSSUQ InfoQual promedio         : {panel['pssuq_infoqual_promedio']:.2f} / 5")
     print("=" * 72)
 
 
@@ -320,9 +325,8 @@ def build_synthetic_panel(n: int = 5) -> pd.DataFrame:
     """Genera un panel sintético de `n` evaluadores ficticios para poder correr
     y verificar este script antes de que existan datos reales del panel."""
     rows = []
-    # Patrones variados a propósito: uno "óptimo", uno "mediocre", uno con
-    # comprensión por debajo del umbral, y el resto intermedios, para que el
-    # promedio del panel sintético no sea trivialmente 100%.
+    # Patrones variados a propósito, para que el promedio del panel sintético no
+    # sea trivialmente 100%.
     sus_patterns = [
         [5, 1, 5, 1, 5, 1, 5, 1, 5, 1],  # evaluador muy positivo -> SUS alto
         [4, 2, 4, 2, 4, 2, 4, 2, 4, 2],  # evaluador moderadamente positivo
@@ -331,33 +335,32 @@ def build_synthetic_panel(n: int = 5) -> pd.DataFrame:
         [2, 4, 2, 4, 3, 3, 2, 4, 2, 4],  # evaluador crítico -> SUS bajo
     ]
     pssuq_base = [4, 3, 4, 4, 3, 4]
+    valoracion_patterns = [
+        [5, 5, 4, 5, 5, 4, 5, 5],  # todo favorable
+        [4, 4, 4, 3, 5, 4, 4, 4],  # una no favorable
+        [3, 3, 4, 2, 3, 3, 4, 3],  # mayoría no favorable
+        [5, 4, 4, 4, 4, 4, 5, 3],
+        [4, 5, 5, 5, 4, 4, 4, 4],
+    ]
     comprension_correcta_patterns = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # 100%
-        [1, 1, 1, 1, 0, 1, 1, 1, 1, 0],  # 80%
-        [1, 1, 0, 1, 0, 1, 0, 1, 1, 0],  # 60% (por debajo del umbral individual)
-        [1, 1, 1, 0, 1, 1, 1, 1, 0, 1],  # 80%
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],  # 90%
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 1, 1],
+        [1, 0, 1, 0, 0, 1],
+        [1, 1, 0, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0],
     ]
 
     for idx in range(n):
-        evaluador_id = f"EVAL_SINTETICO_{idx + 1:02d}"
+        row = {"evaluador_id": f"EVAL_SINTETICO_{idx + 1:02d}"}
         sus_vals = sus_patterns[idx % len(sus_patterns)]
         # pequeña variación por evaluador para no repetir filas idénticas
         pssuq_vals = [max(1, min(5, v - (idx % 2))) for v in pssuq_base]
-        comprension_correcta = comprension_correcta_patterns[idx % len(comprension_correcta_patterns)]
-
-        row = {"evaluador_id": evaluador_id}
+        val = valoracion_patterns[idx % len(valoracion_patterns)]
+        comp = comprension_correcta_patterns[idx % len(comprension_correcta_patterns)]
+        row.update({f"valoracion_q{i + 1}": v for i, v in enumerate(val)})
+        row.update({f"comprension_correcta_q{i + 1}": c for i, c in enumerate(comp)})
         row.update({f"sus_q{i + 1}": sus_vals[i] for i in range(SUS_N_ITEMS)})
         row.update({f"pssuq_q{q}": v for q, v in zip(PSSUQ_INFOQUAL_ITEMS, pssuq_vals)})
-        row.update(
-            {f"comprension_q{i + 1}": "A" for i in range(COMPRENSION_N_ITEMS)}
-        )
-        row.update(
-            {
-                f"comprension_correcta_q{i + 1}": comprension_correcta[i]
-                for i in range(COMPRENSION_N_ITEMS)
-            }
-        )
         rows.append(row)
 
     return pd.DataFrame(rows)
@@ -369,7 +372,7 @@ def build_synthetic_panel(n: int = 5) -> pd.DataFrame:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Scoring del panel de validación SUS/PSSUQ/comprensión narrativa (R3.3)."
+        description="Scoring del panel de validación de las explicaciones (R3.3)."
     )
     parser.add_argument(
         "--input",

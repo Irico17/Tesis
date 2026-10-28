@@ -304,30 +304,28 @@ def _banda_de_confianza(pct: float) -> str:
 # --------------------------------------------------------------------------
 
 def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dict]:
-    """Diez preguntas sobre cuatro correos: dos de phishing y dos legítimos.
+    """Seis preguntas de comprensión sobre cuatro correos, una o dos por correo.
 
-    Cubren lo que un analista necesita leer en el reporte: qué palabras pesaron y
-    en qué orden, qué decidió el sistema y con qué confianza, y qué tipo de
-    información sustentó la decisión. Las de verdadero o falso no tienen todas la
-    misma respuesta, porque quien marcara siempre la misma opción acertaría sin
-    leer. Las que preguntan por el diseño o los enlaces dependen de que el correo
-    los tenga (ver `_pregunta_de_modalidad`).
+    Son la evidencia objetiva que acompaña a la valoración de cada explicación
+    (ver VALORACION), que es la que se contrasta con el umbral. Cubren lo que un
+    analista necesita leer en el reporte: qué palabras pesaron y en qué orden,
+    qué parte del correo sustentó la decisión, y qué decidió el sistema y con qué
+    confianza. Se eligieron entre las diez de la versión anterior para que cada
+    correo lleve como mucho cuatro preguntas contando las dos de valoración.
 
     No hay un correo de confianza intermedia: ninguno bien clasificado tiene una
     explicación legible (ver el informe de E9). La pregunta que el instrumento
     preveía para él, qué factor empuja hacia cada clase, tampoco podría
     responderse con este reporte, porque la atención no tiene signo.
     """
-    p1, p2, p3, p4 = (_palabras(e) for e in (e1, e2, e3, e4))
-    conf1 = e1["explicacion"]["estructurado"]["confidence_pct"]
+    p1, p2, p3 = (_palabras(e) for e in (e1, e2, e3))
     conf4 = e4["explicacion"]["estructurado"]["confidence_pct"]
     clase4 = "Legítimo" if e4["explicacion"]["clase_predicha"] == 0 else "Phishing"
-    vf = ["Verdadero", "Falso"]
 
     no_citada = _distractores(e3, 1)[0]
     no_textuales = _no_textuales(e3)
-    c8_correcta = f"{clase4}, con {_banda_de_confianza(conf4).lower()} de confianza"
-    c8_ops = [f"{c}, con {b} de confianza" for c in ("Legítimo", "Phishing")
+    c6_correcta = f"{clase4}, con {_banda_de_confianza(conf4).lower()} de confianza"
+    c6_ops = [f"{c}, con {b} de confianza" for c in ("Legítimo", "Phishing")
               for b in ("más del 99%", "entre 60% y 90%")]
 
     return [
@@ -337,41 +335,41 @@ def preguntas_de_comprension(e1: dict, e2: dict, e3: dict, e4: dict) -> list[dic
          "opciones": _barajar([p1[0], p1[1]] + _distractores(e1), "C1", p1[0]),
          "correcta": p1[0]},
         _pregunta_de_parte_dominante("C2", 1, e1),
-        {"id": "C3", "ejemplo": 1, "tipo": "opcion",
-         "titulo": "C3. Según la explicación, ¿qué tan seguro está el sistema de su decisión?",
-         "opciones": ["Menos del 60%", "Entre 60% y 90%", "Entre 90% y 99%", "Más del 99%"],
-         "correcta": _banda_de_confianza(conf1)},
-        {"id": "C4", "ejemplo": 2, "tipo": "opcion",
-         "titulo": (f"C4. Según la explicación, ¿qué palabra pesó más para decidir que "
+        {"id": "C3", "ejemplo": 2, "tipo": "opcion",
+         "titulo": (f"C3. Según la explicación, ¿qué palabra pesó más para decidir que "
                     f"este correo es {_clase(e2)}?"),
-         "opciones": _barajar([p2[0], p2[1]] + _distractores(e2), "C4", p2[0]),
+         "opciones": _barajar([p2[0], p2[1]] + _distractores(e2), "C3", p2[0]),
          "correcta": p2[0]},
-        _pregunta_de_modalidad("C5", 2, e2, "Falso"),
-        ({"id": "C6", "ejemplo": 3, "tipo": "opcion",
-          "titulo": ("C6. Además del texto, ¿qué otra cosa influyó en esta decisión, "
+        ({"id": "C4", "ejemplo": 3, "tipo": "opcion",
+          "titulo": ("C4. Además del texto, ¿qué otra cosa influyó en esta decisión, "
                      "según la explicación?"),
           "opciones": _barajar([no_textuales[0]] + _caracteristicas_no_citadas(e3, 3),
-                               "C6", no_textuales[0]),
+                               "C4", no_textuales[0]),
           "correcta": no_textuales[0]}
          if no_textuales else
-         {"id": "C6", "ejemplo": 3, "tipo": "opcion",
-          "titulo": "C6. ¿Cuál de estas palabras NO aparece en la lista de la explicación?",
-          "opciones": _barajar(p3[:3] + [no_citada], "C6", no_citada),
+         {"id": "C4", "ejemplo": 3, "tipo": "opcion",
+          "titulo": "C4. ¿Cuál de estas palabras NO aparece en la lista de la explicación?",
+          "opciones": _barajar(p3[:3] + [no_citada], "C4", no_citada),
           "correcta": no_citada}),
-        {"id": "C7", "ejemplo": 3, "tipo": "vf",
-         "titulo": ("C7. Según la explicación, la palabra «{1}» pesó más que «{0}»."
+        {"id": "C5", "ejemplo": 3, "tipo": "vf",
+         "titulo": ("C5. Según la explicación, la palabra «{1}» pesó más que «{0}»."
                     .format(*_par_para_comparar(e3))),
-         "opciones": vf, "correcta": "Falso"},
-        {"id": "C8", "ejemplo": 4, "tipo": "opcion",
-         "titulo": "C8. Según la explicación, ¿qué decidió el sistema sobre este correo?",
-         "opciones": _barajar(c8_ops, "C8", c8_correcta), "correcta": c8_correcta},
-        {"id": "C9", "ejemplo": 4, "tipo": "opcion",
-         "titulo": ("C9. ¿Cuál de estas palabras está entre las tres que más pesaron, "
-                    "según la explicación?"),
-         "opciones": _barajar([p4[1]] + _distractores(e4, 3), "C9", p4[1]),
-         "correcta": p4[1]},
-        _pregunta_de_modalidad("C10", 4, e4, "Verdadero"),
+         "opciones": ["Verdadero", "Falso"], "correcta": "Falso"},
+        {"id": "C6", "ejemplo": 4, "tipo": "opcion",
+         "titulo": "C6. Según la explicación, ¿qué decidió el sistema sobre este correo?",
+         "opciones": _barajar(c6_ops, "C6", c6_correcta), "correcta": c6_correcta},
     ]
+
+
+# Valoración de cada explicación, al pie de cada correo. Es lo que se contrasta
+# con la meta del 90% y el mínimo del 80%: el porcentaje de valoraciones de 4 o 5.
+# Responde al plan, que fijaba el umbral sobre índices de claridad y de confianza
+# obtenidos con formularios. Va después de las preguntas de comprensión para que
+# quien valora ya haya intentado usar la explicación.
+VALORACION = (
+    "Entendí por qué el sistema tomó esta decisión.",
+    "Esta explicación me ayudaría a decidir si confiar en la decisión del sistema.",
+)
 
 
 # --------------------------------------------------------------------------
@@ -384,8 +382,9 @@ PRESENTACION = (
     "engañarte) y que explica por qué tomó cada decisión. Queremos saber si esas "
     "explicaciones se entienden.\n\n"
     "Verás un ejemplo resuelto y luego 4 correos, cada uno con su explicación. Por "
-    "cada correo responderás 2 o 3 preguntas cortas; al final, dos cuestionarios de "
-    "opinión. Toma unos 15 minutos.\n\n"
+    "cada correo responderás 1 o 2 preguntas cortas y dirás si la explicación se "
+    "entiende y si te sería útil; al final, dos cuestionarios de opinión. Toma unos "
+    "15 minutos.\n\n"
     "No necesitas saber de seguridad ni entender todo el inglés de los correos: las "
     "preguntas se responden mirando la explicación. No te evaluamos a ti, sino a la "
     "explicación.\n\n"
@@ -410,8 +409,10 @@ COMO_LEER = (
 INSTRUCCION_A = ("¿Qué te parecieron las explicaciones? Marca de 1 (totalmente en "
                  "desacuerdo) a 5 (totalmente de acuerdo). No hay respuestas correctas.")
 INSTRUCCION_B = "Unas preguntas más de opinión, con la misma escala de 1 a 5."
-INSTRUCCION_C = ("Ahora, 4 correos reales. Responde según lo que dice la explicación, "
-                 "no según lo que tú opinas del correo.")
+INSTRUCCION_C = ("Ahora, 4 correos reales. Responde las preguntas según lo que dice la "
+                 "explicación, no según lo que tú opinas del correo. Al final de cada "
+                 "correo, marca de 1 (totalmente en desacuerdo) a 5 (totalmente de "
+                 "acuerdo) qué te pareció su explicación.")
 
 
 def _ejemplo_resuelto(ej: dict) -> str:
@@ -594,6 +595,9 @@ def estructura(datos: dict, imagenes: dict[str, str] | None = None) -> list[dict
         clave = CLAVES[n - 1]
         el += correo_y_reporte(correo, clave, f"Correo {n}")
         el += [dict(q, tipo="pregunta") for q in preguntas if q["ejemplo"] == n]
+        el.append({"tipo": "rejilla", "id": "E",
+                   "titulo": f"Tu valoración de la explicación del correo {n} (1 a 5)",
+                   "filas": [f"E{2 * n - 1 + i}. {t}" for i, t in enumerate(VALORACION)]})
     el += [
         {"tipo": "pagina", "titulo": "Tu opinión (1 de 2)",
          "texto": INSTRUCCION_A},
@@ -740,6 +744,10 @@ def main() -> int:
         "preguntas": {e["id"]: {"titulo": e["titulo"], "correcta": e["correcta"],
                                 "opciones": e["opciones"]}
                       for e in el if e["tipo"] == "pregunta"},
+        # Sin respuesta correcta: cuentan las de 4 o 5 (ver VALORACION).
+        "valoracion": {f.split(". ", 1)[0]: f.split(". ", 1)[1]
+                       for e in el if e["tipo"] == "rejilla" and e["id"] == "E"
+                       for f in e["filas"]},
     }
     (SALIDA / "clave_de_respuestas.json").write_text(
         json.dumps(clave, ensure_ascii=False, indent=2), encoding="utf-8")

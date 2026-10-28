@@ -29,7 +29,7 @@ El instrumento se aplica como formulario en línea, autoadministrado, que genera
 |---|---|---|
 | 1 | Presentación, consentimiento y tres preguntas de perfil | 2 min |
 | 2 | Inducción escrita: cómo leer el reporte, con un ejemplo guiado que no se usa en las preguntas | 2–3 min |
-| 3 | Sección C — Comprensión (10 preguntas sobre 4 correos reales, cada uno mostrado una sola vez) | 8–10 min |
+| 3 | Cuatro correos reales, cada uno mostrado una sola vez: Sección C, comprensión (6 preguntas, 1 o 2 por correo), y Sección E, valoración de cada explicación (2 ítems por correo) | 7–9 min |
 | 4 | Sección A — SUS adaptado (10 ítems) | 3–4 min |
 | 5 | Sección B — PSSUQ adaptado, subescala de Calidad de la Información (6 ítems) | 1–2 min |
 | 6 | Cierre y comentario opcional | 1 min |
@@ -127,17 +127,19 @@ No existe un "umbral aprobatorio" estándar único para el PSSUQ en la literatur
 
 ---
 
-## 4. Sección C — Comprensión narrativa (criterio primario de R3.3; meta 90%, mínimo 80%)
+## 4. Secciones E y C — Valoración de cada explicación (criterio primario de R3.3; meta 90%, mínimo 80%) y comprensión objetiva
 
-Esta sección es la que responde directamente al resultado **R3.3** de la tesis: *"Diseño y aplicación de cuestionarios estructurados (SUS/PSSUQ) a analistas de seguridad como criterio primario de comprensibilidad... requiriendo un umbral mínimo del 80% en los índices de claridad y confianza cognitiva operativa."* El SUS y el PSSUQ (Secciones A y B) miden *percepción* de usabilidad; esta sección mide **comprensión objetiva verificable** — si el evaluador de hecho entendió qué factores llevaron a la clasificación, no solo si el reporte "se sintió" claro.
+Esta sección es la que responde directamente al resultado **R3.3** de la tesis: *"Diseño y aplicación de cuestionarios estructurados (SUS/PSSUQ) a analistas de seguridad como criterio primario de comprensibilidad... requiriendo un umbral mínimo del 80% en los índices de claridad y confianza cognitiva operativa."* El plan fija el umbral sobre **índices de claridad y confianza** obtenidos con los formularios. Por eso, tras la prueba piloto del 27 de octubre de 2026 y antes de aplicar el instrumento, el criterio primario pasó a ser la **valoración de cada explicación (Sección E)**: al pie de cada correo, el evaluador marca de 1 a 5 dos afirmaciones, «Entendí por qué el sistema tomó esta decisión» (claridad) y «Esta explicación me ayudaría a decidir si confiar en la decisión del sistema» (utilidad para confiar). Son 8 ítems, E1 a E8; los impares miden claridad y los pares utilidad.
+
+La **comprensión objetiva (Sección C)** se conserva como evidencia complementaria, reducida a 6 preguntas, una o dos por correo, para que ningún correo lleve más de cuatro preguntas. Muestra si lo que el evaluador dice entender coincide con lo que efectivamente lee en la explicación: la comprensión declarada suele ser mayor que la real, y reportar ambas permite ver si hay esa distancia. El SUS y el PSSUQ (Secciones A y B) miden la usabilidad percibida del sistema en conjunto.
 
 ### Ejemplos y preguntas
 
 La sección usa **cuatro correos reales** del conjunto de prueba, todos correctamente clasificados por el modelo reportado: dos de phishing y dos legítimos, presentados en orden alterno. Un quinto correo de phishing se usa solo en la inducción. Los selecciona `scripts/experimentos/e9_ejemplos_del_panel.py` con criterios fijos y registrados en su informe (`medios_de_verificacion/experimentos/e9/ejemplos_del_panel.json`): idioma inglés o español, cuerpo legible, palabras decisivas legibles y visibles en el correo mostrado, ninguna repetida y, en los legítimos, ninguna que sea un nombre propio. Los enlaces se desactivan y se ocultan los teléfonos. En los correos de phishing, el dominio de cada dirección se muestra desactivado, porque es evidencia, y solo se oculta la parte local; en los legítimos, las direcciones se ocultan enteras. Los factores del reporte que no son palabras legibles (signos, cifras, fragmentos codificados) se nombran por su tipo.
 
-Excepción declarada: el correo 3 se impone fuera de esos criterios. Ningún correo que los cumpla tiene peso de estructura o de red en su reporte, y sin uno así las preguntas sobre esos bloques no tendrían contenido. Entre los 62 correos bien clasificados cuyo reporte da algún peso no textual (`candidatos_no_textuales.json`), casi todos son publicidad, contenido adulto o están en otro idioma. Se eligió el que mejor se entiende: un phishing de credenciales («tu contraseña expira en 24 horas») cuyo reporte cita «expires», «account» y «helpdesk» y atribuye a la red un 0.4%. Incumple dos filtros previos: su confianza (95.6%) es menor que 99% y la detección de idioma por tramos no lo clasifica. Su primer factor es un signo. Sobre él, C6 pregunta qué característica de estructura o de red influyó.
+Excepción declarada: el correo 3 se impone fuera de esos criterios. Ningún correo que los cumpla tiene peso de estructura o de red en su reporte, y sin uno así las preguntas sobre esos bloques no tendrían contenido. Entre los 62 correos bien clasificados cuyo reporte da algún peso no textual (`candidatos_no_textuales.json`), casi todos son publicidad, contenido adulto o están en otro idioma. Se eligió el que mejor se entiende: un phishing de credenciales («tu contraseña expira en 24 horas») cuyo reporte cita «expires», «account» y «helpdesk» y atribuye a la red un 0.4%. Incumple dos filtros previos: su confianza (95.6%) es menor que 99% y la detección de idioma por tramos no lo clasifica. Su primer factor es un signo. Sobre él, C4 pregunta qué característica de estructura o de red influyó.
 
-Lenguaje sencillo (ajuste tras una prueba piloto, 27 de octubre de 2026): dos personas a las que se envió el formulario lo encontraron denso y técnico. El evaluador ve ahora el reporte en lenguaje sencillo que produce el módulo (`narrative.reporte_sencillo`). Dice lo mismo que el reporte técnico, los tres bloques con sus factores y las mismas cifras, pero con una sola escala de porcentajes y sin términos como «contribución agregada» o «atención intrínseca». La presentación, la guía, el ejemplo resuelto (ahora explicado en palabras) y las preguntas usan ese mismo lenguaje, y los ítems del SUS y del PSSUQ se adaptaron a él. Las preguntas miden lo mismo y tienen las mismas respuestas correctas.
+Lenguaje sencillo (ajuste tras una prueba piloto, 27 de octubre de 2026): dos personas a las que se envió el formulario lo encontraron denso y técnico. El evaluador ve ahora el reporte en lenguaje sencillo que produce el módulo (`narrative.reporte_sencillo`). Dice lo mismo que el reporte técnico, los tres bloques con sus factores y las mismas cifras, pero con una sola escala de porcentajes y sin términos como «contribución agregada» o «atención intrínseca». La presentación, la guía, el ejemplo resuelto (ahora explicado en palabras) y las preguntas usan ese mismo lenguaje, y los ítems del SUS y del PSSUQ se adaptaron a él.
 
 Para no alargar el formulario, cada correo se muestra una sola vez, como imagen con sus palabras sombreadas y el asunto encima. Los bloques del reporte sin peso se resumen en una línea: «sin peso en esta decisión».
 
@@ -145,34 +147,36 @@ Cada reporte va acompañado del propio correo con sus palabras sombreadas según
 
 No hay ejemplo de confianza intermedia: el modelo casi nunca duda, y ningún correo bien clasificado con esa confianza tiene una explicación legible. La pregunta prevista para él, qué factor empuja hacia cada clase, tampoco podría responderse, porque la atención no tiene signo.
 
-Las diez preguntas, y su respuesta correcta, se derivan del propio reporte que el evaluador lee (`generar_formulario.py`); la clave queda en `formulario/clave_de_respuestas.json`. Cubren lo que un analista necesita leer en el reporte:
+Las seis preguntas, y su respuesta correcta, se derivan del propio reporte que el evaluador lee (`generar_formulario.py`); la clave queda en `formulario/clave_de_respuestas.json`. Cubren lo que un analista necesita leer en el reporte:
 
-| Correo | Preguntas | Qué miden |
+| Correo | Comprensión (C) | Valoración (E) |
 |---|---|---|
-| 1 (phishing) | C1, C2, C3 | Palabra de mayor peso; qué parte del correo (texto, diseño o enlaces) pesó más; nivel de confianza |
-| 2 (legítimo) | C4, C5 | Palabra de mayor peso; si los enlaces influyeron |
-| 3 (phishing) | C6, C7 | Qué otra característica influyó, o qué palabra no cita el reporte; orden de dos palabras citadas |
-| 4 (legítimo) | C8, C9, C10 | Decisión y confianza; palabra entre las tres más influyentes; si el diseño influyó, o el orden de dos palabras |
+| 1 (phishing) | C1 palabra de mayor peso; C2 qué parte del correo (texto, diseño o enlaces) pesó más | E1, E2 |
+| 2 (legítimo) | C3 palabra de mayor peso | E3, E4 |
+| 3 (phishing) | C4 qué otra característica influyó, o qué palabra no cita el reporte; C5 orden de dos palabras citadas | E5, E6 |
+| 4 (legítimo) | C6 decisión y confianza | E7, E8 |
 
-Las opciones incorrectas son palabras que aparecen en el correo pero que el reporte no cita, de modo que no se acierta adivinando qué palabra «suena» a phishing; la correcta nunca va en primer lugar, y las preguntas de verdadero o falso no tienen todas la misma respuesta.
+Las opciones incorrectas son palabras que aparecen en el correo pero que el reporte no cita, de modo que no se acierta adivinando qué palabra «suena» a phishing; la correcta nunca va en primer lugar.
 
-Las preguntas sobre el diseño o los enlaces (C2, C5 y C10) solo se hacen si el correo los tiene. Así no se pregunta si influyó el HTML de un correo que no tiene HTML. Si el correo no tiene ni lo uno ni lo otro, se pregunta por el orden de dos palabras citadas. Como la imagen muestra solo el texto que el modelo leyó, en los correos con formato HTML una nota bajo el asunto indica que el original tiene diseño, imágenes y enlaces. Este ajuste se hizo el 27 de octubre de 2026, antes de aplicar el instrumento, junto con el de la prueba piloto.
+La pregunta sobre qué parte del correo pesó más (C2) solo se hace si el correo tiene diseño o enlaces; si no tiene ni lo uno ni lo otro, se pregunta por el orden de dos palabras citadas. Como la imagen muestra solo el texto que el modelo leyó, en los correos con formato HTML una nota bajo el asunto indica que el original tiene diseño, imágenes y enlaces. Este ajuste se hizo el 27 de octubre de 2026, antes de aplicar el instrumento, junto con el de la prueba piloto.
 
-### Cómo se calcula el % de comprensión y cómo se agrega al umbral de R3.3
+### Cómo se calcula el índice y cómo se agrega al umbral de R3.3
 
 Por evaluador:
 
 ```
-% comprensión (evaluador) = (número de respuestas correctas de C1–C10) / 10 × 100
+índice de claridad y utilidad (evaluador) = (número de ítems E1–E8 marcados con 4 o 5) / 8 × 100
+comprensión objetiva (evaluador)          = (número de respuestas correctas de C1–C6) / 6 × 100
 ```
 
 A nivel de panel (todos los evaluadores):
 
 ```
-% comprensión (panel) = promedio del % de comprensión de todos los evaluadores
+índice (panel) = promedio del índice de todos los evaluadores; se informa también por separado
+                 la claridad (E impares) y la utilidad (E pares)
 ```
 
-**Criterio de aceptación de R3.3 — dos referencias, tres bandas.** A raíz de la observación del Jurado 1 en la revisión del E3 (*"se puede iniciar con 90 e ir bajando"*, pág. 12 del PDF), el resultado del panel se reporta contra **dos** referencias en lugar de una sola:
+**Criterio de aceptación de R3.3 — dos referencias, tres bandas.** A raíz de la observación del Jurado 1 en la revisión del E3 (*"se puede iniciar con 90 e ir bajando"*, pág. 12 del PDF), el índice del panel se reporta contra **dos** referencias en lugar de una sola:
 
 | Banda | Rango | Interpretación |
 |---|---|---|
@@ -183,6 +187,8 @@ A nivel de panel (todos los evaluadores):
 El **mínimo de 80%** es el compromiso formal del IOV de R3.3 en la Tabla 2 y no se renegocia; el **90%** es una meta objetivo más exigente que permite partir de un estándar alto sin alterar el compromiso ya evaluado.
 
 En ningún caso se "ajusta" el instrumento post-hoc para forzar el umbral: si el panel queda por debajo del 80%, se documenta como limitación y como motivo para iterar sobre el diseño del módulo de narrativa (R3.2) antes de una segunda ronda de validación. El script `script_scoring.py` clasifica automáticamente en estas tres bandas y emite la interpretación correspondiente.
+
+La comprensión objetiva, el SUS y la calidad de la información del PSSUQ se reportan junto al índice, sin entrar en la clasificación.
 
 Complementariamente (no sustituye este chequeo), R3.3 incluye una verificación automatizada de las narrativas, resuelta con una regla determinista, que comprueba que cada cifra del texto generado corresponde a la del vector de atribución que lo originó (E9) — ese chequeo es independiente de este instrumento y se aplica sobre el propio texto generado, no sobre el panel humano. Este instrumento cubre exclusivamente la comprensión humana.
 
@@ -204,4 +210,4 @@ Complementariamente (no sustituye este chequeo), R3.3 incluye una verificación 
 2. **Regeneración:** el formulario no se edita a mano. Si cambian los ejemplos o los ítems, se ejecuta `python doc/validacion_xai/generar_formulario.py`, que reescribe el Apps Script, la vista previa y la clave de respuestas a partir de este instrumento y del informe de E9.
 3. **Consistencia entre evaluadores:** todos los evaluadores ven los mismos cuatro correos, en el mismo orden.
 4. **Congelación antes de aplicar:** el instrumento y el formulario se fijan antes de enviar el enlace y no se modifican durante la aplicación, conforme al IOV de R3.3.
-5. **Captura y scoring:** la exportación de Google Forms se convierte con `respuestas_a_csv.py` (descarta a quien no acepta, califica la sección C con la clave y asigna identificadores anónimos) y se procesa con `script_scoring.py` (columnas `sus_q1..sus_q10`, `pssuq_q1..pssuq_q16`, `comprension_q1..q10`, `comprension_correcta_q1..q10`).
+5. **Captura y scoring:** la exportación de Google Forms se convierte con `respuestas_a_csv.py` (descarta a quien no acepta, califica la sección C con la clave y asigna identificadores anónimos) y se procesa con `script_scoring.py` (columnas `valoracion_q1..q8`, `comprension_correcta_q1..q6`, `sus_q1..sus_q10`, `pssuq_q7..pssuq_q12`). Con la versión de claridad del formulario, el conversor se ejecuta con `--version claridad`.
